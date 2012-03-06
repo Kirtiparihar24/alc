@@ -1,0 +1,29 @@
+<div class="w100">
+  <% unless @total_data.blank?%>
+    <div class="title_blue fl"><%=t(:text_no_of_tasks)%>&nbsp;<%=pluralize_record(@conditions[:total_tasks],'',1)%></div>
+  <% end %>
+  <div class="fr textR pt5">
+    <%=raw(generate_send_email_rpt_link("matter_team_tasks_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("Matter")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("matter_team_tasks_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<% unless @total_data.blank?
+  total = 0  %>
+  <% @total_data.each do |label,col| %>
+    <div class="mt5">
+      <div class="w100">
+        <div class="title_blue fl"><%=@conditions[:users][label]%></div>
+        <div class="fr textR"> <%# links %> </div>
+        <br class="clear" />
+      </div>
+      <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => col} %>
+    </div>
+  <% end %>
+  <%reset_cycle%>
+  <div class="title_blue fl"><%=t(:text_no_of_tasks)%>&nbsp;<%=pluralize_record(@conditions[:total_tasks],'',1)%></div>
+<%else%>
+  <div class="title_blue fl">&nbsp;<%=pluralize_record((@conditions[:total_tasks] rescue 0),'Record',1)%></div>
+<% end %>
+<br class="clear" />

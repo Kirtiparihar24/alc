@@ -1,0 +1,65 @@
+<div id="matter_toe_error" style="display: none" ></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div>
+  <% form_for :document_home, @document_home, :url => {:controller => 'matter_termconditions', :action => 'toe_multi_upload', :matter_id => @matter.id}, :html => {:multipart => true, :target => "upload_matter_toe_frame", :onsubmit => "return checkfilename();return disableAllSubmitButtons('matters')"} do |f| %>
+    <%for document in @document_home.documents%>
+      <%  fields_for 'document_home[document_attributes]', document do |d|%>
+        <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+          <tr>
+            <td align="left" width="15%"><label><%= t(:label_document) %><span class="alert_message">*</span></label></td>
+            <td align="left" width="80%"><label><%= d.file_field :data, :onChange => "updatename('document_home_document_attributes_data','document_home_document_attributes_name')" %></label></td>
+          </tr>
+          <tr>
+            <td align="left"><%= t(:label_name) %><span class="alert_message">*</span></td>
+            <td align="left"><%= d.text_field :name, :size => "46"  %></td>
+          </tr>
+          <tr>
+            <td align="left" valign="top"><label><%=t(:label_tag)%></label></td>
+            <td align="left"><%= f.text_area :tag_array,:rows => 3, :cols => 43 %></td>
+          </tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="center" colspan="2">
+              <%= f.submit t(:label_upload),:class=>'matters',:onclick=>"checkloader();setButtonPressed(this);return true;"%>
+              <input type="submit" class="matters" id="Login2" value="Cancel" onclick="tb_remove(); return false;" />
+            </td>
+          </tr>
+          <tr><td colspan="2" align="left"><span class="alert_message">*</span><%=t(:label_Required_fields)%></td></tr>
+          <tr><td colspan="2" align="left">
+              <pre>Note : Limit on file size is 50 MB.</pre>
+            </td>
+          </tr>
+        </table>
+        <iframe id="upload_frame" name="upload_matter_toe_frame" style="display: none"></iframe>
+      <%end%>
+    <%end%>
+  <%end%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;136</div>
+<script>
+  jQuery(document).ready(function() {
+    // Need to removed to JS File
+    jQuery('#document_home_document_attributes_data').bind('change', function() {
+      if ($.browser.msie ) {}else{
+        //this.files[0].size gets the size of your file.
+        var file_size = this.files[0].size;
+        var max_size = 52428800;
+        if (file_size <= 1 || file_size > max_size){
+          jQuery('#matter_toe_error').html('Upload File size should be between is 1KB-50MB.');
+          jQuery('#matter_toe_error').show();
+          jQuery('#document_home_document_attributes_data').val('');
+          jQuery('#document_home_document_attributes_name').val('');
+          jQuery('#matter_toe_error').addClass("message_error_div");
+        }else{
+          jQuery('#matter_toe_error').hide();
+        }
+      }
+    });
+    jQuery('#document_home_submit').bind('click', function() {
+      jQuery('#matter_toe_error').removeClass("message_error_div");
+    });
+  });
+</script>

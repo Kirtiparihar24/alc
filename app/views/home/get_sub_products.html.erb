@@ -1,0 +1,17 @@
+<td colspan="2">
+  <%count=1%>
+  <table>
+    <tr>
+      <% for sub_product in @sub_products%>
+        <%if count%4 !=0 %>
+          <td><%= check_box_tag 'ticket[sub_product_ids][]', sub_product['id'], false, {:class=>"recordscampmem"}%>  </td><td> <%=sub_product['name']%></td>
+          <%count+=1%>
+        <%else%>
+          <%count=1%>
+        <tr></tr>
+        <%redo%>
+      </tr>
+    <%end%>
+  <%end%>
+</table>
+</td>

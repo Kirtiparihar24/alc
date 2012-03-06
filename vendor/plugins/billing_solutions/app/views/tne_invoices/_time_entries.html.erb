@@ -1,0 +1,100 @@
+<% view_summary = @view_summery=='Summary' %>
+<%act_type=""%>
+<tr class='bg2' id="outer_<%=bill_entry[0]%>">
+  <td width="5%">
+    <%= tne_invoice_detail.hidden_field :matter_id, :value => params[:matter_id] if params[:matter_id].present? %>
+    <%= tne_invoice_detail.hidden_field :contact_id, :value => params[:contact_id] if params[:contact_id].present? %>
+    <%= tne_invoice_detail.hidden_field :entry_type, :value => "Time" %>
+    <%= tne_invoice_detail.hidden_field :company_id, :value => current_company.id %>
+  </td>
+  <td width="5%">
+    <% act_type=bill_entry[0] %>
+    <% if @consolidated_by=="Activity" %>
+      <%= tne_invoice_detail.hidden_field :activity, :value => bill_entry[2] %>
+      <%= tne_invoice_detail.hidden_field :lawyer_name,:value=>bill_entry[8] %>
+      <%= tne_invoice_detail.hidden_field :tne_entry_date,:value=>bill_entry[9] %>
+    <% elsif @consolidated_by== "User" %>
+      <%= tne_invoice_detail.hidden_field :lawyer_name, :value => bill_entry[2] %>
+      <%= tne_invoice_detail.hidden_field :activity, :value => bill_entry[8] %>
+      <%= tne_invoice_detail.hidden_field :tne_entry_date,:value=>bill_entry[9] %>
+    <% else %>
+      <%= tne_invoice_detail.hidden_field :tne_entry_date,:value=>bill_entry[2] %>
+      <%= tne_invoice_detail.hidden_field :lawyer_name, :value => bill_entry[8] %>
+      <%= tne_invoice_detail.hidden_field :activity, :value => bill_entry[9] %>
+    <% end %>
+    <%= link_to bill_entry[2], "#this", :onClick=>"hide_show_billentry(this, 'timeentry#{bill_entry[0]}')"  %>
+  </td>
+  
+  <td align="right" id="te_duration_<%=bill_entry[0]%>">
+    <%  duration = current_company.duration_setting.setting_value == "1/100th" ? one_hundredth_timediffernce(bill_entry[1].to_f) : one_tenth_timediffernce(bill_entry[1].to_f)%>    
+    <% if view_summary %>
+      <%= tne_invoice_detail.text_field :duration, :value => duration, :old_value => duration, :size => 5, :autocomplete=>"off",:onblur => "check_duration(this);", :onkeypress => "return durationInputValidation(this, event,#{@dur_setng_is_one100th});", :class => "textR amount" %>
+    <% else %>
+      <%= tne_invoice_detail.text_field :duration, :value => duration, :readonly => true, :size => 5,:style => 'background:#DDDDDD;border:none;text-align: right;padding: 5px 0;'%>
+    <% end %>
+  </td>
+  <td align="right" id="te_rate_<%= bill_entry[0] %>"> <% rate = number_with_lformat(bill_entry[5]) %>
+    <% if view_summary %>
+      <%= tne_invoice_detail.text_field :rate, :value => rate, :size => 6 ,:onblur=>"check_rate(this);",:class=>"textR amount"%>
+    <% else %>
+      <%= tne_invoice_detail.text_field :rate, :value => rate,:readonly=>true, :size => 6 ,:style=>'background:#DDDDDD;border:none;text-align: right;padding: 5px 0;'%>
+    <% end %>
+  </td>
+  <td></td>
+  <td>
+    <% if view_summary %>
+      <%= tne_invoice_detail.text_field :description, :value => bill_entry[10], :size => 25%>
+    <%else%>
+      <%= tne_invoice_detail.text_field :description, :value => bill_entry[10], :size => 25,:readonly=>true,:style=>'background:#DDDDDD;border:none;'%>
+    <%end%>
+  </td>
+  <td></td>
+  <% unless primary_tax_disable %>
+    <td align="center"><%= tne_invoice_detail.check_box :primary_tax, {:class=> "p_tax p_tax_time", :onClick => "check_uncheck_sub_entries(this, '#{bill_entry[0]}', '#{inv}', 'time');"} %> <%= hidden_field_tag("time_header_ptax_hidden_#{bill_entry[0]}", 0 ,:class=>'time')  %></td>
+    <% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+      <td align="center"><%= tne_invoice_detail.check_box :secondary_tax, {:class=> "s_tax s_tax_time", :onClick => "check_uncheck_sub_entries(this, '#{bill_entry[0]}', '#{inv}', 'time')"} %> <%= hidden_field_tag("time_header_stax_hidden_#{bill_entry[0]}", 0 ,:class=>'time') %></td>
+    <% end %>
+  <% end %>
+  <td align="right" id="te_amount_<%=bill_entry[0]%>">
+    <% amount = bill_entry[3].to_f.fixed_precision(2) %>
+    <% if view_summary %>
+      <%= tne_invoice_detail.text_field :amount, :value => number_with_lformat(amount), :readonly=>true,:size => 5 ,:class=>'tne_invoice_amount textR'%>
+    <% else %>
+      <%= tne_invoice_detail.text_field :amount, :value => number_with_lformat(amount), :readonly=>true,:size => 10 ,:class=>'tne_invoice_amount' ,:style=>'background:#DDDDDD;border:none;text-align:right;padding: 5px 0;'%>
+    <% end %>
+    <%= hidden_field_tag "time_hidden_amount_#{bill_entry[0]}", amount.to_f.fixed_precision(2) %>
+  </td>  
+  <td align="center" width="5%">
+    <div class="icon_action  mt3"><a href="#"></a></div>
+    <div id="liquid-roundAP" class="tooltip" style="display:none;">
+      <!--Icon table strt here -->
+      <% link = (link_to "Delete", "#", :onClick=>"delete_all_time_entry('#{params[:matter_id].present??params[:matter_id] : @tne_invoice.matter_id}','#{params[:contact_id].present??params[:contact_id] : @tne_invoice.contact_id}','#{act_type}','#{@tne_invoice.id}','#{@consolidated_by}');" )%>
+      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+        <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+            :deactivate_path=> "NO",
+            :deactivate_text => "NO",
+            :deactivate_link => link,
+            :comment_path=> "NO",
+            :comment_title => "NO",
+            :document_path=>"NO",
+            :history_path=>"NO",
+            :history_title => "NO"}) %>
+        <tr>
+          <td valign="top" class="ap_bottom_curve_left"></td>
+          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+          <td valign="top" class="ap_bottom_curve_right"></td>
+        </tr>
+      </table>
+    </div>
+  </td>
+</tr>
+<%i = 0%>
+<% bill_entry[4].each do |split_data| %>
+  <%= hidden_field_tag "time_entries_ids[]", split_data.id %>
+  <% data = @tne_invoice.new_record? ? @tne_invoice_time_entries : split_data %>
+  <% tne_invoice_detail.fields_for :tne_invoice_time_entries, data do |time| %>
+    <%= render :partial=>"summary_grid_time_open_entries_matter_view", :locals=>{:time=>time,:saved_entry=>split_data, :classname => "timeentry#{bill_entry[0]}",:bill_entry_id => bill_entry[0], :inv => inv, :i => i,:detail_id =>(bill_entry[6].present? ? bill_entry[6].id : 0), :primary_tax_disable => primary_tax_disable} %>
+  <%end%>
+  <% i += 1 %>
+<% end %>
+<div id="excluded_time"></div>

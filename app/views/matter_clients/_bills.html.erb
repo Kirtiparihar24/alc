@@ -1,0 +1,27 @@
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+  <tr>
+    <th width="15%"><%=t(:text_matter)%></th>
+    <th width="15%"><%=t(:text_bill_no)%></th>
+    <th width="20%"><%=t(:text_date)%></th>
+    <th width="38%"><%=t(:text_description)%></th>
+    <th width="13%"  class="pr5"><%=t(:text_amount)%></th>
+  </tr>
+  <%unless @billings.blank?%>
+    <%@billings.each do |billing|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td><%=raw truncate_hover(billing.matter.name.try(:titleize),25)%></td>
+        <td><%=billing.bill_no%></td>
+        <td><%=livia_date(billing.created_at.to_time)%></td>
+        <td> <%=raw truncate_hover(billing.remarks, 40)%></td>
+        <%if billing.matter_billing_status.lvalue == 'Settled'%>
+          <%amt = billing.computed_bill_amount_paid%>
+        <%else%>
+          <%amt = billing.bill_amount%>
+        <%end%>
+        <td><%=number_with_lformat(amt)%></td>
+      </tr>
+    <%end%>
+  <%else%>
+    <tr><td colspan="5"><div class="warningCont m5"><%=t(:text_no_billing_details_found)%></div></td></tr>
+  <%end%>
+</table>

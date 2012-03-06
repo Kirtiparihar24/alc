@@ -1,0 +1,112 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer">
+      <div class="title fl"><%= @company.name unless @company.blank? %></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%=collection_select :company,:id,@companies,:id,:name_type,{:include_blank => 'Please Select',:selected=>session[:company_id].blank? ?nil:session[:company_id].to_i}, {:onchange=>"update_page_with_company(this.value, '#{matter_documents_companies_path}')" ,:class=>"field size3"}%>
+      </div>
+    </div>
+  <%end%>
+  <%if current_user.role?:lawfirm_admin%>
+    <div id="topheadContainer"><div class="title fl"><%= current_user.company_full_name  %></div></div>
+  <%end%>
+<%end%>
+<div class="box-head"><h2>Matter Documents</h2></div>
+<% if @company %>
+  <div class="table">
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <th width="16%" align="left">Matter Id</th>
+        <th width="22%" align="left">Client Name</th>
+        <th width="20%" align="left">Lawyer Name</th>
+        <th width="29%" align="left">Mater Name(doc count)</th>
+        <th width="13%" align="left">Actions</th>
+      </tr>
+      <% @matters.each do |matter| %>
+        <% matter_docs = matter.document_homes %>
+        <% matter_docslength = matter_docs.length %>
+        <tr>
+          <td align="left"><a href="#" onClick="jQuery('#matter_documents<%= matter.id %>').toggle(); return false;"><%= image_tag "admin/plus.png", :class => "matr_doc#{matter.id}" %> <%= image_tag "admin/minus.png", :class => "matr_doc#{matter.id}", :style => "display: none" %> </a> <a href="#" onClick="jQuery('#matter_documents<%= matter.id %>').toggle(); return false;"><%= matter.matter_no %></a></td>
+          <td align="left"><%= matter.contact.last_name%><%= matter.contact.first_name%></td>
+          <td align="left"><%= matter.user.last_name%><%= matter.user.first_name%></td>
+          <td align="left"><%= matter.clipped_name %> (<%= matter_docslength %>)</td>
+          <td align="left"><% msg, confirm = check_association(matter)
+            if msg.present? && confirm.blank?
+              link=link_to('Delete',"#", :onclick=> "alert(#{msg.to_json})")
+            end%>
+            <%=  link.nil? ? link_to('Delete', "#", :onClick => "confirm_for_delete_module_record('Matter', '#{delete_matter_matter_path(matter.id,:page=>params[:page],:company_id=>@company.id)}')") : link %>
+          </td>
+        </tr>
+        <tr id="matter_documents<%= matter.id %>" <% unless params[:m].present? && matter.id==params[:m].to_i %>style="display: none"<%end%>>
+          <td colspan="5" align="left" class="bdr-box">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tbody>
+                <% if matter_docslength > 0 %>
+                  <% lawyersdocs = matter_docs.select{|d| !d.user.present? || (d.user.present? && !d.user.role?("client"))} %>
+                  <% clientdocs = matter_docs.select{|d| d.user.present? && d.user.role?("client")} %>
+                  <% lawyersdocslength = lawyersdocs.length %>
+                  <% clientdocslength = clientdocs.length %>
+                  <tr>
+                    <td width="50%" valign="top" style="padding: 0">
+                      <div class="lic-conthead">Lawyer's Documents (<%= lawyersdocslength %>)</div>
+                      <div style="border-right:1px solid #ccc;">
+                        <table width="100%" cellspacing="0" cellpadding="0" style="margin:0">
+                          <tbody>
+                            <tr>
+                              <th width="8%"></th>
+                              <th width="78%">Name</th>
+                              <th width="14%">Actions</th>
+                            </tr>
+                            <% if lawyersdocslength > 0 %>
+                              <% lawyersdocs.each do |doc| %>
+                                <%matter_doc=doc.latest_doc%>
+                                <tr>
+                                  <td></td>
+                                  <td><%= matter_doc.name.try(:titleize) %></td>
+                                  <td><%= link_to "Delete", matter_document_home_path(matter, doc), :onClick=>"return confirm_for_delete_document(this,'#{@company.id}','#{params[:page]}','#{matter.id}','#{session[:_csrf_token]}', 'admin')", :method => :delete, :class=> "doc_delete" %></td>
+                                </tr>
+                              <% end %>
+                            <% else %>
+                              <tr class="bg1"><td colspan="3">No Documents for this matter</td></tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </td>
+                    <td valign="top" style="padding: 0">
+                      <div class="lic-conthead">Client's Documents (<%= clientdocslength %>)</div>
+                      <table width="100%" cellspacing="0" cellpadding="0">
+                        <tbody>
+                          <tr>
+                            <th>&nbsp;</th>
+                            <th>Name</th>
+                            <th width="14%">Actions</th>
+                          </tr>
+                          <% if clientdocslength > 0 %>
+                            <% clientdocs.each do |doc| %>
+                              <%matter_doc=doc.latest_doc%>
+                              <tr>
+                                <td></td>
+                                <td><%= matter_doc.name.try(:titleize) %></td>
+                                <td><%= link_to "Delete", matter_document_home_path(matter, doc), :onClick=>"return confirm_for_delete_document(this,'#{@company.id}','#{params[:page]}','#{matter.id}','#{session[:_csrf_token]}', 'admin')", :method => :delete, :class=> "doc_delete" %></td>
+                              </tr>
+                            <% end %>
+                          <% else %>
+                            <tr class="bg1"><td colspan="3">No Documents for this matter</td></tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                <% else %>
+                  <tr class="bg1"><td colspan="2">No Documents for this matter</td></tr>
+                <% end %>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      <%end%>
+    </table>
+  </div>
+  <div class="pagging"><%= will_paginate @matters, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>' %></div>
+<% end %>

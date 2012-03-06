@@ -1,0 +1,18 @@
+if @bill.errors.count > 0
+  errors = "<ul>" + @bill.errors.full_messages.collect {|e| "<li>" + e + "</li>"}.join(" ") + "</ul>"
+  page << "show_error_msg('matter_bill_errors','#{errors}','message_error_div')"
+  page << "jQuery('#loader').hide"
+  page << "jQuery('#save_edit_bill').val('Save')"
+  page << "jQuery('#save_edit_bill').attr('disabled','')"
+else
+  page.call("tb_remove")
+  if params[:flag]
+    partial_name ="matterbill_row"
+    page.replace_html  "display_summary", :partial => "summary", :locals => {:bills => @bills, :retainers => @retainers}
+  else
+    partial_name ="tne_invoices/bill_row"
+  end
+  value = params[:action]=='update_bill' ? @bill : @oldbill
+  page.replace_html  "bill_#{value.id}", :partial => "#{partial_name}" ,:locals => {:bill => value,:view=>'presales'}
+  page << "jQuery('.main_containt').prepend(\"<div class=\\\"message_sucess_div\\\" id=\\\"notice\\\" style=\\\"opacity: 1\;\\\"> <span class=\\\"icon_message_sucess fl mlr8 mt5\\\"><\/span> <ul class=\\\"mt5 mb5 ml40\\\"> <li style=\\\"text-align: left\;\\\">#{t(:text_invoice)} No.  #{@bill.bill_no}  Was  #{t(:flash_was_successful)}  #{t(:text_updated)} </li> </li> </ul> </div>  <script type=\\\"text/javascript\\\"> common_flash_message\\\(\\\)\; <\/script>\")"
+end

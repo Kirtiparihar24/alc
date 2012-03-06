@@ -1,0 +1,82 @@
+<% products_blank = @products.blank? %>
+<div class="mt5">
+  <div class="gridDiv">
+    <div id="dashboard_toggle" class="titleHead">
+      <div class="fl"><%=t(:text_products_listing)%></div>
+      <br class="clear"/>
+    </div>
+    <div>
+      <div class="gryBox">
+        <div class="textBrwn11 fr "><%= link_to t(:label_new_product), new_product_path %></div>
+        <div class="p5 gridTable">
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+            <tbody>
+              <%unless products_blank%>
+                <tr><td colspan="4" align="right" class="pr5"><%=will_paginate @products, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @products %></td></tr>
+                <tr><td colspan="4"><br/></td></tr>
+              <%end%>
+              <tr>
+                <th width="50%"><%=t(:text_product_name)%></th>
+                <th width="40%"><%=t(:text_price)%></th>
+                <th width="40%" colspan="3"><%=t(:text_action)%></th>
+              </tr>
+              <%unless products_blank %>
+                <%assets = controller.controller_name%>
+                <%asset = assets.singularize%>
+                <tr>
+                  <td colspan="3">
+                    <div class="warningCont m5">
+                      <%=t(:text_no_records_found_for)%> <%=asset.try(:capitalize)%> .
+                    </div>
+                  </td>
+                </tr>
+              <% else %>
+                <% @products.each do |product| %>
+                  <tr class="<%=cycle("bg1", "bg2")%>">
+                    <% product_id = product.id %>
+                    <td width="50%">
+                      <span id="<%= product_id %>_plus"><a href="javascript:expand_collapse_div_details(<%= product_id %>, '<%= product_id %>_subproduct', 'minus', 'plus')" ><%= image_tag('/images/livia_portal/icon_plus.gif',:alt=>"Plus",:title=>"Click to view details", :border => 0, :hspace => "0")%></a></span>
+                      <span style="display: none;" id="<%= product_id %>_minus"> <a href="javascript:expand_collapse_div_details(<%= product_id %>, '<%= product_id %>_subproduct', 'plus', 'minus')" ><%= image_tag('/images/livia_portal/icon_minus.gif',:alt=>"Plus",:title=>"Click to hide details", :border => 0, :hspace => "0")%></a></span>
+                      <%if product.name%>
+                        &nbsp;&nbsp;&nbsp;<span class="textBlue11Height20" onclick='jQuery("#<%= product_id %>_subproduct").toggle()' title="Click here to view details"><%= product.name%></span>
+                      <%end%>
+                      <span style="display: none;" id="<%= product_id %>_subproduct">
+                        <table>
+                          <tr>
+                            <td width="10%"></td>
+                            <td align="left">
+                              <div class="textBlue11Height20L"><%=t(:text_description)%></div> <%= product.description %><br class="clear"/>
+                              <div class="textBlue11Height20L"><%=t(:text_modules)%></div>
+                              <%for subProd in product.subproducts %>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t(:text_)%>&nbsp;&nbsp;<%=  subProd.name%><br />
+                              <% end %>
+
+                              <div class="textBlue11Height20L"><%=t(:text_parent_products)%></div>
+                              <%for parentProd in product.product_dependents.find_all %>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=t(:text_)%>&nbsp;&nbsp;<%= parentProd.name%><br />
+                              <% end %>
+                            </td>
+                          </tr>
+                        </table>
+                      </span>
+                    </td>
+                    <td width="40%"><%=product.cost%></td>
+                    <td width="40%" colspan="3">
+                      <%=raw product_action_links(product)%>
+                    </td>
+                  </tr>
+                <%end%>
+                <tr><td colspan="4"><br/></td></tr>
+                <tr><td colspan="4" align="right" class="pr5"><%=will_paginate @products, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw page_entries_info @products %></td></tr>
+                <tr><td colspan="4"><br/></td></tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <br class="clear"/>
+      </div>
+    </div>
+    <!--Dash board DATA ENDS-->
+  </div>
+</div>
+

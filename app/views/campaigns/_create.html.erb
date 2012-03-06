@@ -1,0 +1,76 @@
+<script type="text/javascript">
+  livia_datepicker();
+  jQuery('#name').focus();
+  jQuery(document).ready(function(){    
+    $("#campaign_save").click(function(){
+      jQuery('#button_pressed').val("save");
+    });
+  
+    $("#campaign_saveexit").click(function(){
+      jQuery('#button_pressed').val("save_exit");
+    });
+  });  
+</script>
+<% form_for :campaign,  @campaign,:url=>{:action=>:create}, :html=>{:id=>'campFORM',:onsubmit => "return disableAllSubmitButtons('campaigns')"} do |f| %>
+  <% if(@campaign.errors.length >0) %>
+    <div class='message_error_div'>
+      <%= error_messages_for(:campaign)%>
+      <%= flash[:error]%>
+    </div>
+  <% end %>
+  <div class="form_table" id="new_form">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td colspan="5">
+          <table cellpadding="0" cellspacing="0">
+            <%=hidden_field_tag 'button_pressed'%>
+            <tr>
+              <td>
+                <%=f.radio_button :camp_radio,'1', {:checked => 'checked', :onclick=>"switch_create_campaign('existing');"} %>
+              </td>
+              <td class="mr8"><label><%= t(:text_create_from_exisiting) %></label></td>
+              <td>&nbsp;</td>
+              <td><%= f.radio_button :camp_radio,'2',{:onclick=>"switch_create_campaign('new');"} %></td>
+              <td><label><%= t(:text_create_new) %></label></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr id="existing_campaign" <% if @campaign.camp_radio == "2" %> style="display:none" <% end %>>
+        <td width="24%"><label><%= t(:text_select_a_campaign) %> <span class="alert_message">*</span></label></td>
+        <td width="24%"><%=custom_select_tag 'campaign[parent_id]',options_for_select(@campaigns.map{|x| [truncate(x.name, :length => 40), x.id]},:selected => params[:campaign] ? params[:campaign][:parent_id] : ""),{:include_blank=>'--Select--'}, {:onchange => "selectCampaign(this.value)"}%></td>
+        <td width="4%">&nbsp;</td>
+        <td width="24%"><label><%= t(:text_copy_with_contacts) %></label></td>
+        <td width="24%"><%= f.check_box :copy, @copy == 'true' ? {:checked => true} : {},true%></td>
+      </tr>
+      <tr>
+        <td valign="top"><label><%= t(:label_campaign_name) %> <span class="alert_message">*</span> </label></td>
+        <td><%= f.text_area :name,:id=>'name', :rows=>'2',:cols =>'30'%><%= hidden_field_tag "campaign[employee_user_id]", get_employee_user_id%><%= hidden_field_tag "campaign[company_id]", get_company_id %></td>
+        <td>&nbsp;</td>
+        <td><label><%= t(:text_status) %></label></td>
+        <td><%= f.collection_select :campaign_status_type_id, current_company.campaign_status_types, :id, :alvalue,:selected=>CampaignStatusType.planned(@current_company)[0].id  %></td>
+      </tr>
+      <tr>
+        <td width="24%" valign="top"><label><%= t(:text_campaign_details) %></label></td>
+        <td width="24%"><%= text_area_tag "campaign[details]", @campaign.details, :class=>'txtbox',:cols=>30, :rows =>3%></td>
+        <td>&nbsp;</td>
+        <td valign="top"><label><%= t(:text_owner) %></label></td>
+        <td valign="top"><%= f.collection_select :owner_employee_user_id, @employees, :id, :full_name, { :selected => '', :include_blank =>'None'} %></td>
+      </tr>
+      <tr>
+        <td><label><%= t(:text_start_date) %></label></td>
+        <td><input type="text" value="<%=@campaign.starts_on ? @campaign.starts_on.to_time.strftime('%m/%d/%Y') : ''%>" name="campaign[starts_on]" id="campaign_start" class="date_picker" size="10" onclick="livia_datepicker(this);" /></td>
+        <td>&nbsp;</td>
+        <td><label><%= t(:text_end_date) %></label></td>
+        <td><input type="text" value="<%=@campaign.ends_on ? @campaign.ends_on.to_time.strftime('%m/%d/%Y') : ''%>"  name="campaign[ends_on]" id="campaign_end" class="date_picker" size="10" onclick="livia_datepicker(this);" /></td>
+      </tr>
+    </table>
+    <div class="buttonSub_div">
+      <%= f.submit t(:label_save), :name => "save",:id=>'campaign_save', :class => "campaigns", :onclick => "return setButtonPressed(this);"%>
+      <%= f.submit t(:text_save_n_exit), :name => "save_exit",:id=>'campaign_saveexit',:class => "campaigns", :onclick => "return setButtonPressed(this);"%>
+      <input name="Cancel" type="button" id="Cancel"  class = 'campaigns' value="<%= t(:text_cancel) %>" onclick="setButtonPressed(this); disableAllSubmitButtons('campaigns'); window.location='<%= url_for(:controller => '/campaigns', :action => 'index')%>';return false;" />
+      <%= hidden_field_tag :commit,'',:id=>"updateme" %>
+    </div>
+    <div class="mandatory"><span class="alert_message">*</span><%= t(:label_Required_fields) %></div>
+  </div>
+<% end %>

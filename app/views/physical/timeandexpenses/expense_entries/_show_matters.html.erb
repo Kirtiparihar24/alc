@@ -1,0 +1,22 @@
+<span id="expense_matters_div_<%=expense_entry%>" >
+  <span class="search_div" id="<%=expense_entry%>_matters_div"></span>
+  <span class="search_div" id="<%=expense_entry%>_matterSearch" style="width:100px;">
+    <%= raw time_entry_matter_search_box("#{expense_entry}[expense_entry][matter_id]","#{expense_entry}_expense_matter_id","#{expense_entry}_matter_ctl","#{expense_entry}") %>
+  </span>
+  <%= image_tag("/images/download.png",:alt=>"Lists",:border=>"0",:class=>"#{expense_entry}_drop_down",:onclick=>"showDivListBox('#{expense_entry}_back_ground_overlay');")  %>
+  <div  id="<%=expense_entry%>_back_ground_overlay" class="back_ground_overlay">
+    <ul>
+      <%@matters.each do |matter|%>
+        <li class="matters_is_by_date" date_str="<%=matter.matter_date%>">
+          <span id="matter_<%=matter.id%>" style="cursor:pointer;" onclick="expenseMatterContactDropDown(this,<%="#{expense_entry}"%>,'matter','getMatterContactForExpense');"><%=matter.name%></span>
+        </li>
+      <%end%>
+    </ul>
+  </div>
+  </span>
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function() {
+    setMatterORContactSearchInputFields('<%=expense_entry.to_s + "_contact_ctl"%>','<%=expense_entry.to_s + "_matter_ctl"%>',"<%=get_employee_user_id%>","<%=get_company_id%>",'<%=expense_entry.to_s + "_expense_contact_id"%>','<%=expense_entry.to_s + "_expense_matter_id"%>','<%=expense_entry.to_s%>','addexpense_entry');setMatterORContactSearchInputFields('<%=expense_entry.to_s + "_contact_ctl"%>','<%=expense_entry.to_s + "_matter_ctl"%>',"<%=get_employee_user_id%>","<%=get_company_id%>",'<%=expense_entry.to_s + "_expense_contact_id"%>','<%=expense_entry.to_s + "_expense_matter_id"%>','<%=expense_entry.to_s%>','addexpense_entry');setMatterORContactSearchInputFields('<%=expense_entry.to_s + "_contact_ctl"%>','<%=expense_entry.to_s + "_matter_ctl"%>',"<%=get_employee_user_id%>","<%=get_company_id%>",'<%=expense_entry.to_s + "_expense_contact_id"%>','<%=expense_entry.to_s + "_expense_matter_id"%>','<%=expense_entry.to_s%>','addexpense_entry');
+    //setMatterORContactSearchInputFields('_contact_ctl','_matter_ctl',this.value,@company_id,'physical_timeandexpenses_time_entry_contact_id','physical_timeandexpenses_time_entry_matter_id','001');
+  });
+</script>

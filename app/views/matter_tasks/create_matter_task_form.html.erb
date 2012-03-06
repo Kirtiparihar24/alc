@@ -1,0 +1,204 @@
+<script type="text/javascript">
+  livia_datepicker();
+</script>
+<%=raw javascript_include_tag "livia_common.js"%>
+<div id="modal_new_task_errors" class="message_error_div" style="display : none"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div>
+  <% remote_form_for([@matter, @matter_task], :url=>{:action=> :create_task_home},:loading=>"jQuery('#task_home_save').val('Please wait...');jQuery('#task_home_save').attr('disabled','disabled');",:complete=>'return enableAllSubmitButtons("#task_home_save")') do |f| %>
+    <%=hidden_field_tag 'note_id',params[:note_id].to_i if params[:note_id].present?%>
+    <%=hidden_field_tag 'matter_id',params[:matter_id] if params[:matter_id]%>
+    <%=get_parent_matter_completed(@other_matter_tasks)%>
+    <table style="margin: 0pt auto;" border="0" cellpadding="3" cellspacing="3" width="100%">
+      <tbody>
+        <tr><br/></tr>
+
+      <tr>
+        <td align="left" width="13%"><label><%= t(:text_activity_name) %><span class="alert_message">*</span></label></td>
+        <td colspan="3">
+          <table width="91%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td align="left" width="54%"><%= f.text_field :name, :size=>"40",:value=>(@note_name.description if @note_name), :maxlength => 255 %></td>
+              <td align="right" width="20%"><%= t(:text_critical) %></td>
+              <td align="right" width="3%"><%= f.check_box :critical %></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <%unless @other_matter_tasks.nil? or @other_matter_tasks.empty?%>
+        <tr>
+          <td align="left"><div id="sub_task_label_notes" ><%=t(:text_is_it_a_subtask)%></div></td>
+          <td colspan="3" align="left">
+            <div id="subtask_notes">
+              <table border="0" cellpadding="0" cellspacing="0" width="70%">
+                <%check = !@matter_task.parent_id.nil? && @matter_task.assoc_as.eql?("1")%>
+                <tbody>
+                  <tr>
+                    <td width="7%"><%=f.check_box :assoc_as, :id =>"matter_task_assoc_as_notes", :checked => check, :onclick=>"jQuery('#parent_task_span1').toggle();jQuery('#parent_task_span2').toggle();" %></td>
+                    <td width="26%">
+                      <div id="parent_task_span1" <%unless check%> style="display:none;" <%end%>><%=t(:text_select_parent_task)%><span class="alert_message">*</span>
+                      </div>
+                    </td>
+                    <td width="67%">
+                      <div id="parent_task_span2" <%unless check%> style="display:none;" <%end%>><%= f.collection_select :parent_id, @other_matter_tasks, :id, :clipped_name, { :include_blank => "----------Select----------" }, {:id => "matter_task_parent_id_notes"} %></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+      <tr>
+        <td align="left">Activity Type</td>
+        <td align="left" colspan="3">
+          <% if @matter_task.new_record? %>
+            <span id="act_type_todo_notes" style="display:none"><%= f.select(:category_type_id, options_for_select(@task_category_types.collect{|type| [type.alvalue, type.id]}), {:include_blank => "----------None----------"}, {:class => "selectBoxNewMatter", :style => "width: 200px;" , :id => "todo_category_notes"})  %></span>
+            <span id="act_type_appt_notes" style="display:none"><%= f.select(:category_type_id, options_for_select(@appointment_category_types.collect{|type| [type.alvalue, type.id]}), {:include_blank => "----------None----------"}, {:class => "selectBoxNewMatter", :style => "width: 200px;" , :id => "appointment_category_notes"})  %></span>
+          <% else %>
+            <%= f.collection_select(:category_type_id, @category_types, :id, :alvalue,{:include_blank => "----------None----------"}, {:class => "selectBoxNewMatter", :style => "width: 200px;", :id => "#{@matter_task.category}_category"})  %>
+          <% end %>
+        </td>
+      </tr>
+      <%if @matter.is_litigation%>
+        <tr>
+          <td align="left"><%=t(:text_phase)%></td>
+          <td align="left">&nbsp;<%=f.collection_select(:phase_id, current_company.phases,:id,:lvalue, {:include_blank => "----------Select----------"})%></td>
+          <td align="left">&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+      <%end%>
+      <% disable = !@matter_task.new_record? && !@matter_task.category.nil? %>
+      <% @matter_task.category ||= "todo" %>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td colspan="3" align="left">
+          <table border="0" cellpadding="0" cellspacing="0" width="70%">
+            <tbody>
+              <tr>
+                <td width="7%"><%= f.radio_button :category, "todo", :id => "matter_task_category_todo_notes", :disabled => disable, :onclick => "toggle_todo_appointment_for_activity(this.value, 'task_todo_notes', 'task_appointment_notes', 'mandatory_task', 'subtask_notes', 'sub_task_label_notes', 'act_type_appt_notes', 'act_type_todo_notes', 'appointment_category_notes', 'todo_category_notes', 'complete_span_notes', 'matter_task_completed_notes');" %></td>
+                <td width="13%"><%= t(:text_to_do_task) %></td>
+                <td width="7%"><%= f.radio_button :category, "appointment", :id => "matter_task_category_appointment_notes", :disabled => disable, :onclick => "toggle_todo_appointment_for_activity(this.value, 'task_todo_notes', 'task_appointment_notes', 'mandatory_task', 'subtask_notes', 'sub_task_label_notes', 'act_type_appt_notes', 'act_type_todo_notes', 'appointment_category_notes', 'todo_category_notes', 'complete_span_notes', 'matter_task_completed_notes');" %></td>
+                <td width="73%"><%= t(:text_schedule_task) %></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td colspan="3" align="left">
+          <%categ = @matter_task.category || "todo"%>
+          <div id="task_todo_notes" <%if categ.eql?("appointment")%> style="display:none;" <%end%>>
+            <%=render :partial => "task_todo", :locals => {:f => f}%>
+          </div>
+          <div id="task_appointment_notes" <%if categ.eql?("todo")%> style="display:none;" <%end%>>
+            <%=render :partial => "task_appointment", :locals => {:f => f}%>
+          </div>
+          <%unless @matter_task.new_record?%>
+            <div class="fl ml15">
+              <a href="<%=time_expense_entry_matter_matter_task_path(@matter, @matter_task, :height => "400", :width => "500")%>" class="thickbox fr link_blue vtip" title="<%=t(:text_new_time_entry)%>" name="<%=t(:text_new_time_entry)%>"><span class="icon_make_time_entry fl"></span></a>
+            </div>
+          <%end%>
+        </td>
+      </tr>
+      <tr>
+        <td align="left"><%=t(:text_responsibility)%><span class="alert_message">*</span></td>
+        <td colspan="3">
+          <table width="91%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td align="left" width="54%"><%= f.collection_select  :assigned_to_matter_people_id, @assignees, :id, :get_name, { :include_blank => "----------Select----------" }, :class=>"selectBoxNewMatter", :onchange => "remove_from_attendees_list('pop_up_assignees_', 'get_assignees_pop_up', 'activity_assigned_to_matter_people_id', '#{@matter.id}', 'notes', 'matter_task_category_todo_notes');", :id =>'activity_assigned_to_matter_people_id' %></td>
+              <td align="right" width="38%"><%=t(:text_client_task)%></td>
+              <td align="left" width="3%"><%= f.check_box  :client_task, :value=>1, :class=>"checkbox" %></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><%=t(:text_description)%></td>
+        <td colspan="3" align="left"><%=f.text_area :description, :cols => "94", :rows => "3"%></td>
+      </tr>
+      <tr align="right" id="complete_span_notes">
+        <td align="left"><%=t(:text_complete)%></td>
+        <td align="left" colspan="3">
+          <table>
+            <tr>
+              <td> <div style="float: left"><%=f.check_box :completed, :id => "matter_task_completed_notes", :class=>"checkBox1", :onclick => "showCompletionTable('completed_div_hide_notes');" %></div>
+              </td>
+              <td id="completed_div_hide_notes"  <%unless @matter_task.completed%> style="display:none;" <%end%> >
+                <div id='completed_div_hide1_notes' <%unless @matter_task.completed%> style="float: left;line-height:20px;" <%end%>>
+                  <%=t(:text_completion_date)%><span class="alert_message">*</span>&nbsp;
+                  <%=f.text_field :completed_at,  :value => @matter_task.completed_at || livia_date(Time.zone.now.to_date), :class=>"date_picker", :size=>"10", :onclick=>"livia_datepicker(this);", :id => "completed_div_hide2_notes" %>
+                  <%unless @matter_task.new_record?%>&nbsp;&nbsp;&nbsp;
+                    <a href="<%=time_expense_entry_matter_matter_task_path(@matter, @matter_task, :height => "400", :width => "500")%>" class="thickbox fl link_blue vtip" title="<%=t(:text_make_time_entry)%>" name="<%=t(:text_make_time_entry)%>">
+                      <span class="icon_make_time_entry fl"></span>
+                    </a>
+                  <%end%>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td colspan="4" align="center">
+          <%=f.submit t(:text_save),:class=>'matters' ,:id=> "task_home_save", :onclick => "return checkloader(); save_attendees('get_assignees_pop_up', 'people_attendees_emails_pop_up'); return check_if_open_children(this, '#{@matter_task.new_record?}', '#{@has_children}', '#{@matter_task.completed}', 'matter_task_category_todo_notes', 'matter_task_completed_notes', 'matter_task_assoc_as_notes', 'matter_task_parent_id_notes');"%>
+          <%=f.submit t(:text_cancel),:class=>'matters', :name => "cancel", :onclick => "tb_remove();return false"%>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  <%end%>
+  <%= hidden_field_tag :request_from, @request_from%>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  <div class="mandatory" id="mandatory_task" style="display:none;"><span class="alert_message">#</span>Either 	End after occurrence(s) or End by date is required</div>
+  <br class="clear" />
+  <%unless @matter_task.new_record?%>
+    <%=render :partial => "common/comments_documents", :locals => {:add_document =>"#{new_document_matter_document_homes_path(@matter, :task_id=>@matter_task.id, :return_path => edit_matter_matter_task_path(@matter, @matter_task))}?height=200&width=600", :comment_path=>"#{new_comment_path(:commentable_type=> 'MatterTask', :client_task => @matter_task.client_task, :commentable_id=>@matter_task.id)}&height=200&width=600"}%>
+  <%end%>
+</div>
+<div  id="loader1" style="display:none;" align="center"><img src='/images/loading.gif' /></div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;14</div>
+<!--Edit Matter Ends-->
+<script language="javascript" type="text/javascript">
+  jQuery(function(){
+<%  if @matter_task.new_record?%>
+      if (jQuery('#matter_task_category_appointment_notes').attr('checked')){
+        jQuery('#task_todo_notes').hide();
+        jQuery('#task_appointment_notes').show();
+        jQuery('#subtask_notes').hide();
+        jQuery('#sub_task_label_notes').hide();
+        jQuery('#act_type_appt_notes').show();
+        jQuery('#act_type_todo_notes').hide();
+        jQuery('#todo_category_notes').attr('disabled','disabled');
+        jQuery('#appointment_category_notes').attr('disabled','');
+        jQuery('#complete_span_notes').hide();
+        jQuery('#matter_task_completed_notes').attr('disabled','disabled');
+      }else{
+        jQuery('#task_todo_notes').show();
+        jQuery('#task_appointment_notes').hide();
+        jQuery('#subtask_notes').show();
+        jQuery('#sub_task_label_notes').show();
+        jQuery('#act_type_appt_notes').hide();
+        jQuery('#act_type_todo_notes').show();
+        jQuery('#appointment_category_notes').attr('disabled','disabled');
+        jQuery('#todo_category_notes').attr('disabled','');
+        jQuery('#complete_span_notes').show();
+        jQuery('#matter_task_completed_notes').attr('disabled','');
+      }
+<%end%>  
+    jQuery("#matter_task_until").addClass("date_picker");
+  });
+
+  function submit_form(){
+    jQuery("#task_home_save").val("Please wait...");
+    jQuery("#task_home_save").attr("disabled", "disabled");
+  }
+</script>

@@ -1,0 +1,12 @@
+<table class="no_complex">
+  <tr>
+    <td><%= label_tag :stt %><span style= "color:#FF0000">*</span></td>
+    <td><%= label_tag :tat %><span style= "color:#FF0000">*</span></td>
+  </tr>
+  <tr>
+    <% fields_for_work_subtype_complexity(complexity) do |complexity| %>
+      <td><%= complexity.text_field :stt, :size => 15, :class=>"stt check" %></td>
+      <td><%= complexity.text_field :tat, :size => 15, :class=>"tat check" %></td>
+    <%end%>
+  </tr>
+</table>

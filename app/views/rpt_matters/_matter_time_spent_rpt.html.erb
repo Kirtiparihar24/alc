@@ -1,0 +1,35 @@
+<div class="w100">
+  <%unless @total_data.blank?%>
+    <div class="title_blue fl"> <%=t(:text_grand_total_matter_estimated_hours)%><%=@conditions[:ehrs]%>,&nbsp;<%=t(:text_billable_hours_within_range)%>:&nbsp;<%=@conditions[:bhrs]%>,&nbsp;<%=t(:text_projected_hours_remaining_within_range)%>&nbsp;<%=@conditions[:rhrs]%></div>
+    <br class="clear" />
+    <div class="title_blue fl"><%= pluralize_record(@col.length , 'Record',1)%></div>
+  <% end %>
+  <div class="fr  textR pt5">
+    <%=raw(generate_send_email_rpt_link("matter_time_spent_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("Matter")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("matter_time_spent_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<%unless @total_data.blank?
+  total = 0 %>
+  <% @total_data.each do |label,col| %>
+    <div class="mt5">
+      <div class="w100">
+        <div class="title_blue fl" ><%= label %> <span >(<%= pluralize_record(col.length , 'Record',0)%>)</span></div>
+        <div class="fr textR"> <%# links %> </div>
+        <br class="clear" />
+      </div>
+      <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => col} %>
+    </div>
+    <div class="title_blue fl"><%= t(:text_matter_estimated_hours) %><%=@conditions[label][0]%>,&nbsp;<%=t(:text_billable_hours_within_range)%>:&nbsp;<%=@conditions[label][1]%>,&nbsp;<%=t(:text_projected_hours_remaining_within_range)%><%=@conditions[label][2]%> </div>
+    <br class="clear" />
+    <%reset_cycle%>
+  <% end %>
+  <div class="title_blue fl"> <%=t(:text_grand_total_matter_estimated_hours)%><%=@conditions[:ehrs]%>,&nbsp;<%=t(:text_billable_hours_within_range)%>:&nbsp;<%=@conditions[:bhrs]%>,&nbsp;<%=t(:text_projected_hours_remaining_within_range)%><%=@conditions[:rhrs]%></div>
+  <br class="clear" />
+  <div class="title_blue fl"><%= pluralize_record(@col.length , 'Record',1)%></div>
+<% else %>
+  <div class="title_blue fl"><%= pluralize_record((@col.length rescue 0), 'Record',1)%></div>
+<% end %>
+<br class="clear" />

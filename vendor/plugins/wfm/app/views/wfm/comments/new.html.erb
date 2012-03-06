@@ -1,0 +1,28 @@
+<%form_remote_for @comment,:before=>"loader.appendTo('#loader_div');", :url => {:action=>'create'},:html=>{:class=>"search_form general_form",:method=>:post}, :loading=>"return disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable');" do |f|%>
+  <div id="loader_div"></div>
+  <div id="modal_new_task_errors" class=""></div>
+  <fieldset >
+    <div class="forms">
+      <%=f.hidden_field :commentable_type, :value=>@commentable_object.class%>
+      <%=f.hidden_field :commentable_id, :value=>@commentable_object.id%>
+      <%=f.hidden_field :created_by_user_id, :value=>current_user.id%>
+      <%=f.hidden_field :company_id, :value=>@commentable_object.company_id%>
+      <div class="row">
+        <label>Comment <span id="mandatory">*</span> </label>
+        <span class="input_wrapper textarea_wrapper_width_1">
+          <%=f.text_area :comment, :rows => '8', :cols => "10",  :class => "text" %>
+        </span></div>
+      <div class="row">
+        <div class="inputs">
+          <%=f.check_box :share_with_client,:checked => false , :disabled => (!@commentable_object.share_with_client), :class=>"ml0"%>
+        </div>
+        <label>Share with client</label>
+      </div>
+      <div class="button_div">
+        <span class="button send_form_btn buttons_to_disable"><span><span>Save</span></span><input type="submit" name=""/></span><span class="button buttons_to_disable send_form_btn ml10" onclick="tb_remove();"><span><span>Cancel</span></span>
+        </span>
+        <br class="clear" />
+      </div>
+    </div>
+  </fieldset>
+<%end%>

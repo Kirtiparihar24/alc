@@ -1,0 +1,18 @@
+<%= raw paginate_for_five_links(tne_invoices.total_pages, {:action=>"index", :mode_type=>params[:mode_type], :status =>params[:status],:letter=>params[:letter],:col=>params[:col],:dir=>params[:dir],:per_page=>params[:per_page], :date_start => params[:date_start], :date_end => params[:date_end]}, params[:page]) if tne_invoices.total_pages > 1 %>
+<%= raw only_pagination(tne_invoices, params[:per_page], "willpaginate", tne_invoices_path, {:action=>"index", :mode_type=>params[:mode_type],:status =>params[:status],:letter=>params[:letter],:per_page=>params[:per_page],:col=>params[:col],:dir=>params[:dir], :date_start => params[:date_start], :date_end => params[:date_end]})  %>
+<div id="2container-1" class="mt15">
+  <div id="fragment-1" class="tabs-container">
+    <div class="tabular_listing p5">
+      <% form_for :search,:url=>{:controller => :tne_invoices,:action => :index},:html =>{:method => :get } do |f| %>
+        <%= hidden_field_tag  'col' ,params[:col] if params[:col] %>
+        <%= hidden_field_tag  'dir' ,params[:dir] if params[:dir] %>
+        <%= hidden_field_tag  'mode_type' ,params[:mode_type] if params[:mode_type] %>
+        <%= hidden_field_tag  'status' ,params[:status] if params[:status] %>
+        <%= hidden_field_tag  'per_page' , params[:per_page] if params[:per_page] %>
+        <% partialname = (params[:mode_type]=="client" || params[:status].to_i==@cancelstatus.id) ? "invoices" : "bills" %>
+        <%= render :partial => partialname, :locals => {:result => tne_invoices} %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= raw only_pagination(tne_invoices, params[:per_page], "bottom-pagination", tne_invoices_path, {:action=>"index", :mode_type=>params[:mode_type],:status =>params[:status],:letter=>params[:letter],:per_page=>params[:per_page],:col=>params[:col],:dir=>params[:dir], :date_start => params[:date_start], :date_end => params[:date_end]})  %>

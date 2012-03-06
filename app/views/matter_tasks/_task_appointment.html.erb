@@ -1,0 +1,140 @@
+<script src="/javascripts/jquery/jquery.timeentry.pack.js" type="text/javascript"></script>
+<% is_popup = (!params[:from].blank? and (['calendars', 'notes'].include?(params[:from]))) ? true : false 
+start_date_id = (is_popup ? 'matter_task_start_date_appointment_popup' : 'matter_task_start_date_appointment_activity') 
+start_time_id = (is_popup ? 'matter_task_start_time_appointment_popup' : 'matter_task_start_time_appointment_activity') 
+end_date_id = (is_popup ? 'matter_task_end_date_appointment_popup' : 'matter_task_end_date_appointment_activity') 
+end_time_id = (is_popup ? 'matter_task_end_time_appointment_popup' : 'matter_task_end_time_appointment_activity') 
+assignees_id = (is_popup ? 'pop_up_assignees_' : 'activity_assignees_') 
+get_assignees_id = (is_popup ? 'get_assignees_pop_up' : 'get_assignees_activity') 
+assignees_div_id = (is_popup ? 'pop_up_assignees_div' : 'activity_assignees_div') 
+repeat_id = (is_popup ? 'pop_up_repeat' : 'activity_repeat') 
+until_id = (is_popup ? 'pop_up_until' : 'activity_until') 
+choose_end_time_id = (is_popup ? 'choose_end_time_pop_up' : 'choose_end_time_matter_task') 
+choose_end_time_div_id = (is_popup ? 'choose_end_time_div_pop_up' : 'choose_end_time_div_matter_task') 
+customize_link_id = (is_popup ? 'choose_end_time_pop_up' : 'choose_end_time_matter_task') 
+people_attendees_emails = (is_popup ? 'people_attendees_emails_pop_up' : 'people_attendees_emails_matter_task') 
+default_start_time, default_end_time = get_default_time_appointment 
+matter_id=@matter_task.matter_id %>
+<div class="<% params[:load_popup].nil? ? '': 'f1 w100'%>">
+  <table width="91%" cellspacing="0" cellpadding="0" border="0" class="highlight_bg_1 p5 box_bg_bdr_1 bdr_bot_1">
+    <% disable = controller.action_name.eql?("edit_instance") ? "disable" : nil %>
+    <tbody>
+      <tr>
+        <td width="15%"><h5><%= "#{t(:text_start)} #{t(:text_time)}" %><span class="alert_message">*</span></h5></td>
+        <td colspan="2"><%= f.text_field :start_date_appointment, :value => @matter_task.start_date ? @matter_task.start_date.to_date: Time.zone.now.to_date, :class => "date_picker", :size => "12", :id => start_date_id %>
+          <%= f.text_field :start_time, :value => @matter_task.get_start_time || livia_time_zone(default_start_time),:size => "7", :id => start_time_id %>
+        </td>
+      </tr>
+      <tr>
+        <td width="15%"><h5><%= "#{t(:text_end)} #{t(:text_time)}" %><span class="alert_message">*</span></h5></td>
+        <td colspan="2">
+          <%= f.text_field :end_date_appointment,:value=>@matter_task.end_date ? @matter_task.end_date.to_date : Time.zone.now.to_date, :class=>"date_picker", :size => "12", :id => end_date_id %>
+          <%= f.text_field :end_time, :value => @matter_task.get_end_time || livia_time_zone(default_end_time), :size => "7", :id => end_time_id %>
+        </td>
+      </tr>
+      <tr>
+        <td width="15%"><h5><%= t(:text_reminder) %></h5></td>
+        <td><%= f.select :reminder, options_for_select(MatterTask::REMINDER_OPTIONS,@matter_task.reminder),{}, {:style=>"width:100px;"} %></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="15%"><h5><%= t(:text_repeat) %><span class="alert_message"></span></h5></td>
+        <td colspan="2"><%=f.select :repeat, options_for_select(MatterTask::REPEAT_OPTIONS,@matter_task.repeat),{},:onChange => "show_end_time(this, '#{choose_end_time_id}');",:disabled => disable, :style=>'width:100px;', :id => repeat_id %>
+          <span id="<%=customize_link_id%>" class ="link_blue" style="padding-left: 10px;<%=(@matter_task.repeat.blank? ? "display:none": "")%>">
+            <%= link_to "Customize", "#this", :onclick => "jQuery('##{choose_end_time_div_id}').toggle();" %>
+          </span>
+        </td>
+      </tr>
+      <%@matter_task.repeat||=nil%>
+      <tr id ="<%=choose_end_time_div_id%>" align="left" <%if @matter_task.repeat.nil? or @matter_task.repeat.empty?%>style="display:none"<%end%>>
+        <td colspan="3">
+          <table border="0">
+            <tbody>
+              <tr>
+                <td><%=f.radio_button :occurrence_type, "count",:disabled => disable, :style=>"margin: 0pt; padding: 0pt;"%></td>
+                <td colspan="3"><%=t(:text_end_after)%><%=f.text_field :count,:maxlength => "3", :style => "width:30px;",:disabled => disable,:onclick => "jQuery('#matter_task_occurrence_type_count').attr('checked', 'checked');"%>&nbsp;<%=t(:text_occurrence)%></td>
+              </tr>
+              <tr>
+                <td><%=f.radio_button :occurrence_type, "until",:disabled => disable, :style=>"padding: 0pt; margin: 0pt;"%></td>
+                <td colspan="3"><%=t(:text_end_by)%><%= f.text_field :until, :value => @matter_task.until, :disabled => disable, :class => "date_picker",:size => "10", :onfocus => "jQuery('#matter_task_occurrence_type_until').attr('checked', 'checked');", :id => until_id%></td>
+              </tr>
+            </tbody>
+          </table>        
+        </td>
+      </tr>
+      <tr>      
+        <td colspan="3">
+          <div class="fl mt10">
+            <div class="tab-box">
+              <a href="#this" class="tabLink activeLink" id="cont-1" onclick="display_internal_external(this);">Internal Attendees</a>
+              <a href="#this" class="tabLink " id="cont-2" onclick="display_internal_external(this);">External Attendees</a>
+            </div>
+            <div class="tabcontent" id="cont-1-1">
+              <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                  <tr>
+                    <td width="12%" valign="top" style="" id="<%=assignees_div_id%>">
+                      <%= select_tag("assignees[]", options_for_select(@attnds.collect{|assignee|[assignee[0], assignee[1]]}), {:multiple => true, :size => 4, :style=>"width:177px; height: 88px;", :id => assignees_id}) -%>
+                    </td>
+                    <td width="3%" valign="">
+                      <div id="loading_imagediv2" style="display: none;"><img alt="Loading" src="/images/loading.gif?1282051579"/> </div>
+                      <input type="button" value="&raquo;" onclick="add_assignees('<%= assignees_id %>', '<%= get_assignees_id %>');" style="padding: 0pt 2px; margin: 0pt 5px;"/>
+                      <input type="button" value="&laquo;" onclick="remove_assignees('<%= get_assignees_id %>', '<%= assignees_id %>', '<%= people_attendees_emails %>');" style="padding: 0pt 2px; margin: 0pt 5px;"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tabcontent hide" id="cont-2-1">
+              <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                  <tr>
+                    <td width="12%" valign="top">
+                      <%= text_area_tag people_attendees_emails, 'Search or type an email-id', {:multiple => true,:size => 4, :style=>"width:177px; height: 82px; margin-top: 5px;", :class=>"ac_input textgray", :onclick => "remove_gray_text(this);" } %>
+                      <div style="display: none;" id="loading_imagediv3"><img src="/images/loading.gif" alt="Loading"/> </div>
+                    </td>
+                    <td width="3%" valign="">
+                      <div id="loading_imagediv2" style="display: none;"><img alt="Loading" src="/images/loading.gif?1282051579"/> </div>
+                      <input type="button" value="&raquo;" onclick="add_external_assignees(this);" style="padding: 0pt 2px; margin: 0pt 5px;"/>
+                      <input type="button" value="&laquo;" onclick="remove_external_assignees(this, '<%= assignees_id %>');" style="padding: 0pt 2px; margin: 0pt 5px;"/>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="All_attendees">            
+            <span style="" id="<%=get_assignees_id%>">
+              <% attendees = @matter_task.attendees_emails.blank? ? {} : (@matter_task.attendees_emails.split(',')) %>
+              <%= f.select :attendees_emails, attendees, {}, :size=> "4", :cols=>18, :style=>"width:140px; height: 88px;", :multiple => true%>
+            </span>
+          </div>
+        </td>        
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script language="javascript" type="text/javascript">
+  livia_matter_inception_datepicker_new("#<%=start_date_id%>");
+  livia_matter_inception_datepicker_new("#<%=end_date_id%>");
+
+  livia_matter_inception_datepicker_new("#<%=until_id%>");
+ 
+  matter_task_attendees_autocomplete(<%=current_company.id%>, '<%=people_attendees_emails%>');
+  matter_task_times_timeentry('<%=start_time_id%>', '<%=end_time_id%>');
+<% if disable.nil? %>
+    jQuery("#<%=until_id%>").addClass("date_picker");
+<% end %>
+  jQuery(document).ready(function() {
+    jQuery('.timeEntry_control').each(function(i,el){
+      jQuery(el).height(0);
+    });
+
+    if (jQuery('#<%=repeat_id%>').val()!=""){
+      jQuery('#mandatory_task').show();
+    }else{
+      jQuery('#mandatory_task').hide();
+    }    
+  });
+</script>

@@ -1,0 +1,509 @@
+<!--
+Modified for the Feature #7512 - Link task risk issue fact - all to all
+Added by Shripad
+Modifications are
+ added all the relations for activites, risks, facts and Issues in the tabbed logic
+-->
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    vertical_tabs_toggle();
+  });
+</script>
+<div id="container-1">
+  <%= render :partial => "matters/matter_tabs" %>
+  <!--Task Starts-->
+  <div id="fragment-3" class="tabs-container-tabs xtabs-hide form_table tabs-container p5">
+    <%=render :partial => "matters/matter_contact_account"%>
+    <div class="seperator_dotted_hori"></div>
+    <% form_for([@matter, @matter_research],:html => {:onsubmit => "return disableAllSubmitButtons('matter_researches')"}) do |f| %>
+      <%=hidden_field_tag :button_pressed%>
+      <%if(@matter_research.errors.length > 0)%>
+        <br/>
+        <div class="message_error_div"><%= f.error_messages %></div>
+        <br/>
+      <%end%>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table pt5">
+        <tr>
+          <td width="123" align="left"><label><%= t(:label_research_name) %> <span class="alert_message">*</span></label></td>
+          <td width="823" align="left"><%= f.text_field :name,:id=>'name', :size => "40" %></td>
+        </tr>
+        <%unless @other_matter_researches.nil? || @other_matter_researches.empty?%>
+          <tr>
+            <td align="left"><label><%= t(:label_parent_research) %></label></td>
+            <td align="left"><%= f.collection_select  :parent_id, @other_matter_researches, :id, :clipped_name, { :include_blank => "----------Select----------" } %></td>
+          </tr>
+        <%end%>
+        <tr>
+          <td align="left"><%= t(:label_type) %></td>
+          <td align="left"><%= f.collection_select :research_type, current_company.research_types, :id, :alvalue , { :include_blank => "----------Select----------" }%></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_internal_research) %></label></td>
+          <td align="left"><%= f.check_box :is_internal %></td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:label_section_citation) %></td>
+          <td align="left"><%= f.text_field :citation, :size => "40" %></td>
+
+        </tr>
+        <tr align="right">
+          <td align="left" valign="top"><%= t(:label_description) %></td>
+          <td align="left"><%= f.text_area :description, :rows => "3", :cols => "40" %></td>
+        </tr>
+        <tr>
+          <td align="left" valign="top">
+            <% if task_available? %><%= t(:label_activity )%> /<%end%> <% if issue_available? %><%= t(:label_issues )%> /<%end%> <% if fact_available? %><%= t(:label_facts )%> /<%end%> <% if risk_available? %><%=t(:label_risks)%><%end%>
+          </td>
+          <td align="left" colspan="2" class="pt3">
+            <div id="verticaltabs" align="left" style="width:95%">
+              <ul>
+                <% if task_available?  %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_tasks) %></a></li><%end%>
+                <%if issue_available?%><li><a href="javascript:void(0);" class="tabs"><%= t(:label_issues) %></a></li><%end%>
+                <%if fact_available?%><li><a href="javascript:void(0);" class="tabs"><%= t(:label_facts) %></a></li><%end%>
+                <%if risk_available?%><li><a href="javascript:void(0);" class="tabs"><%= t(:label_risks) %></a></li><%end%>
+              </ul>
+              <% if task_available?  %>
+                <div style="display: block;">
+
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <tbody>
+                      <% unless @matter_tasks_checked.nil? or @matter_tasks_checked.empty? %>
+                        <%
+                        mtask_lenth=@matter_tasks_checked.size
+                        i=0
+                        j=0
+                        @matter_tasks_checked.each do|mi| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%= check_box_tag 'matter_research[matter_task_ids][]', mi.id, matter_taskid.include?(mi.id) %></td>
+                            <td width="23%"><%= truncate_hover(mi.name, 25) %></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==mtask_lenth-1)%>
+                            <%if(j==0)
+                              cspan=6
+                            elsif(j==1)
+                              cspan=4
+                            elsif(j==2)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_activities_found_for_this_researches) %></td>
+                      </tr>
+                    <%end%>
+
+                    </tbody>
+
+                  </table>
+
+                  <table width="100%">
+                    <tr>
+                      <td align="right" ><a href="#" id="linkToggle1">View All</a></td>
+                    </tr>
+                  </table>
+                  <table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list1">
+                    <tbody>
+                      <%  unless @matter_tasks_not_checked.nil? or @matter_tasks_not_checked.empty?
+                        mtask_lenth=@matter_tasks_not_checked.size
+                        i=0
+                        j=0
+                        @matter_tasks_not_checked.each do|mi| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%= check_box_tag 'matter_research[matter_task_ids][]', mi.id, matter_taskid.include?(mi.id) %></td>
+                            <td width="23%"><%= truncate_hover(mi.name, 25) %></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==mtask_lenth-1)%>
+                            <%if(j==0)
+                              cspan=6
+                            elsif(j==1)
+                              cspan=4
+                            elsif(j==2)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_activities_found_for_this_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                </div>
+              <%end%>
+              <%if issue_available?%>
+                <div style="display: none;">
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <tbody>
+
+                      <% unless @matter_issues_checked.nil? or @matter_issues_checked.empty? %>
+                        <%
+                        matterIssue_lenth=@matter_issues_checked.size
+                        i=0
+                        j=0
+
+                        @matter_issues_checked.each do|mi| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%= check_box_tag 'matter_research[matter_issue_ids][]', mi.id, matter_issueid.include?(mi.id) %></td>
+                            <td width="23%"><%= truncate_hover(mi.name, 25) %></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==matterIssue_lenth-1)%>
+                            <%if(j==1)
+                              cspan=6
+                            elsif(j==2)
+                              cspan=4
+                            elsif(j==3)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_issues_found_for_this_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                  <table width="100%">
+                    <tr>
+                      <td align="right" ><a href="#" id="linkToggle2">View All</a></td>
+                    </tr>
+                  </table>
+
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list2">
+                    <tbody>
+
+                      <% unless @matter_issues_not_checked.nil? or @matter_issues_not_checked.empty? %>
+                        <%
+                        matterIssue_lenth=@matter_issues_not_checked.size
+                        i=0
+                        j=0
+
+                        @matter_issues_not_checked.each do|mi| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%= check_box_tag 'matter_research[matter_issue_ids][]', mi.id, matter_issueid.include?(mi.id) %></td>
+                            <td width="23%"><%= truncate_hover(mi.name, 25) %></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==matterIssue_lenth-1)%>
+                            <%if(j==1)
+                              cspan=6
+                            elsif(j==2)
+                              cspan=4
+                            elsif(j==3)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_issues_found_for_this_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                </div>
+              <%end%>
+              <%if fact_available?%>
+                <div style="display: none;">
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <tbody>
+                      <% unless @matter_facts_checked.nil? or @matter_facts_checked.empty? %>
+                        <%
+                        matterFacts_lenth=@matter_facts_checked.size
+                        i=0
+                        j=0
+                        @matter_facts_checked.each do|mf| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+
+                            <td width="2%"><%=check_box_tag 'matter_research[matter_fact_ids][]', mf.id, matter_factid.include?(mf.id)%></td>
+                            <td width="23%"><%=truncate_hover(mf.name, 40)%></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==matterFacts_lenth-1)%>
+                            <%if(j==1)
+                              cspan=6
+                            elsif(j==2)
+                              cspan=4
+                            elsif(j==3)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_facts_found_for_this_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                  <table width="100%">
+                    <tr>
+                      <td align="right" ><a href="#" id="linkToggle3">View All</a></td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list3">
+                    <tbody>
+                      <% unless @matter_facts_not_checked.nil? or @matter_facts_not_checked.empty? %>
+                        <%
+                        matterFacts_lenth=@matter_facts_not_checked.size
+                        i=0
+                        j=0
+                        @matter_facts_not_checked.each do|mf| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%=check_box_tag 'matter_research[matter_fact_ids][]', mf.id, matter_factid.include?(mf.id)%></td>
+                            <td width="23%"><%=truncate_hover(mf.name, 40)%></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==matterFacts_lenth-1)%>
+                            <%if(j==1)
+                              cspan=6
+                            elsif(j==2)
+                              cspan=4
+                            elsif(j==3)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_facts_found_for_this_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                </div>
+              <%end%>
+              <%if risk_available?%>
+                <div style="display: none;">
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <tbody>
+                      <% unless @matter_risks_checked.nil? or @matter_risks_checked.empty? %>
+                        <%
+                        matterRisks_lenth=@matter_risks_checked.size
+                        i=0
+                        j=0
+                        @matter_risks_checked.each do|m| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%=check_box_tag 'matter_research[matter_risk_ids][]', m.id, matter_riskid.include?(m.id)%></td>
+                            <td width="23%"><%=truncate_hover(m.name, 25)%></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==matterRisks_lenth-1)%>
+                            <%if(j==1)
+                              cspan=6
+                            elsif(j==2)
+                              cspan=4
+                            elsif(j==3)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_risks_found_for_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                  <table width="100%">
+                    <tr>
+                      <td align="right" ><a href="#" id="linkToggle4">View All</a></td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list4">
+                    <tbody>
+                      <% unless @matter_risks_not_checked.nil? or @matter_risks_not_checked.empty? %>
+                        <%
+                        matterRisks_lenth=@matter_risks_not_checked.size
+                        i=0
+                        j=0
+                        @matter_risks_not_checked.each do|m| %>
+                          <%if(i==0)%>
+                            <tr>
+                            <%end%>
+                            <%if(j==4)%>
+                            <tr>
+                            <%end%>
+                            <td width="2%"><%=check_box_tag 'matter_research[matter_risk_ids][]', m.id, matter_riskid.include?(m.id)%></td>
+                            <td width="23%"><%=truncate_hover(m.name, 25)%></td>
+                            <%
+                            j=j+1
+                            if(j==4)%>
+                            </tr>
+                            <%j=0 end%>
+                          <%if(i==matterRisks_lenth-1)%>
+                            <%if(j==1)
+                              cspan=6
+                            elsif(j==2)
+                              cspan=4
+                            elsif(j==3)
+                              cspan=2
+                            end
+                          %>
+                          <td colspan="<%=cspan%>"></td>
+                          </tr>
+                        <%end%>
+                        <%
+                        i=i+1
+                      end
+                      j=0
+                      i=0
+                    %>
+                    <%else%>
+                      <tr>
+                        <td colspan="2"><%= t(:text_no_related_risks_found_for_researches) %></td>
+                      </tr>
+                    <%end%>
+                    </tbody>
+                  </table>
+                </div>
+              <%end%>
+
+
+            </div>
+          </td>
+        </tr>
+        <tr align="right">
+          <td>&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+        <tr align="right">
+          <td colspan="2" align="center">
+            <%= f.submit t(:text_save), :name => "save", :class => 'matter_researches', :onclick => "setButtonPressed(this)" %>
+            <%= f.submit t(:text_save_n_exit), :name => "save_exit", :class => 'matter_researches', :onclick => "setButtonPressed(this)" %>
+            <%= f.submit t(:text_cancel), :type=>'button',:name => "cancel",:class => 'matter_researches', :onclick => "setButtonPressed(this);disableAllSubmitButtons('matter_researches');window.location = '#{matter_matter_researches_path(@matter)}';"%>
+          </td>
+        </tr>
+      </table>
+    <%end%>
+    <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></div>
+    <br class="clear" />
+    <%unless @matter_research.new_record?%>
+      <%=render :partial => "common/comments_documents", :locals => {:commentable_type=>"MatterResearch",:commentable_id=>@matter_research.id, :matter_type =>"matter_research", :add_document =>"#{new_document_matter_document_homes_path(@matter, :research_id=>@matter_research.id, :return_path => edit_matter_matter_research_path(@matter, @matter_research))}?height=380&width=660", :comment_path=>"#{new_comment_path(:commentable_type=> 'MatterResearch', :matter_type =>"matter_research", :commentable_id=>@matter_research.id)}?height=200&width=600"}%>
+      <%= render :partial=>"document_homes/multi_upload" %>
+    <%end%>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery('#name').focus();
+</script>
+<%# Need refactoring %>

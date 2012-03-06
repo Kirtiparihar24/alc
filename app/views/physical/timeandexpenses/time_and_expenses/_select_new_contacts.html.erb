@@ -1,0 +1,1 @@
+<%=select_tag "physical_timeandexpenses_time_entry[contact_id]", "<option value=''/>" + options_for_select(@contacts.collect{|contact|[contact.full_name, contact.id]},@contact_id),{ :class => "dropbox1",:onchange=>"get_all_matters();"}%>

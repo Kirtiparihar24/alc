@@ -1,0 +1,10 @@
+<%  if(@payment_mode == "Cheque") %>
+  jQuery("#cheque_details").show();
+  jQuery("#paypal_details").hide();
+<% elsif(@payment_mode == "Paypal") %>
+  jQuery("#paypal_details").show();
+  jQuery("#cheque_details").hide();
+<%  else %>
+  jQuery("#paypal_details").hide();
+  jQuery("#cheque_details").hide();
+<% end %>

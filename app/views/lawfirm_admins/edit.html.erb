@@ -1,0 +1,63 @@
+<script type="text/javascript">
+  livia_datepicker();
+</script>
+
+<div class="contentDiv" >
+  <div class="mainContent">
+    <div>
+      <div class="gridDiv">
+        <div class="titleHead"><%=t(:text_update_user_company)%><%=current_user.company.name%>)</div>
+        <div class="adminForm">
+              <% form_for:lawfirm_admin,@lawfirm_admin,:url=>{:controller=>"lawfirm_admins",:action=>"update_employee",:id=>@lawfirm_admin.id},:html => { :method => 'put' } do |u| %>
+<%if(@lawfirm_admin.errors.length > 0)%>
+          <div class='errorCont'>
+            <%=u.error_messages %>
+            <div class="clear"></div>
+          </div>
+        <%end%>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">              
+              <tr>
+                <td width="48%" align="right"><label for="employee_activity_rate_employee_user_id"><%=u.label :first_name, t(:label_first_name)%></label></td>
+                <td width="52%"><%=u.text_field :first_name%></td>
+              </tr>
+              <tr>
+                <td width="48%" align="right"><label for="employee_activity_rate_employee_user_id"><%=u.label :last_name, t(:label_last_name)%></label></td>
+                <td width="52%"><%=u.text_field :last_name%></td>
+              </tr>
+              <%u.fields_for:employee,@employees  do |f|%>
+                <tr>
+                <td width="48%" align="right"><label for="employee_activity_rate_employee_user_id"></label><%=u.label :birthdate, t(:label_birthdate)%></td>
+                <td width="52%"><%=f.text_field :birthdate,"value"=>"#{@employees.birthdate}", :class => "date_picker", :onclick=>"livia_datepicker(this);", :size=> "10"%><%=t(:text_yyyy_mm_dd)%></td>
+              </tr>
+
+                <tr>
+                <td width="48%" align="right"><label for="employee_activity_rate_employee_user_id"></label><%=u.label :security_question, t(:label_security_question)%></td>
+                <td width="52%"><%=f.text_field :security_question ,"value"=>"#{@employees.security_question}"%></td>
+               </tr>
+
+                 <tr>
+                <td width="48%" align="right"><label for="employee_activity_rate_employee_user_id"></label><%=u.label :security_answer, t(:label_security_answer)%></td>
+                <td width="52%"><%=f.text_field :security_answer,"value"=>"#{@employees.security_answer}"%></td>
+               </tr>
+
+                 <tr>
+                <td width="48%" align="right"><label for="employee_activity_rate_employee_user_id"></label><%=u.label :billing_rate, t(:label_billing_rate)%></td>
+                <td width="52%"><%=f.text_field :billing_rate,"value"=>"#{@employees.billing_rate}"%></td>
+               </tr>
+
+              <%end%>
+              <tr>
+                <td colspan="2" align="center">
+                  <%=u.submit t(:text_update) , :class=>"button"%> | <%=link_to t(:label_back),lawfirm_admins_url%>
+                </td>
+              </tr>
+             </table>
+             <% end %>
+          <br class="clear" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

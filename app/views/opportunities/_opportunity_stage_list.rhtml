@@ -1,0 +1,1 @@
+<%= select_tag("opp_stage",  options_for_select(opp_stages,{:selected=>@opp_stage}),{:onchange =>"filterOpportunity('#{@mode_type}',this.options[this.selectedIndex].value)",:style=>"height:22px;"}) -%>

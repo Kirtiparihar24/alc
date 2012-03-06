@@ -1,0 +1,70 @@
+<div class="box_white m5">
+  <form action="#" class="search_form general_form" onsubmit="return disableAllSubmitButtons('buttons_to_disable');">
+    <fieldset>
+      <div class="forms">
+        <% lawfirm_user_employee = lawfirm_user.employee %>
+        <div class="row">
+          <label>Name:</label>
+          <br/>
+          <div class="inputs">
+            <%=lawfirm_user.full_name%>
+          </div>
+        </div>
+        <div class="row">
+          <label>Company:</label>
+          <br/>
+          <div class="inputs">
+            <%=lawfirm_user.company.name%>
+          </div>
+        </div>
+        <div class="row">
+          <label>Birth Date:</label>
+          <br/>
+          <div class="inputs">
+            <%=lawfirm_user_employee.birthdate%>
+          </div>
+        </div>
+        
+        <% lawfirm_user.questions.each do |question| %>
+          <div class="row">
+            <label>Security Question:</label>
+          <br/>
+            <div class="inputs">
+              <%= question.setting_value rescue '-'%>
+            </div>
+          </div>
+          <div class="row">
+            <label>Answer:</label>
+          <br/>
+            <div class="inputs">
+              <%= question.answer.setting_value rescue '-' %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="row">
+          <label>Clusters:</label>
+          <br/>
+          <% clusters = lawfirm_user.clusters.map(&:name) %>
+
+          <div class="inputs"><%=clusters.join(", ")%></div>
+        </div>
+        <br class="clear" />
+        <div class="button_div" style="width:100%;">
+          <span class="button send_form_btn buttons_to_disable">
+            <span><span><%=link_to 'Yes', "/physical/liviaservices/verification/#{lawfirm_user.id}/verify",  :id=> lawfirm_user.id, :class=>"linkbutton", :style=>"padding:0 0 0 0; color:white; background:none;" %></span></span>
+          </span>
+          <span class="button send_form_btn ml10 buttons_to_disable">
+            <span><span>No</span></span>
+            <input type="submit" name="" onclick="jQuery('#verify_lawyer_div_<%= ids %>').hide('slow');return false;"/>
+          </span>
+          <span class="button send_form_btn ml10 buttons_to_disable">
+            <span><span>Cancel</span></span>
+            <input type="submit" name="" onclick="jQuery('#verify_lawyer_div_<%= ids %>').hide('slow');return false;"/>
+          </span>
+          <br class="clear" />
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

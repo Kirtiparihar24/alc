@@ -1,0 +1,27 @@
+<script language="javascript" type="text/javascript">
+   livia_datepicker();
+</script>
+<h1><%=t(:text_editing_product_licence)%></h1>
+
+<% form_for(@product_licence) do |f| %>
+  <%= f.error_messages %>
+
+  <p><label><%=t(:text_licence_start_date)%><span class="text_red">*</span></label>&nbsp;
+  <input type="text" id="datepicker_product_licence_start_at" name="product_licence[start_at]" readonly="true" class="textBoxwidth date_picker" onclick="livia_datepicker(this);" style="float:left;" size="10" value=<%= f.object.start_at ? f.object.start_at.to_s(:mmddyyyy) : "" %> />
+  </p>
+
+  <p><label><%=t(:text_licence_end_date)%><span class="text_red">*</span></label>&nbsp;
+    <input type="text" id="datepicker_product_licence_end_at" name="product_licence[end_at]" readonly="true" class="textBoxwidth date_picker" onclick="livia_datepicker(this);" style="float:left;" size="10" value=<%= f.object.end_at ? f.object.end_at.to_s(:mmddyyyy) : "" %> />
+  </p>
+
+  <p>
+    <p><label><%=t(:label_status)%><span class="text_red">*</span></label>&nbsp;<%= product_licence_status_option_tag(@product_licence) %></p>
+  </p>
+
+  <p>
+    <%= f.submit t(:text_update) %>
+  </p>
+<% end %>
+
+<%= link_to t(:label_show), @product_licence %> |
+<%= link_to t(:label_back), {:controller => 'product_licences', :action => 'show_product', :id => @product_licence.product_id} %>

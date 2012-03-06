@@ -1,0 +1,8 @@
+<%if @clusters.blank?%>
+  <span style="margin-left: 50px;"><%=t(:label_User_is_not_assigned_to_any_cluster)%>.</span>
+<%else%>
+  <span style="margin-left: 50px;"><%=t(:label_User_already_assigned_to_clusters)%>:</span><br/>
+  <%@clusters.each do |cluster|%>
+    <span style="margin-left: 55px;"><%=cluster.name%></span><br/>
+  <%end%>
+<%end%>

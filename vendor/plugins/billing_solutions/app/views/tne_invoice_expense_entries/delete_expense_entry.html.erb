@@ -1,0 +1,5 @@
+<div id="display_div">
+  <%= radio_button_tag "billing", "remove", false, :onClick=>"remove_expense_entry(#{@expense_entry.id},#{@expense_entry.final_expense_amount},#{@counter},#{@expense_entry.expense_type},#{@detail_entry});" %> Remove and make it available for future invoice. <br/>
+  <%= radio_button_tag "billing", "delete_appear", false, :onClick=>"delete_expense_entry(#{@expense_entry.id},'delete_appear',#{@counter},#{@expense_entry.final_expense_amount},#{@expense_entry.expense_type});" %> Appear in the invoice as 100% discount. <br/>
+  <%= radio_button_tag "billing", "delete_donot_appear", false, :onClick=>"delete_expense_entry(#{@expense_entry.id},'delete_donot_appear',#{@counter},#{@expense_entry.final_expense_amount},#{@expense_entry.expense_type},#{@detail_entry});" %>  Remove from invoice and mark it as not billable. <br/>
+</div>

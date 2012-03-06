@@ -1,0 +1,72 @@
+<% content_for :company_selection do %>
+  <%= render :partial => "/company/utilities/company_selection" %>
+<% end %>
+<div class="box-head"><h2 class="left">Automate Matter Numbering</h2></div>
+<div class="actionLinks"><%= link_to "Company Settings", company_settings_path %> | <%= link_to t(:label_upload_logo), upload_logos_path %></div>
+<div class="form">
+  <% unless @company.blank? %>
+    <% form_for(@company,:url => {:action => 'update_matter_sequence'}) do |f| %>
+      <%= f.hidden_field :format,:id=>'format_id' %>
+      <%= f.hidden_field :old_sequence_id,:id=>'old_seq_id',:value=>@company.sequence_no%>
+      <%= f.hidden_field :sequence_reset_year,:id=>'seq_reset_year',:value=>@company.sequence_reset_year%>
+      <%= f.hidden_field :current_sequence_year,:id=>'current_seq_year',:value=>Time.now.year%>
+
+      <table cellspacing="0" border="0" align="center" width="100%">
+        <tr>
+          <td><label><%= t(:label_enter_sequence_no) %></label></td>
+          <td><%= f.text_field :sequence_no,:size=>"10",:maxlength=>"9"%></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+          <td><label><%= t(:label_sequence_no_format_seperator) %></label></td>
+          <td><%= f.select :sequence_seperator,options_for_select([['-'],[','], [';'],['/'], ['|'], ['_'], [','] ,[':'] ,['.']], @company.sequence_seperator), {}, {:class => "field size3"} %></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+          <td valign="top"><label><%= t(:label_select_sequence_no_format) %></label></td>
+          <td>
+            <table cellspacing="0" width="80%" align="left">
+              <tr>
+                <td>
+                  <select multiple id="select1" class="field size3">
+                    <option value="AC"><%= t(:label_Account) %> / <%= t(:label_contact) %> Full Name</option>
+                    <option value="CY">Current Year</option>
+                    <option value="CD">Current Date in MM/DD/YY format</option>
+                    <option value="MT">Matter Type</option>
+                    <option value="MN">Matter Name</option>
+                    <option value="M">Month</option>
+                  </select>
+                </td>
+                <td>
+                  <input id="MoveUp" type="button" value=" Up " />
+                  <input id="MoveDown" type="button" value="Down" />
+                  <input id="MoveRight" type="button" value="Right" />
+                  <input id="MoveLeft" type="button" value="Left" />
+                </td>
+                <td>
+                  <select id="select2" multiple class="field size3"></select>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+          <td><label><%= t(:label_selected_sequence_no_format) %></label></td>
+          <td><div id="selected_format"></div></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+      </table>
+      <div class="buttons"><%=submit_tag t(:label_save), :class=>"button",:onclick=>"return doNumberCheck();"%></div>
+
+    <%end%>
+  <%end%>
+</div>
+<script text="text/javascript">      
+  selectRightOptions();
+  var values =jQuery('#select2').children('option').map(function(i,e){       
+    return e.value || e.innerText;
+  }).get();
+  jQuery('#format_id').val(values);
+  sequenceFormat();
+</script>

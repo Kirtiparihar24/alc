@@ -1,0 +1,44 @@
+<div class="box-head"><h2 class="left"><%=t(:text_portal_usage_report)%></h2></div>
+<%form_tag :action => :portal_usage_report, :method => "get" do%>
+  <div class="form">
+    <table cellspacing="0" cellpadding="0" width="100%">
+      <tr>
+        <td><label>Start Date <span>*</span></label></td>
+        <td><%=text_field_tag :usage_start_date, @usage_start_date, :class=>"date_picker"%></td>
+        <td></td>
+        <td><label>End Date <span>*</span></label></td>
+        <td><%=text_field_tag :usage_end_date, @usage_end_date, :class=>"date_picker"%></td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+      <tr>
+        <td><label>Lawfirm</label></td>
+        <td><%=select("company", "id", @companies_list, { :include_blank => "All Lawfirms", :selected => @selected_company_id }, :onchange => "fetch_employees_for_company(this.value)")%></td>
+        <td>&nbsp;</td>
+        <td><label>Lawyer</label></td>
+        <td><div id="company_employee_list"><%=select("employee", "id", @employees_list, { :include_blank => "All Lawyers", :selected => @selected_employee_id })%></div></td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+    </table>
+    <div><label><span>*</span> Required field</label></div>
+    <br />
+  </div>
+  <div class="buttons">
+    <%=submit_tag "Generate Report", :class => "button"%>
+  </div>
+<%end%>
+<script type="text/javascript">
+  jQuery(function(){
+    jQuery(".date_picker").datepicker({
+      showOn: 'both',
+      dateFormat: 'mm/dd/yy'
+    });
+  });
+  // Need to removed to JS File
+  function fetch_employees_for_company(val) {
+    $.get("/companies/portal_usage_report_employee_list", {'company_id' : val},
+    function(data) {
+      $("#company_employee_list").html(data);
+    });
+  }
+</script>
+

@@ -1,0 +1,2 @@
+module CompanyEmailSettingsHelper
+end

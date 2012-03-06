@@ -1,0 +1,17 @@
+<tr class="<%=cycle("bg1", "bg2")%>" id="<%=comment.id%>" style="font-weight:bold;">
+  <td width="15%"><%=comment.get_title.humanize%></td>
+  <td width="10%"><%= comment.user.nil?? '' : comment.user.try(:full_name)%></td>
+  <%m,mt = comment.matter_and_task_from_comment%>
+
+  <td width="15%"><%=conditional_edit(m)%></td>
+  <td width="20%"><%=raw truncate_hover_link(mt.name,30,edit_matter_matter_task_path(m,mt))%></td>
+  <td width="15%">
+    <span class="comment"><%=raw(truncate_hover_comments(comment.comment,40))%></span></td>
+  <td width="17%" align="left"><%=comment.created_at.to_time.strftime('%m/%d/%y %H :%M')%></td>
+  <td width="12%" align="center">    
+    <a href="#" onmouseup="markCommentUnRead(<%= comment.id %>)" onmousedown="showCheckImage('span_<%=comment.id%>', 'image_<%=comment.id%>')">
+      <span id="span_<%=comment.id%>" class="icon_placeholder" style="display:block"></span>
+      <img id="image_<%=comment.id%>" border="0" hspace="2" src="/images/livia_portal/check.gif" style="display: none;"/>
+    </a>
+  </td>
+</tr>

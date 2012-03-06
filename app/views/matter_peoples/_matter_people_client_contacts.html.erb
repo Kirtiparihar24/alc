@@ -1,0 +1,97 @@
+<div>
+  <table class="xbox_gray_new" cellspacing="0" cellpadding="0" border="0" bgcolor="#f1e3c4" width="100%">
+    <tr>
+      <td>
+        <div class="fl">
+          <strong><%=title%></strong>
+        </div>
+        <%if(is_access_matter? || @matter.can_add_people?(get_employee_user_id))%>
+          <div class="fr mt5 mr5">
+            <a href="<%=raw add_client_contact_form_matter_matter_peoples_path(@matter, :height=>height, :width=>width)%>" class="thickbox vtip" title="Client Contact" name="Add Client Contact">
+              <span class="icon_add fl"></span>
+            </a>
+          </div>
+        <%end%>
+        <br class="clear" />
+      </td>
+    </tr>
+  </table>
+  <div class="tabular_listing">
+    <table width="100%" cellpadding="1" cellspacing="1" class="border_gray mt5">
+      <tbody>
+        <tr>
+          <th width="22%" align="left"><%=t(:label_contact)%></th>
+          <th width="23%" align="left"><%=t(:label_email)%></th>
+          <th width="12%" align="left"><%=t(:label_phone)%></th>
+          <th width="15%" align="left"><%=t(:label_role)%></th>
+          <th width="14%" align="left">Matter Access</th>
+          <th width="5%" align="center"><%=t(:label_Actions)%></th>
+        </tr>
+        <% unless matter_peoples.nil? or matter_peoples.blank? %>
+          <% matter_peoples.each do |mem| %>
+            <tr class="<%= cycle('bg2', 'bg1') %>">
+              <td><%= mem.get_name %></td>
+              <td><%= mem.get_email %></td>
+              <td><%= mem.get_phone %></td>
+              <td><%= mem.get_role=='Matter Client' ? "#{t(:label_primary_matter_contact)}" : '' %></td>
+              <td align="center"><%= mem.can_access_matter ? 'YES' : 'NO' %></td>
+              <td align="center">
+                <div class="icon_action mt3"><a href="#"></a></div>
+                <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                  <!--Icon table strt here -->
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <%=
+                    raw action_pad_top_blue_links({
+                        :edit_path => edit_client_contact_form_matter_matter_people_path(@matter, mem,
+                          :height=>height, :width=>width),
+                        :edit_modal => true,
+                        :edit_text => "Edit Client Contact",
+                        :deactivate_path => "NO",
+                        :comment_path => "NO",
+                        :document_path => "NO",
+                        :history_path => "NO"
+                      })
+                  %>
+                    <tr>
+                      <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+                      <td style="background: #fff;">
+                        <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                          <tr>
+                            <td colspan="4"><div class="ap_pixel10"></div></td>
+                          </tr>
+                          <tr>
+                            <td width="10%" align="center" valign="middle">
+
+                            </td>
+                            <td width="40%" align="left" valign="middle">
+
+                            </td>
+                            <td width="10%" align="left" valign="middle">
+
+                            </td>
+                            <td width="40%" align="left" valign="middle">
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4"><div class="ap_pixel10"></div></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="ap_bottom_curve_left"></td>
+                      <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                      <td valign="top" class="ap_bottom_curve_right"></td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>

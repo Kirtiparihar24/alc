@@ -1,0 +1,10 @@
+<strong><%=t(:text_product_licence)%></strong>:<br></br>
+<p><%=t(:text_product_name)%><%= @product_licence.product.name %></p>
+<p><%=t(:text_company_name)%><%= @product_licence.company.name %></p>
+<p><%=t(:text_licence_key)%><%= @product_licence.licence_key %></p>
+<p><%=t(:text_licence_start_date)%><%= livia_date(@product_licence.start_at) %></p>
+<p><%=t(:text_licence_end_date)%><%= livia_date(@product_licence.end_at)%></p>
+<p><%=t(:text_status)%><%= @product_licence.status %></p>
+
+
+<%= link_to t(:label_back), products_path %>

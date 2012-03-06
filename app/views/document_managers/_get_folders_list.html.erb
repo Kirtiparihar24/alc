@@ -1,0 +1,71 @@
+<%= javascript_include_tag "jquery/jquery.hotkeys.js" ,"jquery/jquery.jstree.js" %>
+<%= stylesheet_link_tag "jqueryFileTree.css"%>
+<div class="section_left">
+  <h2 class="title_main"><%= t(:text_menu_document_manager) %></h2>
+  <div id="fileTree" class="demo">
+    <ul>
+    </ul>
+  </div>  
+</div>
+<script type="text/javascript">
+  anchor_tag_live();
+  // Default Jquery fileTree Structure loaded here
+  jQuery(document).ready(function (){
+    jQuery("#fileTree").jstree({
+      "json_data" : {
+        "data" : [{
+            "attr" : { "id" : "root_<%= @company.id %>" },
+            "data" : {
+              "title" : "<%= @company.name %>",
+              "attr" : { "id" : "root_<%= @company.id %>","href" : "#" ,"class" : "jstree-clicked" }
+            },
+            "children" : [
+<% total = @folders_list.length %>
+<% @folders_list.each_with_index do |folder, index| %>
+                {
+                  "attr" : {"id" : "<%= folder[0].downcase %>"},
+                  "data" : {
+                    "title" : "<%= folder[1] %>",
+                    "attr" : {"id" : "<%= folder[0].downcase %>" ,"href": "#" }
+                  },
+                  "children": [
+  <% if ["Workspace"].include?(folder) %>
+    <% @lawfirm_users.each do |usr| %>
+                        {
+                          "attr" : {"id" : "<%= folder.downcase %>", "class" : "<%= usr.id %>"},
+                          "data" : {
+                            "title" : "<%= usr.full_name %>",
+                            "attr" : {"id" : "<%= folder.downcase %>", "class" : "<%= usr.id %>" ,"href": "#" }
+                          },
+                          "children": [],
+                          "state" : "closed"
+                        }
+    <% end %>
+  <% end %>
+                  ],
+                  "state" : "closed"
+                }<%= "," unless total==index+1 %>
+<% end %>
+            ],
+            "state" : "open"
+          }
+        ],
+        // the method where the ajax request will be sent to get the json data to build the tree
+        "ajax" : {
+          "url" : "/document_managers/folders_tree/",
+          "data" : function (focus_element) {
+            return { node : focus_element.attr ? focus_element.attr("id") : 0 };
+          }
+        }
+      },
+
+      "themes" : {
+        "theme" : "classic",
+        "dots" : true,
+        "icons" : true
+      },
+      "plugins" : ["themes",  "json_data" ,"ui"]
+
+    })
+  });
+</script>

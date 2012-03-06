@@ -1,0 +1,25 @@
+<div style="width:520px !important;">
+  <div id="matter_contact_errors"></div>
+
+        <% form_for :assignment, @assignment ,:url => {:action => 'new_assignment',  :secretary_id=>@secretary.id} do |f| %>
+    <div class="content" style="display: block;">
+      <div class="gridDiv">
+        <div class="titleHead">
+          <div class="fl"><%=t(:text_new_assignment)%></div>
+          <div class="fr ptr5"><a href="#"><img onclick="jQuery.facebox.<%=t(:label_close)%>)();" title="close" alt="close" src="/images/livia_portal/icon_close.gif"/></a></div>
+          <br class="clear"/>
+        </div>
+      </div>
+      <div class="windowForm">
+        <div class="pt10">
+            <p><label><%=t(:label_secretary_name)%></label>&nbsp;<b><%=@secretary.sp_full_name %></b>  </p>
+            <p><label><%=t(:label_lawyer_to_be_assigned)%><span class="text_red">*</span></label>&nbsp;    <%=collection_select :assignment, :employee_user_id, @lawyers, :user_id, :full_name_with_company%>&nbsp;</p>
+
+        </div>
+        <div class="txtC"><br/> <%=submit_tag t(:label_assign), :class=>"button"%>&nbsp;<input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="jQuery.facebox.close();" /></div>
+      </div>
+    </div>
+  <%-end%>
+    <br/>
+</div>
+

@@ -1,0 +1,42 @@
+<div style="width:420px !important;">
+   <div id ="one_field_error_div"></div>
+  <% form_for :document_home, @document_home ,:url => {:action => 'upload', :mapable_id=> @entry.id, :mapable_type=>@type}, :html=> {:multipart=> true,:onsubmit=> "return validateTEDocs('document_home_document_attributes_data', 'Please select a file to continue');"} do |f| %>
+
+    <div class="content" style="display: block;">
+      <div class="windowForm">
+
+        ﻿<div style="text-align:center;margin-top:20px;">
+        <table width="440" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+          <tr>
+            <td width="115" align="left"><label><%=t(:label_description)%></label></td>
+            <td width="270" align="left"><%= truncate(@entry.description,90) %></td>
+          </tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left">&nbsp;</td>
+          </tr>
+          <tr>
+            <td width="115" align="left"><label><%=t(:label_document)%><span class="alert_message">*</span></label></td>
+            <td width="304" align="left"><%= file_field_tag 'document_home[document_attributes][data]' %></td>
+          </tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left">&nbsp;</td>
+          </tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left"><%=submit_tag t(:label_upload), :class=>"button"%>
+            <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="parent.tb_remove();" /></td>
+          </tr>
+        </table>
+        </div>  
+
+      </div>
+    </div>
+  <%-end%>
+  <br/>
+   <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></div>
+</div>
+
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;73</div>
+

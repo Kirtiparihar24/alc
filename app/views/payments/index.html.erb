@@ -1,0 +1,65 @@
+<% invoices_blank = @invoices.blank? %>
+<div class="mt5">
+  <div class="gridDiv">
+    <div class="titleHead" id="dashboard_toggle">
+      <div class="fl"><%=t(:text_invoices)%></div>
+      <div class="fr"><%= link_to t(:label_new_invoice_generation), {:action=>'form_for_invoice_generation'} %></div>
+      <br class="clear" />
+    </div>
+    <div id="InvoicesList">
+      <div id="invoices_list" class="contactsDIV">
+        <div class="gridTable">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+             <%unless invoices_blank%>
+              <tr><td colspan="8" align="right" class="pr5"><%=will_paginate @invoices, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @invoices %></td></tr>
+              <tr><td colspan="8"><br/></td></tr>
+            <%end%>
+            <tr>
+              <th align="left" style="width: 15%" ><%=t(:text_company_name)%></th>
+              <th align="left" style="width: 15%"   ><%=t(:text_invoice_generated_date)%></th>
+              <th align="left" style="width: 15%"   ><%=t(:text_invoice_start_date)%></th>
+              <th align="left" style="width: 10%"   ><%=t(:text_invoice_end_date)%></th>
+              <th align="right" style=" text-align: right; width: 8%"   ><%=t(:text_invoice_amount)%></th>
+              <th align="right" style="text-align: right;width: 10%"   ><%=t(:text_status)%></th>
+              <th align="right" style="text-align: center;width: 10%"   ><%=t(:text_action)%></th>
+              <th align="right" style="text-align: center;width: 7%"   ></th>
+            </tr>
+            <%unless invoices_blank %>
+              <tr >
+                <td colspan="3">
+                  <div class="warningCont m5">
+                    <%=t(:text_no_generated_invoices)%>
+                  </div>
+                </td>
+              </tr>
+            <% else %>
+              <% @invoices.each do |invoice| %>
+                <tr class="<%=cycle("bg1", "bg2")%>">
+                  <td style="width: 15%"  ><%=invoice.company.name%></td>
+                  <td style="width: 15%" ><%=invoice.invoice_date.to_time.strftime('%m/%d/%y') if invoice.invoice_date %></td>
+                  <td style="width: 15%" ><%=invoice.invoice_from_date.to_time.strftime('%m/%d/%y') if invoice.invoice_date %></td>
+                  <td style="width: 10%" ><%=invoice.invoice_to_date.to_time.strftime('%m/%d/%y') if invoice.invoice_date %></td>
+                  <td align="right" style="width: 8%"  ><%=invoice.invoice_amount %></td>
+                  <td align="right" style="width: 10%"  ><%=invoice.status %></td>
+                  <td align="center"  style="width:10%" >
+                    <%=raw invoices_list_action_links(invoice)%>
+                  </td>
+                  <td align="right" style="width:7%">
+                    <% if invoice.status.to_s == "Paid"  %>
+                      <%=t(:text_pay)%>
+                    <% else %>
+                      <%= link_to t(:label_pay), {:action=>'form_for_payment', :id=>invoice.id} %>
+                    <% end %>
+                  </td>
+                </tr>
+              <%end%>
+              <tr><td colspan="8"><br/></td></tr>
+              <tr><td colspan="8" align="right" class="pr5"><%=will_paginate @invoices, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @invoices %></td></tr>
+              <tr><td colspan="8"><br/></td></tr>
+            <%end%>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

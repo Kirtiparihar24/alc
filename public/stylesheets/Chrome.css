@@ -1,0 +1,73 @@
+#middleBody-div {padding-bottom:0px;} 
+.header_link{margin-top:8px;}
+ul.navigation_list li{padding:10px 8px 11px 8px;}
+span.icon_search{ top:5px;right:4px;}
+.form_table td{line-height:25px; padding:1px 0;}
+
+.fix_mr{margin-right:1px;}
+.breadcrumbDiv{padding-top:7px; padding-bottom:6px; width:100%;}
+.SlideTab{margin:0}
+.fix_mr{margin-right:1px;}
+.tabular_listing table td{line-height:23px;}
+select{padding-right:1px;}
+.w_common_47{width:54.5%;}
+.tooltip{z-index:100;}
+textarea, select{margin-left:2px;}
+input.expense_date_picker {padding:3px;}
+input.date_picker{padding:3px;}
+.mr10, .column_left{margin-right:10px;}
+.w_common_47{width:54.5%;}
+#breadcrumb{width:80%;}
+select:focus {border-color:#cccccc;}
+select{border:1px solid #d9d9d9;}
+.tooltip {z-index:100;}
+span.icon_search{top:5px;right:4px;}
+.pb1,.box_gray, .box_gray_new, select{padding-bottom:1px;}
+select{padding-top:1px;}
+input[type=text], input[type=password], input.text, input.title, textarea, select{border:1px solid #d9d9d9;}
+.pt1, .box_gray_new, input[type=submit],input[type=button], select{padding-top:1px;}
+.w99, .box_gray_new{width:99.3%}
+#navigation-div{height:36px;margin:0;padding:0}
+.box_gray{padding-bottom:0;padding-top:1px;line-height:26px;}
+a:-webkit-any-link {text-decoration:none;}
+
+/* Added on 24-11-2011 for Synchronize appointments */
+.sync_icon{background-position:-164px -541px;width:22px;height:22px;}
+
+/* Feature 8637 : 24-11-11 Supriya Khedekar */
+ul#topnav { margin: 0; padding: 0; float:left; width: 100%; list-style: none;}
+ul#topnav li { float: left; margin: 0; padding: 0; position: relative;}
+ul#topnav li a { float: left; color:#FFFFFF; font-size:14px;}
+ul#topnav li:hover a, ul#topnav li a:hover {background:#3E6A82}
+ul#topnav a.reports { padding:0 15px;}
+ul#topnav a.favReports { padding:0 15px;}
+ul#topnav li .sub { position: absolute; top: 24px; left: 0; background: #eef5fa; padding: 10px 20px; float: left;
+  -moz-border-radius-bottomright: 5px; -khtml-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; -moz-border-radius-bottomleft: 5px;
+  -khtml-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; display: none; border:2px solid #3E6A82;}
+ul#topnav li .row {clear: both; float: left; width: 100%; margin-bottom: 10px;}
+ul#topnav li .sub ul{ list-style: none; margin: 0; padding: 0; width: 150px; float: left;}
+ul#topnav .sub ul li { width: 100%; color: #fff;}
+ul#topnav .sub ul li h2 { padding: 0;  margin: 0; font-weight: bold;}
+ul#topnav .sub ul li h2 a { padding: 0; background-image: none; color: #074D6D; font-weight: bold;}
+ul#topnav .sub ul li a { float: none; text-indent: 0; height: auto; background:url(../../images/arrow-png.png) no-repeat 0px 7px; padding: 0px 5px 0px 15px; display: block;
+  text-decoration: none; color: #074D6D; font-weight:normal; font-size:12px;}
+ul#topnav .sub ul li a:hover {color: #074D6D; }
+/* Feature 8637 : 24-11-11 Supriya Khedekar */
+
+/************** Drop down 2-11-2011***********************/
+
+#comm_mat_cont_drop  :hover{background-color: #327796;color: #FFFFFF;}
+ul#comm_mat_cnt_drop li:hover{background-color: #327796;color: #FFFFFF;}
+/***********Entries Table***********/
+.entries th{background:#e4e4e4;padding:5px 0;font-weight:bold}
+.entries td.labels{background:#eff7fa;padding:5px 0 5px 10px;border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.data{border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.total{font-size:90.9%;font-weight:bold;background:#eee7d4;padding:5px 0 5px 10px;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

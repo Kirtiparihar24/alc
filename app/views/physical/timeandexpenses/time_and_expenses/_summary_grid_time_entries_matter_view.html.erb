@@ -1,0 +1,150 @@
+<%= hidden_field_tag('date_time', '') %>
+<%= hidden_field_tag('viewType', params[:view]) %>
+<% @saved_time_entries.each do |saved_entry|  %>
+  <% is_open = is_open?(saved_entry) %>
+  <% is_access_tne = is_access_t_and_e? %>
+  <% tne_invoice = saved_entry.tne_invoice %>
+  <% role = get_role(saved_entry.performer.id, saved_entry.matter_id) %>
+  <tr class="<%=cycle('bg2','bg1')-%>" id="time_<%=saved_entry.id%>">
+    <% if is_open %>
+      <td align="center" width="1%">
+        <%= check_box_tag "checked_time_entries[]" ,saved_entry.id , false,:disabled => (check_for_lead_lawyer(saved_entry, @employee_user_id) || is_access_tne) ? false : true,:class=>'entries' %>
+      </td>
+    <% else %>
+      <% mode_type = params[:action].eql?('contact_view') ? 'client' : 'matter' %>
+      <% if params[:status].eql?("Billed") %><td><%= link_to tne_invoice.invoice_no,edit_tne_invoice_path(tne_invoice.id,:mode_type => mode_type) if tne_invoice %></td><% end %>
+    <% end %>
+    <td width="3%" align="center"><%= raw mouseover_text_for_t_and_e('<div class="icon_time " style="margin:4px auto;"></div>',saved_entry.try(:created_by).try(:first_name), saved_entry.created_at.to_time.strftime('%m/%d/%y') ) %> </td>
+    <td width="5%"><%= saved_entry.time_entry_date %> </td>
+    <td width="10%">
+      <% if saved_entry.matter_people_id.blank? %>
+        <strong><%= (saved_entry.try(:performer).try(:first_name)+ " " + saved_entry.try(:performer).try(:last_name)).titleize %></strong>
+        <br/><%= role -%>
+      <%else%>
+        <strong><%= (saved_entry.matter_people.try(:name) + " " + saved_entry.matter_people.try(:last_name)).titleize%></strong>
+        <br/><br/><%= t(:label_non) %>-<%= t(:label_user) %>
+      <%end%>
+      <%= hidden_field_tag("#{saved_entry.id}_is_internal", true)  %>
+    </td>
+    <td width="8%">
+      <div class="w100">
+        <label style="float:left;"><%=t(:label_fm)%>&nbsp;</label>
+        <div style="float:left;" id="formatted_start_time_<%=saved_entry.id%>">
+          <span class="<%= "edit_timeentry_starttime" if is_open %> vtip" id="<%=saved_entry.id%>"><%=saved_entry.formatted_start_time%></span>
+        </div>
+        <br class="clear" />
+        <div class="mt4">
+          <label style="float:left;"><%=t(:label_to)%>&nbsp;</label>
+          <div style="float:left;" id="formatted_end_time_<%=saved_entry.id%>">
+            <span class="<%= "edit_timeentry_endtime" if is_open  %> vtip" id="<%=saved_entry.id%>"><%=saved_entry.formatted_end_time%></span>
+          </div>
+        </div>
+      </div>
+    </td>
+    <td align="right" width="5%">
+      <% duration = @dur_setng_is_one100th ? one_hundredth_timediffernce(saved_entry.actual_duration) : one_tenth_timediffernce(saved_entry.actual_duration) %>
+      <% if params[:status].eql?("Open") && ((@employee_user_id == saved_entry.employee_user_id) || (saved_entry.matter.employee_user_id==@employee_user_id))  %>
+        <div id="actual_duration_<%=saved_entry.id%>">
+          <span class="edit_timeentry_actual_duration vtip" id="<%=saved_entry.id%>" title="Click to Split/Edit" ><%= duration %></span>
+        </div>
+      <% else %>
+        <%= duration %>
+      <% end %>
+
+    </td>
+    <td align="right" width="6%"> <div id="bill_rate_<%= saved_entry.id%>"> <span class="<%= "edit_timeentry_bill_rate vtip" if is_open %>" id="<%= saved_entry.id%>"><%=number_with_lformat(saved_entry.actual_activity_rate)%></span> </div> </td>
+    <td width="8%"> <span class="<%= "edit_timeentry_activity vtip" if is_open %>" id="<%=saved_entry.id%>"><%= saved_entry.acty_type.try(:alvalue) %></span> </td>
+    <td width="12%">
+      <div style="word-wrap:break-word; width:200px">
+        <%= hidden_field_tag "hidden_description",saved_entry.description,:id=>"edit_timeentry_description_hidden_#{saved_entry.id}" if is_open %>
+        <span class="<%= "edit_timeentry_description vtip" if is_open %>"  id="<%=saved_entry.id%>">
+          <%=raw(truncate_withscroll(saved_entry.description,150))%>
+        </span>
+      </div>
+    </td>
+    <% unless controller.action_name.eql?('internal') %>
+      <td align="center" width="2%">
+        <%= check_box( saved_entry.id, 'is_billable', options = {:id=> "#{saved_entry.id}_is_billable", :disabled => is_open ? saved_entry.is_internal : true, :checked => saved_entry.is_billable ,:onclick=>"set_is_billable('#{saved_entry.id}', '');"}) %>
+      </td>
+      <td width="16%">
+        <%=render :partial=>"time_amount", :locals => {:saved_entry => saved_entry, :is_open => is_open}  %>
+      </td>
+    <% end %>
+    <% if is_open %>
+      <td align="right" width="11%"><span class="txtBld11_gry" id="final_billed_amount_<%=saved_entry.id%>"><span style="font-weight: bold;"><%= number_with_lformat(saved_entry.final_billed_amount) %></span></span></td>
+    <% else %>
+      <td align="right" width="11%"> <strong> <span id="final_billed_amount_<%=saved_entry.id%>"><%= saved_entry.is_internal ? '0.00': number_with_lformat(saved_entry.final_billed_amount) %></span> </strong> </td>
+    <%end%>
+    <td align="left" width="7%">
+      <% can_modify_entry = check_for_lead_lawyer(saved_entry, @employee_user_id) %>
+      <% condition = is_open ? can_modify_entry || is_access_tne : can_modify_entry %>
+      <% if condition %>
+        <% unless saved_entry.status.eql?("Billed") %>
+          <%=  select_tag "time_entry_#{saved_entry.id}[status]",options_for_select({"Open" => "Open", "Approved" => "Approved"}, saved_entry.status),{ :onchange=>"change_time_entry_status(#{saved_entry.id}, '#{request.url}');", :class=> is_open ? "dropbox1" : ""}%>
+        <% else %>
+          <%=t(:text_billed)%>
+        <% end  %>
+      <% else  %>
+        <%= saved_entry.status %>
+      <% end %>
+    </td>
+    <td align="center" width="1%">
+      <div class="icon_action  mt3"><a href="#"></a></div>
+      <div id="liquid-roundAP" class="tooltip" style="display:none;">
+        <% link = "NO"
+        if document_available?
+          if is_open
+            link = upload_document_document_homes_path(:mappable_id => saved_entry.id, :from=>'time_open_entry',:time_entry_date => params[:time_entry_date],:status => 'Open',:current_tab=>'fragment-1',:start_date=>params[:start_date],:end_date=>params[:end_date],:from_entry=>'time_entry',:matter_id=>params[:matter_id],:view=>'matter')
+          else
+            link = upload_document_document_homes_path(:mappable_id => saved_entry.id, :from=>'time_close_entry',:time_entry_date => params[:time_entry_date],:status => 'Approved',:current_tab=>'fragment-2',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'matter')
+          end
+        end %>
+        <% path = can_modify_entry && is_open ? physical_timeandexpenses_time_and_expense_path(saved_entry.id, :entry_type => "time_entry",:req_type=>request.request_uri)  : "NO" %>
+        <table width="100%" border="1" cellspacing="0" cellpadding="0">
+          <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+              :deactivate_path=> path,
+              :deactivate_text => is_open ? "Time Entry" : "NO",
+              :comment_path=> "NO",
+              :comment_title => "NO",
+              :document_path=> link,
+              :history_path=> history_comments_path(:id=>saved_entry.id,:commentable_type=>'Physical::Timeandexpenses::TimeEntry',:height=>150,:width=>600),
+              :history_title => "Time Entry History"}) %>
+          <tr>
+            <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+            <td style="background: #fff;">
+              <% if !saved_entry.status.eql?("Billed") && can_modify_entry %>
+                <div class="w100 mt5">
+                  <div class="fl"  style="width:165px;">
+                    <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                      <tr>
+                        <td width="20"><div class="ap_child_action"></div></td>
+                        <td nowrap class="ml5" align="left"><%= link_to("<span>Add More Expenses</span>", {:controller=>'time_and_expenses', :action=>'add_more_expenses', :id=>saved_entry.id, :from => params[:from].eql?("matters") ? "matters" : ""},:title=>'Add More Expenses') %> </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <br class="clear"/>
+                </div>
+              <% else %>
+                <div class="fl"  style="width:165px;">
+                  <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                    <tr>
+                      <td width="20"><div class="ap_child_action"></div></td>
+                      <%mode_type = params[:action].eql?('contact_view')? 'client' : 'matter'%>
+                      <td nowrap class="ml5" align="left"><%= link_to 'Invoice',edit_tne_invoice_path(tne_invoice.id,:mode_type => mode_type) if tne_invoice %></td>
+                    </tr>
+                  </table>
+                </div>
+              <% end %>
+            </td>
+            <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+          </tr>
+          <tr>
+            <td valign="top" class="ap_bottom_curve_left"></td>
+            <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+            <td valign="top" class="ap_bottom_curve_right"></td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+<% end %>

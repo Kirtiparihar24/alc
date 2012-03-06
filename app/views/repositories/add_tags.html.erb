@@ -1,0 +1,27 @@
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<% form_tag(add_tags_repository_path(:method=>'post'),:id=>"upload_form", :onsubmit => 'show_spinner()') do -%>
+  ﻿<div>
+    <table width="100%">
+      <tr>
+        <td valign="top"><label><%=t(:label_name)%></label></td>
+        <td valign="top"><%= @type=='DocumentHome'?h(@document_home.latest_doc.name) : h(@document_home.name)%></td>
+        <td valign="top">&nbsp;<%= hidden_field_tag :type, @type %><%= hidden_field_tag :id, @document_home.id%> </td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top"><label>Current Tags</label></td>
+        <!-- :onKeyUp=>"imposeMaxLength(this, 200)" will call imposeMaxLength() in application.js file for maxlength validation on text_area_tag : By - Pratik Jadhav-->
+        <td valign="top"><%=text_area_tag 'document_home[tag_array]',@document_home.tag_list , {:rows => 5, :cols => 30,:onKeyUp=>"imposeMaxLength(this, 200)"} %></td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+      </tr>
+    </table>
+    <div class="buttonSub_div">
+      <%=submit_tag t(:text_save), :class=>"button",:id=>'save_rep',:onclick=>'return checkloader();'%>  
+      <input type="submit" id="cancel" value="Cancel" onclick="parent.tb_remove();return false"/>
+    </div>
+  </div>
+<% end %>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;109</div>

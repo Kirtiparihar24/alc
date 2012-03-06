@@ -1,0 +1,156 @@
+<div class="" id="modal_new_task_errors" style="display: none; text-align: left"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<% remote_form_for([@matter, @matter_task],:loading=>'return disableAllSubmitButtons("matters")',:complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+  <div class="mt20">
+    <table style="margin: 0pt auto;" border="0" cellpadding="0" cellspacing="0" width="100%" class="form_table">
+      <tbody>
+        <tr>
+          <td align="left" width="109"><label><%= t(:text_activity_name) %><span class="alert_message">*</span></label></td>
+          <td align="left" width="256"><%= f.text_field :name, :size=>"40",:value=>(@note_name.description if @note_name) %></td>
+          <td align="right" width="150"><%= t(:text_critical) %></td>
+          <td align="left" width="497"><%= f.check_box :critical %></td>
+        </tr>
+        <%if @matter.is_litigation%>
+          <tr>
+            <td align="left"><%=t(:text_phase)%></td>
+            <td align="left">&nbsp;<%=f.collection_select(:phase_id, current_company.phases,:id,:lvalue, {:include_blank => "----------Select----------"})%></td>
+            <td align="left">&nbsp;</td>
+            <td align="left">&nbsp;</td>
+          </tr>
+        <%end%>
+        <% disable = !@matter_task.new_record? && !@matter_task.category.nil? %>
+        <% @matter_task.category ||= "todo" %>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td colspan="3" align="left">
+            <table border="0" cellpadding="0" cellspacing="0" width="50%">
+              <tbody>
+                <tr>
+                  <td width="7%" valign="top"><%= f.radio_button :category, "todo", :disabled => disable, :onclick => "jQuery('#task_todo_div').show();jQuery('#task_appointment_div').hide();jQuery('#subtaskdiv').show(); jQuery('#sub_task_labelspan').show();" %></td>
+                  <td width="13%" style="padding-top:4px;"><%= t(:text_to_do_task) %></td>
+                  <td width="7%" valign="top"><%= f.radio_button :category, "appointment", :disabled => disable, :onclick => "jQuery('#task_todo_div').hide();jQuery('#task_appointment_div').show(); jQuery('#subtaskdiv').hide(); jQuery('#sub_task_labelspan').hide(); " %></td>
+                  <td width="73%" style="padding-top:4px;"><%= t(:text_schedule_task) %></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <%unless @other_matter_tasks.nil? or @other_matter_tasks.empty?%>
+          <tr>
+            <td></td>
+            <td colspan="3">
+              <table cellspacing="0" cellpadding="0" width="100%">
+                <td width="13%" align="left"><span id="sub_task_labelspan"><%=t(:text_is_it_a_subtask)%></span></td>
+                <td align="left">
+                  <div id="subtaskdiv">
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <%check = !@matter_task.parent_id.nil? && @matter_task.assoc_as.eql?("1")%>
+                      <tbody>
+                        <tr>
+                          <td width="4%" align="left"><%=f.check_box :assoc_as, :checked => check, :onclick=>"jQuery('#parent_task_span1').toggle();jQuery('#parent_task_span2').toggle();" %></td>
+                          <td width="13%">
+                            <div id="parent_task_span1" <%unless check%> style="display:none;" <%end%>><%=t(:text_select_parent_task)%><span class="alert_message">*</span>
+                            </div>
+                          </td>
+                          <td width="52%">
+                            <div id="parent_task_span2" <%unless check%> style="display:none;" <%end%>><%= f.collection_select :parent_id, @other_matter_tasks, :id, :clipped_name, { :include_blank => "----------Select----------" } %></div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </table>
+            </td>
+
+          </tr>
+        <%end%>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td colspan="3" align="left">
+            <%categ = @matter_task.category || "todo"%>
+            <div id="task_todo_div" <%if categ.eql?("appointment")%> style="display:none;" <%end%>>
+              <%=render :partial => "task_todo", :locals => {:f => f}%>
+            </div>
+            <div id="task_appointment_div" <%if categ.eql?("todo")%> style="display:none;" <%end%>>
+              <%=render :partial => "task_appointment", :locals => {:f => f}%>
+            </div>
+            <%unless @matter_task.new_record?%>
+              <div class="fl ml15">
+                <a href="<%=time_expense_entry_matter_matter_task_path(@matter, @matter_task, :height => "400", :width => "500")%>" class="thickbox fr link_blue vtip" title="<%=t(:text_new_time_entry)%>" name="<%=t(:text_new_time_entry)%>"><span class="icon_make_time_entry fl"></span></a>
+              </div>
+            <%end%>
+          </td>
+        </tr>
+        <tr>
+          <td align="left"><%=t(:text_responsibility)%><span class="alert_message">*</span></td>
+          <td align="left"><%= f.collection_select  :assigned_to_matter_people_id, @assignees, :id, :get_name, { :include_blank => "----------Select----------" }, :class=>"selectBoxNewMatter"%></td>
+          <td align="right" nowrap="nowrap"><%=t(:text_client_task)%></td>
+          <td align="left"><%= f.check_box  :client_task, :value=>1, :class=>"checkbox" %></td>
+        </tr>
+        <tr>
+          <td align="left"  valign="top"><%=t(:text_description)%></td>
+          <td colspan="3" align="left" valign="top"><%=f.text_area :description, :cols => "60", :rows => "3"%></td>
+        </tr>
+        <tr align="right">
+          <td align="left"><%=t(:text_complete)%></td>
+          <td colspan="3" align="left">
+            <table border="0" cellpadding="0" cellspacing="0" width="70%">
+              <tbody>
+                <tr>
+                  <td width="15%">
+                    <%=f.check_box :completed, :class=>"checkBox1", :onclick => "show();" %>
+                  </td>
+              <div id="completed_div_hide" <%unless @matter_task.completed%> style="display:none;" <%end%>>
+                <td width="32%">
+                  <div id='completed_div_hide1' <%unless @matter_task.completed%> style="display:none;" <%end%>>
+                    <%=t(:text_completion_date)%><span class="alert_message">*</span></div>
+                </td>
+                <td width="23%">
+                  <div id='completed_div_hide2' <%unless @matter_task.completed%> style="display:none;" <%end%>>
+                    <%=f.text_field :completed_at,  :value => @matter_task.completed_at || livia_date(Time.zone.now.to_date), :class=>"date_picker", :size=>"10"%>
+                  </div>
+                </td>
+                <td width="36%">
+                  <%unless @matter_task.new_record?%>
+                    <div id='completed_div_hide3' <%unless @matter_task.completed%> style="display:none;"<%end%>>
+                      <a href="<%=time_expense_entry_matter_matter_task_path(@matter, @matter_task, :height => "400", :width => "970")%>" class="thickbox fl link_blue vtip" title="<%=t(:text_make_time_entry)%>" name="<%=t(:text_make_time_entry)%>">
+                        <span class="icon_make_time_entry fl"></span>
+                      </a>
+                    </div>
+                  <%end%>
+                </td>
+              </div>
+        </tr>
+      </tbody>
+    </table>
+  </td>
+  </tr>
+  <tr align="right">
+    <td>&nbsp;</td>
+    <td align="left">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr align="right">
+    <td colspan="4" align="center">
+      <%= f.submit t(:text_save),:class=>'matters',:onclick=> 'return checkloader();', :id => "save_task"%>
+      <%=f.submit t(:text_cancel),:class=>'matters', :id=>'Login2',:type=>'button',:onclick => "parent.tb_remove();return disableAllSubmitButtons('matters')"%>
+    </td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+<%end%>
+<div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+<script language="javascript" type="text/javascript">
+  livia_datepicker_new("#matter_task_completed_at");
+  // Need to removed to JS File
+  function show() {    
+    jQuery('#completed_div_hide1').toggle();
+    jQuery('#completed_div_hide2').toggle();
+    jQuery("#matter_task_until").addClass("date_picker");
+    
+  }
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;40</div>

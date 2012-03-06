@@ -1,0 +1,14 @@
+<div>
+  <div class="titleHead"><%if user_name.blank?%><%=t(:text_unassigned)%><%else%><%=user_name.username.try(:capitalize)%><%end%>&nbsp;&nbsp;
+  </div>
+<table>
+  <tr>
+    <td>
+      <%= link_to(t(:text_select_notes_to_assign),"#",{:onclick=>"secrataryUnassign(#{params[:secratary_id]},'','notes');return false;",:id=>'btn_notes_summary',:class=>"linknormal"})%>
+      <%= link_to(t(:text_select_task_to_assign),"#",{:onclick=>"secrataryUnassign(#{params[:secratary_id]},'','task');return false;",:id=>'btn_notes_summary',:class=>"linknormal"})%>
+    </td>
+  </tr>  
+</table>
+</div>
+<br/>
+<div id="show_details_list_DIV"></div>

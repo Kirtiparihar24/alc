@@ -1,0 +1,181 @@
+<h2 class="title_main"><%=t(:text_edit_account)%></h2>
+<div class="p8">
+  <% form_for(@account, :html => {:onsubmit => "return disableAllSubmitButtons('accounts')"}) do |f| %>
+    <%= hidden_field_tag 'button_pressed'%>
+    <%= hidden_field_tag :divid %>
+    <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+    <%if(@account.errors.length >0)%>
+      <div class='message_error_div'>
+        <%= error_messages_for(:account, :contact)%>
+        <%= flash[:error]%>
+      </div>
+    <%end%>
+    <div class="form_table">
+      <table cellpadding="0" cellspacing="0" width="100%">
+        <tbody>
+          <tr>
+            <td width="51%" align="left" valign="top">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td colspan="5"><h3 class="title_gray"><%=t(:label_account)%>&nbsp;<%=t(:label_information)%></h3></td>
+                </tr>
+                <tr>
+                  <td width="18%"><label><%= t(:label_name) %> <span class="alert_message">*</span></label></td>
+                  <td width="25%"><%= f.text_field :name,:id=>"name",:size=>18, :maxlength => 64 %></td>
+                  <td width="8%">&nbsp;</td>
+                  <td width="18%"><label><%= t(:label_website) %></label></td>
+                  <td width="30%"><%= f.text_field :website ,:size=>18 %></td>
+                </tr>
+                <tr>
+                  <td width="18%"><label><%= t(:label_phone_1) %></label></td>
+                  <td width="25%"><%= f.text_field :phone ,:maxlength=>"15",:size=>18 , :class => "phone"%></td>
+                  <td width="8%">&nbsp;</td>
+                  <td width="18%"><label><%= t(:label_phone_2) %></label></td>
+                  <td width="30%"><%= f.text_field :toll_free_phone ,:maxlength=>"15",:size=>18, :class => "phone" %></td>
+                </tr>
+                <tr>
+                  <td width="18%"><label><%= t(:label_assigned_to) %></label></td>
+                  <td width="25%"><%= f.collection_select  :assigned_to_employee_user_id, @employees, :id, :full_name, { :include_blank => "--None--" },{:style=>"width:150px"} %> </td>
+                  <td width="8%">&nbsp;</td>
+                  <td width="18%" valign="top"><label><%= t(:label_parent_account) %></label></td>
+                  <td width="30%"><%= f.collection_select  :parent_id, @parent_accounts, :id, :name, { :include_blank => "--None--" },{:style=>"width:150px"} %> </td>
+                </tr>
+                <tr>
+                  <td colspan="5">&nbsp;</td>
+                </tr>
+                <% f.fields_for :billingaddresses, @billingaddress do |badd| %>
+                  <%=f.hidden_field :change_bill_address%>
+                  <%= badd.hidden_field :address_type, :value=>'billing' %>
+                  <%= badd.hidden_field :company_id, :value=>current_company.id %>
+                  <tr>
+                    <td colspan="5"><h3 class="title_gray border_top_gray"><%= t(:text_billing_address) %></h3></td>
+                  </tr>
+                  <tr>
+                    <td width="18%"><%= t(:label_street) %></td>
+                    <td width="25%"><%= badd.text_field :street ,:maxlength => 100, :style => "width: 85%"  %></td>
+                    <td width="8%">&nbsp;</td>
+                    <td width="18%"></td>
+                    <td width="30%"></td>
+                  </tr>
+                  <tr>
+                    <td width="18%"><%= t(:label_city) %></td>
+                    <td width="25%"><%= badd.text_field :city ,:maxlength => 100, :style => "width: 85%"  %></td>
+                    <td width="8%">&nbsp;</td>
+                    <td width="18%"><%= t(:label_state) %></td>
+                    <td width="30%"><%= badd.text_field :state, :maxlength => 64, :size => "18",:style=>"text-transform:capitalize" %></td>
+                  </tr>
+                  <tr>
+                    <td width="18%"><%= t(:label_zip_code) %></td>
+                    <td width="25%"><%= badd.text_field :zipcode,:maxlength => 10, :style => "width: 85%"  %></td>
+                    <td width="8%">&nbsp;</td>
+                    <td width="18%"><%= t(:label_country) %></td>
+                    <td width="30%"><%= badd.text_field :country ,:maxlength => 100, :style => "width: 77%" %></td>
+                  </tr>
+                <%end%>
+                <tr>
+                  <td colspan="5">&nbsp;</td>
+                </tr>
+                <% f.fields_for :shippingaddresses,@shippingaddress do |sadd| %>
+                  <%= sadd.hidden_field :address_type, :value=>'shipping' %>
+                  <%= sadd.hidden_field :company_id, :value=>current_company.id %>
+                  <tr>
+                    <td colspan="5" class="border_top_gray"><h3 class="title_gray fl"><%= t(:text_shipping_address) %> </h3>
+                      <div class="fl ml5"><input class="mt8" type="checkbox" <%=@shippingaddress.street.present? ? 'checked' : '' if @shippingaddress %> onChange="copy_address(this.checked);"/><label class="textgray"><%=t(:label_Same_as_Billing)%></label></div></td>
+                  </tr>
+                  <tr>
+                    <td width="18%"><%= t(:label_street) %></td>
+                    <td width="25%"><%= sadd.text_field :street ,:maxlength => 100, :style => "width: 85%" %></td>
+                    <td width="8%">&nbsp;</td>
+                    <td width="18%"></td>
+                    <td width="30%"></td>
+                  </tr>
+                  <tr>
+                    <td width="18%"><%= t(:label_city) %></td>
+                    <td width="25%"><%= sadd.text_field :city ,:maxlength => 100, :style => "width: 85%" %></td>
+                    <td width="8%">&nbsp;</td>
+                    <td width="18%"><%= t(:label_state) %></td>
+                    <td width="30%"><%= sadd.text_field :state, :maxlength => 64, :size => "18" ,:style=>"text-transform:capitalize"%></td>
+                  </tr>
+                  <tr>
+                    <td width="18%" valign="top"><%= t(:label_zip_code) %></td>
+                    <td width="25%" valign="top"><%= sadd.text_field :zipcode ,:maxlength => 10, :style => "width: 85%" %></td>
+                    <td width="8%" valign="top">&nbsp;</td>
+                    <td width="18%" valign="top"><%= t(:label_country) %></td>
+                    <td width="30%" valign="top"><%= sadd.text_field :country ,:maxlength => 100, :style => "width: 77%" %></td>
+                  </tr>
+                <%end%>
+                <tr>
+                  <td colspan="5"><div class="buttonSub_div">
+                      <%= f.submit t(:text_save), :name => "save",:class => 'accounts', :onclick => "return validate_account_details(this);" %>
+                      <%= f.submit t(:text_save_n_exit), :name => "save_exit",:class => 'accounts', :onclick => "return validate_account_details(this);" %>
+                      <%= f.submit t(:label_cancel), :name => "cancel", :type=>"button",:class => 'accounts', :onclick => "setButtonPressed(this); disableAllSubmitButtons('accounts'); window.location='#{remember_past_path}';return false;" %>
+                      <%= hidden_field_tag :commit,'',:id=>"updateme" %>
+                    </div></td>
+                  <td valign="top">&nbsp;</td>
+                  <td valign="top">&nbsp;</td>
+                </tr>
+                <tr><td align="left" colspan="5"><div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></div></td></tr>
+              </table>
+
+            </td>
+            <td width="2%" align="left" valign="top"></td>
+            <td width="47%" align="left" valign="top"><table align="right" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr> <td><h3 class="title_gray"><%=t(:label_account)%>&nbsp;<%=t(:label_contacts)%></h3></td> </tr>
+                  <tr>
+                    <td class="box_bg_bdr_1 bdr_bot_1"><table align="left" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td><label>&nbsp;<%=t(:label_contact)%></label>&nbsp;&nbsp; </td>
+                          <td><%= raw contact_search_box('contact[id]', controller.controller_name, "", "") %></td>
+                          <td align="left"><strong class="text12 mlr8">or</strong>
+                            <label> <a href="<%="#{modal_new_form_contacts_path}?height=250&width=500&called_from=#{controller_name}&account_id=#{@account.id}"%>" class="thickbox link_blue" title="Create New Contact" name="Create New Contact"><%=t(:label_create)%>&nbsp;<%=t(:label_new)%>&nbsp;<%=t(:label_contact)%></a></label>
+                            <strong class="text12 mlr8">|</strong>
+                            <label>
+                              <% unless @account.contacts.size > 1 %>
+                                <%= t(:text_change_primary_contact) %>
+                              <% else %>
+                                <%= link_to t(:text_change_primary_contact), "/accounts/change_primary_contact/#{@account.id || params[:id]}?height=130&width=370", :class => "thickbox vtip", :title =>"#{t(:text_change_primary_contact)}" , :name =>"#{t(:text_change_primary_contact)}"%>
+                              <% end %>
+                            </label>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr> <td><%=render :partial=>"common/contacts_list"%> </td> </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <%end%>
+  <br class="clear"/>
+</div>
+<script type="text/javascript">
+  var address_changed = false;
+  jQuery(document).ready(function(){
+    validate_contact_presence();
+  });
+
+  jQuery(".disundis").attr("disabled", "disabled");
+<%if @account.errors.length >1%>
+    jQuery("#contact_selector").text("Select Existing");
+    jQuery(".disundis").attr("disabled", false);
+<%end%>
+  jQuery('#name').focus();
+
+  jQuery(document).ready(function(){
+   jQuery('input[id^="account_billingaddresses_attributes"]').change(function(){
+      address_changed = true;
+    })
+  });
+
+  function validate_account_details(button){
+    setButtonPressed(button);
+    check_bill_address_update('account', address_changed, "<%=@total_open_invoices%>", "<%=params[:action]%>");
+  }
+</script>
+
+

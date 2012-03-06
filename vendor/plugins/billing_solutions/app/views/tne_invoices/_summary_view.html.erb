@@ -1,0 +1,109 @@
+<div class="p5">
+  <div id="managed">
+    <div id="2container-1">
+      <div id="fragment-1" >
+        <!--remove to partial-->
+        <h2 class="title_main">
+          <%if @matter%>
+            <%="Invoice Entries for matter \"#{@matter.clipped_name}\""%>
+          <%elsif @contact%>
+            <%="Invoice Entries for contact \"#{@contact.full_name}\""%>
+          <%end%>
+        </h2>
+        <div class="tabular_listing p5  ">
+          <table width="100%" cellspacing="1" cellpadding="1" class="border_gray">
+            <tbody>
+              <tr>
+<%#*<th align="center" width="2%">%>
+<%# unless @saved_time_entries.blank? %>
+<%#*<input id="check_all" name="check_all" type="checkbox" onclick="toggle_checked_entries();" />%>
+<%#end%>
+<%#*</th>%>
+
+                <th align="center" width="25%"><%=@consolidated_by=="Activity" ?  "#{t(:text_activity)}": 'Lawyer Designation'%></th>
+                <th align="center" width="25%"><%=t(:text_duration)%> &nbsp;<%=t(:text_hour)%></th>
+                <th align="center" width="25%"><%=t(:text_rate)%> &nbsp;($)</th>
+                <th width="25%"><%=t(:text_final)%>&nbsp;<%=t(:text_invoice)%>&nbsp;<%=t(:text_amt)%></th>
+              </tr>
+              <% unless @total_data.blank? %>
+  <%#= render :partial=>"summary_grid_time_entries_matter_view", :locals => {:f => f} %>
+
+                <% for bill_entry in @total_data %>
+                  <% f.fields_for :tne_invoice_details, @tne_invoice_details do |tne_invoice_detail| %>
+                    <%= tne_invoice_detail.hidden_field :matter_id, :value => params[:matter_id] if params[:matter_id].present? %>
+                    <%= tne_invoice_detail.hidden_field :contact_id, :value => params[:contact_id] if params[:contact_id].present? %>
+                    <%= tne_invoice_detail.hidden_field :entry_type, :value => "Time" %>
+                    <%= tne_invoice_detail.hidden_field :activity, :value => bill_entry[2] %>
+                    <%= tne_invoice_detail.hidden_field :company_id, :value => current_company.id %>
+                    <tr class="<%= cycle('bg1','bg2') %>">
+
+                      <td align="center"> <%if @consolidated_by=='Activity'%>
+                              <%= tne_invoice_detail.text_field :activity, :value => bill_entry[2],:readonly=>true%>
+                              <%else%>
+                              <%= tne_invoice_detail.text_field :lawyer_designation, :value => bill_entry[2],:readonly=>true%>
+                              <%end%>
+                              <%#= link_to bill_entry[2], "#this", :onClick=>"hide_show_billentry(this, 'timeentry#{bill_entry[0]}')" unless @consolidated_by=="Activity" %></td>
+                      <td align="center"><%= tne_invoice_detail.text_field :duration, :value => bill_entry[1].to_f.fixed_precision(2), :size => 5 %> <%#=bill_entry[1].fixed_precision(2)%> </td>
+                      <td align="center"> <%= tne_invoice_detail.text_field :rate, :value => bill_entry[5].to_f.fixed_precision(2), :size => 5 ,:readonly=>true%></td>
+                      <td align="center"> <%=bill_entry[3].to_f.fixed_precision(2)%><%= tne_invoice_detail.hidden_field :amount, :value => bill_entry[3].to_f.fixed_precision(2), :size => 5 %></td>
+
+                    </tr>
+                  <% end %>
+                <% end %>
+
+              <% else %>
+                <tr> <td colspan="14" align="center" ><strong><%=t(:text_no_record_s_found)%></strong></td> </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+          <table width="100%" cellspacing="1" cellpadding="1" class="border_gray mt15">
+            <tbody>
+              <tr>
+<%#*<th align="center" width="2%">%>
+<%# unless @saved_time_entries.blank? %>
+<%#*<input id="check_all" name="check_all" type="checkbox" onclick="toggle_checked_entries();" />%>
+<%#end%>
+<%#*</th>%>
+
+                <th align="center" width="25%"><%=@consolidated_by=="Activity" ?  "#{t(:text_activity)}": 'Lawyer Designation'%></th>
+                <th align="center" width="25%"><%=t(:text_duration)%> &nbsp;<%=t(:text_hour)%></th>
+                <th align="center" width="25%"><%=t(:text_rate)%> &nbsp;($)</th>
+                <th width="25%"><%=t(:text_final)%>&nbsp;<%=t(:text_invoice)%>&nbsp;<%=t(:text_amt)%></th>
+              </tr>
+              <% unless @total_expenses.blank? %>
+                <% for bill_expense in @total_expenses  %>
+                  <% f.fields_for :tne_invoice_details, @tne_invoice_details do |tne_invoice_detail| %>
+                    <%= tne_invoice_detail.hidden_field :matter_id, :value => params[:matter_id] if params[:matter_id].present? %>
+                        <%= tne_invoice_detail.hidden_field :contact_id, :value => params[:contact_id] if params[:contact_id].present? %>
+                        <%= tne_invoice_detail.hidden_field :entry_type, :value => "Expense" %>
+                        <%= tne_invoice_detail.hidden_field :activity, :value => bill_expense[2] %>
+                        <%= tne_invoice_detail.hidden_field :company_id, :value => current_company.id %>
+              <tr class="<%= cycle('bg1','bg2') %>">
+                      
+                      <td align="center">
+                              <%if @consolidated_by=='Activity'%>
+                              <%= tne_invoice_detail.text_field :activity, :value => bill_expense[2],:readonly=>true%>
+                              <%else%>
+                              <%= tne_invoice_detail.text_field :lawyer_designation, :value => bill_expense[2],:readonly=>true%>
+                              <%end%><%#= link_to bill_entry[2], "#this", :onClick=>"hide_show_billentry(this, 'timeentry#{bill_entry[0]}')" unless @consolidated_by=="Activity" %></td>
+                      <td align="center"><%#= tne_invoice_detail.text_field :duration, :value => bill_expense[1].fixed_precision(2), :size => 5 %> <%#=bill_entry[1].fixed_precision(2)%> </td>
+                      <td align="center"> <%#= tne_invoice_detail.text_field :rate, :value => bill_expense[5].fixed_precision(2), :size => 5 ,:readonly=>true%></td>
+                      <td align="center"> <%= tne_invoice_detail.text_field :amount, :value => bill_expense[3].to_f.fixed_precision(2), :size => 5 %></td>
+
+                      
+                    </tr>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <tr> <td colspan="14" align="center" ><strong><%=t(:text_no_record_s_found)%></strong></td> </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!--remove to partial-->
+      </div>
+    </div>
+  </div>
+  <div class="mandatory mt12">T/E:- Time &amp; Expense, T:- Time, Dur:- Duration, Amt:- Amount, Dis:- Discount, OA:- Override Amt, Attch:- Attachment, M:- Matter, C:- Contact, Fm:- From </div>
+</div>

@@ -1,0 +1,21 @@
+<table id="myTable" class="tablesorter">
+  <thead>
+    <tr>
+      <th width="12%"><%=t(:text_title)%></th>
+      <th width="15%"><%=t(:text_user)%></th>
+      <th width="45%"><%=t(:text_comment_details)%></th>
+      <th width="15%"><%=t(:text_created_at)%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @comments.each do |comment| %>
+      <tr class="<%=cycle("odd", "")%>">
+        <td width="10%"><%=comment.title.eql?("MatterTask Client") ? "Client Message" : "Internal Comment"%></td>
+        <td width="15%"><%= comment.user.nil?? '' : comment.user.try(:full_name)%></td>
+        <td width="45%">
+          <span class="comment"><%=raw(truncate_hover_comments(comment.comment,60))%></span></td>
+        <td width="15%"><%=comment.created_at.to_time.strftime('%m/%d/%y %H :%M')%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

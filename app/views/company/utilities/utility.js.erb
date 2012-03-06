@@ -1,0 +1,5 @@
+jQuery('#cmp_name').html("<%=@company.name%>");
+jQuery('#utility').html("<%=escape_javascript(render(:partial=>"/company/utility_tabs"))%>");
+<% active_deactive = find_model_class_data(@type) %>
+jQuery('#list').html("<%=escape_javascript(render(:partial => "company/list", :locals => {:active_entries => active_deactive[0], :deactive_entries => active_deactive[1], :table_id => @type, :header=>"Stage", :modelclass=> @type,:linkage =>@linkage,:column_name=>@column_name}))%>");
+jQuery('a[rel*=facebox]').facebox();

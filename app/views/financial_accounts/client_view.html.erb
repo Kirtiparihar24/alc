@@ -1,0 +1,77 @@
+<table cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td width="74%">
+      <% unless (is_lawfirmadmin && is_liviaadmin)%>
+        <ul class="tabs-nav">
+          <li><%= link_to(t(:text_financial_account), financial_accounts_path) %></li>
+          <li class="tabs-selected"> <%= link_to(t(:text_financial_account_client_view), client_view_financial_accounts_path) %></li>
+        </ul>
+      <% end %>
+    </td>
+  </tr>
+</table>
+<div id="fragment-1" class="tabs-container">
+  <div id="content">
+
+    <div class="box">
+      <div class="box-head">
+        <h2 id="toggle_busi_cont_detail_toggle" class="title_main">
+          <div class="fl"><%#= link_to(t(:text_financial_account), financial_accounts_path) %><%#= link_to(t(:text_financial_account_client_view), client_view_financial_accounts_path) %></div>
+        </h2>
+      </div>
+      <div class="table">
+        <div class="tabular_listing p5" id="account_DIV">
+          <table width="100%" border="0" cellspacing="1" cellpadding="1" class="border_gray">
+            <tr>
+              <th width="16%" align="left"><%= t(:text_financial_account_contact_or_client) %></th>
+              <th width="16%" align="left"><%= t(:text_financial_account) %></th>
+              <th width="16%" align="left"><%= t(:text_financial_account_bank_name) %></th>
+              <th width="8%" align="left"><%= t(:text_financial_account_account_no) %></th>
+              <th width="8%" align="left"><%= t(:text_financial_account_financial_account_type) %></th>
+              <th width="16%" align="left"><%= t(:text_financial_account_matter) %></th>
+              <th width="8%" align="right"><%= t(:text_amt) %></th>
+              <th width="8%" align="right"><%= t(:text_financial_account_balance) %></th>
+            </tr>
+            <% @client_transaction_hash.each_pair do |client, trust_transaction| %>
+              <tr class="bg1">
+                <td align="left"><strong><%= h(client.split('_0000_livia_')[0]) %>  </strong></td>
+                <td align="left">&nbsp;</td>
+                <td align="left">&nbsp;</td>
+                <td align="right">&nbsp;</td>
+                <td align="left">&nbsp;</td>
+                <td align="left">&nbsp;</td>
+                <td align="left">&nbsp;</td>
+                <td align="right"><%= h(livia_amount(client.split('_0000_livia_')[1])) %></td>
+              </tr>
+              <% trust_transaction.each do |tr_transaction|%>
+                <% client_view_financial_account_id, client_view_transaction_id = [tr_transaction.pop(), tr_transaction.pop()]%>
+                <tr class="bg2">
+                  <td></td>
+                  <% tr_transaction.each do |x| %>
+                    <td <%= "align='right'" unless x.is_a? String %>>
+                      <%unless is_liviaadmin %>
+                        <a href="/financial_account/<%=client_view_financial_account_id%>/client_specific/<%=client_view_transaction_id%>"><%= x.is_a?(String) ? x : livia_amount(x) %></a>
+                      <%else%>
+                        <%= x.is_a?(String) ? x : livia_amount(x) %>
+                      <%end%>
+                    </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+          </table>
+          <div class="clear"></div>
+        </div>
+        <div class="pagination">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style type="text/css">
+  .column_main {
+    background: none !important;
+    border: 0px !important;
+  }
+</style>
+

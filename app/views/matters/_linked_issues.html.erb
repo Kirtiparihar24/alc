@@ -1,0 +1,33 @@
+﻿<div style="text-align:center;margin-top:20px;">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <!--Tabular container div @start here -->
+  <% unless @matter_issues.empty? %>
+    <% form_for([@matter, @submodel], :url => {:action => :linked_issues, :id => @matter.id},:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+      <div class="tabular_listing">
+        <%=hidden_field_tag :issue_type, @issue_type%>
+        <%=hidden_field_tag :matter_research_id, @submodel.id  if @issue_type=="matter_research"%>
+        <%=hidden_field_tag :matter_fact_id, @submodel.id  if @issue_type=="matter_fact"%>
+        <%=hidden_field_tag :matter_document_id, @submodel.id  if @issue_type=="document_home"%>
+        <%=hidden_field_tag :matter_risk_id, @submodel.id  if @issue_type=="matter_risk"%>
+        <%=hidden_field_tag :path, @path%>
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>
+            <th width="95%" align="left"><%=t(:label_issue)%></th>
+            <th width="5%" align="left">&nbsp;</th>
+          </tr>
+          <% @matter_issues.each do |mi| %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td align="left" width="80%"><%= truncate_hover(mi.name, 80) %></td>
+              <td align="left" width="20%"><%= check_box_tag "#{@issue_type}[matter_issue_ids][]", mi.id, @matter_issueid.include?(mi.id) %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <br class="clear"/>
+      <%=f.submit "Link", :name => "link", :id => "link_issues_button", :onclick => "return checkloader(); this.value = 'Please wait ...'" %>&nbsp;&nbsp;&nbsp;<%=f.submit "Cancel", :class=>'matters',:onclick => "tb_remove(); return false;"%>
+    <% end %>
+  <% else %>
+    <div class="warningCont m5">No <%=t(:label_issues)%> found for this matter</div>
+  <% end %>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;56 </div>

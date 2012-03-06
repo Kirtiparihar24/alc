@@ -1,0 +1,30 @@
+<%=@header_opts[:r_name]%>
+
+<%-@total_data.each do |label,data|-%>
+<%="Contact : #{label}"%>
+<%="Time Accounted"%>
+<%=@table_headers.join(",")%>
+<%-data.each do |array|-%>
+<%=array.join(",")%>
+<%-end-%>
+<%=",,, #{@conditions[label][1]} ,,,, #{@conditions[label][2]}, #{@conditions[label][3]},#{@conditions[label][4]},#{@conditions[label][5]}"%>
+<%-if @total_expenses.has_key?(label)-%>
+<%="Expenses Accounted"%>
+<%=@conditions[:table_headers].join(",")%>
+<%-@total_expenses[label][0].each do |data|-%>
+<%=data.join(",")%>
+<%-end-%>
+<%=",,,,,,,#{@total_expenses[label][1]},#{@total_expenses[label][2]}"%>
+<%-@total_expenses.delete(label)-%>
+<%-end -%>
+
+<%-end-%>
+<%-@total_expenses.each do|label,data|-%>
+<%="Contact : #{label}"%>
+<%=@conditions[:table_headers].join(",")%>
+<%-data[0].each do |array|-%>
+<%=array.join(",")%>
+<%=",,,,,,,#{data[1]},#{data[2]}"%>
+<%-end end-%>
+
+

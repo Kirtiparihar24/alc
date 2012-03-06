@@ -1,0 +1,11 @@
+<h1>New tne_invoice_detail</h1>
+
+<% form_for(@tne_invoice_detail) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', tne_invoice_details_path %>

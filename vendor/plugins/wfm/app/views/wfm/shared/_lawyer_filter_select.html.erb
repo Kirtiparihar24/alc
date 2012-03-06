@@ -1,0 +1,5 @@
+<%if params[:model_name]=="user_tasks"%>
+  <%= select :search,:employee_user_ids,options_for_select(@lawyer_users.collect{|lawfirm_user| [lawfirm_user.full_name, lawfirm_user.id]}), {:prompt=>"Please Select"}, {:size=>'5', :style=>"width:120px;", :multiple=>true}%>
+<%else%>
+  <%= select :search,:employee_user_id,options_for_select(@lawyer_users.collect{|lawfirm_user| [lawfirm_user.full_name, lawfirm_user.id]}), {:prompt=>"Please Select"}, {:style=>"width:120px;"}%>
+<%end%>

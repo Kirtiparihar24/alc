@@ -1,0 +1,5 @@
+<%unless params[:company_id]%>
+  <%=select_tag :employee_user_id, "<option>Please Select</option>",:class=>"dropbox",:disabled => true%>
+<%else%>
+  <%=collection_select :employee, :user_id, @users, :id, :full_name,{:prompt =>'Please Select'},{:class=>"field size3", :onchange => "listofuser_secretary(this.value,#{params[:company_id]})"} %>
+<%end%>

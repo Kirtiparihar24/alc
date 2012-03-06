@@ -1,0 +1,40 @@
+<%= javascript_include_tag "jquery/jquery.jeditable.js" %>
+<% form_tag(zimbra_configs_path) do %>
+  <strong>Domain Name</strong> <%= text_field_tag :domain%>
+  <strong>URL</strong> <%= text_field_tag :url%>
+  <strong>Key</strong> <%= text_field_tag :domain_key%>
+
+  <%= submit_tag "ADD Config" %>
+<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Domain</th>
+      <th>Url</th>
+      <th>Key</th>
+    </tr> 
+  </thead>
+  <tbody>
+    <% @zimbra_configs.each do |zc|%>
+      <tr>
+        <td class="edit_in_place_config" id="domain_<%= zc.id %>" ><%= zc.domain%></td>
+        <td class="edit_in_place_config" id="url_<%= zc.id %>"><%= zc.url%></td>
+        <td class="edit_in_place_config" id="domain_key_<%= zc.id %>" ><%= zc.domain_key%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<script type="text/javascript">
+  function in_line_edit_of_config(){
+    jQuery('.edit_in_place_config').editable('/zimbra_configs/modify', {
+      indicator : 'Saving...',      
+      id:jQuery(this).attr('id'),
+      submit : 'OK',
+      width: '150',
+      cancel: "cancel"
+    });
+  }
+
+  in_line_edit_of_config();
+</script>
+<%# Need to check this view if in use %>

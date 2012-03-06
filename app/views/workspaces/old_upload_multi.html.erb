@@ -1,0 +1,47 @@
+<div  id="loader1" style="display:none;"><img src='/images/loading.gif' /></div>
+<div id="modal_new_document_errors" class="" style="display:none; text-align: left"></div>
+<% form_for :document_home, @document_home ,:url => {:action => 'do_the_multi_upload', :parent_folder_id=> @folder.id}, :html=> {:multipart=> true, :target=>"upload_frame",:onsubmit => 'show_spinner()'} do |f| %>
+  <%for document in @document_home.documents%>
+    <%  fields_for 'document_home[document_attributes]', document do |d|%>
+      <div style="text-align:center;margin-top:20px;">
+        <table width="440" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+          <tr>
+            <td width="115" align="left"><label>Document &nbsp;<span class="alert_message">*</span></label></td>
+            <td width="304" align="left"> 
+              <input type="file" id="T7"  name="document_home[document_attributes][data][]"/> </td>
+          </tr>
+          <tr><td colspan="2" height="2"></td></tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left"><%= t(:text_current_selection) %>:</td>
+          </tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left"><table width="100%" border="0">
+                <tr>
+                  <td width="89%"><div id="T7-list"></div></td>
+                  <td width="11%">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr align="right">
+            <td>&nbsp;</td>
+            <td align="left"> <%=submit_tag t(:text_upload), :class=>"button", :onclick=>''%>  <input type="button" id="Login2" value="Cancel" onclick="tb_remove();return false;" /></td>
+          </tr>
+        </table>
+        <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+      </div>
+    <%end%>
+  <%end%>
+<%end%>
+<div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+<script type="text/javascript" language="javascript">
+  // Need to removed to JS File
+  jQuery(function(){ // wait for document to load
+    jQuery('#T7').MultiFile({
+      list: '#T7-list'
+    });
+  });
+</script>
+<div align="right" class="pagiText">Page 113</div>

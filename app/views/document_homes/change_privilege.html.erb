@@ -1,0 +1,18 @@
+﻿<div style="text-align:center;margin-top:10px;">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <% form_for :document_home, @document_home ,:url => change_privilege_matter_document_home_path(@matter, @document_home.id) do |f| %>
+    <table width="300" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+      <tr>
+        <td align="left"><%= t(:label_privilege) %></td>
+        <td align="left"><%= f.collection_select("privilege", @company.matter_privileges, :id, :alvalue, {:selected=>@document_home.latest_doc.privilege.to_i}) %></td>
+      </tr>
+      <tr align="right">
+        <td colspan="2" align="center">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td colspan="2" align="center"><input type="submit" id="Login" value="Save" onclick="return checkloader();"/> <input type="button" id="Login2" value="Cancel" onclick="tb_remove()" /></td>
+      </tr>
+    </table>
+  <%end%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;67</div>

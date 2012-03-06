@@ -1,0 +1,45 @@
+<table height="100%" align="center" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div style="margin:0 auto;width:518px;">
+          <%= render :partial => '/common/common_flash_message' %>
+        </div>
+        <!--Header div @start here -->
+        <div id="login-div" style="position:relative;"> <div class="contact_number_div">(214) 269-8570 </div>
+          <h1 class="textC"><%= image_tag "livia_logo.png" %></h1>
+          <% form_for resource_name, resource, :url => session_path(resource_name) do |f| -%>
+            <table width="100%" border="0" cellpadding="1" cellspacing="10">
+              <tr>
+                <td align="center"><% value=  (resource.nil? || resource.username =="" || resource.username == "Email ID") ? "Email ID" : resource.username %><%= f.text_field :username, :size => "35",:value => value , :onclick => "changeValue(jQuery(this))", :onblur=> "trackValue(jQuery(this), 'user')", :class=>'textgray'%></td>
+              </tr>
+              <tr>
+                <td align="center"><%= f.password_field :password, :size => "35", :value=>"Password", :onclick => "changeValue(jQuery(this))", :onblur=> "trackValue(jQuery(this), 'pass')", :class=>'textgray' %></td>
+              </tr>
+              <tr>
+                <% if @flag %>
+                  <td>
+                    <%= check_box_tag 'session_kill' %> &nbsp;
+                    <%= t(:label_end_all_sessions) %>
+                  </td>
+                <%end%>
+              </tr>
+
+              <tr>
+                <%= f.hidden_field :UTC_Time,:value=>"UTC_Time",:id=>'target'%>
+                <td align="center"><%= f.submit 'Log In' %></td>
+              </tr>
+              <tr>
+                <td align="center" class="mr10 ml3"><label><%= render :partial => "common/devise_links" %></label></td>
+              </tr>
+            </table>
+          <% end -%>
+          <% if APP_URLS[:use_helpdesk] %> <div class="link_gray mr8" style="position: absolute; right: 0pt; text-decoration:underline;"><%= link_to t(:text_helpdesk), "#{support_path}?height=475&width=650", :class => "thickbox vtip", :title => "#{t(:text_helpdesk)}", :name => "#{t(:text_helpdesk)}" %> </div> <%end%>
+          <br class="clear" />
+        </div>
+        <div  style="width:518px; margin:0 auto; color:#767676; padding-top:8px;">This site is best viewed with Internet Explorer 8.0; Firefox 3.0 or higher;  Chrome 7.0 or higher; Safari 5.0.3 and at a minimum screen resolution of 1280  * 1024.</div>
+      </td>
+    </tr>
+    <tr> <td><div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;1</div></td></tr>
+  </tbody>
+</table>

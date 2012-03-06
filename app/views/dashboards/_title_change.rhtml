@@ -1,0 +1,13 @@
+<h3 class="title_gray"><%=t(:text_update_dashbaord_name)%></h3>
+  <div id="nameerror" style="display:none"></div>
+  <% form_remote_tag :url=>{:controller=>'dashboards',:action=>'update_favorite_title',:id=>params[:id]},:method => :put do %>
+  <table width="100%">
+    <tr>
+      <td width="25%"><label><%=t(:label_dashboard_name)%><span class="alert_message">*</span></label></td>
+      <td width="37%"><input id="favorite_title" type="text" name="edit_title" class="dateTextBox" style="width:120px;" maxlength = 60 value="<%=mag_name.favorite_title%>"/></td>
+      <td width="38%">
+        <%=submit_tag "Change", :class=>"button",:onclick=>"return validate_dashboard_name();"%>
+        </td>
+    </tr>
+  </table>
+  <%end%>

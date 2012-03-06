@@ -1,0 +1,13 @@
+<% if(is_lawfirmadmin) %>
+<% elsif(is_liviaadmin && company) %>
+  <p class='<%= @type ==  'contact_stages' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Contact Stages', manage_company_utilities_path('contact_stages'))%></p>
+  <p class='<%=  @type =='company_sources' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Source', manage_company_utilities_path('company_sources'))%></p>
+  <p class='<%= @type == 'phases' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Phase', manage_company_utilities_path('phases'))%></p>
+  <p class='<%= @type == 'liti_types' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Litigation', manage_company_utilities_path('liti_types'))%></p>
+  <p class='<%= @type == 'nonliti_types' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Non Litigation', manage_company_utilities_path('nonliti_types'))%></p>
+  <p class='<%= @type == 'doc_sources' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Document/Matter Fact Sources', manage_company_utilities_path('doc_sources'))%></p>
+  <p class='<%= @type == 'activity_types' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Time entry Types', manage_company_utilities_path('activity_types'))%></p>
+  <p class='<%= @type == 'expense_types' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Time Expense Types', manage_company_utilities_path('expense_types'))%></p>
+  <p class='<%= @type == 'research_types' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Research Types', manage_company_utilities_path('research_types'))%></p>
+  <p class='<%= @type == 'rating_type' ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Rating Type', manage_company_utilities_path('rating_type'))%></p>
+<%end%>

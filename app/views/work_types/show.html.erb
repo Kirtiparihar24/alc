@@ -1,0 +1,18 @@
+<p>
+  <b><%=t(:label_name)%>:</b>
+  <%=h @work_type.name %>
+</p>
+
+<p>
+  <b><%=t(:label_description)%>:</b>
+  <%=h @work_type.description %>
+</p>
+
+<p>
+  <b><%=t(:label_category)%>:</b>
+  <%=h @work_type.category_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_work_type_path(@work_type) %> |
+<%= link_to 'Back', work_types_path %>

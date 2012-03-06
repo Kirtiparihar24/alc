@@ -1,0 +1,20 @@
+﻿<div style="margin-top:0px;" id="favourite_id">
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center">
+        <%if created%>
+          <%=t(:text_report_successfully_added_under_my_favorite)%>
+        <%else%>
+          <%=t(:text_report_name_successfully_updated)%>
+        <%end%>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="buttonSub_div">
+          <input type="submit" id="Login2" value="Close" onclick="parent.tb_remove();return false" />
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,20 @@
+<div style="margin-top:20px;" id="favourite_id">
+  <% form_remote_tag :url => {:controller=>"document_homes",:action => "send_email",:id=> params[:id],:format=>'email'},:condition=> "validate_email_doc_form('button')" do  -%>
+    <div class="sp-loader" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <div style="display:none" id="error_explanation"></div>
+    <table width="100%">
+      <%= send_attachment_as_email(params[:doc_name])%>
+      <tr>
+        <td colspan="2"><div class="buttonSub_div">
+            <%=submit_tag t(:label_submit), :class=>"button"%>
+            <input name="Cancel" type="submit" id="Cancel" value="<%=t(:label_cancel)%>" onclick="parent.tb_remove(); return false;" />
+          </div>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+  <div class="mandatory" style="text-align:left;"><span class="alert_message">*</span><%= t(:text_required_field) %><span>, <%=t(:label_can_enter_multiple_emails)%></span></div>
+</div>
+
+
+

@@ -1,0 +1,75 @@
+<div class="col2">
+  <div class="gridDiv">
+    <div class="titleHead" id="notesToggle">
+      <div class="fl"><%=t(:text_notes)%>&nbsp;&nbsp;(<%=@com_notes_entries.blank? ? 0:@com_notes_entries.size%>)</div>
+      <div class="fr ptr5">
+        <%if @dont_hide_task.nil?%>
+          <%=image_tag "/images/cgc_images/icon_max.gif",:alt =>"Maximize",:class =>"toggle_notes icon_hide" %>
+          <%=image_tag "/images/cgc_images/icon_min.gif",:alt =>"Minimize",:class =>"toggle_notes icon_show" %>
+        <%else%>
+          <%=image_tag "/images/cgc_images/icon_max.gif",:alt =>"Maximize",:class =>"toggle_notes icon_hide" %>
+          <%=image_tag "/images/cgc_images/icon_min.gif",:alt =>"Minimize",:class =>"toggle_notes icon_show" %>
+        <%end%>
+      </div>
+      <br class="clear"/>
+    </div>
+    <div class="gryBox" id="notes_div" style="<%= @dont_hide_task.nil? ? 'display:none;' : ''%>">
+      <div class="tabularDiv">
+        <!--HEADING OF TABULAR DATA STARTS-->
+        <div class="heading">
+          <div class="fl txtL pl5 w1"><%=image_tag '/images/cgc_images/icon_!.gif',:alt=>'Alert',:title=>'Alert'%></div>
+          <div class="fl txtL pl5 w20"><%=t(:text_name)%></div>
+          <div class="fl txtL pl5" style="width:29%;"><%=t(:text_notes)%></div>
+          <div class="fl txtL pl5" style="width:29%;">Call recording</div>
+          <div class="fl txtL pl5" style="width:15%;"><%=t(:text_created_time)%></div>
+          <br class="clear" />
+        </div>
+        <!--HEADING OF TABULAR DATA ENDS-->
+        <% unless  @com_notes_entries.blank? %>
+          <% @com_notes_entries.each do |com_notes_entries| %>
+            <!--CONTENT OF TABULAR DATA STARTS-->
+            <!--DATA 1-->
+            <div class="<%=cycle("bg1 textNormal", "bg2 textNormal")-%>" >
+              <%if com_notes_entries.note_priority.eql?(2) %>
+                <div class="fl pl5 w1"><%=image_tag "/images/cgc_images/icon_!.gif",{:alt=>"Alert",:title=>"Alert"}%></div>
+              <%else%>
+                <div class="fl pl5 w1">&nbsp;</div>
+              <%end%>
+              <div class="fl pl5 w20"><%=com_notes_entries.receiver.try(:full_name)%></div>
+              <div class="fl pl5" style="width:29%;">
+                <ul class="bultList livia_notestask">
+                  <% if com_notes_entries.description.length > 60 %>
+                  <li>
+                    <%=link_to(truncate(com_notes_entries.description, 60, "..."),{:controller=>'/communications',:action =>'show',:id=>com_notes_entries.id ,:com_id=>"#{com_notes_entries.id.to_s}",:related=>"communication_#{com_notes_entries.id.to_s}"},:class=>"faceboxnotesdet")%>
+                  </li>
+                  <span class="livia_notestask_view" style="display:none;"><%=com_notes_entries.description%></span>
+                  <%else%>
+                  <li>
+                  <%=link_to(com_notes_entries.description ,{:controller=>'/communications',:action =>'show',:id=>com_notes_entries.id,:com_id=>"#{com_notes_entries.id.to_s}",:related=>"communication_#{com_notes_entries.id.to_s}"},:class=>"faceboxnotesdet")%>
+                   </li>
+                  <%end%>
+                </ul>
+              </div>
+              <div class="fl pl5"style="width:29%;">
+ <%unless com_notes_entries.call_id.nil? || com_notes_entries.call_id.blank?%>
+                <%=com_notes_entries.call_id%>&nbsp;&nbsp;<a href="<%=get_call_recording_url(com_notes_entries.call_id)%>">Play</a>
+                <!--<embed src="<%=get_call_recording_url(com_notes_entries.call_id)%>" width="150" wmode="transparent" height="25px" autostart="false" VOLUME="80%"></embed>-->
+    <%#=link_to(com_notes_entries.call_id, communications_get_call_recording_path,:class=>"faceboxnotesdet")%>
+    <%else%>
+                &nbsp;
+    <%end%>
+              </div>
+              <div class="fl pl5"style="width:15%;"><%=time_ago_in_words(com_notes_entries.created_at)%>&nbsp;ago</div>
+              <br clear="all" />
+            </div>
+            <!--DATA 1-->
+            <!--CONTENT OF TABULAR DATA ENDS-->
+          <%end%>
+        <%else%>
+          <div class="warningCont m5"><%=t(:text_no_notes_created)%></div>
+        <%end%>
+      </div>
+    </div>
+  </div>
+  <br class="clear" />
+</div>

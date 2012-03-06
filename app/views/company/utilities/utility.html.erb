@@ -1,0 +1,21 @@
+<% content_for :company_selection do %>
+  <%= render :partial => "/company/utilities/company_selection" %>
+<% end %>
+<%if current_user.role?(:lawfirm_admin) || current_user.role?(:livia_admin)%>
+  <div class="box-head"><h2 class="left">Manage <%= @type=='tne_invoice_statuses' ? 'invoice_statuses'.try(:titleize) : @type.try(:titleize) %></h2></div>
+<%end%>
+<span id="spinner_div"></span>
+<div class="w750" id="list">  
+  <%= hidden_field_tag("hidden_utility_type", @type)  %>
+  <% if @company %>
+    <% active_deactive = find_model_class_data(@type) %>
+    <%= render :partial => "company/list", :locals => {:active_entries => active_deactive[0], :deactive_entries => active_deactive[1], :table_id => @type, :header=>"Stage", :modelclass=> @type,:linkage =>@linkage} %>
+  <% end %>
+  <% if @company.present? %>
+    <script type="text/javascript">
+      jQuery(document).ready(function(){
+        fetch_data('<%= @type %>', '<%=@company.id%>', '#<%= @type %>');
+      });
+    </script>
+  <% end %>
+</div>

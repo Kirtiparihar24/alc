@@ -1,0 +1,39 @@
+<%=render :partial=>'/dashboard_partials/rpt_dashboard'%>
+<%=render :partial=>'/dashboard_partials/all_category'%>
+<%=raw(javascript_include_tag 'highcharts.js','FusionCharts.js','FusionChartsExportComponent.js')%>
+<div class="mt5">
+  <div class="gridDiv">
+    <div style="min-width:120px;">
+      <div class="leftCol" style="width:25%">
+        <% form_for "charts", :url => {:controller=>'dashboards',:action=>'mange_dashboards_on_homepage'} ,:html => { :onsubmit=>"return validate_checkbox();"}  do |f| %>
+          <div class="appBox">
+            <div class="title"><%=t(:text_dashboard_list)%></div>
+            <div class="urbangreymenu">
+              <ul id="left_sidebar">
+                <li><%= render :partial =>'/dashboard_partials/left_sidebar_revenue_enhancement'%></li>
+                <li><%= render :partial =>'/dashboard_partials/left_sidebar_cost_savings'%></li>
+                <li><%= render :partial =>'/dashboard_partials/left_sidebar_operational_efficiency'%></li>
+                <li><%= render :partial =>'/dashboard_partials/left_sidebar_customer_satisfaction'%></li>
+                <li><%= render :partial =>'/dashboard_partials/left_sidebar_others'%></li>
+                <li><%= render :partial =>'/dashboard_partials/left_sidebar_favourites'%></li>
+              </ul>
+              <input type=hidden name="hidden_checked[]" value=<%=@hidden_checked? @hidden_checked.chop : '' %>></input>
+              <input type=hidden name="managed_checked" value=<%=@managed_checked? @managed_checked.chop : '' %>></input>
+              <br class="clear"/>
+              <div style="padding:10px;">
+                <input id="charts_id" class="button" type=<%= t(:text_submit)%> style="font-size:11px;" value="<%=t(:label_show_on_home_page)%>" name="commit"/>
+              </div>
+            </div>
+          </div>
+        <%end%>
+      </div>
+      <div id="charts_div" style="padding-left:350px;">
+        <%str_xml = render(:file => 'xml_builder/opportunities_chart', :locals=>{ :data=>@data[0][0]})
+          render_chart '/FusionCharts/FCF_Funnel.swf', '', str_xml, 'charts',400,400, false,true  do-%>
+        <% end-%>
+        <%=render :partial=>"dashboard_partials/""#{@charts_info.template_name}"%>
+      </div>
+    </div>
+  </div>
+</div><br class="clear"/>
+</div></div></div>

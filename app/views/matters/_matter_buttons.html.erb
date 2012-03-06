@@ -1,0 +1,6 @@
+<div class="buttonSub_div">
+      <%= f.submit t(:text_save), :name => "save", :class => "matters", :onclick => "return check_client_contact(this); validate_contact_presence(this);" %>
+      <%= f.submit t(:text_save_n_exit), :name => "save_exit", :class => 'matters', :onclick => "return validate_user_role(this,#{get_employee_user_id},false,false);validate_contact_presence(this);return check_client_contact(this);" %>
+      <%#= f.submit t(:text_cancel), :name => "cancel", :class => 'matters', :onclick => "setButtonPressed(this); disableAllSubmitButtons('matters'); window.location='#{matters_path}';return false;" %>
+      <input name="Cancel" type="button" id="Cancel"  class = 'matters' value="<%= t(:text_cancel) %>" onclick="setButtonPressed(this); disableAllSubmitButtons('matters'); window.location='<%= url_for(:controller => '/matters', :action => 'index')%>';return false;" />
+  </div>

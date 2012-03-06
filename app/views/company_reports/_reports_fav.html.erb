@@ -1,0 +1,163 @@
+<% @names = [] %>
+<% reports = {:report => {}}
+[["Contacts","@contacts_fav"],["Accounts","@accounts_fav"],["Opportunities","@opps_fav"],["Matters","@matters_fav"],["Time And Expenses","@times_fav"],["Campaigns","@campaigns_fav"]].each do |instance|
+  @favourites = eval(instance[1])
+  next unless @favourites %>
+  <%name = "rpt_" + instance[0].downcase.split.join("_")%>
+  <%@names << name%>
+  ﻿<div>
+    <div class="border_gray">
+      <h2 class="title_main">
+        <div id="catch" class="fl"><%=instance[0]%></div>
+        <div class="fr">
+          <a href="#" id="<%=name%>_toggle">
+            <div class="arrow_up mt4 toggle_<%=name%>"></div>
+            <div class="arrow_down mt4 toggle_<%=name%>" style="display:none;"></div>
+          </a>
+        </div>
+        <br class="clear" />
+      </h2>
+      <div class="tabular_listing"  id="<%=name%>_div">
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <% @favourites.each do |obj|
+            obj.selected_options.keys.each do |key|
+              reports[:report][key] = obj.selected_options[key]
+            end %>
+            <tr class="bg1">
+              <%if params[:load_popup]%>
+                <td><%=link_to obj.report_name,"#",{:onClick => "generate_report('#{obj.id}','#{obj.controller_name.sub("/","")}','#{obj.action_name}','#{obj.report_name}')"} %></td>
+              <%else%>
+                <td><div id="fav<%=obj.id%>"><%=link_to obj.report_name , {:action => obj.action_name , :controller => obj.controller_name,:fav_id => obj.id,:link_to_remove => true,:get_records => obj.get_records , :date_selected => obj.date_selected , :date_start => obj.date_start, :date_end => obj.date_end,:format => :js,:run_report => true}.merge(reports),{:class => "#{eval("@report#{obj.id}")} ajax-fav-link",:report_id=>obj.id}%></div></td>
+              <%end%>
+              <% if action_name.eql?("index") %>
+                <td align="center" width="7%">
+                  <div class="icon_action"><a href="#"></a></div>
+                  <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                    <!--Icon table strt here -->
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                      <%=raw action_pad_top_blue_links({:edit_path=>"#{edit_report_name_company_report_path(obj.id,:height => 110,:width => 300,:td_update => "fav" + obj.id.to_s)}",
+                          :edit_modal => true,
+                          :edit_text => "Edit Report Name",
+                          :comment_path=>"NO",
+                          :document_path=>"NO",
+                          :history_path=>"NO",
+                          :deactivate_text => "NO",:deactivate_path => "NO"}) %>
+                      <tr>
+                        <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                        <td style="background: #fff;">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                            <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                            <tr>
+                              <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                              <td width="40%" align="left" valign="middle" nowrap><%=link_to("<span>Remove</span>", (company_report_path(obj.id)), {:confirm => 'Are you sure want to remove favorite?',:method => :delete}, :class => "thickbox", :title => "Link Activities", :name => "Link Activities") %> </td>
+                              <td width="10%" align="left" valign="middle"> </td>
+                              <td width="40%" align="left" valign="middle" nowrap> </td>
+                            </tr>
+                            <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                            <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                          </table>
+                        </td>
+                        <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                      </tr>
+                      <tr>
+                        <td valign="top" class="ap_bottom_curve_left"></td>
+                        <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                        <td valign="top" class="ap_bottom_curve_right"></td>
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              <% end %>
+            </tr>
+            <% reports [:report] = {}
+          end %>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  jQuery.noConflict();
+<%@names.each do|name|%>
+    jQuery("#<%=name%>_toggle").click(function(){
+      jQuery("#<%=name%>_div").toggle();
+      jQuery(".toggle_<%=name%>").toggle();
+    });
+<%end%>
+  jQuery(".ajax-fav-link").live("click",function(){
+    var report_url=jQuery(this).attr('href');
+    var report_form_url=jQuery("#report_"+jQuery(this).attr('report_id')).attr("href");
+    jQuery.ajax({
+      type:"GET",
+      url:report_form_url,
+      data: report_url,
+      success :function(html){
+        //to display the report content for fav report Bug #11417 :Rashmi.N
+        jQuery("#container-1").attr('style', 'display:none');
+        jQuery("#container-2").show();
+        jQuery("#container-2").html(html);
+        checkloader();
+        jQuery.ajax({
+          type:"GET",
+          url:report_url,
+          success : function(html){
+            jQuery("#loader").hide();
+            function megaHoverOver(){
+              jQuery(this).find(".sub").stop().fadeTo('fast', 1).show();
+              //Calculate width of all ul's
+              var rowWidth = 0;
+              (function(jQuery) {
+                jQuery.fn.calcSubWidth = function() {
+                  //Calculate row
+                  jQuery(this).find("ul").each(function() {
+                    rowWidth += $(this).width();
+                  });
+                };
+              })(jQuery);
+              if ( jQuery(this).find(".row").length > 0 ) { //If row exists...
+                var biggestRow = 0;
+                //Calculate each row
+                jQuery(this).find(".row").each(function() {
+                  jQuery(this).calcSubWidth();
+                  //Find biggest row
+                  if(rowWidth > biggestRow) {
+                    biggestRow = rowWidth;
+                  }
+                });
+                //Set width
+                jQuery(this).find(".sub").css({
+                  //     'width' :biggestRow
+                });
+                jQuery(this).find(".row:last").css({
+                  'margin':'0'
+                });
+              } else { //If row does not exist...
+                jQuery(this).calcSubWidth();
+                //Set Width
+                jQuery(this).find(".sub").css({
+                  'width' : rowWidth
+                });
+              }
+            }
+            function megaHoverOut(){
+              jQuery(this).find(".sub").stop().fadeTo('fast', 0, function() {
+                jQuery(this).hide();
+              });
+            }
+            var config = {
+              sensitivity: 2, // number = sensitivity threshold (must be 1 or higher)
+              interval: 100, // number = milliseconds for onMouseOver polling interval
+              over: megaHoverOver, // function = onMouseOver callback (REQUIRED)
+              timeout: 500, // number = milliseconds delay before onMouseOut
+              out: megaHoverOut // function = onMouseOut callback (REQUIRED)
+            };
+            jQuery("ul#topnav li .sub").css({'opacity':'0'});
+            jQuery("ul#topnav li").hoverIntent(config);
+          }
+        });
+      }
+    });
+    return false;
+  });
+</script>

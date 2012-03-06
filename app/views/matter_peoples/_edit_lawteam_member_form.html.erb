@@ -1,0 +1,90 @@
+<div id="matter_lawteam_errors" class="message_error_div" style="display: none;"></div>
+﻿<div style="text-align:center;margin-top:20px;">
+  <% remote_form_for([@matter, @matter_people_client], :url => {:action => :edit_lawteam_member},:loading=>"jQuery('matters').val('Please wait...');jQuery('matters').attr('disabled','disabled');",:complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+    <%=f.hidden_field :updated_by_user_id, :value => current_user.id%>
+    <table border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+      <tr>
+        <td width="20%" align="left"><label><%= t(:label_name) %><span class="alert_message">*</span></label></td>
+        <td width="80%" align="left">
+          <%=f.text_field :employee_user_id, :value => @matter_people_client.get_name, :disabled => true%>
+        </td>
+      </tr>
+      <tr>
+        <td align="left"><%= t(:label_role) %></td>
+        <td align="left">
+          <%= f.collection_select("role", current_company.client_roles.reject {|e| e.lvalue.eql?('Lead Lawyer') || e.lvalue.eql?('Matter Client')}, :id, :lvalue) %>
+        </td>
+      </tr>
+      <tr>
+        <td align="left"><%= t(:label_effective)%></td>
+        <td align="left">
+          <table  border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="3%">
+                <%=f.radio_button :effective_from, "since_inception", :checked => @matter_people_client.since_inception?, :onclick => "showHideFromToDates(false)"%>
+                <!-- <input type="radio" name="radio" id="radio" value="radio" /> -->
+              </td>
+              <td width="20%"><%=t(:label_since_inception)%></td>
+              <td width="3%">
+                <%=f.radio_button :effective_from, "date_given", :checked =>  !@matter_people_client.since_inception?, :onclick => "showHideFromToDates(true)"%>
+                <!-- <input type="radio" name="radio" id="radio2" value="radio" /> -->
+              </td>
+              <td width="20%"><%=t(:lable_specify_date)%></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr <%if @matter_people_client.since_inception?%> style="display: none;" <%end%> id="from_date">
+        <td align="left"><%= t(:label_member_from) %></td>
+        <td align="left"><%= f.text_field :start_date, :value => @matter_people_client.start_date, :class => "date_picker", :size => "10" %></td>
+      </tr>
+      <tr <%if @matter_people_client.since_inception?%> style="display: none;" <%end%> id="to_date">
+        <td align="left"><label><%= t(:label_member_till) %></label></td>
+        <td align="left"><%= f.text_field :end_date,  :value => @matter_people_client.end_date, :class => "date_picker", :size => "10" %></td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+
+      <%if get_employee_user_id == @matter.employee_user_id && @matter_people_client.new_record?%>
+        <tr>
+          <td colspan="2"><hr /></td>
+        </tr>
+        <tr>
+          <td align="left"><a href="#" onclick="return assignAdditionalPriv();">Delegate Access</a></td>
+          <td align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td>
+            <table>
+              <%= render :partial => "delegate_access", :locals => {:visibility => false} %>
+            </table>
+          </td>
+        </tr>
+      <%end%>
+      <tr>
+        <td align="center">
+          <%= f.submit t(:text_save),:class=>'matters'%>
+          <input type="button" class="matters" id="Login2" value="<%=t(:text_cancel)%>" onclick="tb_remove();disableAllSubmitButtons('matters');" />
+        </td>
+      </tr>
+    </table>
+  <%end%>
+</div>
+
+<script type="text/javascript">
+  livia_matter_inception_datepicker_new("#matter_people_start_date");
+  livia_matter_inception_datepicker_new("#matter_people_end_date");
+
+  // Need to removed to JS File
+  function showHideFromToDates(show) {
+    if (show) {
+      jQuery("#from_date").show();
+      jQuery("#to_date").show();
+    } else {
+      jQuery("#from_date").hide();
+      jQuery("#to_date").hide();
+    }
+  }
+</script>

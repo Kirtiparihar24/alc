@@ -1,0 +1,5 @@
+<%unless @def_assignee.blank?%>  
+  <%= collection_select  "matter_task", "assigned_to_matter_people_id", @assignees, :id, :get_name, { :include_blank => "----------Select----------", :onchange => "remove_from_attendees_list('#{assignees}', '#{get_assignees}', '#{assigned_to}', '#{matter_id}', '#{from}', '#{todo_radio_id}');", :selected => @def_assignee.id, :id => assigned_to}, :class=>"selectBoxNewMatter"%>
+<%else%>
+  <%= collection_select  "matter_task", "assigned_to_matter_people_id", @assignees, :id, :get_name, { :include_blank => "----------Select----------" }, :onchange => "remove_assign();remove_from_attendees_list('#{assignees}', '#{get_assignees}', '#{assigned_to}', '#{matter_id}', '#{from}', '#{todo_radio_id}');", :class=>"selectBoxNewMatter", :id => assigned_to %>
+<%end%>

@@ -1,0 +1,46 @@
+<div class="gridDiv">
+  <div id="unassign_users"></div>
+  <% if !@all_lawfirm_users .empty?%>
+    <%form_remote_tag :url=> '/manage_cluster/unassign_lawfirm_user' do -%>
+      <div id="div_unassign_lawfirm_user" style="display: none;">
+        <%= check_box_tag 'toggle' , 'toggle', false, :onclick =>"toggleCheckboxes('lawyer',this.checked);"%> Select All
+        <br/><br/>
+        <%@all_lawfirm_users .each do |lawfirm_user|%>
+          <%=check_box_tag 'lawfirm_users[]',lawfirm_user.id,false,:class=>"lawyer" %>
+          <%=lawfirm_user.full_name%>
+          <br/>
+        <%end%>
+        <%=hidden_field_tag "cluster_id",params[:cluster_id]%>
+        <%=submit_tag 'submit', :class=>'button', :onclick => 'return show_loader();'%>
+      </div>
+    <% end -%>
+  <%end%>
+
+  <%if !@livians.empty?%>
+    <%form_remote_tag :url=> '/manage_cluster/unassign_livian' do -%>
+      <div id="div_unassign_employee" style="display: none;">
+        <%= check_box_tag 'toggle' , 'toggle', false, :onclick =>"toggleCheckboxes('livian',this.checked);"%> Select All
+        <br/><br/>
+        <%@livians.each do |livian|%>
+          <%=check_box_tag 'livians[]',livian.id,false,:class=>"livian" %>
+          <%= livian.user.full_name %>
+          <br/>
+        <%end%>
+        <%=hidden_field_tag "cluster_id",params[:cluster_id]%>
+        <%=submit_tag 'submit', :class=>'button', :onclick => 'return show_loader();'%>
+      </div>
+    <% end -%>
+  <%end%>
+  <%if @livians.empty?%>
+    <div id="div_unassign_employee" style="display: none;">
+      <%=t(:label_No_Livians_to_Unassign)%>
+    </div>
+  <%end%>
+
+  <%if @lawfirm_users.empty?%>
+    <div id="div_unassign_lawfirm_user" style="display: none;">
+      <%=t(:label_No_Lawfirm_Users_to_Unassign)%>
+    </div>
+  <%end%>
+  <br class="clear" />
+</div>

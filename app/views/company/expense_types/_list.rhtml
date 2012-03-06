@@ -1,0 +1,31 @@
+<div class="p5 gridTable">
+  <div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+    <%= link_to(t(:text_new),new_company_expense_type_path(@company),:rel=>"facebox") %>
+  </div>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left" id="expense_types">
+    <tr>
+      <th width="25%">Expense Types</th>
+      <th width="25%">Custome Expense Types</th>
+      <th width="25%">Actions</th>
+    </tr>
+    <%@company.expense_types.each do |expense_type|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <%= hidden_field_tag "support_#{expense_type.id}", expense_type.id, :class=>"supportFieldID" %>
+          <span class="textBlue11Height20">&nbsp;&nbsp;
+            <%= expense_type.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">&nbsp;&nbsp;
+            <%= expense_type.alvalue %>
+          </span>
+        </td>
+        <td>
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_expense_type_path(@company,expense_type),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

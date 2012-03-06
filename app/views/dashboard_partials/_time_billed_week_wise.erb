@@ -1,0 +1,16 @@
+<% form_remote_for "dashboard_charts",:url=>{:controller=>'dashboards',:action=>'manage_dashboard'} do |f| %>
+  <div class="box_org">
+    <div class="fl pl4">
+      <input type="hidden" name="dashboard_chart_id" value='<%=chart.dashboard.id%>' ></input>
+      <input  id="dashboard_check_id" type="hidden" name="chart_id" value='<%=chart.chart.try(:id) %>' ></input>
+      <%=select_tag("duration",options_for_select([["All",""],["Last 2 Weeks","2weeks"],["Last 4 Weeks","4weeks"],["Current Week","current_week"]],:selected=>chart.parameters[:duration]),{:onClick=>"db_date_change();",:style => "width:130px"})%>
+      <label>Target</label>
+      <input type="text" name="threshold[target]"  value="<%=chart.threshold["target"]%>" size="9"/>
+      <input type="Submit" value="Submit" class="button"/>
+    </div>
+    <div class="fr mr5 link_blue">
+      <%=link_to(t(:text_add_to_favorite),"#",{:onclick => "return show_fav_div()",:style=>"line-height:30px;"})%>
+    </div>
+    <br class="clear" />
+  </div>
+<%end%>

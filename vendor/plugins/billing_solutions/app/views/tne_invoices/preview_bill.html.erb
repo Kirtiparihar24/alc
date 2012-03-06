@@ -1,0 +1,180 @@
+
+<div id="display" style="min-width: 1200px;">
+  <% form_for @tne_invoice ,:html=>{:id=>"tne_invoice",:onsubmit => "return disableAllSubmitButtons('tne_invoices')"} do |f|%>
+    <div style="padding:30px; font-size:14px;">
+      <div class="header" style="font-size:9px;">
+        <% if @invoice_setting %>
+          <div><%= @invoice_setting.header %></div>
+        <% end %>
+      </div>
+      <hr/>
+      <div style="margin-bottom:20px">
+        <%unless @logo.blank?%>
+          <div style="float:left">
+            <img src="<%=@logo%>" alt="logo" width="154" height="51"/>
+          </div>
+          <br/>
+          <br/>
+        <%end%>
+      </div>
+      <div>
+        <h2 align="left" style="font-weight: bold;font-size:16px; "><%=@company.name.camelize%></h2>
+        <h2 align="right">INVOICE</h2>
+        <div style="padding-bottom:30px;"></div>
+        <div align="right" style="text-align:right;">
+          Invoice # <%=params[:tne_invoice][:invoice_no]%> <br/>
+          Invoice Date: <%=params[:tne_invoice][:invoice_date]%> <br/>
+          Due Date: <%=params[:tne_invoice][:invoice_due_date]%> <br/>
+        </div>
+        <div align="left" style="padding-bottom:3px; ">
+          <%if @primary_contact.get_account_name %>
+            Account : <%=@primary_contact.get_account_name%> <br/>
+          <%end%>
+          Primary Client : <%=@primary_contact.first_name%> <%=@primary_contact.last_name %> <br/>
+          Account/Client Address : <%=params[:tne_invoice][:client_address]%> <br/>
+        </div>
+        Matter : <%=@matter.name rescue "-"%>
+      </div>
+      <br/>
+      <div class="p5">
+        <div id="managed">
+          <div id="2container-1">
+            <%detailed = @view_summery.eql?('Detailed') ? true : false%>
+            <%first_column = @consolidated_by.eql?('Date') ? 'Activity' : 'Date' %>
+            <%second_column = @consolidated_by.eql?('User') ? 'Activity' : 'Lawyer'%>
+            <%if detailed%>
+              <% unless @total_data.blank? %>
+                <table width="100%" cellspacing="0" cellpadding="1" class=" table_with_border" border="2">
+                  <thead>
+                    <tr class="bg2">
+                      <th align="center"  class="grey_border" colspan="6" >Activity Type</th>
+                      <th align="center" width="7%" class="border_black" rowspan="2">Rate</th>
+                      <th align="center" width="7%"  class="border_black" rowspan="2">Hours</th>
+                      <th align="center" width="15%"  class="border_black no_border" rowspan="2">Amount($)</th>
+                    </tr>
+                    <tr class="border-bottom border_black">
+                      <th align="center" width="<%= first_column=="Date" ? '18%' : "7%" %>" >Group</th>
+                      <th width="<%= first_column=="Date" ? '7%' : "18%" %>"><%=first_column%></th>
+                      <th align="center" width="<%= first_column=="Date" ? '14%' : "18%" %>"><%=second_column%></th>
+                      <th align="center" width="6%">Hours</th>
+                      <th align="center" width="6%">Rate</th>
+                      <th align="center">Description</th>
+                    </tr>
+                  </thead>
+                  <%= render :partial=>"time_entries_for_pdf", :locals => {:f => f} %>
+                </table>
+                <br/><br/>
+              <% end %>
+              <% unless @total_expenses.blank?%>
+                <table width="100%" cellspacing="0" cellpadding="1" class=" table_with_border" border="2">
+                  <thead>
+                    <tr class="bg2">
+                      <th align="center" colspan="5">Expense Type</th>
+                      <th align="center" class="border_black" rowspan="2" width="15%">Amount($)</th>
+                    </tr>
+                    <tr class="border-top border-bottom border_black">
+                      <th align="center" width="<%= first_column=="Date" ? '18%' : "7%" %>" >Group</th>
+                      <th width="<%= first_column=="Date" ? '7%' : "18%" %>"><%=first_column%></th>
+                      <th align="center" width="<%= first_column=="Date" ? '14%' : "18%" %>"><%=second_column%></th>
+                      <th align="center" width="15%">Amount</th>
+                      <th align="center">Description</th>
+                    </tr>
+                  </thead>
+                  <%= render :partial=>"expense_entries_for_pdf", :locals => {:f => f,:total_time_data => @total_data.size} %>
+                </table>
+              <%end%>
+            <%else%>
+              <% if @total_data.present? || @total_expenses.present?%>
+                <table width="100%" cellspacing="0" cellpadding="1" class="table_border" border="2">
+                  <thead>
+                    <tr class="bg2 display_border">
+                      <th align="center">Activity/Expense Type</th>
+                      <th align="center" width="7%">Rate</th>
+                      <th align="center" width="7%">Hours</th>
+                      <th align="center" width="15%">Amount($)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%= render :partial=>"time_entries_for_pdf", :locals => {:f => f} if @total_data.present?%>
+                    <%= render :partial=>"expense_entries_for_pdf", :locals => {:f => f,:total_time_data => @total_data.size} if @total_expenses.present?%>
+                  </tbody>
+                </table>
+              <%end%>
+            <%end%>
+          </div>
+          <div style="padding-top:25px;float:right; padding-bottom:20px;">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0" style="float:right;">
+              <tr>
+                <td width="80%" align="right">Sub Total : </td>
+                <td width="20%" align="left">&nbsp;<%=number_with_lformat(params[:tne_invoice][:invoice_amt] || @total_amount)%></td>
+              </tr>
+              <%if params[:tne_invoice][:discount].to_i > 0%>
+                <tr>
+                  <td width="80%" align="right"> Discount : </td>
+                  <td width="20%" align="left"> &nbsp;<%=number_with_lformat(params[:tne_invoice][:discount])%></td>
+                </tr>
+              <%end%>
+              <% if @invoice_setting.present? && @invoice_setting.primary_tax_enable && params[:apply_primary_tax_checked]=='true'%>
+                <%unless params[:tne_invoice][:primary_tax_rate].to_i== 0 %>
+                  <tr>
+                    <td width="80%" align="right"> <%=params[:tne_invoice][:primary_tax_name].blank? ? 'Primary Tax' : params[:tne_invoice][:primary_tax_name]%> (<%=number_with_lformat(params[:tne_invoice][:primary_tax_rate])%> %) :</td>
+                    <td width="20%" align="left"> &nbsp;<%=number_with_lformat(params[:primary_tax_value])%> </td>
+                  </tr>
+                <%end%>
+              <%end%>
+              <%if @invoice_setting.present? && @invoice_setting.secondary_tax_enable && params[:apply_secondary_tax_checked]=='true'%>
+                <%unless params[:tne_invoice][:secondary_tax_rate].to_i== 0%>
+                  <tr>
+                    <td width="80%" align="right"> <%=params[:tne_invoice][:secondary_tax_name].blank? ? 'Secondary Tax' : params[:tne_invoice][:secondary_tax_name]%>(<%=number_with_lformat(params[:tne_invoice][:secondary_tax_rate])%> %):</td>
+                    <td width="20%" align="left"> &nbsp;<%=number_with_lformat(params[:secondary_tax_value])%> </td>
+                  </tr>
+                <%end%>
+              <%end%>
+              <tr>
+                <td width="80%" align="right">Total: </td>
+                <td width="20%" align="left">&nbsp;<%=number_with_lformat(params[:tne_invoice][:final_invoice_amt] ||@final_invoice_amt)%> </td>
+              </tr>
+            </table>
+          </div>
+          <br/>
+          <br/>
+          <%if params[:tne_invoice][:check_notes].eql?("1") && params[:tne_invoice][:invoice_notes].present?%>
+            <div class="note">
+              <b>Note:</b>  <%=params[:tne_invoice][:invoice_notes]%>
+            </div>
+          <%end%>
+        </div>
+      </div>
+      <br />
+    </div>
+    <br /><br /><br /><br />
+  <% end %>
+  <div class="footer" style="font-size:9px;">
+    <hr/>
+    <% if @invoice_setting %>
+      <div><%= @invoice_setting.footer %></div>
+    <% end %>
+  </div>
+</div>
+
+<style type="text/css">
+  .table_with_border, .table_border{border:1px solid #000;}
+  tr.no_border td{border-bottom-style: none;
+                  padding-bottom: 2px;
+                  border-right: 1px solid #828282;
+                  border-width: 1px 1px 0;}
+  tr.grey_border td.no_bottom_border{border-bottom-style: none;}
+  tr.display_border th{ border: 1px solid #828282;
+                        border-left:none;
+                        border-top:none;}
+  th.grey_border,tr.grey_border td{border-bottom:1px solid #828282;
+                                   border-right: 1px solid #828282;
+                                   padding-bottom: 2px;}
+  tr.grey_border td{border-top:none;}
+  tr.border-top td, tr.border-top th{border-top: 1px solid #000;}
+  tr.border-bottom td{border-bottom: 1px solid #828282;}
+  .table_with_border th, table_with_border td{border-right: 1px solid #828282;}
+  th.border_black, tr.border_black th{border-bottom:1px solid #000;}
+  td.no_border,th.no_border{border-right: none;}
+  .bg2 {background-color: #DDDDDD;}
+</style>

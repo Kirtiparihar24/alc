@@ -1,0 +1,3 @@
+jQuery('#edit_product_config').html("<%=escape_javascript(render(:partial => "edit_product_config",
+    :locals => {:product => @product, :currentSubProds => @currentSubProds, :availableSubProds => @availableSubProds,
+      :subproducts => @subproducts, :prodDeps => @prodDeps, :products => @products}))%>");

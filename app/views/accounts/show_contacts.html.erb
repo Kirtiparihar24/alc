@@ -1,0 +1,47 @@
+<div id ="ajax_sort">
+  <%unless @contacts.empty?%>
+    <div style="margin-top:20px; padding:0;">
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <%= column_sort_link(t(:text_name),'contacts.last_name',params[:col], '20%', "left", {:mode_type=>params[:mode_type], :letter=>params[:letter], :id => params[:id], :fetch => params[:fetch], :per_page => params[:per_page], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_phone),'contacts.phone',params[:col], '20%', "left", {:mode_type=>params[:mode_type], :letter=>params[:letter], :id => params[:id], :fetch => params[:fetch], :per_page => params[:per_page], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_email),'contacts.email',params[:col], '20%', "left", {:mode_type=>params[:mode_type], :letter=>params[:letter], :id => params[:id], :fetch => params[:fetch], :per_page => params[:per_page], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_created_at),'contacts.created_at',params[:col], '20%', "left", {:mode_type=>params[:mode_type], :letter=>params[:letter], :id => params[:id], :fetch => params[:fetch], :per_page => params[:per_page], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <th width="15%" align="left">&nbsp;</th>
+          </tr>
+          <% @contacts.each do |contact| %>
+            <tr class="<%= cycle('bg1', 'bg2') %>">
+              <td width="23%" align="left">
+                <a href="<%=edit_contact_path(:id => contact.id,:from=>"accounts")%>">
+                  <%= contact.full_name.try(:titleize) %>
+                  <% if contact.title? && contact.department? %>
+                    <%= contact.title.try(:titleize) << ", " << contact.department %>
+                  <%  else %>
+                    <%= contact.title if contact.title? %>
+                  <% end %>
+                </a>
+              </td>
+              <td width="20%" align="left">
+                <% if contact.phone? %>
+                  <%= contact.phone %>
+                <% else %>
+                  <% if contact.mobile %>
+                    <%= contact.mobile %>
+                  <% end %>
+                <% end %>
+              </td>
+              <%email_id= contact.email? ?  contact.email.to_s : '-'%>
+              <td width="20%" align="left"><%=link_to_unless email_id=='-',"#{contact.email? ?  contact.email.to_s : '-'}",zimbra_mail_index_path(:view=>'compose',:to=>email_id) %><%#= link_to(contact.email, "mailto:" << contact.email.to_s)if contact.email? %></td>
+              <td width="12%" align="center"><%= contact.created_at.to_time.strftime('%m/%d/%y')if contact.created_at %></td>
+              <td width="15%" align="left"><%= contact.accounts.collect{|a| a if a.primary_contact_id == contact.id }.compact.present? ?  "Primary Contact" : ' ' %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <div class="warningCont m5"><%=t(:text_no_contacts_added_yet) %></div>
+  <% end %>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;131</div>
+</div>

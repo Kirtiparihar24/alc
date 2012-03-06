@@ -1,0 +1,51 @@
+
+<% inv = 0 %>
+<% for bill_entry in @total_data %>
+  <%tne_invoice_details = (@tne_invoice.new_record? || @change_view) ? @tne_invoice_details : bill_entry[6]%>
+  <% f.fields_for :tne_invoice_details, tne_invoice_details do |tne_invoice_detail| %>
+    <%if params[:tne_invoice][:tne_invoice_details_attributes][inv.to_s].blank?%>
+      <% inv +=1  %>
+    <%end%>
+    <%if params[:tne_invoice][:tne_invoice_details_attributes][inv.to_s].present?%>
+      <%detailed = @view_summery.eql?('Detailed') ? true : false%>
+      <% rowspan = detailed ? bill_entry[4].length+1 : ""%>
+      <tr class="<%=(detailed ? 'grey_border' : 'no_border')%>" valign="top">
+        <td rowspan="<%=rowspan%>"><%=bill_entry[2]%> </td>
+        <%if detailed%>
+          <td class="no_bottom_border">&nbsp;</td>
+          <td class="no_bottom_border">&nbsp;</td>
+          <td class="no_bottom_border">&nbsp;</td>
+          <td class="no_bottom_border">&nbsp;</td>
+          <td class="no_bottom_border">&nbsp;</td>
+        <%end%>
+        <td align="right" rowspan="<%=rowspan%>" valign="top">
+          <%= number_with_lformat(params[:tne_invoice][:tne_invoice_details_attributes][inv.to_s][:rate] || bill_entry[5]) %>
+        </td>
+        <td align="right" id="te_duration_<%=bill_entry[0]%>" rowspan="<%=rowspan%>" valign="top">
+          <%= params[:tne_invoice][:tne_invoice_details_attributes][inv.to_s][:duration] || bill_entry[1].to_f.fixed_precision(2) %>
+        </td>
+        <td align="right"  class="no_border_right" rowspan="<%=rowspan%>" valign="top">
+          <%= number_with_lformat(params[:tne_invoice][:tne_invoice_details_attributes][inv.to_s][:amount] || bill_entry[3])%>
+        </td>
+      </tr>
+      <%i = 0%>
+      <% bill_entry[4].each do |saved_entry| %>
+        <%if detailed%>
+          <% data = @tne_invoice.new_record? ? @tne_invoice_time_entries : saved_entry %>
+          <% tne_invoice_detail.fields_for :tne_invoice_time_entries, data do |time| %>
+            <tr class="grey_border">
+              <td align="left" ><%=@consolidated_by.eql?('Date') ? saved_entry.acty_type.try(:alvalue) : saved_entry.time_entry_date %></td>
+              <td align="left"><%=@consolidated_by.eql?('User') ? saved_entry.acty_type.try(:alvalue) : saved_entry.try(:performer).try(:first_name) + " " + saved_entry.try(:performer).try(:last_name)%></td>
+              <%  duration = current_company.duration_setting.setting_value == "1/100th" ?  one_hundredth_timediffernce(saved_entry.actual_duration.to_f) : one_tenth_timediffernce(saved_entry.actual_duration.to_f) %>
+              <td align="right"><%=  duration %></td>
+              <td align="right"><%= number_with_lformat(saved_entry.actual_activity_rate) %></td>
+              <td align="left"> <div style="word-wrap:break-word; width:200px;"><%= saved_entry.description %></div></td>
+            </tr>
+          <%end%>
+          <% i += 1 %>
+        <%end%>
+      <% end %>
+    <%end%>
+    <% inv += 1 %>
+  <% end %>
+<% end %>

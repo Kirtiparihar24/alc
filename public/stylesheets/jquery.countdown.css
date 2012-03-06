@@ -1,0 +1,107 @@
+/* Feature 10280: Timer,Countdown css included in 3 layouts (application, full_screen and left_with_tabs) - Kirti Parihar */
+
+#timer-div {
+  position: absolute;
+  bottom: 0px;
+  right:0px;
+  z-index: 700;
+  width:250px;
+}
+
+.clock_timer {
+  background:url(/../images/time&expense.png) no-repeat;
+  width:150px;
+  height:42px;
+  padding-left:12px;
+  font-family:"DisplayOTF", arial;
+}
+
+.clock {
+  float: right;
+  font-size: 12px;
+  padding: 14px 27px 10px 5px;
+}
+
+#k_close_button {
+  border: 1px solid gray;
+  color: gray;
+  display: none;
+  font-size: 12px;
+  height: 16px;
+  text-align: center;
+  width: 11px;
+}
+
+#k_close_button { display: none; }
+
+.kc_right { right: 10px; }
+
+.kc_bottom { bottom: 80px; }
+
+.k_float { cursor: move; z-index: 9999999;}
+
+.k_right { right: 0; }
+
+.k_bottom { bottom: 0; }
+
+.k_float { z-index: 9999999; }
+
+#timer-container { position: absolute; bottom: 0; right: 0; }
+
+.countdown_amount { font-size: 12px; }
+
+.btn {
+  float:left;
+  padding:5px;
+  padding: 16px 0 0;
+}
+
+.btn span {
+  height: 9px;
+  margin: 0 8px 0 0;
+  width: 9px;
+}
+
+a.btn-1 {
+  background:url(/../images/play.png) no-repeat;
+  display: block;
+  float: left;
+  height: 11px;
+  margin: 0 10px 0 0;
+  width: 9px;
+}
+
+a:hover.btn-1 { background: url(/../images/play_hover.png) no-repeat; }
+
+a.btn-2	{
+  background: url(/../images/pause.png) no-repeat;
+  display: block;
+  float: left;
+  height: 9px;
+  margin: 0 10px 0 0;
+  width: 9px;
+}
+
+a:hover.btn-2 { background: url(/../images/pause_hover.png) no-repeat; }
+
+a.btn-3	{
+  background: url(/../images/reset.png) no-repeat;
+  display: block;
+  float: left;
+  height: 9px;
+  margin: 0 10px 0 0;
+  width: 9px;
+}
+
+a:hover.btn-3 { background: url(/../images/reset_hover.png) no-repeat; }
+
+a.btn-4	{
+  background: url(/../images/stop.png) no-repeat;
+  display: block;
+  float: left;
+  height: 9px;
+  margin: 0 10px 0 0;
+  width: 9px;
+}
+
+a:hover.btn-4 { background: url(/../images/stop_hover.png) no-repeat; }

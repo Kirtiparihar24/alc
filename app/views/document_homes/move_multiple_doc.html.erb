@@ -1,0 +1,20 @@
+<h2 class="title_main selected"><%=t(:label_please_select_destination_folder)%></h2>
+<%= raw(javascript_include_tag "jquery/jqueryFileTree.js", "jquery/jquery.easing.js") %>
+<%= stylesheet_link_tag "jqueryFileTree.css"%>
+<div class="demofiletreehome">
+  <div id="move_doc_error" style="display:none;"> </div>
+  <div class ="collapsed" id ="root" style="height: 22px"><span class="icon_collapse_folder mr5 mt3 fl"></span>
+    <%= link_to "Root Folder" ,"#", {:onclick=>"jQuery('#document_home_folder_id').val(''); jQuery('.selected').removeClass('selected'); jQuery('#root').addClass('selected');",:class => "link_blue vtip"}%>
+  </div>
+  <div class="section_left">
+    <script type="text/javascript">
+      jQuery(document).ready(function()  {
+        jQuery("#movefileTree").fileTree({script: "/workspaces/get_children<%=params[:update_list] ? '?update_list=false' : ''%>",loadMessage :'Loading...', expandSpeed: 750, collapseSpeed: 750, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce' });
+      });
+    </script>
+    <div id="movefileTree" class="demofiletree"></div>
+  </div>
+</div>
+<%= hidden_field_tag "document_home_folder_id", -1 %>
+<input type="button" value="<%=t(:label_move)%>" id ="move" class="button" onclick="setButtonPressed(this); moveMultipleDocuments('<%= params[:matter_id] %>');"/>
+<input type="button" value="<%=t(:label_cancel)%>" id ="Login2" class="button" onclick="parent.tb_remove();return false"/>

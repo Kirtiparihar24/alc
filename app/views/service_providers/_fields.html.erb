@@ -1,0 +1,16 @@
+<tr>
+  <td width="25%" align="left" valign="top"><label><%=t(:text_first_name)%><span>*</span></label></td>
+  <td><%=f.text_field :first_name,:class=>"field size4" %></td>
+</tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr>
+  <td align="left" valign="top"><label><%=t(:text_last_name)%> <span>*</span></label></td>
+  <td><%=f.text_field :last_name,:class=>"field size4" %></td>
+</tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr>
+  <td align="left" valign="top"><label><%=t(:text_birth_date)%><span></span></label></td>
+  <td>
+    <%=f.date_select :birthdate,{:order => [:month, :day, :year], :use_month_names => ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"],:start_year => 1950,:prompt => { :day => 'Select day', :month => 'Select month', :year => 'Select year' }},:class=>"field size3 fl mr5"%>
+  </td>
+</tr>

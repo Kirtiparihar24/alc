@@ -1,0 +1,1 @@
+<%=select_tag "#{expense_id}[expense_entry][contact_id]", "<option value=''/>" + options_for_select(@contacts.collect{|contact|[contact.full_name, contact.id]}, contact_id),{:class=>"typeselect1", :onchange=>"get_all_matters_for_expenses(#{expense_id});",:id=>"#{expense_id}_expense_contact_id"}%>

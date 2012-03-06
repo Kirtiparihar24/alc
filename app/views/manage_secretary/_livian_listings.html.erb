@@ -1,0 +1,7 @@
+<% if livians.blank? %>
+  <span>No Records </span>
+<%else%>
+  <% livians.each do |livian| %>
+    <span onclick ="redirect_to_livian_edit(this)" id=<%=livian.id%> > <%= link_to "#{livian.user.full_name}", edit_service_provider_path("#{livian.id}") %></span>
+  <% end %>
+<%end%>

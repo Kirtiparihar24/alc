@@ -1,0 +1,34 @@
+<% @total_data.each do |label,col|
+
+
+%>
+
+  <span class="textNormal pl10"><strong><%=flabel ? @conditions[:flabel] : ""%><%=(label == "" or !label) ? "None" : label%> (<%=col.length%><%=t(:text_records)%><%=slabel ? @conditions[label] : ""%>   </strong></span>
+
+  <table width="98%" align="center" cellpadding="4" cellspacing="0" class="tableBg" cellpading="0">
+    <tbody>
+      <tr>
+        <%
+
+        @table_headers.each do |header|
+
+        %>
+          <th width="<%=widths_hash[header]%>"><%=header%></th>
+        <%end%>
+      </tr>
+      <%col.each do |obj|%>
+        <tr class="<%=cycle("bg1", "bg2")%>">
+          <%obj.each do |e|%>
+
+
+            <td><%=e%></td>
+          <%end%>
+
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+  <br class="clear" />
+  <%reset_cycle%>
+<%end%>
+<br class="clear" />

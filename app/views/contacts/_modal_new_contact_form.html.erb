@@ -1,0 +1,76 @@
+<div class=""id="nameerror"  style="display: none;"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div  style="text-align:center;margin-top:10px;" id="modal_contact">
+  <%remote_form_for(:contact, @contact, :url => {:controller => :accounts,:action => :validate_new_contact},:loading=>"disableAllSubmitButtons('modal_contact');",:complete=>"enableAllSubmitButtons('modal_contact')") do |contact| %>
+  <div id="same_contact_errors"></div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+      <tbody>
+        <tr>
+          <td width="24%" align="left"><label><%= t(:label_salutation) %></label></td>
+          <td width="26%" align="left">
+            <%= contact.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %>
+          </td>
+          <td width="2%">&nbsp;</td>
+          <td width="24%" align="left">&nbsp;</td>
+          <td width="26%" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+          <td align="left"><%= contact.text_field :first_name, :size =>'15',:maxlength=>'64' %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= t(:label_middle_name) %>&nbsp;</label></td>
+          <td align="left"><%= contact.text_field :middle_name, :size =>'15',:maxlength=>'64' %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+          <td align="left"><%= contact.text_field :last_name, :size =>'15',:maxlength=>'64' %></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label><%=t(:label_primary)%>&nbsp;<%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+          <td align="left"><%= contact.text_field :phone, :size =>'15',:maxlength=>"15" %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%=t(:label_primary)%>&nbsp;<%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+          <td align="left"><%= contact.text_field :email, :size =>'15' %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_nick_name) %></label></td>
+          <td align="left"><%= contact.text_field :nickname, :size =>'15', :id => 'nickname' %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= t(:label_preference) %></label></td>
+          <td align="left"><%= contact.text_field :preference, :size =>'15',:id => 'preference' %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_stage) %></label></td>
+          <%  contact_stage = contact_stages.select{|stage| stage.alvalue == 'Lead'}%>
+          <td align="left"> <%= contact.collection_select(:contact_stage_id,contact_stages,:id,:alvalue,{:selected=>contact_stage[0].id})%> </td>
+          <td>&nbsp;</td>
+          <td align="left"> </td>
+          <td align="left">            
+            <%= hidden_field_tag 'called_from', params[:called_from] %>
+            <%= hidden_field_tag 'selected_list_box',"" %>
+            <%= hidden_field_tag 'account_id',account_id%>            
+          </td>
+        </tr>
+        <tr> <td colspan="5" align="left">&nbsp;</td> </tr>
+        <tr>
+          <td colspan="5" align="center">
+            <%= contact.submit t(:text_save),:id=>'contact_submit', :name => "save", :class => "modal_contact", :onclick => "return checkloader(); setButtonPressed(this);"%>
+            <input type="button" id="Login2" value="Cancel"  class="modal_contact" onclick="tb_remove();" />
+          </td>
+        </tr>
+        <tr> <td colspan="5" align="left">&nbsp;</td> </tr>
+        <tr> <td colspan="5" align="left" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%>, <span class="alert_message">#</span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></td></tr>
+      </tbody>
+    </table>
+  <%end%>
+</div>
+<script type="text/javascript">
+  // Need to removed to JS File
+  function validAccountContact(name) {
+    tb_remove();
+    jQuery('#_contact_ctl').val(name);
+  }
+
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;32</div>

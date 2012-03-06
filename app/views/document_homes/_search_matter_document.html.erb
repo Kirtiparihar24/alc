@@ -1,0 +1,155 @@
+<% extension = @matter.document_homes.uploaded_by_lawyer(get_employee_user_id, nil).find(:all, :conditions => ["extension IS NOT NULL"], :order => "extension ASC", :select => ["extension"]).collect(&:extension).uniq %>
+<h2 class="title_main left_nav_head"><%=t(:text_search)%></h2>
+<div align="center" id="matterDocumentSearch">
+  <table width="95%" align="center" border="0">
+    <tbody>      
+      <tr><td align="left"><label><%=t(:label_name_of_the_document)%></label></td></tr>
+      <tr><td align="left"><input type="text" id="document_name" /></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td align="left"><label><%=t(:label_type_of_document_extension)%></label></td></tr>
+      <tr><td align="left"><%=select '','document_extension', extension, :include_blank=>""%></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td align="left"><label><%=t(:label_type)%></label></td></tr>
+      <tr><td align="left"><%=collection_select '','search_document_type', current_company.document_types,:alvalue,:alvalue, {:include_blank => ""}%></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td class="pt5 pb5" align="left"><strong><%=t(:text_search_by_creator_amp_privilege)%></strong></td></tr>
+      <tr><td align="left">Uploaded By</td></tr>
+      <tr><td align="left"><input type="text" id="search_document_creator"/></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td align="left"><%=t(:text_access_rights)%></td></tr>
+      <tr>
+        <td align="left"><table width="100%" border="0">
+            <tbody>
+              <tr>
+                <td><input type="checkbox" class="check search_ckb_privilege" id="disable_private" value="1" /></td>
+                <td><%=t(:text_private)%></td>
+                <td><input type="checkbox"  class="check search_ckb_privilege" value="4" /></td>
+                <td><%=t(:text_select_view)%></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" value="3" class="check search_ckb_privilege" /></td>
+                <td><%=t(:text_matter_view)%></td>
+                <td><input type="checkbox" class="check search_ckb_privilege" value="2" /></td>
+                <td><%=t(:text_public)%></td>
+              </tr>
+            </tbody>
+          </table></td>
+      </tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td class="pt5 pb5" align="left"><strong><%=t(:text_search_by_author_amp_source)%></strong></td></tr>
+      <tr><td align="left"><label><%=t(:label_source)%></label></td></tr>
+      <tr><td align="left"><%=collection_select '','search_source', current_company.doc_sources,:alvalue,:alvalue, {:include_blank => ""}%></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td align="left"><label>Owner</label></td></tr>
+      <tr><td align="left"><%= custom_select_tag("search_owner", options_for_select(MatterPeople.current_lawteam_members(@matter.id).collect{|people|[people.get_name, people.employee_user_id]}, params[:owner]), {:prompt => "Please Select"},:onchange=>"hide_private(#{get_employee_user_id});") -%></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td align="left"><label><%=t(:text_author)%></label></td></tr>
+      <tr><td align="left"><input type="text" id="search_author"/></td></tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr><td class="pt5 pb5" align="left"><strong><%=t(:text_when_was_it_created)%></strong></td></tr>
+      <tr>
+        <td align="left"><table width="100%" border="0">
+            <tbody>
+              <tr>
+                <td width="11%"><input type="radio" class="check" checked="checked" name="search_date" value="1" onClick="disable_date();"/></td>
+                <td width="89%"><%=t(:text_dont_remember)%></td>
+              </tr>
+              <tr>
+                <td> <input type="radio" class="check" name="search_date" value="2" onClick="disable_date();"/></td>
+                <td><%=t(:text_within_the_last_week)%></td>
+              </tr>
+              <tr>
+                <td><input type="radio" class="check" name="search_date" value="3" onClick="disable_date();"/></td>
+                <td><%=t(:text_past_month)%></td>
+              </tr>
+              <tr>
+                <td><input type="radio" class="check" name="search_date" value="4" onClick="disable_date();"/></td>
+                <td><%=t(:text_within_the_past_year)%></td>
+              </tr>
+              <tr>
+                <td><input type="radio" class="check" name="search_date" id="search_date" value="5" onClick="enable_date();"/></td>
+                <td><%=t(:text_specify_date)%>
+                  <select class="option_left"  id="search_date_type">
+                    <option><%=t(:text_modified_date)%></option>
+                    <option><%=t(:text_created_date)%></option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left"><table width="100%" border="0">
+            <tbody>
+              <tr>
+                <td width="24%"> <%=t(:text_from)%></td>
+                <td width="76%"><input type="text" id="search_from_date" name="" readOnly="true" class="date date_picker"  size="10" /></td>
+              </tr>
+              <tr>
+                <td><%=t(:text_to)%></td>
+                <td> <input type="text" id="search_to_date" readOnly="true" class="date date_picker" size="10"  /></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr><td align="left">&nbsp;</td></tr>
+      <tr>
+        <td>
+          <div class="buttonSub_div">
+            <input type="submit" class="button" value="<%=t(:label_search)%>" id="search_buton_leftside"/>
+            <input type="button" class="button" value="<%=t(:label_reset)%>" onclick="resetForm('matterDocumentSearch');"/>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript" language="javascript">
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#search_from_date");
+    livia_matter_inception_datepicker_new("#search_to_date");
+    jQuery('.ui-datepicker-trigger').attr('disabled', true);
+    search_date_enable_disable();
+  });
+
+  // Need to removed to JS File
+  jQuery('#search_buton_leftside').click(function() {
+    if(validate_search_date()){
+      disableAllSubmitButtons('button');
+      jQuery(this).val('Please wait..');
+      var path_url= '<%=search_document_matter_document_homes_path(@matter)%>';
+
+      jQuery.get(
+      path_url, {
+        'name' : jQuery('#document_name').val(),
+        'creator' : jQuery('#search_creator').val(),
+        'access_rights' : get_privilege,
+        'source' : jQuery('#_search_source').val(),
+        'owner' : jQuery('#search_owner').val(),
+        'author' : jQuery('#search_author').val(),
+        'creator': jQuery('#search_document_creator').val(),
+        'extension' : jQuery('#_document_extension').val(),
+        'date' : jQuery('input[name=search_date]:checked').val(),
+        'date_type' : jQuery('#search_date_type').val(),
+        'date_from' : jQuery('#search_from_date').val(),
+        'date_to' : jQuery('#search_to_date').val(),
+        'category' : jQuery('#_document_category').val(),
+        'document_type' : jQuery('#_search_document_type').val()
+      },
+      function(data) {
+        jQuery('#tabs').html(data);
+        jQuery('#searchresults_DIV').html(data);
+        enableAllSubmitButtons('button');
+        jQuery('#search_buton_leftside').val('<%=t(:label_search)%>');
+        new_tool_tip();
+        LiviaTooltipAP();
+      });
+    }
+  });
+</script>

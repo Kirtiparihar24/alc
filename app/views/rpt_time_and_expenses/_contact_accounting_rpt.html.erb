@@ -1,0 +1,156 @@
+<div class="w100">
+  <div class="fr textR pd5">
+    <%=raw(generate_send_email_rpt_link("contact_accounting_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("TimeAndExpense")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("contact_accounting_rpt"))%>
+  </div>
+  <br class="clear" />
+</div>
+<% unless @total_data.blank? %>
+  <% @total_data.each do |label,col| %>
+    <div class="mt5">
+      <div class="w100">
+        <div class="title_blue fl" ><%=t(:text_contact)%> : <%=(label == "" or !label) ? "None" : label%></div>
+        <br class="clear" />
+        <div class="title_blue fl" ><%=t(:text_time_accounted)%> (<%= pluralize_record(col.length , 'Record',0)%>) </div>
+        <div class="fr textR"> <%# links %> </div>
+        <br class="clear" />
+      </div>
+      <!--Tabular container div @start here -->
+      <div class="tabular_listing">
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>
+            <th width="7%" align="center"><%=t(:text_date)%></th>
+            <th width="10%" align="left"><%=t(:text_lawyer)%></th>
+            <th width="15%" align="left"><%=t(:text_matter_name)%></th>
+            <th width="6%" align="center"><%=t(:text_duration_hrs)%></th>
+            <th width="10%" align="left"><%=t(:text_activity_type)%></th>
+            <th width="6%" align="center"><%=t(:text_billable)%></th>
+            <th width="8%" align="center"><%=t(:text_rate)%>/ <%= t(:text_hr_doller) %></th>
+            <th width="8%" align="center"><%= "#{t(:text_bill_amount)} ($)"%></th>
+            <th width="8%" align="center"><%= "#{t(:text_discount)} (%)"%></th>
+            <th width="10%" align="center"><%=t(:text_override_amount)%></th>
+            <th width="10%" align="center"><%=t(:text_final_bill_amount)%></th>
+          </tr>
+          <%col.each do |obj|%>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <%obj.each_with_index do |e, i|%>
+                <%case i
+                when 1,2,4
+                  val_align = 'left'
+                when 0,5,8
+                  val_align = 'center'
+                else
+                  val_align = 'right'
+                end%>
+                <td align="<%=val_align%>"><%=( i==6 || i==7 || i==8 || i==9 || i==10) ? livia_amount(e).gsub("$",'') : e%></td>
+              <%end%>
+            </tr>
+          <%end%>
+        </table>
+      </div>
+      <!--Tabular container div #ends here -->
+    </div>
+    <div class="title_blue fl"><%=t(:text_duration_hrs)%> : <%=livia_amount(@conditions[label][1])%> &nbsp;,&nbsp;<%=t(:text_bill_amount_d)%> : <%=livia_amount(@conditions[label][2])%> &nbsp;,&nbsp;<%=t(:text_discount_p)%> : <%=livia_amount(@conditions[label][3])%> &nbsp;,&nbsp;<%=t(:text_override_amount)%> : <%=livia_amount(@conditions[label][4])%> &nbsp;,&nbsp;<%=t(:text_final_bill_amount)%> : <%=livia_amount(@conditions[label][5])%></div>
+    <br class="clear" />
+    <%reset_cycle%>
+    <%if @total_expenses.has_key?(label)%>
+      <br class="clear" />
+      <div class="mt5">
+        <div class="w100">
+          <br class="clear" />
+          <div class="title_blue fl" ><%=t(:text_expenses_accounted)%> (<%= pluralize_record(@total_expenses[label][0].length , 'Record',0)%>)</div>
+          <div class="fr textR"> <%# links %> </div>
+          <br class="clear" />
+        </div>
+        <!--Tabular container div @start here -->
+        <div class="tabular_listing">
+          <table width="100%" cellpadding="1" cellspacing="1">
+            <tr>
+              <th width="7%" align="center"><%=t(:text_date)%></th>
+              <th width="10%" align="left"><%=t(:text_lawyer)%></th>
+              <th width="15%" align="left"><%=t(:text_matter_name)%></th>
+              <th width="1%" align="left"><%=t(:text_expense_type)%></th>
+              <th width="6%" align="center"><%=t(:text_billable)%></th>
+              <th width="10%" align="center"><%= "#{t(:text_expense_amount)} ($)"%></th>
+              <th width="8%" align="center"><%= "#{t(:text_discount)} (%)"%></th>
+              <th width="10%" align="center"><%=t(:text_override_amount)%></th>
+              <th width="10%" align="center"><%=t(:text_markup)%></th>
+              <th width="10%" align="center"><%=t(:text_final_bill_amount)%></th>
+            </tr>
+            <% @total_expenses[label][0].each do |obj|%>
+              <tr class="<%=cycle('bg1', 'bg2')%>">
+                <%obj.each_with_index do |e, i|%>
+                  <%case i
+                  when 1,2,3
+                    val_align = 'left'
+                  when 0,4,6
+                    val_align = 'center'
+                  else
+                    val_align = 'right'
+                  end%>
+                  <td align="<%=val_align%>"><%=(i==5 || i==6 || i==7 || i==8 ||i==9) ? livia_amount(e).gsub("$",'') : e%></td>
+                <%end%>
+              </tr>
+            <%end%>
+          </table>
+        </div>
+        <!--Tabular container div #ends here -->
+      </div>
+      <div class="title_blue fl">&nbsp;<%=t(:text_discount_p)%> : <%=livia_amount(@total_expenses[label][4])%> &nbsp;,&nbsp;<%=t(:text_override_amount)%> : <%=livia_amount(@total_expenses[label][1])%> &nbsp;,&nbsp;<%=t(:text_markup)%> : <%=livia_amount(@total_expenses[label][3])%> &nbsp;,&nbsp;<%=t(:text_final_bill_amount)%> : <%=livia_amount(@total_expenses[label][2])%> </div>
+      <br class="clear" />
+      <% @total_expenses.delete(label) %>
+    <%end%>
+    <br class="clear" />
+  <%end%>
+<%end #unless %>
+<%@total_expenses.each do|label,col|%>
+  <div class="mt5">
+    <div class="w100">
+      <div class="title_blue fl" ><%=t(:text_contact)%> <span ><%=(label == "" or !label) ? "None" : label%></span></div>
+      <div class="title_blue fl" ><%=t(:text_expenses_accounted)%></div>
+      <div class="fr textR"> <%# links %> </div>
+      <br class="clear" />
+    </div>
+    <!--Tabular container div @start here -->
+    <div class="tabular_listing">
+      <table width="100%" cellpadding="1" cellspacing="1">
+        <tr>
+          <th width="7%" align="center"><%=t(:text_date)%></th>
+          <th width="10%" align="left"><%=t(:text_lawyer)%></th>
+          <th width="15%" align="left"><%=t(:text_matter_name)%></th>
+          <th width="1%" align="left"><%=t(:text_expense_type)%></th>
+          <th width="6%" align="center"><%=t(:text_billable)%></th>
+          <th width="10%" align="center"><%= "#{t(:text_expense_amount)}"%></th>
+          <th width="8%" align="center"><%= "#{t(:text_discount)} (%)"%></th>
+          <th width="10%" align="center"><%=t(:text_override_amount)%></th>
+          <th width="10%" align="center"><%=t(:text_markup)%></th>
+          <th width="10%" align="center"><%=t(:text_final_bill_amount)%></th>
+        </tr>
+        <% col[0].each do |obj| %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <%obj.each_with_index do |e, i|%>
+              <%case i
+              when 1,2,3
+                val_align = 'left'
+              when 0,4,6
+                val_align = 'center'
+              else
+                val_align = 'right'
+              end%>
+              <td align="<%=val_align%>"><%=(i==5 || i==6 || i==7 || i==8 || i==9 ) ? livia_amount(e).gsub("$",'') : e%></td>
+            <%end%>
+          </tr>
+        <%end%>
+      </table>
+    </div>
+    <!--Tabular container div #ends here -->
+  </div>
+  <div class="title_blue fl">&nbsp;<%=t(:text_discount_p)%> : <%=livia_amount(col[4])%> &nbsp;,&nbsp;<%=t(:text_override_amount)%> : <%=livia_amount(col[1])%>&nbsp;,&nbsp;<%=t(:text_markup)%> : <%=livia_amount(col[3])%> &nbsp;,&nbsp;<%=t(:text_final_bill_amount)%> : <%=livia_amount(col[2])%></div>
+  <br class="clear" />
+<% end %>
+
+<br class="clear" />
+<%=raw("<div class='title_blue fl'>#{t(:text_total_record)} = 0 </div><br class='clear'/>") if @total_data.blank? %>
+<!--div class="title_blue fl"><%=t(:text_total_records) if @total_data.blank?%> = 0 </div-->
+<br class="clear" />

@@ -1,0 +1,27 @@
+<%regenerate = (params[:tne_invoice].present? && params[:tne_invoice][:regenerate].present? ? params[:tne_invoice][:regenerate] : false)%>
+<%if @tne_invoice.matter_id.present?%>
+ <td width="2%">
+  <a href="<%= new_time_entry_path(:matter_id => @tne_invoice.matter_id,:height=> "400", :width=> "970", :from=>"matters",:consolidated_by=>@tne_invoice.consolidated_by, :regenerate => regenerate) %>" class="thickbox vtip new_tme_billling" title="<%=t(:text_time_entry)%>" name="<%=t(:text_new_time_entry)%>"><span class="icon_task_maketime_entry fl mt3 mr5"></span></a>
+ </td>
+ <td><span ><a href="<%= new_time_entry_path%>?height=400&width=970&from=matters&matter_id=<%=@tne_invoice.matter_id%>&invoice_id=<%=@tne_invoice.id%>&consolidated_by=<%=@tne_invoice.consolidated_by%>&regenerate=<%=regenerate%>" class="thickbox new_tme_billling" name="<%=t(:text_new_time_entry)%>"><%= t(:text_new_time_entry) %></a></span></td>
+
+ <td width="2%">
+  <a href="<%= new_expense_entry_path(:matter_id => @tne_invoice.matter_id,:height=> "250", :width=> "970", :from=>"matters",:consolidated_by=>@tne_invoice.consolidated_by,:regenerate => regenerate) %>" class="thickbox vtip new_exp_billling" title="<%=t(:text_expense_entry)%>" name="<%=t(:text_expense_entry)%>"><%=image_tag("icon-expenseentry.png") %></a>
+ </td>
+ <td><span ><a href="<%= new_expense_entry_path%>?height=250&width=970&from=matters&matter_id=<%=@tne_invoice.matter_id%>&invoice_id=<%=@tne_invoice.id%>&consolidated_by=<%=@tne_invoice.consolidated_by%>&regenerate=<%=regenerate%>" class="thickbox new_exp_billling" name="<%=t(:text_expense_entry)%>">New <%=t(:text_expense_entry)%></a></span></td>
+
+ <%else%>
+<td width="2%">
+  <a href="<%= new_time_entry_path(:contact_id => @tne_invoice.contact_id,:height=> "400", :width=> "970", :from=>"non_matters",:consolidated_by=>@tne_invoice.consolidated_by,:regenerate => regenerate) %>" class="thickbox vtip" title="<%=t(:text_time_entry)%>" name="<%=t(:text_new_time_entry)%>"><span class="icon_task_maketime_entry fl mt3 mr5"></span></a>
+ </td>
+ <td><span ><a href="<%= new_time_entry_path%>?height=400&width=970&from=non_matters&contact_id=<%=@tne_invoice.contact_id%>&invoice_id=<%=@tne_invoice.id%>&consolidated_by=<%=@tne_invoice.consolidated_by%>&regenerate=<%=regenerate%>" class="thickbox" name="<%=t(:text_new_time_entry)%>"><%= t(:text_new_time_entry) %></a></span></td>
+
+ <td width="2%">
+  <a href="<%= new_expense_entry_path(:contact_id => @tne_invoice.contact_id,:height=> "250", :width=> "970", :from=>"non_matters",:consolidated_by=>@tne_invoice.consolidated_by,:regenerate => regenerate) %>" class="thickbox vtip" title="<%=t(:text_expense_entry)%>" name="<%=t(:text_expense_entry)%>"><%=image_tag("icon-expenseentry.png") %></a>
+ </td>
+ <td><span ><a href="<%= new_expense_entry_path%>?height=250&width=970&from=non_matters&contact_id=<%=@tne_invoice.contact_id%>&invoice_id=<%=@tne_invoice.id%>&consolidated_by=<%=@tne_invoice.consolidated_by%>&regenerate=<%=regenerate%>" class="thickbox" name="<%=t(:text_expense_entry)%>">New <%=t(:text_expense_entry)%></a></span></td>
+ <%end%>
+
+
+
+ 

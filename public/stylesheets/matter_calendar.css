@@ -1,0 +1,38 @@
+/*.box_yellow{background-color:#fafaf0; border:1px solid #efe7d0; padding:3px; }*/
+.calender_table td.week{color:#484848; font-weight:bold;}
+ul.tabs-nav li.nontab {background:none; border:none;}
+ul.tabs-nav li.nontab a {background:none; border:none;color:#327796;font-size:10px;font-weight:normal;}
+
+.calender_table th {padding:4px;}
+.calender_table td{padding:2px 4px 0 4px;}
+.calender_table td {background:#fff url(../images/calendar/calender_active_bg.png) repeat-x left top; height:125px;padding-right:5px;}
+.text_orange{color:#CA5B00; }
+
+.cal_day{ margin:0; padding:0;}
+.cal_day th{padding:9px 4px 0 4px;border-bottom:1px solid #5597B6;background-color:#5597B6; font-size:109.1%;font-weight:bold;color:#FFFFFF;}
+.cal_day td{padding:2px 4px 0 4px;background:#FFFFFF; margin:0;}
+.cal_day td.day_time {background:#b7d5e6; height:50px;}
+
+.tabular_listing_cal{margin:0; padding:0;}
+.tabular_listing_cal table th{xline-height:18px;font-weight:bold;color:#3A3A39;background-color:#CCDADF; border-bottom:1px solid #CCDADF; font-size:81%; }
+.tabular_listing_cal table td { vertical-align:top;}
+.tabular_listing_cal table td {line-height:23px; padding:0 5px;}
+.tabular_listing_cal table td a{color:#074D6D; text-decoration:none;}
+.tabular_listing_cal table td a:hover{color:#074D6D; text-decoration:underline;}
+.tabular_listing_cal table td.bg1_cal{background-color:#EFEFEF;}
+.tabular_listing_cal table td.bg2_cal{background-color:#DDDDDD;}
+
+.calender_table td.prvmonth {background:#fff url(../images/calendar/calender_deactive_bg.png) repeat-x left top;}
+.calender_table td.week, .calender_table th.week {background-image:none;}
+.calender_table td a {color:#3e3e3e; text-decoration:none;}
+.calender_table td.prvmonth a {color:#767676; text-decoration:none;}
+.calender_table td.today {border:1px solid #327798;font-weight:bold; background:#fff url(../images/calendar/calender_today.png) repeat-x left top;}
+.calender_table td.today a {color:#333333;}
+
+.box-yellow{background-color:#f1e3c4;}
+
+option[selected="selected"] {background-color:#f1e3c4; font-weight: bold;}
+
+select#matters, select#matter_people{ width:100%}
+/**************added by supriya k 12-04-2011*************/
+.pagiText{color: #a8a8a8}

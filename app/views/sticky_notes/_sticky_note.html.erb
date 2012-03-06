@@ -1,0 +1,34 @@
+
+<%@counter=0 if @counter==nil%>
+<%count=sticky_note.new_record? ? @counter : sticky_note.id%>
+<table width="100%" border="1" cellpadding="0" cellspacing="2" id="sticky_table_<%=count%>" class="sticky_table">
+  <tr >
+    <%if sticky_note.new_record?%>
+      <td width="5%" valign="top" class="time_stamp" id="time_stamp_<%=@counter%>" style="display:none;font-size:xx-small" ><%=Time.zone.now().strftime("%m/%d") %></td>
+    <%else%>
+      <td width="5%" valign="top" class="time_stamp" id="time_stamp_<%= sticky_note.id%>" style="font-size:xx-small" ><%=sticky_note.updated_at.strftime("%m/%d")%><br/><p style='font-size:xx-small'><%=sticky_note.updated_at.strftime('%H:%M') %></p></td>
+    <%end%>
+    <td width="78%" style="border-right:1px solid #d8d8c3;border-left:1px solid #d8d8c3;">
+      <%=text_area_tag :description,sticky_note.description,
+        :rows=>2 ,:cols=>32,
+        :style=>'border:0;background-color:#fdfdc8;height:15px',
+        :class=>"sticky_text expand15-200 #{sticky_note.new_record? ? 'sticky_text_new' : 'sticky_text_old'}",
+        :id=>"text_area_#{count}",
+        :onchange=>"setBlurActions(#{sticky_note.new_record?},#{count},this)"%></td>
+    <%if sticky_note.new_record?%>
+      <td width="17%" valign="top" id="td_action_<%=@counter%>" class="td_action" align=right style="display:none">
+      </td>
+    <%else%>
+      <td width="17%" valign="top" id="td_action_<%=sticky_note.id%>" class="td_action" align=right >
+        <!-- TODO Please remove partial instead of uncomment this code and check it-->
+        <%unless sticky_note.new_record? %>
+          <% if task_available? %><%=link_to "<img src='/images/icon_sticky_2.png' width='14' height='14' title='New Matter Activity' alt='New Matter Task' class='vtip'/>","#",:onclick=>"close_otherThickbox('New Activity','/physical/clientservices/new_matter_task?height=121&width=300&id=#{sticky_note.id}');"%><%end%>
+          <%=link_to "<img src='/images/icon_sticky_1.png' width='14' height='14' title='Add Time Entry' alt='Add Time Entry' class='vtip'/>","#",:onclick=>"close_otherThickbox('New Time Entry','/physical/timeandexpenses/time_and_expenses/new_time_entry_home?height=325&width=1020&id=#{sticky_note.id}');"%>
+          <%=link_to "<img src='/images/icon_sticky_3.png' width='14' height='14' border=0 alt='Delete' title='Delete' class='vtip'/>","#",:onclick=>"deleteStickyNote('#{sticky_note.id}')"%>
+        <%end %>
+      </td>
+    <%end%>
+  </tr>
+</table>
+<div  id="styling_div_<%=count%>" class="styling_div" style="border-bottom:1px solid #d8d8c3; margin:5px 0;"></div>
+<%@counter+=1%>

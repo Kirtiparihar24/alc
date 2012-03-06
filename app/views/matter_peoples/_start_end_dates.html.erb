@@ -1,0 +1,33 @@
+<% if @edit_mode %>
+  <% if is_lead_lawyer?(@matter) %>
+    <tr>
+      <td align="left"><%= t(:label_member_from) %><span class="alert_message">*</span></td>
+      <td align="left"><%= matter_people.text_field :start_date, :value => @matter_people.start_date, :class => "date_picker", :onclick=>"livia_datepicker(this);", :size => "10" %> </td>
+    </tr>
+    <tr>
+      <td align="left"><label><%= t(:label_member_till) %></label></td>
+      <td align="left"><%= matter_people.text_field :end_date, :value => @matter_people.end_date, :class => "date_picker", :onclick=>"livia_datepicker(this);", :size => "10" %></td>
+    </tr>
+  <% else %>
+    <tr>
+      <td align="left"><%= t(:label_member_from) %><span class="alert_message">*</span></td>
+      <td align="left"><%= matter_people.text_field :start_date,  :value => @matter_people.start_date, :class => "date_picker", :disabled => true, :onclick=>"livia_datepicker(this);", :size => "10" %></td>
+    </tr>
+    <tr>
+      <td align="left"><label><%= t(:label_member_till) %></label></td>
+      <td align="left"><%= matter_people.text_field :end_date,  :value => @matter_people.end_date, :class => "date_picker", :disabled => true, :onclick=>"livia_datepicker(this);", :size => "10" %></td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td align="left"><%= t(:label_member_from) %><span class="alert_message">*</span></td>
+    <td align="left"><%= matter_people.text_field :start_date,  :value => @matter_people.start_date,  :class=>"date_picker", :onclick=>"livia_datepicker(this);", :size => "10" %></td>
+  </tr>
+  <tr>
+    <td align="left"><label><%= t(:label_member_till) %></label></td>
+    <td align="left"><%= matter_people.text_field :end_date,  :value => @matter_people.end_date, :class => "date_picker", :onclick=>"livia_datepicker(this);", :size => "10" %></td>
+  </tr>
+<%end%>
+<script language="javascript" type="text/javascript">
+  livia_datepicker();
+</script>

@@ -1,0 +1,50 @@
+<div class="box-head">
+  <h2 class="left"><%=t(:label_Work_Subtypes)%></h2>
+</div>
+<div class="actionLinks"><%=link_to('Add New Work-Subtype', new_work_subtype_path)%><%= render_work_subtype_links %></div>
+<%unless @work_subtypes.blank?%>
+
+  <div class="watermark"><%=will_paginate @work_subtypes, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @work_subtypes %></div>
+<%end%>
+
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+      <tr>
+        <th width=15%"><%=t(:label_name)%></th>
+        <th width="25%"><%=t(:label_description)%></th>
+        <th width="20%"><%=t(:label_category)%></th>
+        <th width="20%"><%=t(:label_worktype)%></th>
+        <th width="20%" colspan="3"><%=t(:text_action)%></th>
+      </tr>
+      <%unless @work_subtypes.blank? %>
+        <%@work_subtypes.each do |work_subtype|%>
+          <tr>
+            <td><%=work_subtype.name %></td>
+            <td><%=work_subtype.description%></td>
+            <td><%=work_subtype.work_type.category.name %></td>
+            <td><%=work_subtype.work_type.name %></td>
+            <td>
+              <%= link_to t(:label_edit), edit_work_subtype_path(work_subtype) %> |
+              <%= link_to 'Delete', '#', :onclick=> "check_task_on_work_complexity(this,'WorkSubtype',#{work_subtype.id}); return false;" %>
+            </td>
+          </tr>
+        <%end%>
+      <%else%>
+        <tr >
+          <td colspan="3">
+            <div class="warningCont m5">
+              <%=t(:text_no_records)%>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+
+    </tbody>
+  </table>
+</div>
+<%unless @work_subtypes.blank?%>
+  <div class="pagging">
+    <div class="left"><%=will_paginate @work_subtypes, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @work_subtypes %></div>
+  </div>
+<%end%>

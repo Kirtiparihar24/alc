@@ -1,0 +1,85 @@
+<%form_remote_for :role_assign ,@role_assign,:url=>{:controller =>'assign_licence',:action=>'assignuser'},:loading=>"loader.prependTo('#empdiv')",:html=>{:method=>:post}do |f| %>
+  <%=hidden_field_tag 'employee_id',params[:id] %>
+  <%=hidden_field_tag 'comp_id',params[:comp_id]%>
+  <div class="lic-cont">
+    <table width="87%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="17%" align="center"><b><%=t(:text_lawyer_name)%> :</b></td>
+        <td width="12%" align="left"><%= "#{user.first_name} #{user.last_name}" %></td>
+        <td width="17%" align="center"><b><%=t(:text_designation)%> :</b></td>
+        <td width="12%" align="left"><%= user.employee.designation.lvalue rescue"-" %> </td>
+        <td width="17%" align="center"><b><%=t(:text_email)%> :</b></td>
+        <td width="12%" align="left"><%= user.email %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="table">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th width="29%" align="left" valign="top"><%=t(:text_current_products)%></th>
+        <th width="17%" align="center" valign="top"><%=t(:text_licence_type)%></th>
+        <th width="19%" align="center" valign="top"><%=t(:text_licence_start_date)%></th>
+        <th width="17%" align="center" valign="top"><%=t(:text_licence_expiry_date)%></th>
+        <th width="18%" align="left" valign="top"><%=t(:text_action)%></th>
+      </tr>
+      <%productlicencedetails.each do |prd_lic| %>
+        <tr>
+          <td align="left"><%= prd_lic.product_licence.product.name rescue "-" %></td>
+          <td align="center"><%= ProductLicence::LICENCE_TYPE[prd_lic.product_licence.licence_type][0]%></td>
+          <td align="center"><%= livia_date(prd_lic.product_licence.start_at) %></td>
+          <td align="center"><%= livia_date(prd_lic.product_licence.end_at)%></td>
+          <td align="left"><%=raw link_to "Deactivate","#",{:onclick => "deactivate_unassign_licence(#{prd_lic.product_licence.id}, 'd'); return false;" ,:class=>"linkText", :style=>"font-size:8pt;"}%> | <%=raw link_to "Un-Assign","#",{:onclick => "deactivate_unassign_licence(#{prd_lic.product_licence.id}, 'u'); return false;" ,:class=>"linkText", :style=>"font-size:8pt;"}%></td>
+        </tr>
+      </table>
+    </div>
+  <%end%>
+  <div class="mid-box-head">
+    <h2 class="left"><%=t(:text_assign_product)%></h2>
+  </div>
+  <% if productlicencedetails.blank?%>
+    <div class="form">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="25%" align="left" valign="top"><label><%=t(:text_select_product)%></label></td>
+          <td width="75%"><%= company_products(params[:comp_id]) %></td>
+        </tr>
+        <tr id="div_product_licences" style="display:none;">
+          <%= render :partial => 'show_licences', :locals=>{:plicences=>@plicences} %>
+        </tr>
+        <tr>
+          <td align="left" valign="top">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+    <div class="mid-box-head">
+      <h2 class="left"><%=t(:label_assign)%>&nbsp;<%=t(:label_cluster)%></h2>
+    </div>
+    <div class="form">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <%i=0%>
+          <tr><td style="padding: 0px;"><%= check_box_tag 'toggle' , 'toggle', false, :onclick =>"toggleCheckboxes('cluster',this.checked);"%> Select All</td></tr>
+          <tr>
+            <% @clusters.each do |cluster| %>
+              <td style="padding: 0px;">
+                <%= check_box_tag "cluster_ids[]", cluster.id, false, :class=>"cluster"%><%= cluster.name %>
+              </td>
+              <% i += 1 %>
+              <%= "<tr> </tr>" if i%7 == 0 %>
+            <% end %>
+          </tr>
+        </table>
+        <tr>
+          <td align="left" valign="top">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      <div class="buttons">
+        <div id="div_submit" style="display:none;">
+          <%=submit_tag :Assign,{:id=>'assign',:class=>'button',:onclick=>'return check_licence();'}%>
+        </div>
+      </div>
+    </div>
+  <%end%>
+<%end%>

@@ -1,0 +1,50 @@
+<div class="mt10">
+<% remote_form_for :opportunity, :url => {:action => 'save_status'} do |opportunity| %>
+  <div class='message_error_div' id="nameerror" style="display: none;"></div>
+  <%=hidden_field_tag  'opp_stage' , params[:opp_stage] if params[:opp_stage] %>
+  <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+  <div id="one_field_error_div" >
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  </div>
+  <% if(@opportunity.errors.length > 0 ) %>
+    <%= error_messages_for(:opportunity) %>
+    <%= flash[:error]%>
+  <% end %>
+  <%= opportunity.hidden_field 'id' ,:value =>  @opportunity.id %>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+     <tr>
+      <td style="width:25%"><label><%= t(:label_current_stage) %></label></td>      
+      <td><label><strong><%= CompanyLookup.find_by_id(@opportunitytemp.stage).alvalue.try(:capitalize) %></strong></label></td>
+    </tr>
+    <tr>
+      <td><label><%= t(:label_change_to) %></label></td>
+      <td>
+        <%= opportunity.select :stage, @stage, {}, {
+          :onChange => "opportunity_status_change(this.value,'#{@opportunity.stage}','#{@closed_won_stage}')"
+        } %>
+      </td>
+    </tr>
+    <tr>
+      <td><label><%= t(:label_reason) %> <span class="alert_message">*</span></label></td>
+      <td><%= opportunity.text_field :reason %></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <span class="opportunityMatterCheck" id="opp_matter" <%unless @opportunity.stage.eql?("won")%> style="display:none;" <%end%>>
+          <%=check_box :opp_matter, true, :checked=>@opportunity.stage.eql?("won"),:style=>"width:25px;"%> <label><%=t(:label_check_here_to_create_a_matter_for_this_opportunity)%></label>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" height="5"></td>
+    </tr>
+    <tr>      
+      <td colspan="2" align="center">
+        <%= opportunity.submit t(:text_save_n_exit),:onclick=>"return checkloader(); return validate_field('opportunity_reason','Please specify the reason');"%>
+        <input type="button" value="<%= t(:text_cancel) %>" onclick="parent.tb_remove();return false" id="cancel" />
+      </td>
+    </tr>
+    <tr><td align="left" colspan="2" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></td></tr>
+  </table>
+<%end%>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;35</div>

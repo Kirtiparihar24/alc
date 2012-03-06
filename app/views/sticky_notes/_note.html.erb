@@ -1,0 +1,24 @@
+<div id="sticky" class="ui-draggable" style="position:absolute; float:right; margin:20px 0 0 98px; z-index:1000;">
+  <div class="stickNote_box" id="sticky_div" style="position:relative;display:none; width:350px;max-height:450px;overflow:auto;">
+    <div class="title_stickyNote textL">Notes
+      <div class="fl"></div>
+      <div style="float:right; margin-top:5px;">
+        <a href='#' class='icon_close fr'  onclick="setFlagForStickyNote(false);"></a>
+      </div>
+      <br class="clear" />
+    </div>
+    <div class="xstickNote_bg" style=" background:#fdfdca  repeat-x left bottom; padding:3px;">
+      <div style="border-bottom:1px solid #d8d8c3;margin:5px 0;"></div>
+      <%@counter=0%>
+      <div id="dynamicInput">        
+        <%=render :partial=>'/sticky_notes/sticky_note',:collection=>@sticky_note_user.sticky_notes%>
+       
+      </div>
+      <%=link_to_function "Add a note",:id=>"add_note" ,:style=>"display:none" do |page|
+        page.insert_html :bottom,:dynamicInput,:partial=>"/sticky_notes/sticky_note",:object=>StickyNote.new
+        page.call 'initNewTextArea'
+      end%>
+      <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;</div>
+    </div>    
+  </div>
+</div>

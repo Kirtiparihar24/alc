@@ -1,0 +1,176 @@
+<!--Comment-->
+<div>
+  <div class="box_gray_new">
+    <div class="icon_orange_arrow_down mr5 mt3 fl"></div>
+    <div class="fl"> <strong><%=t (:label_comments)%></strong> [<%=@notes.size%>] </div>
+    <div class="fr mt5 mr5">
+      <a href="modal_add_comment.html?height=150&amp;width=360" class="thickbox fr link_blue vtip" title="Add Comment" name="Add Comment"><span class="icon_add fl"></span></a>
+    </div>
+    <br class="clear" />
+  </div>
+
+  <div class="tabular_listing">
+    <table cellpadding="1" cellspacing="1" width="100%">
+      <tbody><tr>
+          <th align="left" width="63%"><a href="#"><%=t (:label_comment)%> / <%=t (:label_details)%></a></th>
+          <th align="left" width="13%"><a href="#"><%=t (:label_user)%></a></th>
+          <th align="left" width="13%"><a href="#"><%=t (:label_type)%></a></th>
+          <th align="center" width="11%"><a href="#"><%=t (:label_Created_At)%></a></th>
+        </tr>
+        <%unless @notes.empty?%>
+          <%@notes.each do|e|%>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td><%=e.comment%></td>
+              <td><%=e.user.try(:full_name)%></td>
+              <td><%=e.title%></td>
+              <td align="center"><%=livia_date_time(e.created_at.to_time)%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr>
+            <td colspan="4">No comments found.</td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--Comment-->
+<br class="clear" />
+<!--Document-->
+<div>
+  <div class="box_gray_new">
+    <div class="icon_orange_arrow_down mr5 mt3 fl"></div>
+    <div class="fl">
+      <strong><%=t (:label_documents)%></strong> [<%=@lawyer_documents.size%>]
+    </div>
+    <div class="fr mt5 mr5">
+      <a href="<%=raw new_matter_document_home_path(@matter, :mapable_type=>'Matter', :mapable_id=> @matter.id, :task_id=>@matter_task.id, :return_path => edit_matter_matter_task_path(@matter, @matter_task))%>" class=" fr link_blue"><span class="icon_add fl"></span></a>
+    </div>
+    <br class="clear" />
+  </div>
+
+  <div class="tabular_listing">
+    <table cellpadding="1" cellspacing="1" width="100%">
+      <tbody>
+        <tr>
+          <th align="left" width="59%"><a href="#"><%=t (:label_document_name)%></a></th>
+          <th align="left" width="15%"><%=t (:label_Size)%></th>
+          <th align="center" width="21%"><%=t (:label_uploadon)%></th>
+          <th align="center" width="5%"><a href="#"><%=t (:label_Actions)%></a></th>
+        </tr>
+        <%unless @lawyer_documents.empty?%>
+          <%@lawyer_documents.each do|e|%>
+            <tr>
+              <td class="bg1"><%=e.latest_doc.name%></td>
+              <td class="bg1"><%=matter_filesize_to_human(e.latest_doc.data_file_size)%></td>
+              <td class="bg1"><%=livia_date_time(e.updated_at.to_time)%></td>
+              <td class="bg1">
+                <div class="action_div" style="display: none;">
+                  <div style="display: none;" class="hidden_action">
+                    <div class="actionpad_box_top"></div>
+                    <div class="actionpad_box_body">
+                      <div class="fixed_icon">
+                        <table cellpadding="0" cellspacing="1" width="100%">
+                          <tbody><tr>
+                              <td align="center" valign="middle" width="25%"><div class="icon_edit"></div><span><a href="accounts_edit.html"><%=t (:label_edit)%></a></span></td>
+                              <td align="center" valign="middle" width="25%"><div class="icon_note"></div><span><a href="#"><%=t (:label_notes)%></a></span></td>
+                              <td align="center" valign="middle" width="25%"><div class="icon_history"></div><span><a href="#"><%=t(:label_History)%></a></span></td>
+                              <td align="center" valign="middle" width="25%"><div class="icon_comment"></div><span><a href="#"><%=t (:label_comment) %></a></span></td>
+                            </tr>
+                          </tbody></table>
+                        <div class="seperator_dotted_hori"></div>
+                      </div>
+                      <div class="flexy_icon">
+                        <table cellpadding="0" cellspacing="1">
+                          <tbody><tr>
+                              <td align="center" valign="middle" width="30%"><div class="icon_placeholder"></div><span><%=t (:label_add_doc)%></span></td>
+                              <td align="center" valign="middle" width="30%"><div class="icon_placeholder"></div><span><%=t (:label_comment) %></span></td>
+                              <td align="center" valign="middle" width="30%"><div class="icon_placeholder"></div><span><%=t (:label_comment) %></span></td>
+                            </tr>
+                          </tbody></table>
+                      </div>
+                    </div>
+                    <div class="actionpad_box_bottom"></div>
+                  </div>
+                  <a href="#"><div class="icon_action"></div></a>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr><td colspan="4">No documents found.</td></tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--Document-->
+<br class="clear" />
+<!--Client Documents-->
+<div>
+  <div class="box_gray_new">
+    <div class="icon_orange_arrow_down mr5 mt3 fl"></div>
+    <div class="fl">
+      <strong><%=t (:label_client_document)%></strong> [<%=@client_documents.size%>]
+    </div>
+
+    <br class="clear" />
+  </div>
+
+  <div class="tabular_listing">
+    <table cellpadding="1" cellspacing="1" width="100%">
+      <tbody>
+        <tr>
+          <th align="left" width="29%"><a href="#"><%=t (:label_document_name)%></a></th>
+          <th align="left" width="48%"><%=t (:label_description)%></th>
+          <th align="left" width="18%"><%=t (:label_Creation_Date)%></th>
+          <th align="center" width="5%"><a href="#"><%=t (:label_Actions)%></a></th>
+        </tr>
+        <%unless @client_documents.empty?%>
+          <%@client_documents.each do|e|%>
+            <tr>
+              <td class="bg1"><%=e.latest_doc.name%></td>
+              <td class="bg1"><%=e.latest_doc.description%></td>
+              <td class="bg1"><%=e.created_at.to_time.strftime("%m%d%y %H:%M")%></td>
+              <td class="bg1">
+                <div class="action_div" style="display: none;">
+                  <div style="display: none;" class="hidden_action">
+                    <div class="actionpad_box_top"></div>
+                    <div class="actionpad_box_body">
+                      <div class="fixed_icon">
+                        <table cellpadding="0" cellspacing="1" width="100%">
+                          <tbody><tr>
+                              <td align="center" valign="middle" width="25%"><div class="icon_edit"></div><span><a href="accounts_edit.html">Edit</a></span></td>
+                              <td align="center" valign="middle" width="25%"><div class="icon_note"></div><span><a href="#">Note</a></span></td>
+                              <td align="center" valign="middle" width="25%"><div class="icon_history"></div><span><a href="#">History</a></span></td>
+                              <td align="center" valign="middle" width="25%"><div class="icon_comment"></div><span><a href="#">Comment</a></span></td>
+                            </tr>
+                          </tbody></table>
+                        <div class="seperator_dotted_hori"></div>
+                      </div>
+                      <div class="flexy_icon">
+                        <table cellpadding="0" cellspacing="1">
+                          <tbody><tr>
+                              <td align="center" valign="middle" width="30%"><div class="icon_placeholder"></div><span>Add Doc</span></td>
+                              <td align="center" valign="middle" width="30%"><div class="icon_placeholder"></div><span>Comment</span></td>
+                              <td align="center" valign="middle" width="30%"><div class="icon_placeholder"></div><span>Comment</span></td>
+                            </tr>
+                          </tbody></table>
+                      </div>
+                    </div>
+                    <div class="actionpad_box_bottom"></div>
+                  </div>
+                  <a href="#"><div class="icon_action"></div></a>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr><td colspan="4">No client documents found.</td></tr>
+        <%end%>
+      </tbody></table>
+  </div>
+</div>
+<!--Client Documents-->
+

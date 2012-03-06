@@ -1,0 +1,99 @@
+<!--MAIN NAV STARTS-->
+<%if controller_name.match('^matter')
+  matter_tab = 'current'
+elsif controller_name.match('^document') && params[:mapable_type].eql?('Matter')
+  matter_tab = 'current'
+end%>
+<%if controller_name.match('^contact') or controller_name.match('^import')
+  contact_tab = 'current'
+end%>
+
+<!-- Sub navigation -->
+<div id="subnav">
+  <div class="container_12">
+    <ul class="sf-navbar sf-js-enabled" id="navigation">
+      <%if is_secretary_or_team_manager?%>
+        <% if APP_URLS[:use_helpdesk] %> <li class=""><%= link_to(truncate("<span>Helpdesk</span>", :length => 20), helpdesk_path)%></li> <%end%>
+        <li class ='<%=(controller_name.eql?('livia_secreteries')||controller_name.eql?('home'))? 'current' : ''%>'>
+          <%=link_to("<span>Home</span>", physical_liviaservices_livia_secretaries_url,:class =>controller_name.eql?('livia_secretaries')? 'selected' : '' )%>
+        </li>
+        <%if show_header_tabs%>
+          <% if !(session[:verified_secretary_id].nil? and !params[:service_provider_id].blank? and @sp_session.assignment.nil?) %>
+            <%if can? :manage, :zimbra_mail %>
+              <li class ='<%=controller_name.eql?('zimbra_mail')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_mail)}</span>",zimbra_mail_index_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, Contact %>
+              <li class ='<%=contact_tab%> livia_contact_droppable'>
+                <%=link_to("<span>Business Contacts</span>",contacts_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, Account %>
+              <li class ='livia_account_droppable <%=controller_name.eql?('accounts')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_accounts)}</span>",accounts_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, Opportunity %>
+              <li class ='livia_oppor_droppable <%=controller_name.eql?('opportunities')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_opportunities)}</span>",opportunities_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, Matter %>
+              <li class ='<%=matter_tab%>'>
+                <%=link_to("<span>#{t(:text_matters)}</span>", matters_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, Physical::Timeandexpenses::TimeEntry%>
+              <li class ='<%=controller_name.eql?('time_and_expenses')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_time_n_expense)}</span>",'/physical/timeandexpenses/calendar')%>
+              </li>
+            <%end%>
+            <%if can? :manage, TneInvoice %>
+              <li class ='<%=controller_name.eql?('tne_invoices')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_billing)}</span>",tne_invoices_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, Campaign %>
+              <li class ='livia_campaign_droppable <%=controller_name.eql?('campaigns')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_campaigns)}</span>",campaigns_path)%>
+              </li>
+            <%end%>
+            <%if (can? :manage, :rpt_contact) || (can? :manage, :rpt_account) || (can? :manage, :rpt_campaign) || (can? :manage, :rpt_matter) || (can? :manage, :rpt_opportunity) || (can? :manage, :rpt_time_and_expense)%>
+              <li class ='livia_report_droppable <%=["rpt_contacts","rpt_accounts","rpt_opportunities","rpt_matters","rpt_time_and_expenses","rpt_campaigns","report_favourites","dashboards"].include?(controller_name) ? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_reports_n_dashboard)}</span>",get_reports_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, :workspace %>
+              <li class ='<%=controller_name.eql?('workspaces')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_workspace)}</span>", workspaces_path)%>
+              </li>
+            <%end%>
+            <%if can? :manage, :repository %>
+              <li class ='<%=controller_name.eql?('repositories')? 'current' : ''%>'>
+                <%=link_to("<span>#{t(:text_document_repository)}</span>", repositories_path)%>
+              </li>
+            <%end%>
+          <%end%>
+          <%if is_secretary_or_team_manager?%>
+            <li class='<%=(controller_name.eql?('communications')||controller_name.eql?('livia_secretaries'))? 'current' : ''%>'>
+              <%=link_to("<span>#{t(:text_communication)}</span>",get_communications_link_path)%>
+            </li>
+          <%end%>
+        <%else%>
+          <%if can? :manage, Physical::Liviaservices::LiviaservicesController %>
+            <li class='<%=controller_name.eql?('liviaservices')? 'current' : ''%>'>
+              <%= link_to("<span>#{t(:text_manager_portal)}</span>",physical_liviaservices_managers_portal_path)%>
+            </li>
+          <%end%>
+        <%end%>
+      <%else%>
+        <li class ='<%=(controller_name.eql?('matter_clients')&& action_name.eql?('index') )? '' : 'current'%>'>
+          <%=link_to("<span>Home</span>", matter_clients_url)%>
+        </li>
+      <%end%>
+    </ul>
+  </div>
+  <div style="clear: both;"></div>
+</div>
+<!-- End #subnav -->

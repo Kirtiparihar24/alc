@@ -1,0 +1,36 @@
+<div class="gridDiv" id="favourite_id">
+  <div class="titleHead">
+    <div class="fl"><%=t(:text_edit)%> <%= t(:text_time_and_expense) %> <%= t(:text_duration) %> <%= t(:text_calculation_setting) %></div>
+    <br class="clear"/>
+  </div>
+  <div id="nameerror"  class="errorCont" style="display:none"></div>
+  <%  remote_form_for(@duration_setting,:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+    <br class="clear"/>
+    <div class="windowForm">
+      <table cellspacing="0" border="0" align="center" width="100%">
+        <tr>
+          <td width="55%">
+            <%= f.select(:setting_value,DurationSetting::DURATIONCALCULATE,:class=>"field size3")%>
+          </td>
+        </tr>
+      </table>
+      <br class="clear"/>
+    </div>
+    <div class="txtC Pb8" id="submit_cancel_btn">
+      <%=submit_tag t(:label_save), :class=>"button"%>
+      <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="parent.tb_remove();" />
+    </div>
+    <div class="txtC Pb8" id="loading_gif" style="display: none">
+      <%= image_tag"/images/loading.gif" %>
+    </div>
+  <%end%>
+      <br class="clear"/>
+      <br class="clear"/>
+    <div class="mandatory" style="text-align:left;font-style: italic">
+      <div class="alert_message">
+      1/100th of the hour e.g.: 1Hr 15Min = 1.25Hrs, 1Hrs 20Min = 1.33Hrs, 2Hrs 46Min = 2.77Hrs.
+      <br class="clear"/>
+       1/10th of the hour e.g.: 1Hr 15Min = 1.30Hrs, 1 Hrs 20Min = 1.40Hrs, 2Hrs 46Min = 2.80Hrs.
+      </div>
+  <br class="clear"/>
+</div>

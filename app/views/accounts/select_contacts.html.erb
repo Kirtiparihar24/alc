@@ -1,0 +1,33 @@
+<div>
+  <div id="cont_errs"></div>
+  <%form_tag account_path(@account) , :method => :delete  do%>
+    <div class="w100">
+      <table width="auto" >
+        <tr>
+          <td><%=check_box_tag "select_all", "all", true%></td>
+          <td><label><%=t(:label_Select_All)%></label></td>
+        </tr>
+      </table>
+    </div>
+    <div id="contact_list" class="w100">
+      <table>
+        <%@account.contacts.in_groups_of(3,false) do |acc_conts| %>
+          <tr>
+            <%for contact in acc_conts%>
+              <td><%=check_box_tag "contact_ids[]",contact.id, true, :class => "checkall"%> </td>
+              <td><label><%=contact.last_name ? contact.first_name + " " + contact.last_name : contact.first_name%></label></td>
+            <%end%>
+          </tr>
+        <%end%>
+      </table>
+    </div>
+    <div class="buttonSub_div" id="activate"><% if @delete=='Delete' %>
+        <%=submit_tag @delete, :onClick=>"return confirm('Deleting this Account will permanently delete all the associated contacts,documents. Please confirm if you want to continue?')" , :disable_with => "Please wait ..."%>
+      <%  else %>
+        <%=submit_tag @delete, :disable_with => "Please wait ..."%></div>
+    <%end%>
+  <%end%>
+</div>
+<script type="text/javascript">
+  check_uncheck_all("select_all", "checkall");
+</script>

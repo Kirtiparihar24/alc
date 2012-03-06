@@ -1,0 +1,102 @@
+<%= render :partial => 'additional_header' %>
+<!--div class="mb8">
+  <div class="column_main01"-->
+<h2 id="toggle_busi_cont_detail_toggle" class="title_main">
+  <div class="fl"><%=t(:text_financial_account_client_view)%></div>
+</h2>
+<div style="display: block;" id="toggle_busi_cont_detail_div" class="w100 fl bg_white">
+  <% form_remote_tag :url => advanced_filter_financial_account_path(@financial_account) do %>
+    <% if @client
+      fields_for "financial_transaction" do |tr| %>
+        <%= tr.hidden_field(:account_id, :value => @client.id) %>
+        <%= hidden_field_tag 'client',"client_specific" %>
+      <% end
+    end
+  %>
+    <table width="100%">
+      <tbody><tr>
+          <td width="76%">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tbody><tr>
+                  <td width="70%">
+                    <strong><%=t(:text_financial_account_contact_or_client)%>:</strong>&nbsp;<%= @client.name.camelize %> -
+                    <strong><%=t(:text_financial_account_balance)%>:</strong>&nbsp;$<%= client_specific_balance %>
+                  </td>
+                </tr>
+              </tbody></table>
+          </td>
+        </tr></tbody>
+    </table>
+    <div class="seperator_dotted_hori"></div>
+    <div class="w75 fl p5 bg_white">
+      <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+        <tr>
+          <td><label><strong><%= t(:text_filter_options) %></strong></label></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td width="25%"><label>From Date:</label></td>
+          <td><%= text_field_tag :from_date , "", :class => 'date_picker' %></td>
+        </tr>
+        <tr>
+          <td width="25%"><label>To Date:</label></td>
+          <td width="70%"><%= text_field_tag :to_date, "" , :class => 'date_picker' %></td>
+        </tr>
+        <tr>
+        <% unless @financial_account_banks %>
+          <td><%= t(:text_financial_account_contact_or_client) %></td>
+          <td><%= select "financial_transaction", "account_id", '<option>All</option>' + options_for_select(FinancialTransaction.all_clients(current_company.id).map {|x| [x.name, x.id]}) %></td>
+        <% else %>
+          <td><%= t(:text_financial_account) %></td>
+          <td><%= select "financial_transaction","financial_account_id", '<option>All</option>' + options_for_select(@financial_account_banks.map {|x| [x.name, x.id]}) %></td>
+        <%end%>
+        </tr>
+        <tr>
+        <td><%= t(:text_financial_account_matter) %></td>
+        <td><%= select "financial_transaction", "matter_id", '<option>All</option>' + options_for_select(current_company.matters.map {|x| [truncate(h(x.name),:length => 45), x.id]}) %></td>
+        </tr>
+<!--        <tr>
+          <td><%#= t(:text_financial_account_bank_status) %></td>
+          <td><%#= select "financial_transaction","transaction_status_id", '<option>All</option>' + options_for_select(current_company.transaction_statuses.map {|x| [x.alvalue, x.id]}) %></td>
+        </tr>
+        <tr>
+          <td width="25%"><%#= t(:text_financial_account_approval_status) %></td>
+          <td><%#= select "financial_transaction","approval_status_id", '<option>All</option>' + options_for_select(current_company.approval_statuses.map {|x| [x.alvalue, x.id]}) %></td>
+        </tr>-->
+      </table>
+    </div>
+    <div style="clear: both;height:25px;"></div>    
+    <div align="center"> <%= submit_tag "Search" %><a href="<%=client_view_financial_accounts_path%>" style="text-decoration: none;"><input type="button" value="Back" style="margin-left:5px;"></input></a></div>
+  <%end%>
+  <div class="clear"></div>
+  <div class="mt5">
+    <!--Tabular container div @start here -->
+    <div class="tabular_listing table" id="account_DIV">
+      <div style="clear:both;height:20px;"></div>
+      <div class="border_gray">
+      <table width="100%" border="0" cellspacing="1" cellpadding="1">
+        <tr>
+          <th width="8%" align="center"><%= t(:label_date) %></th>
+          <th width="18%" align="left"><%= t(:text_details) %></th>
+          <th width="8%" align="right">Inflow($)</th>
+          <th width="8%" align="right">Outflow($)</th>
+          <th width="10%" align="right">Trust Account</th>
+          <th width="10%" align="left"><%= t(:text_financial_account_contact_or_client) %></th>
+          <th width="20%" align="left"><%= t(:text_financial_account_matter) %></th>
+          <!--<th width="10%" align="left"><%#= t(:text_financial_account_bank_status) %></th>
+          <th width="10%" align="left"><%#= t(:text_financial_account_approval_status) %></th>-->
+          <th width="8%" align="center">Edit</th>
+        </tr>
+      </table>
+      <table id="financial_transactions" width="100%" border="0" cellspacing="1" cellpadding="1" class="border_gray">
+        <%= render :partial =>"financial_transactions", :collection => @financial_transactions, :as => :transaction,:locals => {:view_type => 'client_specific'} %>
+      </table>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <!--Tabular container div #ends here -->
+  </div>
+</div>
+<!--/div>
+</div-->
+<!-- column_right #end -->

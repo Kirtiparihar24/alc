@@ -1,0 +1,32 @@
+<div id="supercede_loader"></div>
+<div id="modal_new_document_errors" class="" style="display:none; text-align: left"></div>
+<% form_for :document_home, @document_home ,:url => {:action => 'supercede', :doc_id=> @doc_home.id}, :html=> {:multipart=> true, :target=>"upload_frame",:onsubmit => "loader.appendTo('#supercede_loader');",:class=>"search_form general_form"} do |f| %>
+  <fieldset >
+    <div class="forms">
+      <div class="row">
+        <label><%=t(:label_document_name)%></label>
+        <div class="inputs">
+          <strong> <%=@document.name %> [ <%=link_to(@document.data_file_name, download_document_wfm_user_task_path(@document.id))%> ]</strong>
+        </div>
+      </div>
+      <div class="row">
+        <label><%=t(:label_owner)%> </label>
+        <div class="inputs">
+          <%= @document.assignee.full_name if  @document.assignee%>
+        </div>
+      </div>
+      <div class="row">
+        <label><%=t(:label_new_document)%><span class="text_red">*</span> </label>
+        <div class="inputs">
+          <%= file_field_tag 'document_home[data]', :id=>'new_doc' %>
+        </div>
+      </div>
+      <div class="button_div">
+        <span class="button send_form_btn"><span><span id="button_pressed"><%=t(:label_supercede)%></span></span><input type="submit" name=""/></span>
+        <span class="button send_form_btn ml10" onclick="tb_remove();"><span><span>Cancel</span></span></span>
+      </div>
+    </div>
+  </fieldset>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+<% end %>
+<div><span class="text_red">*</span> <i>Required field</i></div>

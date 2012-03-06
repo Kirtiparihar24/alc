@@ -1,0 +1,80 @@
+<!--Tabular container div @start here -->
+<div class="tabular_listing">
+  <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+    <thead>
+      <tr>
+        <% percentage=@table_headers.index("%")
+        records=@table_headers.index(t(:text_records))
+        matters_involved=@table_headers.index("#{t(:text_no_of)} Matters involved in")
+        involved_lead=@table_headers.index("Involved as a Lead Lawyer")
+        litigation=@table_headers.index(t(:text_litigation))
+        non_litigation=@table_headers.index(t(:text_non_litigation))
+        duration=@table_headers.index(t(:text_duration_hrs))
+        rate = @table_headers.index(t(:label_rate_hr))
+        bill_amount=@table_headers.index("#{t(:lable_Bill_Amount)} ($)")
+        discount=@table_headers.index("Discount(%)")
+        override_amount=@table_headers.index("Override amount($)")
+        final_bill_amount=@table_headers.index("Final bill amount($)")
+        internal=@table_headers.index(t(:text_internal))
+        billable=@table_headers.index(t(:text_billable))
+        value=@table_headers.index("Value($)")
+        opportunities=@table_headers.index(t(:text_opportunities))
+        opportunity=@table_headers.index(t(:text_opportunity))
+        opportunities_perc= @table_headers.index("#{t(:text_opportunity)} %")
+        response=@table_headers.index("#{t(:text_response)} received")
+        responded=@table_headers.index("Responded")
+        response_perc=@table_headers.index("#{t(:text_response)} %")
+        contacts= @table_headers.index(t(:text_contacts))
+        no_of_campaigns= @table_headers.index("#{t(:text_no_of)} #{t(:text_menu_campaign)}")
+        opportunity_closed= @table_headers.index("#{t(:text_opportunity)} closed")
+        date=@table_headers.index(t(:text_date))
+
+        header_array = [t(:text_litigation), t(:text_duration_hrs), t(:label_rate_hr), t(:text_date), t(:text_non_litigation), '%', t(:text_records), "Response %", "#{t(:text_opportunity)} closed", "Value($)", "Response received", "#{t(:text_no_of)} #{t(:text_menu_campaign)}", t(:text_opportunities), "Responded", "#{t(:text_opportunity)} %", t(:text_opportunity), t(:text_contacts), "#{t(:text_no_of)} Matters involved in", 'Involved as a Lead Lawyer', "Discount(%)", t(:text_billable), t(:text_internal), "#{t(:lable_Bill_Amount)} ($)", "Override amount($)", "Final bill amount($)"]
+        loop_center_align = [percentage, records, opportunity, opportunity_closed, no_of_campaigns, responded ,matters_involved, involved_lead, discount, internal, billable, opportunities, contacts, response, opportunities_perc, response_perc]
+        loop_right_align = [litigation, date ,non_litigation ,duration ,rate, bill_amount ,override_amount ,final_bill_amount ,value]
+        @table_headers.each do |header|
+          if header_array.include?(header)
+            align ='center'
+          else
+            align='left'
+          end %>
+          <th align="<%=align%>" width="<%= @widths_hash[header] if @widths_hash %>"><%= header %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% col.each do |obj| %>
+        <tr class="<%= cycle('bg1', 'bg2') %>">
+          <% obj.each_with_index do |e, i|
+            if loop_center_align.include?(i)
+              align ='center'
+            elsif loop_right_align.include?(i)
+              align='right'
+            else
+              align='left'
+            end
+
+            if (i == bill_amount || i==rate || i==final_bill_amount || i==override_amount|| i==value )
+              s=e.to_s
+              if s.include? 'N.A'
+                align='center'
+              end
+            end %>
+            <td align="<%=align%>">
+              <% if i == bill_amount || i==rate || i==final_bill_amount || i==override_amount|| i==value || i==duration %>
+                <%= livia_amount(e).gsub("$",'') %>
+              <% else
+                if e && @format == 'pdf' %>
+                  <%= e.to_s %>
+                <% elsif e %>
+                  <%= truncate_hover(e.to_s,15) %>
+                <% end
+              end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<!--Tabular container div #ends here -->

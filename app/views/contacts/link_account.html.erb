@@ -1,0 +1,78 @@
+<div class="mt20">
+  <% form_remote_for link_account_contact_path(),:loading=>"disableAllSubmitButtons('link_account')",:complete=>"enableAllSubmitButtons('link_account')",:html=>{:method=>:post} do |f| %>
+  <div id="one_field_error_div"></div>
+    <table  border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;" width="100%"  class="form_table">
+      
+    <tr>
+      <td align="left" width="15%" vertical-align="top"><%= t(:label_account) %> :</td>  
+      <td align="left" width="85%">
+         <%=raw account_search_box('account[id]', controller.controller_name, "Select Existing", "") %>
+          <%=text_field_tag 'account[name]',{},:id=>"new_account_box",:style=>"font-size: 11px;display:none; width: 40%",:disabled=>"disabled",:class=>"textgray"%>
+         <%=link_to t(:text_create_new),"#",:id=>"selector_link"%>
+      </td>
+    </tr>    
+    <tr>
+      <td colspan="2" height="10"></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center"><%= f.submit t(:text_save),:class=>'link_account',:id=>"save_link_account",:onclick=>"return validate_account_field();return validate_account();return setButtonPressed(this);" %>&nbsp;&nbsp;<input type="submit" id="Login2" class='link_account' value="<%=t(:label_cancel)%>" onclick="parent.tb_remove();return false" /></td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<script type="text/javascript" language="javascript">
+jQuery('#selector_link').toggle(function(){
+jQuery('#selector_link').html("<%=t(:text_select_existing)%>");
+jQuery('#_accountid').attr("disabled", "disabled");
+jQuery('#_account_ctl').attr("disabled", "disabled");
+jQuery('#new_account_box').removeAttr("disabled");
+jQuery('#new_account_box').show();
+jQuery('#_account_ctl').hide();
+jQuery('#_account_ctl').val("<%=t(:text_select_existing)%>");
+},function(){
+jQuery('#selector_link').html("<%=t(:text_create_new)%>")
+jQuery('#new_account_box').attr("disabled", "disabled");
+jQuery('#_accountid').removeAttr("disabled");
+jQuery('#_account_ctl').removeAttr("disabled");
+jQuery('#new_account_box').hide();
+jQuery('#_account_ctl').show();
+});
+
+function validate_account_field()
+{
+  if(jQuery('#selector_link').text()!="Select Existing" && jQuery('#_account_ctl').val()=="")
+  {
+    jQuery('#_accountid').val('');
+  }
+  if(jQuery('#_accountid').val()=="" && jQuery('#new_account_box').val()=="")
+    {
+           jQuery('#one_field_error_div')
+        .html("<div class='message_error_div'>Please Specify an Account</div>")
+        .fadeIn('slow')
+        .animate({
+            opacity: 1.0
+        }, 8000)
+        .fadeOut('slow')
+      return false;
+    }
+    else
+    {
+        return true;
+     }
+  
+}
+
+jQuery(document).ready(function(){
+  clear_select_existing();
+});
+
+function clear_select_existing(){
+  jQuery('#selector_link').click(function(){
+    if(jQuery('#selector_link').text()=="Select Existing"){
+      jQuery('#_accountid').val('');
+    }
+  });
+}
+</script>
+
+<div class="pagiText"><%=t(:label_page)%>&nbsp;24</div>

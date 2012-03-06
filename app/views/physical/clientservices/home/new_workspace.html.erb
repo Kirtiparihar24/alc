@@ -1,0 +1,32 @@
+
+<div id="show_repository">
+  <% form_remote_tag :url => {:controller=>'physical/clientservices/home',:action => :move_to_workspace_rss} ,:method=>:post ,:before=>"jQuery('#save_rep').attr('disabled',true);
+    jQuery('#save_rep').val('Please wait...');jQuery('#loader').show();"  do -%>
+    ﻿<div>
+      <table width="100%">
+        <tr>
+          <td valign="top">&nbsp;</td>
+          <td valign="top">&nbsp;</td>
+          <td valign="top">&nbsp;</td>
+          <td valign="top">&nbsp;</td>
+          <td valign="top">&nbsp;</td>
+        </tr>
+        <tr>
+          <td valign="top"><%= hidden_field_tag 'document_home[url]',CGI::unescape(params[:url]) %></td>
+          <td valign="top"><label>Save As<span class="alert_message">*</span></label></td>
+          <td valign="top"><%=text_field_tag 'document_home[name]', CGI::unescape(params[:title]),:size=>'50'%></td>
+          <td valign="top"><%=hidden_field_tag 'url',params[:feed_url]%></td>
+          <td valign="top"><%=hidden_field_tag 'feed_title',params[:feed_title]%></td>
+        </tr>
+
+      </table>
+      <div class="buttonSub_div">
+        <%=submit_tag t(:text_upload), :class=>"button",:id=>'save_rep',:onclick=>"return validate_document_name()"%>
+  <%#=link_to(t(:text_cancel), repositories_path, :class=>"linkbutton")%>
+        <input type="submit" id="cancel" value="Cancel" onclick="parent.tb_remove();return false"/>
+      </div>
+      <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    </div>
+  <% end %>
+
+</div>

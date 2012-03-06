@@ -1,0 +1,34 @@
+<div class="sct">
+  <div class="sct_left">
+    <div class="sct_right">
+      <div class="sct_left">
+        <div>
+          <!--[if !IE]>start table_wrapper<![endif]-->
+          <div class="table_wrapper modalTable">
+            <div class="table_wrapper_inner">
+              <table cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                  <tr>
+                    <th><a href="#">Document Name</a></th>
+                    <th ><a href="#">File Name</a></th>
+                    <th><a href="#">Uploaded On</a></th>
+                    <th><a href="#">Uploaded by</a></th>
+                  </tr>
+                  <%for document in @documents%>
+                    <tr class="<%cycle('first','second')%>">
+                      <td><%=document.name %></td>
+                      <td align="left"><%=link_to document.data_file_name, download_document_wfm_user_task_path(document.id)%></td>
+                      <td align="left"><%= wfm_date_format(document.created_at.to_time) %></td>
+                      <td align="left"><%= document.assigned_by.full_name %> </td>
+                    </tr>
+                  <%end%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--[if !IE]>end table_wrapper<![endif]-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

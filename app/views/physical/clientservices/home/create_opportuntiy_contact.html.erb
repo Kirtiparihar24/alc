@@ -1,0 +1,75 @@
+<div id="message_error_div" class="message_error_div" style="display: none;"></div>
+<div style="text-align:center;margin-top:10px;" id="modal_contact">
+  <%remote_form_for(:contact, @contact, :url => {:controller => 'physical/clientservices/home', :action => 'validateOppContact'},:html => {:name => "contact_form"},:loading => "return disableAllSubmitButtons('contacts');" ,:complete => "enableAllSubmitButtons('contacts');") do |contact| %>
+    <%= hidden_field_tag "opp_obj",@opportunity.to_s %>
+    <%= hidden_field_tag 'selected_list_box',"" %>
+    <%= hidden_field_tag 'button_pressed',"" %>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+      <tbody>
+        <tr>
+          <td width="15%" align="left"><label><%= t(:label_salutation) %></label></td>
+          <td width="30%" align="left"><%= contact.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+          <td width="2%">&nbsp;</td>
+          <td width="15%" align="left">&nbsp;</td>
+          <td width="30%" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="15%" align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+          <td width="30%" align="left"><%= contact.text_field :first_name, :size =>'15' %></td>
+          <td>&nbsp;</td>
+          <td width="15%" align="left"><label><%= t(:label_middle_name) %>&nbsp;</label></td>
+          <td width="30%" align="left"><%= contact.text_field :middle_name, :size =>'15' %></td>
+        </tr>
+        <tr>
+          <td width="15%" align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+          <td width="30%" align="left"><%= contact.text_field :last_name, :size =>'15' %></td>
+        </tr>
+        <tr>
+          <td width="15%" align="left"><label><%=t(:label_primary)%>&nbsp;<%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+          <td width="30%" align="left"><%= contact.text_field :phone,:maxlength=>"15", :size =>'15' %></td>
+          <td>&nbsp;</td>
+          <td width="15%" align="left"><label><%=t(:label_primary)%>&nbsp;<%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+          <td width="30%" align="left"><%= contact.text_field :email, :size =>'15' %></td>
+        </tr>
+        <tr>
+          <td width="15%" align="left"><label><%= t(:label_nick_name) %></label></td>
+          <td width="30%" align="left"><%= contact.text_field :nickname, :size =>'15', :id => 'nickname' %></td>
+          <td>&nbsp;</td>
+          <td width="15%" align="left"><label><%= t(:label_preference) %></label></td>
+          <td width="30%" align="left"><%= contact.text_field :preference, :size =>'15',:id => 'preference' %></td>
+        </tr>
+        <tr>
+          <td width="15%" align="left"><label><%= t(:label_stage) %></label></td>
+          <td width="30%" align="left"><%= contact.collection_select('contact_stage_id', current_company.contact_stages , :id, :alvalue, {:selected=>@contact.contact_stage_id},{:onChange => @contact.new_record? ? "status_change()" : "status_change(this.value,null, #{@contact.contact_stage_id}, #{@contact.opportunities.length}, #{@contact.matters.length})"}) %></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="15%" align="left">&nbsp;</td>
+          <td width="30%" align="left">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td width="15%" align="left">&nbsp;</td>
+          <td width="30%" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="5" align="center">
+            <%= contact.submit t(:text_save), :name => "save", :id=>'save_contact', :class => "contacts" ,:onclick=>"return setButtonPressed(this);"%>
+            <input type="submit" id="Login2" class="contacts" name="cancel" value="Cancel" />
+          </td>
+        </tr>
+        <tr><td colspan="5" align="left">&nbsp;</td></tr>
+        <tr><td colspan="5" align="left" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%>, <span class="alert_message">#</span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></td></tr>
+      </tbody>
+    </table>
+  <%end%>
+</div>
+<script type="text/javascript">
+  // Need to removed to JS File
+  function validAccountContact( name) {
+    jQuery('#_contact_ctl').val(name);
+  }
+
+  jQuery('input[name="cancel"]').click(function(){
+    jQuery('#TB_window').width(730);
+    return setButtonPressed(this);
+  });
+</script>

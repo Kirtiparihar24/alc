@@ -1,0 +1,181 @@
+<%=raw paginate_for_five_links(@matters.total_pages, {:mode_type=>@mode_type,:matter_status=>params[:matter_status],:action=>"index",:letter=>@letter_selected,:col=>params[:col],:dir=>params[:dir],:per_page=>params[:per_page]}, params[:page]) if @matters.total_pages > 1 %>
+<!--Pagination container div @start here -->
+<% st=params[:matter_status].present? ? {:matter_status=>params[:matter_status]} : {}
+h = {}
+h[:search_item] = true
+if params[:search_items]
+  h[:search_items] = params[:search_items]
+  h[:search] = {}
+  if params[:search]
+    params[:search].keys.each do |key|
+      h[:search][key] = params[:search][key] unless params[:search][key].blank?
+    end
+  end
+end %>
+<%= raw all_pagination(@matters, params[:per_page], "willpaginate", matters_path(st), {:mode_type=>@mode_type,:matter_status=>params[:matter_status],:action=>"index",:letter=>@letter_selected,:per_page=>params[:per_page]})  %>
+<%form_for :search,:url=>{:controller => :matters,:action => :index},:html =>{:method => :get } do |f| %>
+  <div class="tabular_listing" id="searched_matters">
+    <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+      <tr>
+        <%=hidden_field_tag  'col' ,params[:col] if params[:col]%>
+        <%=hidden_field_tag  'dir' ,params[:dir] if params[:dir]%>
+        <%=hidden_field_tag  'mode_type' ,@mode_type if @mode_type%>
+        <%=hidden_field_tag  'matter_status' ,params[:matter_status] if params[:matter_status]%>
+        <%=hidden_field_tag  'per_page' ,params[:per_page] if params[:per_page]%>
+        <%=hidden_field_tag  'search_items' ,true%>
+        <th width="5%" align="left">
+          <table width="100%" cellspacing="0" cellpadding="0" align="center">
+            <tr>
+              <td width="48%" align="right" style="margin: 0pt; padding: 0pt;"><span title="Client Documents" class="icon_client_doc fr mt3 vtip"></span></td>
+              <% if task_available? %><td width="48%" style="margin: 0pt; padding: 0pt;"><span title="Client Comments" class="icon_client_comment fl mt3 vtip"></span></td><%end%>
+            </tr>
+          </table>
+        </th>
+        <%= column_sort_link(t(:text_matter_id), 'matters.matter_no',params[:col], "9%", "left",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h)) %>
+        <%= column_sort_link(t(:text_matter_name), 'matters.name',params[:col], "", "left",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h)) %>
+        <%= column_sort_link("Main/Sub", 'matters.parent_id', params[:col], "6%", "left",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h.merge(:search_item => false))) %>
+        <th width="9%" align="left"><%=t(:label_type)%></th>
+        <%= column_sort_link(t(:text_contact), 'contacts.last_name', params[:col], "10%", "left",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h)) %>
+        <%= column_sort_link(t(:text_account), 'accounts.name', params[:col], "10%", "left",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h)) %>
+        <%= column_sort_link(t(:label_matter_date), 'matters.matter_date', params[:col], "10%", "center",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h)) %>
+        <%= column_sort_link(t(:text_lead_lawyer), 'users.username', params[:col], "10%", "left",{:mode_type => @mode_type, :letter=>params[:letter], :matter_status => params[:matter_status], :action => "index", :per_page => params[:per_page]}.merge(h),nil,'users.username','assigned_to',"collection_select :search, 'users--username', current_company.employees, :full_name, :full_name, {:selected => '#{params[:search]['users.username'].to_s}',:prompt => true}, {:style => '#{params[:search].blank? ? 'width:95px;display:none;' : 'width:95px;'}'} ") %>
+        <th width="1%" align="center">
+          <%= t(:text_actions) %>
+          <div class="action_column" style="position: relative; width:75px; ">            
+            <%= f.submit "Go" ,{:style=>(params[:search_items] ? "margin-top: 13px" : "display:none;")}%>
+          </div>
+        </th>
+      </tr>
+      <% euid = get_employee_user_id %>
+      <% unless @matters.nil? or @matters.blank? %>
+        <% num = 1 %>
+        <% @matters.compact.each do |matter| %>
+          <% checkexpired = checkmatter_expired(matter) %>
+          <tr class="<%=cycle('bg1', 'bg2')%>">
+            <td align="center"><%= conditional_comments_documents(matter, checkexpired) %></td>
+            <td><%=raw truncate_hover(matter.matter_no, 15)%></td>
+            <td><%=conditional_edit_matter(matter, checkexpired,extra_parameters(params))%></td>
+            <td><%#= raw(show_matter_parent(matter)) %><%= matter.parent_id.present? ? "Sub" : "Main" %></td>
+            <td><%= matter.matter_category == "litigation" ? "Litigation" : "IP" %></td>
+            <td><%= raw truncate_hover(matter.contact.try(:full_name), 20) if matter.contact%></td>
+            <td><%= raw(truncate_hover(matter.account_name, 20))%></td>
+            <td align="center"><%= livia_date(matter.matter_date.to_time) if matter.matter_date.present?%></td>
+            <td><%= raw truncate_hover(matter.get_lawyer_name, 15) %></td>
+            <td align="center">
+              <% if checkexpired[1]=="link" %>
+                <div class="icon_action mt3"><a href="#"></a></div>
+                <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                  <!--Icon table strt here -->
+                  <% if document_available? %>
+                    <% link =  matter_document_homes_path(matter) %>
+                  <% else %>
+                    <% link = "NO" %>
+                  <% end %>
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <%= raw action_pad_top_blue_links({
+                        :edit_path => edit_matter_path(matter,extra_parameters(params)),
+                        :deactivate_path => "NO",
+                        :comment_path => add_comment_with_grid_comments_path(
+                          :id => matter.id,
+                          :commentable_type => 'Matter',
+                          :path => matters_path,
+                          :height => 190,
+                          :width => 800),
+                        :document_path => link,
+                        :history_path => "NO"
+                      }) %>
+                    <tr>
+                      <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                      <td style="background: #fff;">
+                        <div class="pt5">
+                          <% if task_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%= link_to("<span>Add Activity</span>",  new_matter_matter_task_path(matter,:keepThis=> true,:width => 900, :height => 370), :class => "thickbox", :name => "New Activity")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if issue_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%= link_to("<span>Add Issue</span>",  modal_new_matter_matter_issues_path(matter, :width => 700, :height => 400), :class => "thickbox", :name => "New Issue")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if fact_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%= link_to("<span>Add Fact</span>",  new_matter_matter_fact_path(matter, :width => 600, :height => 290,:renderjs=>true), :class => "thickbox", :name => "New Fact")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if risk_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%= link_to("<span>Add Risk</span>",  new_matter_matter_risk_path(matter, :width => 600, :height => 290,:renderjs=>true), :class => "thickbox", :name => "New Risk")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if research_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%= link_to("<span>Add Research</span>",  new_matter_matter_research_path(matter, :width => 670, :height => 400), :class => "thickbox", :name => "New Research")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <div class="fl pb5"  style="width:165px;">
+                            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                              <tr>
+                                <td width="20"><div class="ap_child_action"></div></td>
+                                <td nowrap class="ml5"> <%= link_to("<span>Add Bill</span>",  new_bill_matter_matter_billing_retainers_path(matter, :height=>300, :width=>600, :page_reload => "false"), :class => "thickbox", :name => "New Invoice")%></td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="fl pb5"  style="width:165px;">
+                            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                              <tr>
+                                <td width="20"><div class="ap_child_action"></div></td>
+                                <td nowrap class="ml5"> <%= link_to("<span>Add Receipt</span>",  new_retainer_matter_matter_billing_retainers_path(matter, :height=>280, :width=>470, :page_reload => "false"), :class => "thickbox", :name => "New Receipt")%></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </td>
+                      <td background="../images/border_right.png"><img src="../images/pixel.png" alt="" width="13" height="13" /></td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="ap_bottom_curve_left"></td>
+                      <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                      <td valign="top" class="ap_bottom_curve_right"></td>
+                    </tr>
+                  </table>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr><td colspan="8"><%= render :partial => 'common/empty' %></td></tr>
+      <% end %>
+    </table>
+  </div>
+<%end%>
+<!--Tabular container div #ends here -->
+<!--Pagination container div @start here -->
+<%= raw all_pagination(@matters, params[:per_page], "bottom-pagination", matters_path(st), {:mode_type=>@mode_type,:matter_status=>params[:matter_status],:action=>"index",:letter=>@letter_selected,:per_page=>params[:per_page]})  %>
+<!--Pagination container div #ends here -->

@@ -1,0 +1,22 @@
+<div <% unless params[:height] %> id="fragment-3" class="tabs-container-tabs tabs-hide tabular_listing" <% else %> class="tabular_listing" <% end %> >
+  <div id="ajax_sort">
+    <table width="100%" class="mt20">
+      <tr>
+        <td width="76%"><strong><%= t(:text_campaigns) %> - </strong><%= truncate_hover(@campaign.name.try(:titleize),35) %></td>
+        <td width="24%"><strong><%= t(:text_start_date) %> -</strong><%= @campaign.starts_on.to_time.strftime('%m/%d/%y') if @campaign.starts_on %></td>
+      </tr>
+      <tr>
+        <td><strong><%=t(:text_owner)%> - </strong><%= @campaign.get_assigned_to %></td>
+        <td><strong><%=t(:text_end_date)%> - </strong><%= @campaign.ends_on.to_time.strftime('%m/%d/%y') if @campaign.ends_on %></td>
+      </tr>
+    </table>
+    <div class="seperator_dotted_hori"></div>
+    <%= render :partial => "attended_unattended_responces", :locals => {:responses => @campaign_unattended_responses, :title => "#{t(:text_unattended_responses)}", :type => "unattended"} %>
+    <br class="clear"/>
+    <%= render :partial => "attended_unattended_responces", :locals => {:responses => @campaign_attended_responses, :title => "#{t(:text_attended_responses)}", :type => "attended"} unless params[:height]  %>
+
+    <%if params[:action]=="unattented_list"%>
+      <div class="pagiText"><%=t(:label_page)%>&nbsp;199</div>
+    <%end%>
+  </div>
+</div>

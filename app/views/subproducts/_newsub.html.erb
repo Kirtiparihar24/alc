@@ -1,0 +1,5 @@
+<h1><%=t(:text_add_new_subproduct)%></h1>
+<% form_for @subproductrender,:url => {:controller =>'subproducts',:action => 'create'} do |f| %>
+  <p><label><%=t(:label_subproduct_name)%><span class="text_red">*</span></label>&nbsp;<%=  f.text_field :name,:class=>"",:size =>'25'%></p>
+  <%= submit_tag t(:label_create) %>
+<% end %>

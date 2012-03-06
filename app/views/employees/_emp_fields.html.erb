@@ -1,0 +1,118 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="25%" align="left" valign="top"><label><%=f.label :first_name, t(:label_first_name)%><span>*</span></label></td>
+    <td width="75%"><%=f.text_field :first_name,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=f.label :last_name, t(:label_last_name)%><span>*</span></label></td>
+    <td><%=f.text_field :last_name,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=f.label :birthdate, t(:label_birthdate)%></label></td>
+    <td><%=f.date_select :birthdate,{:order => [:month, :day, :year], :start_year => 1950,:use_month_names => ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],:prompt => { :day => 'Select day', :month => 'Select month', :year => 'Select year' }}, :class=>"field size4 fl mr5"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=f.label :email, t(:label_email)%> <span>*</span></label></td>
+    <td><%=f.text_field :email,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=f.label(:phone, t(:label_phone))%></label></td>
+    <td><%=f.text_field :phone ,:maxlength=>"15",:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=f.label(:mobile, t(:label_mobile))%></label></td>
+    <td><%=f.text_field :mobile,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_Registered_Number_1_Primary)%> <span>*</span></label></td>
+    <td><%=f.text_field :registered_number1,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_Registered_Number_2)%></label></td>
+    <td><%=f.text_field :registered_number2,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_Registered_Number_3)%></label></td>
+    <td><%=f.text_field :registered_number3,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_Access_Code)%> <span>*</span></label></td>
+    <td><%=f.text_field :access_code,:class=>"field size4"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:text_designation)%><span>*</span></label></td>
+    <td><%=f.collection_select :designation_id,@designations,:id, :lvalue,{:include_blank => 'Please select'},:class=>"field size3"%></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:text_department)%> <span>*</span></label></td>
+    <td><%=f.collection_select :department_id,@departments,:id, :deptname_with_location,{:include_blank => 'Please select'},{:onchange=>"show_employee_reporting_to_list(this.value,#{@departments.first.company_id})",:class=>'field size3'}%>                 </td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:text_reporting_to)%></label></td>
+    <td><span id="userdiv"><%=render :partial => 'listofemployees_with_designations' %></span></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>  
+  <% if (params[:action]=='new' || params[:action]=='create') && APP_URLS[:use_helpdesk] && ["Livia Inc","Livia Finance & Admin","U.S. Sales","LIVIA Marketing","U.S.Operations"].include?(@company.name)%>
+    <tr>
+      <td class="textBlack11Height10L"><label>Helpdesk Role<span class="text_red">*</span></label></td>
+      <td><%= custom_select_tag "employee[helpdesk_role_id]",options_for_select(@helpdesk_roles.collect{|role| [role['name'], role['id']]},{ :selected=> (params[:employee][:helpdesk_role_id] unless params[:employee].nil?) }),:prompt=>"Please select",:class=>'field size3' %></td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+  <%end%>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_my)%>&nbsp;<%=t(:label_contacts)%></label></td>
+    <td><%=f.check_box :my_contacts  %></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_my)%>&nbsp;<%=t(:label_Campaigns)%></label></td>
+    <td><%=f.check_box :my_campaign  %></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <td align="left" valign="top"><label><%=t(:label_my)%>&nbsp;<%=t(:label_opportunities)%></label></td>
+    <td><%=f.check_box :my_opportunities  %></td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <% if(current_user.role?('livia_admin')) %>
+    <tr>
+      <td class="textBlack11Height10L"><label><%=t(:label_firm_manager)%></label></td>
+      <td class="textBlack11Height10L"><%=f.check_box :is_firm_manager  %> </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <% display_style = @employee.is_firm_manager ? '' : 'display:none;' %>
+    <tr class="firm_manager_plge" style="<%=display_style%>">
+      <td class="textBlack11Height10L"><label><%=t(:label_matter)%></label></td>
+      <td class="textBlack11Height10L"><%=f.check_box :can_access_matters  %> </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr class="firm_manager_plge" style="<%=display_style%>">
+      <td class="textBlack11Height10L"><label><%=t(:label_t_ane_e)%></label></td>
+      <td class="textBlack11Height10L"><%=f.check_box :can_access_t_and_e  %> </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+  <%end%>
+  <% fields_for(@user) do |u|%>
+    <tr>
+      <td align="left" valign="top"><label><%= u.label :time_zone, "Time Zone" %></label></td>
+      <td><%= u.time_zone_select :time_zone, nil, {:default => "Pacific Time (US & Canada)"}, :class=>"field size4" %></td>
+    </tr>
+  <%end%>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <%unless @user.id%>
+    <tr><td><label style="color: #3D80B3;"><%=t(:text_create_login_account)%></label></td><td class="textBlack11Height10L"><%=check_box_tag 'is_user',false,false,{:onclick=>"populateuserfields(this)"}%></td></tr>
+    <tr><td>&nbsp;</td></tr>
+  <%end%>
+</table>

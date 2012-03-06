@@ -1,0 +1,25 @@
+Wfm
+===
+
+Introduction goes here.
+
+
+Example
+=======
+
+Example goes here.
+
+
+Copyright (c) 2011 [name of plugin creator], released under the MIT license
+
+
+Migration '20110304133659_add_column_in_user_tasks' was run to add the column 'assigned_to_user_id' in tasks table - sania wagle 4th mar 2011
+Migration '20110425111109_add_is_cpa_column_to_service_providers_table.rb' was run to add the column 'is_cpa' in the service_providers table. - sania wagle
+Migration '20110520090727_add_column_share_with_client_in_comments_table.rb' was run to add the column 'share with client in comments' in the comments table
+Migration '20110520134019_add_column_ref_id_to_user_settings.rb' was run to add the column ref_id in user_settings table for the default question STI
+
+Rake Tasks:
+add_default_questions_in_company_lookups
+assign_default_security_question_to_existing_lawfirm_users
+update_upcoming_setting_type_in_user_settings - replace 'upcoming' setting_type to 'Upcoming' so as to refer the class name
+add_livians_not_assigned_to_any_cluster_to_common_pool

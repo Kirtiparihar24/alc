@@ -1,0 +1,16 @@
+<%=@header_opts[:r_name]%>
+
+<%-@total_data.each do |label,data|-%>
+<%=label%>
+<%=@table_headers.join(",")%>
+<%-data.each do |matter|-%>
+<%=matter.join(",")%>
+<%-end-%>
+<%=",,,,,,Matter estimated hours  : #{@conditions[label][0]},  Billable hours : #{@conditions[label][1]} , Projected hours : #{@conditions[label][1]}"%>
+
+<%-end-%>
+<%-if @col.length > 0-%>
+<%="GrandTotal :,,,,,, Matter estimated hours  : #{@conditions[:ehrs]},  Billable hours : #{@conditions[:bhrs]}, Projected hours : #{@conditions[:rhrs]}"%>
+<%-end-%>
+<%="Total Records = #{@col.length}"%>
+

@@ -1,0 +1,83 @@
+<div id ="create_contact_div">
+  <table width="100%" class="highlight_bg_1 mt8">
+    <tbody>
+      <tr>
+        <td width="24%"><label><%=(:label_contact)%> <span class="alert_message">*</span></label></td>
+        <td width="24%">
+          <label>
+            Select Existing
+          </label>
+          <strong class="text12 mlr8">or</strong>
+          <label><%=t(:text_create_new)%> </label>
+          <% if controller_name == "accounts" && (action_name == "edit") %>
+            <strong class="text12 mlr8">|</strong>
+            <label>
+              <%= link_to t(:text_change_primary_contact), "/accounts/change_primary_contact/#{@account.id || params[:id]}?height=120&width=300", :class => "thickbox", :name => "#{t(:text_account_change_primary_contact)}" %>
+            </label>
+          <% end %>
+        </td>
+        <td width="4%"></td>
+        <td width="24%"></td>
+        <td width="24%"></td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <% fields_for(@contact) do |contact| %>
+            <%= raw same_contacts_show %>
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td width="24%"><label><%= t(:label_salutation) %></label></td>
+                  <td width="26%"><%= contact.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+                  <td width="1%">&nbsp;</td>
+                  <td width="25%">&nbsp;</td>
+                  <td width="24%">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td><label><%= t(:label_first_name) %> <span class="alert_message">*</span></label></td>
+                  <td><%= contact.text_field :first_name,:maxlength=>"64", :class=> "disundis", :size =>'15' %></td>
+                  <td>&nbsp;</td>
+                  <td><label><%= t(:label_last_name) %></label></td>
+                  <td><%= contact.text_field :last_name,:maxlength=>"64", :class=> "disundis", :size =>'15' %></td>
+                </tr>
+                <tr>
+                  <td><label><%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+                  <td><%= contact.text_field :phone, :class=> "disundis", :size =>'15',:maxlength=>"15", :class => "phone" %></td>
+                  <td>&nbsp;</td>
+                  <td><label><%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+                  <td><%= contact.text_field :email, :class=> "disundis", :size =>'15' %></td>
+                </tr>
+                <tr>
+                  <td><label><%= t(:label_nick_name) %></label></td>
+                  <td><%= contact.text_field :nickname, :class=> "disundis", :size =>'15', :id => 'nickname' %></td>
+                  <td>&nbsp;</td>
+                  <td><label><%= t(:label_preference) %></label></td>
+                  <td><%= contact.text_field :preference, :class=> "disundis", :size =>'15',:id => 'preference' %></td>
+                </tr>
+                <tr>
+                  <td><label><%= t(:label_stage) %></label></td>
+                  <td>
+                    <% if params[:action] == "new" %>
+                      <% if @lead_status %>
+                        <%= contact.collection_select :contact_stage_id,current_company.contact_stages.reverse,:id,:alvalue,  { :selected => current_company.contact_stages.array_hash_value('lvalue','Lead','id')}, {:onChange => "status_change(this.value , '#{controller.action_name}')"} %>
+                      <% else %>
+                        <%= contact.collection_select :contact_stage_id,@contact_stage,:id,:alvalue,  { :selected => current_company.contact_stages.array_hash_value('lvalue','Prospect','id')}, {:onChange => "status_change(this.value , '#{controller.action_name}')"} %>
+                      <% end %>
+                    <% else  %>
+                      <% contact_stage_hash = current_company.contact_stages.array_to_hash("lvalue") %>
+                      <%=  contact.collection_select(:contact_stage_id,current_company.contact_stages.reverse ,:id,:alvalue,{:selected => contact_stage_hash["Lead"].id},{ :class => "textBoxwidth disundis", :onChange => "status_change(this.value , '#{controller.action_name}')"})%>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+        </td>
+      </tr>
+      <%= render :partial => "common/contacts_list" if controller_name == "accounts" && action_name == "edit" %>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  tb_init('a.thickbox, area.thickbox, input.thickbox');
+</script>

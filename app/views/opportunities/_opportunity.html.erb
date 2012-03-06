@@ -1,0 +1,164 @@
+<%= raw(javascript_include_tag "latest/livia_core.js")%>
+<%  h = {}
+h[:search_item] = true
+if params[:search_items]
+  h[:search_items] = params[:search_items]
+  h[:search] = {}
+  if params[:search]
+    params[:search].keys.each do |key|
+      h[:search][key] = params[:search][key] unless params[:search][key].blank?
+    end
+  end
+end
+%>
+<% unless params[:load_popup] || @load_popup %>
+  <%=raw paginate_for_five_links(@opportunities.total_pages, {:mode_type =>@mode_type,:action=>"index",:opp_stage =>@opp_stage, :letter=>@letter_selected,:col=>params[:col],:dir=>params[:dir],:per_page=>params[:per_page]}, params[:page]) if @opportunities.total_pages > 1 %>
+  <!--Pagination container div @start here -->
+  <% if @opp_stage.present? %>
+    <%= raw all_pagination(@opportunities, params[:per_page], "willpaginate", opportunities_path(), {:mode_type =>params[:mode_type],:opportunity_type =>params[:opportunity_type],:action=>"index",:opportunity_status =>params[:opportunity_status],:letter=>params[:letter],:per_page=>params[:per_page],:opp_stage =>@opp_stage})  %>
+  <%else%>
+    <%= raw all_pagination(@opportunities, params[:per_page], "willpaginate", opportunities_path(), {:mode_type =>params[:mode_type],:opportunity_type =>params[:opportunity_type],:action=>"index",:opportunity_status =>params[:opportunity_status],:letter=>params[:letter],:per_page=>params[:per_page]})  %>
+  <%end %>
+<%else%>
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      new_tool_tip();
+    });
+  </script>
+<%end%>
+<div id="loader_opp"></div>
+<%form_for :search,:url=>{:controller => :opportunities,:action => :index},:html =>{:method => :get } do |f| %>
+  <div class="tabular_listing" id="sort_column_opp">
+    <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+      <tr>
+        <%=hidden_field_tag  'col' ,params[:col] if params[:col]%>
+        <%=hidden_field_tag  'dir' ,params[:dir] if params[:dir]%>
+        <%=hidden_field_tag  'mode_type' ,@mode_type if @mode_type%>
+        <%=hidden_field_tag  'per_page' ,params[:per_page] if params[:per_page]%>
+        <%=hidden_field_tag  'search_items' ,true%>
+        <% if params[:load_popup] || @load_popup %>
+          <th width='15%' align='left'><%= link_to t(:text_opportunity), "#", :onclick => "sort_opportunities_columns('opportunities.name', '#{params[:dir]}')" %></th>
+          <th width='8%' align='left'><%= link_to t(:text_stage), "#", :onclick => "sort_opportunities_columns('opportunities.stage', '#{params[:dir]}')" %></th>
+          <th width='9%' align='left'><%= link_to t(:text_contact), "#", :onclick => "sort_opportunities_columns('contacts.last_name', '#{params[:dir]}')" %></th>
+          <th width='10%' align='left'><%= link_to t(:text_account), "#", :onclick => "sort_opportunities_columns('accounts.name', '#{params[:dir]}')" %></th>
+          <th width='10%' align='left'><%= link_to t(:text_assigned_to), "#", :onclick => "sort_opportunities_columns('users.first_name', '#{params[:dir]}')" %></th>
+          <th width='7%' align='center'><%= link_to t(:text_prob), "#", :onclick => "sort_opportunities_columns('opportunities.probability', '#{params[:dir]}')" %></th>
+          <th width='9%' align='right'><%= link_to t(:text_amt), "#", :onclick => "sort_opportunities_columns('opportunities.amount', '#{params[:dir]}')" %></th>
+          <th width='9%' align='center'><%= link_to t(:text_follow_up_date)+"/"+t(:text_time), "#", :onclick => "sort_opportunities_columns('opportunities.follow_up', '#{params[:dir]}')" %></th>
+          <th width='7%' align='center'><%= link_to t(:text_closing_date), "#", :onclick => "sort_opportunities_columns('opportunities.closes_on', '#{params[:dir]}')" %></th>
+        <% else %>
+          <%= column_sort_link(t(:text_opportunity),'opportunities.name',params[:col], '15%', "left",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <%= column_sort_link(t(:text_stage),'opportunities_stage',params[:col], '8%', "left",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h),'stage','opportunities_stage',nil,"collection_select :search, 'opportunities_stage',@company.opportunity_stage_types,:id,:alvalue,{:selected => #{params[:search]['opportunities_stage'].to_i}, :prompt => true}, {:style => '#{params[:search_items].blank? ? 'width:95px;display:none;' : 'width:95px;'}'}") %>
+          <%= column_sort_link(t(:text_contact),'contacts.last_name',params[:col], '9%', "left",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <%= column_sort_link(t(:text_account),'accounts.name',params[:col], '10%', "left",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <%= column_sort_link(t(:text_assigned_to),'users.first_name',params[:col], '10%', "left",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h),nil,'users.first_name','assigned_to',"collection_select :search, 'users--first_name', current_company.employees, :full_name, :full_name,{:selected => '#{params[:search]['users--first_name'].to_s}' ,:prompt => true}, {:style => '#{params[:search_items].blank? ? 'width:95px;display:none;' : 'width:95px;'}'} ") %>
+          <%= column_sort_link(t(:text_prob),'opportunities.probability',params[:col], '7%', "center",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <%= column_sort_link(t(:text_amt),'opportunities.amount',params[:col], '9%', "right",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <%= column_sort_link(t(:text_follow_up_date)+"/"+t(:text_time),'opportunities.follow_up',params[:col], '9%', "center",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <%= column_sort_link(t(:text_closing_date),'opportunities.closes_on',params[:col], '7%', "center",{:mode_type =>@mode_type,:opp_stage =>@opp_stage, :letter=>params[:letter], :action => "index", :per_page => params[:per_page] }.merge(h)) %>
+          <th align="center" width="10%"><%= t(:text_day_s_since) %> <br /> <%= t(:text_created) %></th>
+          <th align="center" width="10%"><%= t(:text_day_s_left) %> <br /> <%= t(:text_for_closure) %></th>
+          <th align="center" width="7%"><%= t(:text_day_s_in) %> <br /> <%= t(:text_current_status) %></th>
+          <th align="center" width="7%"><%= t(:text_day_s_since) %> <br /> <%= t(:text_last_updated) %></th>
+          <th align="center" width="5%"><%= t(:text_actions) %>
+            <div class="action_column" style="position: relative; width:52px;">              
+                <%= f.submit "Go" ,{:style=>(params[:search_items] ? "margin-top:16px" : "display:none;")}%>
+            </div>
+          </th>
+        <%end%>
+      </tr>
+      <% if @opportunities.present? %>
+        <% @opportunities.each do |opportunity| %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <td><%= raw(truncate_hover_link_with_created_at(h(opportunity.name),livia_date(opportunity.created_at),37,edit_opportunity_path(:id => opportunity.id,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:search=>params[:search],:q=>params[:q],:col=>params[:col],:dir=>[:dir],:mode_type=>params[:mode_type],:contact_type =>params[:contact_type],:opp_stage=>params[:opp_stage]))) %></td>
+            <td><%= defIfNil(formatString(current_company.opportunity_stage_types.detect{|o| o.id==opportunity.stage}.try(:alvalue)), 'No Data') if opportunity.try(:stage) %></td>
+            <td><%= raw(truncate_hover_contacts(h(opportunity.contact.try(:full_name).try(:titleize)),25,opportunity.contact.title,opportunity.contact.preference,opportunity.contact.created_at,opportunity.contact.department)) if opportunity.contact %> </td>
+            <td>
+              <% unless opportunity.contact && opportunity.contact.get_account_name.nil? %>
+                <%= raw(truncate_hover(h(opportunity.contact.get_account_name),15)) if opportunity.contact %>
+              <% end %>
+            </td>
+            <td>
+              <% if opportunity.get_assigned_to.present? %>
+                <%= truncate_hover(h(opportunity.get_assigned_to), 15) %>
+              <% end %>
+            </td>
+            <td align="center"><%= floatIfNil(opportunity.probability) %></td>
+            <td align="right"><%= number_with_lformat(opportunity.amount) if opportunity.amount %></td>
+            <td align="center" id="follow_up_date_<%=opportunity.id%>">
+              <%if opportunity.follow_up%>
+                <%follow_up_time=opportunity.try(:follow_up)? opportunity.follow_up.strftime("%I:%M %p"):'12:00 PM'%>
+                <%=raw livia_date_time_effect(opportunity.follow_up.to_date,follow_up_time)%>
+                <%if opportunity.follow_up <= Time.zone.now.to_date%>
+                  <%=link_to(image_tag("/images/livia_portal/icon_tickmark.png",:hspace => 0, :border => 0, :title => "Follow up Done", :alt => "Follow up Done"),'#',:onclick=>"clear_follow_up_date(#{opportunity.id})")%>
+                <%else%>
+                  <span style="width:13px; height:2px; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <%end%>
+              <%end%>
+            </td>
+            <td align="center"><%= raw livia_date_effect(opportunity.closes_on) %> </td>
+            <%unless params[:load_popup] || @load_popup %>
+              <td align="center"><%= Time.zone.now.to_date - opportunity.created_at.to_date %> (<%=livia_date(opportunity.created_at)%>)</td>
+              <td align="center"><%= get_close_date (opportunity) %> (<%= livia_date(opportunity.closes_on)%>)</td>
+              <td align="center"><%= opportunity.get_days_in_current_status %></td>
+              <td align="center"><%= Time.zone.now.to_date - opportunity.updated_at.to_date %></td>
+              <% opportunity_name = opportunity.name.to_s.gsub("'","")%>
+              <td align="center">
+                <div class="icon_action mt3"><a href="#"></a></div>
+                <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <%=raw action_pad_top_blue_links({:edit_path=>"#{edit_opportunity_path(:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:search=>params[:search],:q=>params[:q],:col=>params[:col],:dir=>[:dir],:mode_type=>params[:mode_type],:contact_type =>params[:contact_type],:opp_stage=>params[:opp_stage],:id => opportunity.id)}",
+                        :deactivate_path=>{:controller => 'opportunities', :action => 'deactivate_opportunity',:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:search=>params[:search],:q=>params[:q],:col=>params[:col],:dir=>[:dir],:mode_type=>params[:mode_type],:contact_type =>params[:contact_type],:opp_stage=>params[:opp_stage],:id => opportunity.id,},
+                        :deactivate_text => opportunity.follow_up ? "Opportunity having Follow up dated - #{livia_date(opportunity.follow_up)}" : 'Opportunity',
+                        :comment_path=>add_comment_with_grid_comments_path(:id=>opportunity.id,:commentable_type=>'Opportunity',:path=> opportunities_path,:height=>190,:width=>800),
+                        :comment_title => opportunity.name,
+                        :document_path=>"#{upload_document_document_homes_path(:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:search=>params[:search],:q=>params[:q],:mode_type=>params[:mode_type],:contact_type =>params[:contact_type],:opp_stage=>params[:opp_stage],:mappable_id => opportunity.id, :from=>'opportunities')}",
+                        :history_path=>"#{history_comments_path(:id=>opportunity.id,:commentable_type=>'Opportunity',:height=>90)}",
+                        :history_title => "Opportunity History #{opportunity.name}",
+                        :width_tb => '700'}) %>
+                    <tr>
+                      <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                      <td style="background: #fff;">
+                        <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                          <tr>
+                            <td colspan="4"><div class="ap_pixel15"></div></td>
+                          </tr>
+                          <tr>
+                            <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                            <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Change Stage</span>', "#", :onclick=>"tb_show('#{t(:text_change_status_for_opportunity)} #{opportunity_name}', '/opportunities/change_status/#{opportunity.id}?letter=#{params[:letter]}&col=#{params[:col]}&dir=#{params[:dir]}&mode_type=#{params[:mode_type]}&per_page=#{params[:per_page]}&page=#{params[:page]}&opp_stage=#{params[:opp_stage]}&height=170&width=430', '' ); return false") %> </td>
+                            <td width="10%" align="center" valign="middle"><div class="ap_child_action"></div></td>
+                            <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Manage Follow-up</span>', "#", :onclick=>"tb_show('#{t(:text_manage_followup_for_opportunity)} #{opportunity_name}', '/opportunities/manage_followup/#{opportunity.id}?height=170&width=450', '' ); return false") %> </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4"><div class="ap_pixel10"></div></td>
+                          </tr>
+                          <tr>
+                            <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                            <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Target Closure Date</span>', "#", :onclick=>"tb_show('#{t(:text_closing_date_for_opportunity)} #{truncate(opportunity_name,:length=>18)}', '/opportunities/change_closing_date/#{opportunity.id}?height=110&width=400', '' ); return false") %> </td>
+                            <td width="7%" align="center" valign="middle"></td>
+                            <td width="40%" align="left" valign="middle"> </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4"><div class="ap_pixel10"></div></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="ap_bottom_curve_left"></td>
+                      <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                      <td valign="top" class="ap_bottom_curve_right"></td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            <% end %>
+          <%end%>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<%end%>
+<%= raw all_pagination(@opportunities, params[:per_page], "bottom-pagination", opportunities_path(), {:mode_type =>params[:mode_type],:opportunity_type =>params[:opportunity_type],:action=>"index",:opportunity_status =>params[:opportunity_status],:letter=>params[:letter],:per_page=>params[:per_page],:opp_stage =>@opp_stage}) unless params[:load_popup] || @load_popup %>
+<div class="mandatory mt12">Prob:- Probability, Follow-up Date/Time, Target Closure Date:- <span id="red" class="red_text">Overdue</span>, <span style="color: #F88158" class="blink">Today</span>, <span>Upcoming</span>, <span class="weekend">Weekend</span>, <span class="icon_followupdate pr10p">&nbsp;</span><span>Follow up done</span> </div>

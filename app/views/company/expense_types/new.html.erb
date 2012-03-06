@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_new)%> <%= t(:text_expense_type) %></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:expense_type,@expense_type, :url => company_expense_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "#{t(:label_time_expense_type)}", :modal_text => "#{t(:label_time_expense_type)}",
+    :all_modal_values => @company.expense_types.collect{|dc|[dc.lvalue]}.uniq ,:modelclass=>'expense_types'} %>
+<%end%>
+<br class="clear"/>

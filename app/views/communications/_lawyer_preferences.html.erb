@@ -1,0 +1,88 @@
+<% employee = @employee%>
+<div class="form_table">
+  <% form_for employee, :url => { :action => "update", :id => employee.id }, :html => {:onsubmit => "disableAllSubmitButtons('button')"} do |f| %>
+    <% f.fields_for :user do |u| %>
+      <table width="90%" cellspacing="0" cellpadding="0" border="0">
+        <tbody><tr>
+            <td width="19%"><label>Salutation/ Title</label></td>
+            <td width="34%"><%= f.select :salutation, @salutations.collect{|s| [s.alvalue,s.id]}, :include_blank=>true %></td>
+            <td width="2%">&nbsp;</td>
+            <td width="21%">&nbsp;</td>
+            <td width="24%">&nbsp;</td>
+          </tr>
+          <tr>
+            <td><label>First Name<span class="alert_message">*</span></label></td>
+            <td><%= f.text_field :first_name, :disabled => 'disabled' %></td>
+            <td>&nbsp;</td>
+            <td><label>Last Name</label></td>
+            <td><%= f.text_field :last_name, :disabled => 'disabled' %></td>
+          </tr>
+          <tr>
+            <td><label>Registered Number 1<span class="alert_message">#</span></label></td>
+            <td><%= f.text_field :registered_number1, :disabled => 'disabled' %></td>
+            <td>&nbsp;</td>
+            <td><label> Primary Email <span class="alert_message">#</span></label></td>
+            <td><%= f.text_field :email, :disabled => 'disabled' %></td>
+          </tr>
+          <tr>
+            <td><label>Client's date of birth :</label></td>
+            <td><%= f.text_field :birthdate, :disabled => 'disabled', :value => employee.birthdate.present? ? employee.birthdate.strftime('%m/%d/%Y') : "" %></td>
+            <td>&nbsp;</td>
+            <td>Alternate Email</td>
+            <td><%= u.text_field :alt_email %></td>
+          </tr>
+          <tr>
+            <td><label>Time Zone</label></td>
+            <td><%= u.time_zone_select :time_zone, nil,{},:style=>"width: 67%;" %></td>
+            <td>&nbsp;</td>
+            <td><label>Client likes to be addressed as :</label></td>
+            <td><%= f.text_field :likes_to_be_addressed_as %></td>
+          </tr>
+          <tr>
+            <td><label>Preferred mode of communication</label></td>
+            <td><%= f.text_field :preferred_mode_of_communication %></td>
+            <td>&nbsp;</td>
+            <td><label>Preferred time of communication</label></td>
+            <td><%= f.text_field :preferred_time_of_communication %></td>
+          </tr>
+          <tr>
+            <td><label>Client personality/ characteristics</label></td>
+            <td><%= f.text_field :personality_charachteristics %></td>
+            <td>&nbsp;</td>
+            <td><label>Client's working hours/ days :</label></td>
+            <td><%= f.text_field :clients_working_hours_days%></td>
+          </tr>
+          <tr>
+            <td><label>Designation</label></td>
+            <td><%= f.select :designation_id, @designations.collect{|s| [s.lvalue,s.id]},{}, :include_blank=>true, :style=>"width: 67%;"  %></td>
+            <td>&nbsp;</td>
+            <td><label>Law firm/ attorney specialization</label></td>
+            <td><%= f.text_field :specialization %></td>
+          </tr>
+          <tr>
+            <td><label>Address</label></td>
+            <td><%= f.text_field :address %></td>
+            <td>&nbsp;</td>
+            <td><label>Sales Rep's Name</label></td>
+            <td><%= f.text_field :sales_representatives_name %></td>
+          </tr>
+          <tr>
+            <td><label>Implementation Rep's Name</label></td>
+            <td><%= f.text_field :implementation_representatives_name %></td>
+            <td>&nbsp;</td>
+            <td><label>Date of Handover from Implementation to Operations</label></td>
+            <td><%= f.text_field :date_of_handover_from_implementation_to_operations, :class=>"date_picker" , :value => employee.date_of_handover_from_implementation_to_operations.present? ? employee.date_of_handover_from_implementation_to_operations.strftime('%m/%d/%Y') : "" %></td>
+          </tr>
+          <tr>
+            <td colspan="5" align="center">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="5" align="center">
+              <%= f.submit 'Update', :class=>'button' %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+  <% end %>
+</div>

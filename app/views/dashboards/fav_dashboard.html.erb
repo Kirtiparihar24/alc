@@ -1,0 +1,21 @@
+<%=raw(javascript_include_tag 'highcharts.js','FusionCharts.js','FusionChartsExportComponent.js')%>
+<% if @fav_dashboard.present? %>
+  <div>
+    <div class="fl w32 tabular_listing"  style="height:410px;overflow-y:scroll;">
+      <table width="100%" cellpadding="1" cellspacing="1" >
+        <% for item in @fav_dashboard %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <td align="left"><a href="#" onclick="get_fav_charts(<%=item.id%>)"><%=item.favorite_title%></a></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="fl w67 border_gray" id="show_fav">
+      <%=render :partial=>"dashboards/dashbords_chart" ,:locals=>{ :dashboard=>@dashboard}%>
+    </div>
+    <br class="clear" />
+  </div>
+<% else %>
+  <div class="title_blue"> No Dashboard Selected as <%=t(:text_favorite)%> </div>
+<% end %>
+<div align="right" class="pagiText"><%=t(:label_page)%><%=h @pagenumber%></div>

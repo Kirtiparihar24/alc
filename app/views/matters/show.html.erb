@@ -1,0 +1,27 @@
+<p>
+  <b><%=t(:text_name)%></b>
+  <%=h @matter.name %>
+</p>
+<p>
+  <b><%=t(:text_parent)%></b>
+  <%=h @matter.parent_name %>
+</p>
+<p>
+  <b><%=t(:text_brief)%></b>
+  <%=h @matter.brief %>
+</p>
+
+<p>
+  <b><%=t(:text_contact)%></b>
+  <%=h @matter.contact_id %>
+</p>
+
+<p>
+  <b><%=t(:text_internal)%></b>
+  <%=h @matter.is_internal %>
+</p>
+
+<p><b><%=t(:text_sub_matters)%></b>
+<%= show_matter_children(@matter) -%></p>
+<%= link_to t(:label_back), matters_path %> | <%= link_to t(:text_edit), edit_matter_path(@matter) %> | <%= link_to(t(:text_create_sub_matter), new_matter_path(:sub_matter => session[:matter_id]))   %>
+<br />

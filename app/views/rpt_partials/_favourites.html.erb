@@ -1,0 +1,89 @@
+<%  if col
+  reports = {:report => {}}
+  col.each do |obj|
+    obj.selected_options.keys.each do |key|
+      reports[:report][key] = obj.selected_options[key]
+    end
+    report_form_action=(obj.action_name.split("_") - [obj.action_name.split("_").pop]).join("_")   %>
+    <div style="display:none">
+      <%= link_to obj.report_name , {:action => report_form_action, :controller => obj.controller_name,:a=>'a',:fav_id => obj.id,:link_to_remove => true,:get_records => obj.get_records , :date_selected => obj.date_selected , :date_start => obj.date_start, :date_end => obj.date_end,:format => :js,:run_report => true}.merge(reports),{:id=>"report_#{obj.id}"} %>
+    </div>
+    <li><%=link_to obj.report_name , {:action => obj.action_name , :controller => obj.controller_name,:a=>'a',:fav_id => obj.id,:link_to_remove => true,:get_records => obj.get_records , :date_selected => obj.date_selected , :date_start => obj.date_start,:date_end => obj.date_end,:format => :js,:run_report => true}.merge(reports),{:class => "#{eval("@report#{obj.id}")} ajax-fav-link",:report_id=>obj.id}%></li>
+    <% reports [:report] = {}
+  end
+end %>
+<script type="text/javascript">
+  jQuery(".ajax-fav-link").live("click",function(){
+    var report_url=jQuery(this).attr('href');
+    var report_form_url=jQuery("#report_"+jQuery(this).attr('report_id')).attr("href");
+    //alert("0")
+    jQuery.ajax({
+      type:"GET",
+      url:report_form_url,
+      data: report_url,
+      success :function(html){
+        jQuery("#container-1").html(html);
+        checkloader();      
+        jQuery.ajax({
+          type:"GET",
+          url:report_url,
+          success : function(html){      
+            jQuery("#loader").hide();
+            function megaHoverOver(){
+              jQuery(this).find(".sub").stop().fadeTo('fast', 1).show();
+              //Calculate width of all ul's
+              var rowWidth = 0;
+              (function(jQuery) {
+                jQuery.fn.calcSubWidth = function() {
+                  //Calculate row
+                  jQuery(this).find("ul").each(function() {
+                    rowWidth += $(this).width();
+                  });
+                };
+              })(jQuery);
+              if ( jQuery(this).find(".row").length > 0 ) { //If row exists...
+                var biggestRow = 0;
+                //Calculate each row
+                jQuery(this).find(".row").each(function() {
+                  jQuery(this).calcSubWidth();
+                  //Find biggest row
+                  if(rowWidth > biggestRow) {
+                    biggestRow = rowWidth;
+                  }
+                });
+                //Set width
+                jQuery(this).find(".sub").css({
+                  //     'width' :biggestRow
+                });
+                jQuery(this).find(".row:last").css({
+                  'margin':'0'
+                });
+              } else { //If row does not exist...
+                jQuery(this).calcSubWidth();
+                //Set Width
+                jQuery(this).find(".sub").css({
+                  'width' : rowWidth
+                });
+              }
+            }
+            function megaHoverOut(){
+              jQuery(this).find(".sub").stop().fadeTo('fast', 0, function() {
+                jQuery(this).hide();
+              });
+            }
+            var config = {
+              sensitivity: 2, // number = sensitivity threshold (must be 1 or higher)
+              interval: 100, // number = milliseconds for onMouseOver polling interval
+              over: megaHoverOver, // function = onMouseOver callback (REQUIRED)
+              timeout: 500, // number = milliseconds delay before onMouseOut
+              out: megaHoverOut // function = onMouseOut callback (REQUIRED)
+            };
+            jQuery("ul#topnav li .sub").css({'opacity':'0'});
+            jQuery("ul#topnav li").hoverIntent(config);
+          }
+        });
+      }
+    });
+    return false;
+  });
+</script>

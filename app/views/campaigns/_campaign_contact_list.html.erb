@@ -1,0 +1,149 @@
+<div id="fragment-1" class=<%=@tabselected=='fragment-1' ? 'tabs-container-tabs tabular_listing' : 'tabs-container-tabs tabs-hide'%>>
+  <%= hidden_field_tag 'campaign_id', @campaign.id, :class=>'' %>
+  <div id="add_import_contact">
+    <table cellpadding="0" cellspacing="0" border="0" width="28%" class="form_table pl5">
+
+      <tr>
+        <td colspan="4" height="10">&nbsp; </td>
+      </tr>
+
+      <tr>
+        <td width="1%"><input type="radio" id="radio_add_contact" name="add_import_contact" checked="checked"/></td>
+        <td width="17%"><label><%= t(:text_add_from_existing_contacts) %></label></td>
+
+        <td width="1s%"><input type="radio" id="radio_import_contact" name="add_import_contact" campaign_id="<%=  @campaign.id%>"/></td>
+        <td width="17%"><label><%= t(:text_import_from_file) %></label></td>
+      </tr>
+    </table>
+  </div>
+  <div id="add_contact">
+    <% form_tag search_campaigns_path(:id => @campaign.id), :id => 'searchform' do %>
+      <%= hidden_field_tag 'campaign_id', @campaign.id, :class => '' %>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table pl5">
+        <tr>
+          <td width="8%"><label><%= t(:text_name) %></label></td>
+          <td width="92%"><%= text_field_tag 'search[name]',nil %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_address) %></td>
+          <td><%= text_field_tag 'search[address]',nil %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_stage) %></td>
+          <td>
+            <%=select_tag("search[status_type]",%(<option value="All">All</option>) + options_for_select(@contact_stages.collect {|p| [ p.alvalue, p.id ] }))%>
+          </td>
+        </tr>
+      </table>
+      <div class="buttonSub_div"><%= submit_tag(t(:text_search),:id => "campaign_search") %></div>
+    <% end %>
+    <div id="search_results"></div>
+  </div>
+
+  <div id="import_contact">
+    <% form_tag  "/import_data/import_campaign_members", :method => 'post',:target=>"upload_frame",:multipart => true  do %>
+      <%= hidden_field_tag 'campaign_id',@campaign.id %>
+      <%= hidden_field_tag 'import_type','campaign_members' %>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table pl5">
+        <tr>
+          <td align="left"  width="8%"><%=t(:label_file_format)%></td>
+          <td align="left" width="25%"><%= select_tag "file_format", options_for_select(%w{ CSV XLS}),:onchange=>"check_file_format();"%> </td>
+          <td width="67%"></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:text_file) %>:</label></td>
+          <td align="left"><label id ="file_name"><%= file_field_tag 'import_file' %></label></td>
+          <td><span id="csv">&nbsp;<%=link_to("Download Format (CSV)",{:controller=>"campaigns/show_help"}, :class=>'linknormal') %></span>
+            <span id="xls" style="text-align:left;display:none;">&nbsp;<%=link_to("Download Format (XLS)",{:controller=>"campaigns/show_xls_help"}, :class=>'linknormal') %></span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td align="left"><%=submit_tag(t(:text_import), :class=>'searchbutton', :onclick => 'return validateImportFile();') %></td>
+          <td></td>
+        </tr>
+      </table>
+
+    <% end %>
+    <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+  </div>
+  <br class="clear"/>
+  <div class="pl5 pt5 pr5">
+	<table class="xbox_gray_new" cellspacing="0" cellpadding="0" border="0" bgcolor="#f1e3c4" width="100%">
+    <tr>
+      <td>
+        <div class="fl mt5 ml5 mb5">
+          <strong>
+            <%= t(:text_current_members_of_campaign) %>
+            <%= truncate_hover(@campaign.name.try(:titleize),35)%>  [ <%= @campaign.members.length %> ]
+          </strong>
+        </div>
+        <div class="fr"></div>
+        <br class="clear" />
+      </td>
+    </tr>
+  </table>
+  </div>
+  <div class="tabular_listing p5">
+    <% form_tag "/campaigns/contacts_campaign",{:onsubmit=>"jQuery('#delete_campaign_member').val('Please wait...');jQuery('#delete_campaign_member').attr('disabled','disabled');"} do %>
+      <%= hidden_field_tag 'campaign_id', @campaign.id %>
+      <%= hidden_field_tag 'submit_action','Delete' %>
+      <%=hidden_field_tag :action_name, params[:action_name] if params[:action_name]%>
+      <%=hidden_field_tag :stage, params[:stage] if params[:stage]%>
+      <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+      <table width="100%" cellpadding="1" cellspacing="1" class="border_gray mt2">
+        <tr>
+          <th align="center" width="4%"><%= t(:text_select) %> </th>
+          <th align="left" width="20%"><%= t(:text_member) %></th>
+          <th align="left" width="15%"><%= t(:text_account) %></th>
+          <th align="left" width="20%"><%= t(:text_email) %></th>
+          <th align="left" width="23%"><%= t(:text_alt_email) %></th>
+          <th align="left" width="7%"><%= t(:text_status) %></th>
+          <th align="center" width="10%"><%= t(:text_1st_mailed_date) %></th>
+          <th align="center" width="10%"><%= t(:text_reminder_date) %></th>
+          <th align="left" width="5%"><%= t(:text_opportunity_ref) %></th>
+          <th align="center" width="8%"><%= t(:text_value_d) %></th>
+        </tr>
+        <% if @campaign_contacts.length > 0 %>
+          <%if @campaign_contacts.collect{|c| c if c.try(:status).try(:lvalue) == 'New'}.compact.length >0%>
+            <tr><td align="center" valign="top" ><input id="check_all" name="check_all" type="checkbox" onclick="campaign_check_all();" /></td><td colspan="2"><%= submit_tag t(:label_delete),:id=>"delete_campaign_member" ,:class=>'linknormal' %></td></tr>
+          <%end%>
+          <tbody class="scrollY200">
+            <% @campaign_contacts.each do |member| %>
+              <%if (member.email).present? %>
+                <tr class="<%= cycle('bg1', 'bg2') %>">
+                  <td align="center"><%= check_box_tag 'delete_records[]', member.id, false, :class => "records"  if member.try(:status).try(:lvalue) == 'New' %></td>
+                  <td><%= member.full_name %></td>
+                  <td><%= member.try(:get_contact).try(:get_account_name) %></td>
+                  <td><%= member.email %></td>
+                  <td><%= member.alt_email %></td>
+                  <td><%= member.try(:status).try(:alvalue) %>
+                    <%if member.try(:status).try(:alvalue) == 'Contacted' %>
+                      <%= link_to('Reject',"/campaigns/reject_member_status/#{member.id}" , :confirm => 'Are you sure you want to reject this member?', :class => 'textred')%>
+                    <% elsif member.try(:status).try(:lvalue) == 'Invalid Email'%>
+                      <%=link_to("Reason", "#", {:class=> "vtip", :title=> "Bounce Reason for #{member.try(:full_name).try(:titleize)}",:onclick=>"tb_show('Bounce Reason for #{member.try(:full_name).try(:titleize)}', '#{show_reason_campaigns_path()}?height=170&width=450&reason=#{CGI::escape(member.bounce_reason.to_s)}', '')"})%>
+                      <%= link_to('Reject',"/campaigns/reject_member_status/#{member.id}" , :confirm => 'Are you sure you want to reject this member?', :class => 'textred')%>
+                    <% end %>
+                  </td>
+                  <td align="center"><%= livia_date(member.first_mailed_date) %></td>
+                  <td align="center"><%= livia_date(member.reminder_date) %></td>
+                  <td align="left"><%= member.opportunity.name if member.opportunity %></td>
+                  <td align="center"><%= livia_amount(member.opportunity.amount) if member.opportunity %></td>
+                </tr>
+              <%end%>
+            <% end %>
+          </tbody>
+        <% else %>
+          <tr><td colspan="9" class="warningCont m5"><%= t(:text_no_members_present) %></td></tr>
+        <% end %>
+      </table>
+
+    <% end %>
+  </div>
+  <div class="mandatory mt12">Ref:- Reference, Please refresh the page to check the uploaded contacts or current contact status, incase contacts were uploaded or mails were sent to campaign members. </div>
+</div>
+
+<script>
+  $(document).ready(function(){    
+    $("#import_file").val('');  
+  });
+</script>

@@ -1,0 +1,72 @@
+<%page = params[:page].blank? ? '1' : params[:page]%>
+<div id="show_assigned_cluster_employee_list">
+  <div class="mid-box-head"><%=t (:label_Cluster_Users)%></div>
+
+  <div id="div_company_users_licences_details" class="table">
+    <%if @lawfirm_users.empty? && @livians.empty?%>
+      <p><%=t(:label_No_Users_assigned_to_this_cluster)%></p>
+    <%else%>
+      <div style="overflow:auto; height:auto; width:100%;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <th rowspan="2"><%=t(:label_employee)%></th>
+            <th colspan="<%= @livians.count %>">Livians</th>
+          </tr>
+          <tr>
+            <%unless @livians.nil?%>
+              <%@livians.each do |livian|%>
+                <th><%= livian.user.try(:full_name) %><%if livian.user.role && livian.user.role.name.eql?('team_manager')%><img src="/stylesheets/wfm/layout/site/icon/icon_manager.png" alt="Team Manager" title="Team Manager"></img><%end%></th>
+              <%end%>
+            <%end%>
+          </tr>
+          <%unless @lawfirm_users.nil?%>
+            <%@lawfirm_users.each do |user|%>
+              <tr class="<%=cycle("bg1", "bg2")%>">
+                <th width="15%"><%= user.full_name %></th>
+                <%@livians.each do |livian|%>
+                  <td id ="priority_<%=user.user_id%>_<%=livian.id%>">
+                    <%= select_tag 'priority_types[]',options_for_select(@priority_types.collect{|priority_type| [priority_type.alvalue, livian.id.to_s + "-" + user.user_id.to_s+"-"+priority_type.lvalue.to_s]}.reverse,@priority_type),{:onchange =>"update_priority(this,'#{params[:cluster_id]}','#{user.user_id}','#{livian.id}')",:class=>"field size4"} %>
+                  </td>
+                <%end%>
+              <%end%>
+            <%end%>
+          </tr>
+        </table>
+      </div>
+    <%end %>
+    <div class="pagging">
+      <%unless @lawfirm_users.blank?%>
+        <div class="left"><%=raw custom_page_entries_info @lawfirm_users %></div>
+        <div class="right"><%=will_paginate @lawfirm_users, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%></div>
+      <%end%>
+    </div>
+    <p>&nbsp;</p>
+
+    <div id="cluster_errors_div" class="cluster_errors_div"></div>
+    <table cellspacing="5px" width="100%" border="1">
+      <tr><th><%=t(:label_assign)%>&nbsp;<%=t(:label_users)%></th><th><%=t(:label_unassign)%>&nbsp;<%=t(:label_users)%></th></tr>
+      <td>
+        <table>
+          <tr>
+            <td><%= radio_button_tag 'assign','lawfirm_user',false,:onclick =>'togal_assign_div(this.id);' %></td>
+            <td><%=t(:label_assign)%>&nbsp;<%=t(:label_lawfirm)%>&nbsp;<%=t(:label_user)%></td>
+            <td><%= radio_button_tag 'assign','employee',false,:onclick =>'togal_assign_div(this.id);' %></td>
+            <td><%=t(:label_assign)%>&nbsp;<%=t(:label_livian)%></td>
+          </tr>
+        </table>
+        <%= render :partial => 'cluster_assignment' %>
+      </td>
+      <td>
+        <table>
+          <tr>
+            <td><%= radio_button_tag 'unassign','lawfirm_user',false,:onclick =>'togal_assign_div(this.id);' %></td>
+            <td><%=t(:label_unassign)%>&nbsp;<%=t(:label_lawfirm)%>&nbsp;<%=t(:label_user)%></td>
+            <td><%= radio_button_tag 'unassign','employee',false,:onclick =>'togal_assign_div(this.id);' %></td>
+            <td><%=t(:label_unassign)%>&nbsp;<%=t(:label_livian)%></td>
+          </tr>
+        </table>
+        <%= render :partial => 'cluster_unassignment' %>
+      </td>
+    </table>
+  </div>
+</div>

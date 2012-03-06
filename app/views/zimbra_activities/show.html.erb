@@ -1,0 +1,104 @@
+<p>
+  <b>Name:</b>
+  <%=h @zimbra_activity.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @zimbra_activity.description %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%=h @zimbra_activity.category %>
+</p>
+
+<p>
+  <b>Zimbra folder location:</b>
+  <%=h @zimbra_activity.zimbra_folder_location %>
+</p>
+
+<p>
+  <b>Assigned to user:</b>
+  <%=h @zimbra_activity.assigned_to_user_id %>
+</p>
+
+<p>
+  <b>Zimbra:</b>
+  <%=h @zimbra_activity.zimbra_id %>
+</p>
+
+<p>
+  <b>Zimbra status:</b>
+  <%=h @zimbra_activity.zimbra_status %>
+</p>
+
+<p>
+  <b>Reminder:</b>
+  <%=h @zimbra_activity.reminder %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%=h @zimbra_activity.location %>
+</p>
+
+<p>
+  <b>Attendees email:</b>
+  <%=h @zimbra_activity.attendees_email %>
+</p>
+
+<p>
+  <b>Response:</b>
+  <%=h @zimbra_activity.response %>
+</p>
+
+<p>
+  <b>Notify:</b>
+  <%=h @zimbra_activity.notify %>
+</p>
+
+<p>
+  <b>Show as:</b>
+  <%=h @zimbra_activity.show_as %>
+</p>
+
+<p>
+  <b>Mark as:</b>
+  <%=h @zimbra_activity.mark_as %>
+</p>
+
+<p>
+  <b>Start date:</b>
+  <%=h @zimbra_activity.start_date %>
+</p>
+
+<p>
+  <b>End date:</b>
+  <%=h @zimbra_activity.end_date %>
+</p>
+
+<p>
+  <b>All day:</b>
+  <%=h @zimbra_activity.all_day %>
+</p>
+
+<p>
+  <b>Exception status:</b>
+  <%=h @zimbra_activity.exception_status %>
+</p>
+
+<p>
+  <b>Exception parent:</b>
+  <%=h @zimbra_activity.exception_parent_id %>
+</p>
+
+<p>
+  <b>Exception start date:</b>
+  <%=h @zimbra_activity.exception_start_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_zimbra_activity_path(@zimbra_activity) %> |
+<%= link_to 'Back', zimbra_activities_path %>
+<%# Need to check this view if in use %>

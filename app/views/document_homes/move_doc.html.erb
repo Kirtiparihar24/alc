@@ -1,0 +1,22 @@
+<h2 class="title_main selected"><%=t(:label_please_select_destination_folder)%></h2>
+<%= raw(javascript_include_tag "jquery/jqueryFileTree.js", "jquery/jquery.easing.js") %>
+<%= stylesheet_link_tag "jqueryFileTree.css"%>
+<div class="demofiletreehome">
+  <div id="move_doc_error" style="display:none;"> </div>
+  <div class ="collapsed"><span class="icon_collapse_folder mr5 mt3 fl"></span>
+    <%=link_to "Root Folder" ,"#", {:onclick=>"jQuery('#document_home_folder_id').val('');",:class => "link_blue vtip"}%>
+  </div>
+  <div class="section_left">
+    <script type="text/javascript">
+      jQuery(document).ready(function()  {
+        jQuery("#movefileTree").fileTree({script: '/document_homes/get_children<%= "?matter_id=#{params[:matter_id]}" + "&update_list=false" if params[:update_list]%>',loadMessage:'Loading...', expandSpeed: 750, collapseSpeed: 750, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce' });
+      });
+    </script>
+    <div id="movefileTree" class="demofiletree"></div>
+  </div>
+</div>
+<% remote_form_for :document_home, @doc_home,:url => {:action => "post_move_doc",:id => @doc_home.id,:matter_id=>params[:matter_id]} ,:loading=>"disableAllSubmitButtons('button');",:complete=>"enableAllSubmitButtons('button');", :html=> {:multipart=> true} do |f| %>
+  <%= f.hidden_field "folder_id" %>
+  <%= f.submit "Move" , :id=>"move_button", :class=>"button", :onclick=>"setButtonPressed(this);"%>
+  <input type="button" value="<%=t(:label_cancel)%>" id ="Login2" class="button" onclick="parent.tb_remove();return false"/>
+<% end %>

@@ -1,0 +1,114 @@
+<div class="fr" style="padding-top:3px;">
+  <ul id="topnav">
+    <li>
+      <a href="#" class="reports"><%= t(:text_reports) %></a>
+      <div class="sub" style="left:-364px; z-index: 100; width: 410px;">
+        <div class="row">
+          <%if can? :manage, :rpt_contact %>
+            <ul style="width: 200px;" class="fl">
+              <li><h2><a href="#"><%=t(:text_business)%> <%=t(:text_contacts)%></a></h2></li>
+              <%= render :partial =>'/rpt_partials/left_report_sidebar_contacts'%>
+            </ul>
+          <% end %>
+
+          <%if can? :manage, :rpt_account %>
+            <ul style="width: 210px;" class="fl">
+              <li><h2><a href="#"><%=t(:label_accounts)%></a></h2></li>
+              <%= render :partial =>'/rpt_partials/left_report_sidebar_accounts'%>
+            </ul>
+          <% end %>
+
+          <%if can? :manage, :rpt_opportunity %>
+            <ul style="width: 200px;" class="fl">
+              <li><h2><a href="#"><%=t(:text_opportunities)%></a></h2></li>
+              <%= render :partial =>'/rpt_partials/left_report_sidebar_opportunities'%>
+            </ul>
+          <% end %>
+
+          <%if can? :manage, :rpt_matter %>
+            <ul style="width: 210px;" class="fl">
+              <li><h2><a href="#"><%=t(:text_matters)%></a></h2></li>
+              <%= render :partial =>'/rpt_partials/left_report_sidebar_matters'%>
+            </ul>
+          <% end %>
+
+          <%if can? :manage, :rpt_time_and_expense %>
+            <ul style="width: 200px;" class="fl">
+              <li><h2><a href="#"><%=t(:text_time_and_expenses)%></a></h2></li>
+              <%= render :partial =>'/rpt_partials/left_report_sidebar_time_and_expenses'%>
+            </ul>
+          <% end %>
+
+          <%if can? :manage, :rpt_campaign %>
+            <ul style="width: 210px;" class="fl">
+              <li><h2><a href="#"><%=t(:text_campaigns)%></a></h2></li>
+              <%= render :partial =>'/rpt_partials/left_report_sidebar_campaigns'%>
+            </ul>
+          <% end %>
+        </div>
+      </div>
+    </li>
+    <li>
+      <a href="#" class="favReports">Favorite Reports</a>
+      <div class="sub" style="left:-342px; z-index: 100; width: 465px;  max-height: 450px; overflow-y: auto">
+        <div class="row">
+          <%if can? :manage, :rpt_contact %>
+            <% if @contacts_fav.present? && @contacts_fav.length > 0 %>
+              <ul style="width: 225px;" class="fl">
+                <li><h2><a href="#"><%=t(:text_contacts)%></a></h2></li>
+                <%=render :partial => "rpt_partials/favourites",:locals => {:col => @contacts_fav}%>
+              </ul>
+            <% end %>
+          <% end %>
+
+          <%if can? :manage, :rpt_account %>
+            <% if @accounts_fav.present? && @accounts_fav.length > 0 %>
+              <ul style="width: 225px;" class="fl">
+                <li><h2><a href="#"><%=t(:label_accounts)%></a></h2></li>
+                <%=render :partial => "rpt_partials/favourites",:locals => {:col => @accounts_fav}%>
+              </ul>
+            <% end %>
+          <% end %>
+
+          <%if can? :manage, :rpt_opportunity %>
+            <% if @opps_fav.present? && @opps_fav.length > 0 %>
+              <ul style="width: 225px;" class="fl">
+                <li><h2><a href="#"><%=t(:text_opportunities)%></a></h2></li>    
+                <%=render :partial => "rpt_partials/favourites",:locals => {:col => @opps_fav}%>
+              </ul>
+            <% end %>
+          <% end %>
+          <%if can? :manage, :rpt_matter %>
+            <% if @matters_fav.present? && @matters_fav.length > 0 %>
+              <ul style="width: 225px;" class="fl">
+                <li><h2><a href="#"><%=t(:text_matters)%></a></h2></li>
+                <%=render :partial => "rpt_partials/favourites",:locals => {:col => @matters_fav}%>    
+              </ul>
+            <% end %>
+          <% end %>
+
+          <%if can? :manage, :rpt_time_and_expense %>
+            <% if @times_fav.present? && @times_fav.length > 0 %>
+              <ul style="width: 225px;" class="fl">
+                <li><h2><a href="#"><%=t(:text_time_and_expenses)%></a></h2></li>
+                <%=render :partial => "rpt_partials/favourites",:locals => {:col => @times_fav}%>    
+              </ul>
+            <% end %>
+          <% end %>
+          <%if can? :manage, :rpt_campaign %>
+            <% if @campaigns_fav.present? && @campaigns_fav.length > 0 %>
+              <ul style="width: 225px;" class="fl">
+                <li><h2><a href="#"><%=t(:text_campaigns)%></a></h2></li>
+                <%=render :partial => "rpt_partials/favourites",:locals => {:col => @campaigns_fav}%>    
+              </ul>
+            <% end %>
+          <% end %>
+          <ul style="width: 225px;" class="fl">
+            <li><h2><a href="#" class="title"><%= t(:text_preferences) %></a></h2></li>
+            <li><%=link_to t(:label_manage_favorites),company_reports_path, :class => "#{@manage_favourites}"%></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

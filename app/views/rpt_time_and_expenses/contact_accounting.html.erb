@@ -1,0 +1,73 @@
+<script type="text/javascript">
+  // livia_datepicker();
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#date_start");
+    livia_matter_inception_datepicker_new("#date_end");
+<% if @report_duration == "range" %>
+      date_change();
+<%end %>
+  });
+</script>
+<div id="container-1">
+  <%=render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+  <div id="fragment-1" class="tabs-container">
+    <%unless params[:load_popup]%>
+      <h2 class="title_main"><%=t(:text_contact_accounting)%> <%= render :partial =>  "layouts/left_report_sidebar" %></h2>
+    <%else%>
+      <%=raw(generate_spinner_my_favorite_link)%>
+    <%end%>
+    <%form_remote_tag :url=>{:action => :contact_accounting_rpt},:condition => "validate_report_date()" do |f| %>
+      <div class="p5">
+        <%unless params[:load_popup]%>
+          <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+          </div>
+          <% opts = rpt_time_selection_helper %>
+          <%=raw(radios_for_rpt(opts,"#{t(:text_time)}"))%>
+          <br class="clear" />
+          <div class="box_gray">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+              <tbody>
+                <tr>
+                  <td  align="left" valign="middle"><%= t(:text_duration) %></td>
+                  <td align="left" valign="middle"><%=select("report","duration",[["Last 1 Week","1"],["Last 2 Weeks","2"],["Last 1 Month","3"],["Last 3 Months","4"],["Date range","range"]],{:selected=>params[:report][:duration] || @report_duration},{:onClick=>"date_change();"})%></td>
+                  <td style="<%=opts[:style]%>" id="date_div">
+                    <table width="100%" id="" style="font-size:100%"  cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="width:1px"><div style="display:none;" >
+                            <input type="checkbox" name="date_selected" id="date_selected" value="1" <%=opts[:checked]%> />
+                          </div>
+                        </td>
+                        <td style="width:60px;" align="right"><%=t(:label_Start_Date)%></td>
+                        <td style="width:120px;" align="left"><input type="text" id="date_start" name="date_start"  readonly="true" class="dateTextBox date_picker"  size="10" value="<%=params[:date_start]%>" /></td>
+                        <td style="width:60px;" align="right"><%=t(:label_End_Date)%></td>
+                        <td style="width:120px;" align="left"> <input type="text" id="date_end" name="date_end"  readonly="true" class="dateTextBox date_picker" size="10" value="<%=params[:date_end]%>" /></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="left" valign="middle"><%=t(:text_contact)%></td>
+                  <td align="left" valign="middle"><span id="contacts_span"> <%=select 'report', 'contact_id', @contacts.collect{|contact|[contact.full_name, contact.id]},{:selected=>@report_contact_id.to_i,  :include_blank => "All" },{:onchange=>"get_all_matters();"}%> </span></td>
+                  <% style = ""
+                  if @report_contact_id.blank?
+                    style= "display:none"
+                  end %>
+                  <td align="left" valign="middle"><span id="matter_head" style="<%=style%>;"><%=t(:text_matter)%></span></td>
+                  <td align="left" valign="middle" id="matter_content" style="<%=style%>;">
+                    <span id="matters_span">
+                      <%if (@report_contact_id.present? && @matters.present?)%>
+                        <%=select 'report', 'matter_id', @matters.collect{|matter|[matter.clipped_name,matter.id ]},{:selected=> @matter_id,  :include_blank => "All" }%>
+                      <%end%>
+                    </span>
+                  </td>
+                  <td valign="middle"><input type="submit" name="commit" value="Run Report" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <div id="report-info"></div>
+    <div id="report-content"></div>
+  </div>
+</div>

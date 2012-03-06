@@ -1,0 +1,25 @@
+<!--search DATA start-->
+<div class="mt5">
+  <div class="gridDiv">
+    <div class="titleHead" id="searchdashboard_toggle">
+      <div class="fl"><%=t(:text_search)%></div>
+      <div class="fr ptr5">
+        <%=image_tag "/images/cgc_images/icon_max.gif",:alt =>"Maximize",:class =>"toggle_searchdashboard icon_hide" %>
+        <%=image_tag "/images/cgc_images/icon_min.gif",:alt =>"Minimize",:class =>"toggle_searchdashboard icon_show" %>
+      </div>
+      <br class="clear" />
+    </div>
+    <!--SEARCH FORM STARTS-->
+    <div class="formMain" id="search_DIV">
+      <div class="gryBox">
+        <label class="textNormal p5"><%=t(:label_search)%></label>
+        <%=text_field_tag :search_string,'',:size=>80, :class=>"textBox"%>&nbsp;
+        <%=raw search_in_common_span%>
+      </div>
+      <div id="searched_common">
+      </div>
+    </div>
+    <!--SEARCH FORM ENDS-->
+  </div>
+</div>
+<!--search DATA ENDS-->

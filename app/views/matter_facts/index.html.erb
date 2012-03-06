@@ -1,0 +1,136 @@
+<!--
+Modified for the Feature #7512 - Link task risk issue fact - all to all, added by shripad
+added association related count for tasks, risks, and researches
+added action pad links for the same
+-->
+<div>
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <!--Risks Starts-->
+    <div id="fragment-5" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container p5">
+      <%=render :partial => "matters/matter_contact_account"%>
+      <%= raw all_pagination(@matter_facts, params[:per_page], "willpaginate",matter_matter_facts_path(@matter), {:per_page=>params[:per_page]},false ) %>
+      <div class="seperator_dotted_hori"></div>
+      <div class="fr w40 mtbrl5 link_blue">
+        <%= link_to "<span class='icon_add_task fl mr5'></span><span class='fl icon_name mr10'>Create Fact</span>", "#{new_matter_matter_fact_path(@matter)}", :class => "fr "%>
+        <br class="clear" />
+      </div>
+      <br class="clear" />
+      <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+        <tr>
+          <%= column_sort_link(t(:text_fact), 'matter_facts.name', params[:col], "28%", "left", {:action=>"index"}) %>
+          <th width="15%" align="left">
+            <%= t(:label_main_sub)%>
+          </th>
+          <%= column_sort_link(t(:text_fact_details) ,'matter_facts.details', params[:col], "30%", "left", {:action=>"index"}) %>
+          
+          <%= column_sort_link('Source','company_lookups.alvalue',params[:col], "8%", "left", {:action=>"index"})%>
+          <th width="6%" align="left"><%=t(:label_material)%> </th>
+          <%if task_available?%><th width="7%" align="center"><%= t(:text_activities) %></th><%end%>
+          <% if issue_available?%><th width="7%" align="center"><%= t(:text_issues) %></th><%end%>
+          <% if risk_available?%><th width="7%" align="center"><%= t(:text_risks) %></th><%end%>
+          <% if research_available?%><th width="7%" align="center"><%= t(:text_researches) %></th><%end%>
+          <th width="1%" align="center"><%= t(:text_actions) %></th>
+        </tr>
+        <% if @matter_facts.length > 0 %>
+          <% @matter_facts.each do |matter_fact| %>
+            <tr class="<%= cycle('bg1', 'bg2')%>">
+
+              <td > <%= raw truncate_hover_link(matter_fact.name, 50, edit_matter_matter_fact_path(@matter, matter_fact)) %> </td>
+              <td> <%#= show_matter_fact_parent(matter_fact, @matter) %> <%= matter_fact.parent_id ? "Sub" : "Main" %> </td>
+              <td> <%= raw truncate_hover(matter_fact.details, 50) %> </td>
+              <td> <%= matter_fact.doc_source.alvalue if matter_fact.doc_source %></td>
+              <td> <%= MatterFact::MATERIAL[matter_fact.material][0] if MatterFact::MATERIAL[matter_fact.material]%></td>
+              <%if task_available?%><td align="center"><%= facebox_link_num(matter_fact.matter_tasks.length, "#{show_fact_matter_issues_matter_matter_fact_path(@matter, matter_fact,:format_type => "activities")}&height=200&width=500", "Linked Activities")%></td><%end%>
+              <% if issue_available?%><td align="center"><%= facebox_link_num(matter_fact.matter_issues.length, "#{show_fact_matter_issues_matter_matter_fact_path(@matter, matter_fact,:format_type => "issues")}&height=200&width=500", "Linked Issues")%></td><%end%>
+              <% if risk_available?%><td align="center"><%= facebox_link_num(matter_fact.matter_risks.length, "#{show_fact_matter_issues_matter_matter_fact_path(@matter, matter_fact,:format_type => "risks")}&height=200&width=500", "Linked Risks")%></td><%end%>
+              <% if research_available?%><td align="center"><%= facebox_link_num(matter_fact.matter_researches.length, "#{show_fact_matter_issues_matter_matter_fact_path(@matter, matter_fact,:format_type => "researches")}&height=200&width=500", "Linked Research")%></td><%end%>
+              <td align="center">
+                <div class="icon_action mt3"><a href="#"></a></div>
+                <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                  <!--Icon table strt here -->
+                   <% if document_available? %>
+                   <%link = link = link_to("<span id='matter_tabs'>Document</span>","#",{:class=> "vtip",:multiple=>true, :id => "upload_multi",:from=>"matter", :title=> "File(s) Upload", :name=> "Mass Upload File", :parentid=>@parent_id.to_s,:current_user_id=>current_user.id,:employeeuserid=>get_employee_user_id,:company_id=>get_company_id,:matter_id=>@matter.id,:document_home_matter_issue_ids=>'',:document_home_matter_risk_ids=>'',:document_home_matter_fact_ids=>matter_fact.id,:document_home_matter_research_ids=>'',:document_home_matter_task_ids=>'',:path=>"/document_homes/create_multiple?stop=",:return_path=>""})%>
+                  <% else %>
+                   <% link = "NO" %>
+                   <% end %>
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <%=
+                    raw action_pad_top_blue_links({
+                        :edit_path => edit_matter_matter_fact_path(@matter, matter_fact),
+                        :deactivate_path => "NO", #matter_fact_delete_link(matter_fact, @matter, get_employee_user_id),
+                        :deactivate_link => link_to('Delete', matter_matter_fact_path(@matter, matter_fact), :method =>'delete', :confirm => "Are you sure you want to delete this Matter Fact?"),
+                        :comment_path => add_comment_with_grid_comments_path(:id=>matter_fact.id,:commentable_type=>'MatterFact',:path=> matter_matter_facts_path(matter_fact.matter),:height=>250,:width=>800),
+                        :document_modal => true,
+                        :document_header => "Add Document",
+                        :document_link => link,
+                        :history_path => "NO"
+                      })
+                  %>
+                    <tr>
+                      <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+                      <td style="background: #fff;">
+                        <div class="pt5">
+                          <%if task_available?%>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"><%=link_to("<span>Link Activities</span>", "#{get_tasks_risks_researches_matter_matter_fact_path(@matter,matter_fact,:col_type => :matter_tasks,:col_type_ids => :matter_task_ids,:label => 'Activities')}&height=165&width=500", :class => "thickbox", :name => "Link Activities")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <%end%>
+                          <%if issue_available?%>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"><%=link_to("<span>Link Issues</span>", linked_issues_matter_path(:matter_fact_id=>matter_fact.id, :id=> @matter.id, :issue_type=> "matter_fact", :path => matter_matter_facts_path(@matter), :height=>300, :width => 500) , :class => "thickbox", :name => " Link Issues")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <%end%>
+                          <%if risk_available?%>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"><%=link_to("<span>Link Risks</span>", "#{get_tasks_risks_researches_matter_matter_fact_path(@matter,matter_fact,:col_type => :matter_risks,:col_type_ids => :matter_risk_ids,:label => 'Risk')}&height=165&width=500", :class => "thickbox", :name => "Link Risks")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <%end%>
+                          <%if research_available?%>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"><%=link_to("<span>Link Research</span>", "#{get_tasks_risks_researches_matter_matter_fact_path(@matter,matter_fact,:col_type => :matter_researches,:col_type_ids => :matter_research_ids,:label => 'Research')}&height=165&width=500", :class => "thickbox", :name => "Link Research")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <%end%>
+                        </div>
+                      </td>
+                      <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="ap_bottom_curve_left"></td>
+                      <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                      <td valign="top" class="ap_bottom_curve_right"></td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          <% end -%>
+        <% else %>
+          <tr><td colspan="7"><div  class="warningCont m5"><%= t(:text_no_facts_found) %><%= matter_info %></div></td></tr>
+        <% end %>        
+      </table>
+        <%= raw all_pagination(@matter_facts, params[:per_page], "bottom-pagination", matter_matter_facts_path(@matter), {:per_page=>params[:per_page]},false)  %> 
+    </div>
+  </div>
+  <%= render :partial=>"document_homes/multi_upload" %>
+</div>

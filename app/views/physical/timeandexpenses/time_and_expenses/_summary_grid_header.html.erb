@@ -1,0 +1,9 @@
+<script type="text/javascript"><%=t(:text_intitoggleit)%></script>
+<div class="titleHead" id="sumamrygridToggle">
+  <div class="fl"><%=t(:text_time_and_expense_entries_for)%><%= (@receiver ? @receiver.full_name : '' )%> &nbsp;<%=t(:text_for_date)%>&nbsp;<%= params[:time_entry_date].blank? ? livia_date(Time.zone.now.to_date.to_time): livia_date( params[:time_entry_date].to_date.to_time)%></div>
+  <div class="fr ptr5">     
+      <span style="float:right;padding:3px;"> <%=image_tag "/images/livia_portal/icon_max.gif",:alt =>"Maximize",:class =>"toggle_saved_entries icon_hide" %>
+       <%=image_tag "/images/livia_portal/icon_min.gif",:alt =>"Minimize",:class =>"toggle_saved_entries icon_show" %></span>      
+  </div>
+  <br class="clear"/>
+</div>

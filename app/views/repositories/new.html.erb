@@ -1,0 +1,100 @@
+<script type="text/javascript">
+  switch_upload(<%=@msg[:file]%>,<%=@msg[:link]%> )
+</script>
+<div class="" align="center" id="loader1" style="display:none;"><img src='/images/loading.gif' /></div>
+<div id="modal_new_document_error" style="display:none"></div>
+<% form_tag('/repositories/create/',:target=>"upload_frame",:id=>"upload_form",:multipart=> true, :onsubmit => "disableAllSubmitButtons('button');return validate_url();return show_spinner();") do |f| -%>
+  <%for document in @document_home.documents%>
+    <% fields_for 'document_home[document_attributes]', document do |d| %>
+      ﻿<div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+          <tr>
+            <td colspan="5">
+              <table cellpadding="0" cellspacing="0" border="0" width="130">
+                <tr>
+                  <td width="5" valign="top"><%= radio_button_tag 'upload','link',@msg[:link], {:onclick=>"switch_upload(false,true);"} %></td>
+                  <td width="60"><label><%= t(:label_link) %></label></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr id="link_label">
+            <td valign="top"> Web Link<span class="alert_message">*</span></td>
+            <td valign="top" colspan="4"> <%= text_field_tag 'document_home[url]', @document_home.url, :size => "60" %></td>
+          </tr>
+          <tr>
+            <td valign="top"><label><%=t(:label_name)%> <span class="alert_message">*</span></label></td>
+            <td valign="top"><%=text_field_tag 'document_home[name]', @document_home.name %></td>
+            <td valign="top">&nbsp;</td>
+            <td valign="top">&nbsp;</td>
+            <td valign="top">&nbsp;</td>
+          </tr>
+          <tr>
+            <td valign="top"><%=t(:label_category)%> </td>
+            <td valign="top"> 
+              <%=select_tag 'document_home[category_id]', options_for_select(@categories.collect{|c| [c.alvalue,c.id]}),
+                :class=>"widthSelectBox", :id=>"categories_combo"%> <span id ="categories_span"></span>
+            </td>
+            <td valign="top">&nbsp;&nbsp;&nbsp;</td>            
+          </tr>
+          <tr>
+            <td valign="top"><label><%= t(:label_tag) %></label></td>
+            <td valign="top"><%= text_area_tag 'document_home[tag_array]','' , :class=>"w95 h75p" %></td>
+            <td valign="top">&nbsp;&nbsp;&nbsp;</td>
+            <td valign="top"><label><%= t(:label_description) %></label></td>
+            <td valign="top"><%= text_area_tag 'document_home[description]', @document_home.description, :class=>"w95 h75p" %></td>
+          </tr>
+        </table>
+        <div class="buttonSub_div">
+          <%= submit_tag t(:text_upload), :class => "button",:id => 'upload_but',:onclick => "jQuery('#loader1').show()"%>
+          <input type="submit" id="cancel" class="button" value="Cancel" onclick="parent.tb_remove();return false"/>
+        </div>
+      </div>
+      <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+    <% end %>
+  <% end %>
+<% end %>
+<div align="right" class="pagiText"><%= t(:label_page) %>&nbsp;110</div>
+<div class="mandatory"><span class="alert_message">*</span><%= t(:label_Required_fields) %></div>
+<div class="mandatory mt12" id ="doc_1">
+  <pre>Note : Limit on file size is 50 MB.</pre>
+</div>
+<script type="text/javascript">
+  // Need to removed to JS File
+  function validate_url(){
+    if (document.getElementById('upload_link').checked){
+      var name=jQuery('#document_home_name').val();
+      var url=jQuery('#document_home_url').val();
+      var regexp = /^(https?:\/\/|www.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?$/;
+      err=''
+      if (name==''){
+        err='Please specify Name<br>'
+      }
+      if (!regexp.test(url)){
+        if(url==''){
+          err+='Please Enter URL'
+        }
+        if(url!=''){
+          err+='Please Enter Valid URL'
+        }
+      }
+      if (err!=''){
+        jQuery('#modal_new_document_error')
+        .html("<div class='message_error_div'> "+err+" </div>")
+        .fadeIn('slow')
+        .animate({
+          opacity: 1.0
+        }, 8000)
+        .fadeOut('slow')
+        jQuery('#loader1').hide();
+        jQuery('#save_rep').disabled=false
+        jQuery('#save_rep').val('Upload');
+        enableAllSubmitButtons('button');
+        return false;
+      }else{
+        return true
+      }
+    }
+  }
+ 
+</script>

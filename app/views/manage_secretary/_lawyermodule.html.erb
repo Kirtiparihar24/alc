@@ -1,0 +1,52 @@
+<div class="tabular_listing border_gray"><div id="spiner"></div>
+  <table width="100%" cellpadding="1" cellspacing="1">
+    <tbody>
+      <tr>
+        <th width="60%" align="left">
+          <label><%= t(:label_modules) %></label>
+        </th>
+        <th width="40%"  align="left">
+          <label><%= t(:text_access_rights) %></label>
+        </th>
+      </tr>
+      <% @lawyersubproducts.each do |subp|
+        name = subp.name %>
+        <tr>
+          <td>
+            <% if name.eql?('Reports') %>
+              <%= t(:text_menu_rnd) %>
+            <% elsif name.eql?('Contacts') %>
+              <%= t(:text_menu_contacts) %>
+            <% elsif name.eql?('Document Repository') %>
+              <%= t(:text_menu_repository) %>
+            <% elsif name.eql?('Accounts') %>
+              <%= t(:label_accounts) %>
+            <% else %>
+              <%= name %>
+            <% end %>
+          </td>
+          <td>
+            <% if @assigned_subp.include?(subp) %>
+              <%= link_to image_tag("livia_portal/icon_tick.gif")+" Accessible" ,"#",{:onclick=>"assign_release_moduleaccess(#{subp.id}, '/manage_secretary/releasemoduleaccess_from_secretary'); return false;",:style=>"text-decoration:none;"} %>
+            <% else %>
+              <%= link_to image_tag("livia_portal/icon_cancel.gif")+" Not-accessible","#",{:onclick=>"assign_release_moduleaccess(#{subp.id}, '/manage_secretary/assignmoduleaccess_to_secretary'); return false;",:style=>"text-decoration:none;"} %>
+            <% end %>
+          </td>
+        </tr>
+        <% child = @lawyer_child_sub_products[subp.id] || []
+        child.each do |subproduct| %>
+          <tr>
+            <td> - &nbsp; &nbsp; <%= subproduct.name %></td>
+            <td>
+              <% if @assigned_subp.include?(subproduct) %>
+                <%= link_to image_tag("livia_portal/icon_tick.gif")+" Accessible" ,"#",{:onclick=>"assign_release_moduleaccess(#{subproduct.id}, '/manage_secretary/releasemoduleaccess_from_secretary'); return false;",:style=>"text-decoration:none;"} %>
+              <% else %>
+                <%= link_to image_tag("livia_portal/icon_cancel.gif")+" Not-accessible","#",{:onclick=>"assign_release_moduleaccess(#{subproduct.id}, '/manage_secretary/assignmoduleaccess_to_secretary'); return false;",:style=>"text-decoration:none;"} %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,14 @@
+<%=raw @logo_img%><br/><br/>
+<%=t(:text_hi)%>
+<br/>
+<% if @email[:action] == "assignment" %>
+<%=t(:text_following_is_the_list_of_the_modules_being_assigned_to_service_providers)%>
+<% else %>
+<%=t(:text_following_is_the_list_of_the_modules_being_unassigned_to_service_providers)%>
+<% end %>
+<br/>
+<% unless @email[:module_list].blank? %>
+<% @email[:module_list].each do |mod| %>
+&nbsp;&nbsp;- <%=mod%><br/>
+<% end %>
+<% end %>

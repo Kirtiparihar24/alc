@@ -1,0 +1,30 @@
+<div class="gridTable">
+  <div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+    <%= link_to(t(:text_new),new_company_client_rep_role_path(@company),:rel=>"facebox") %>
+  </div>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tr>
+      <th width="25%">Representative Role</th>
+      <th width="25%">Custome Representative Role</th>
+      <th width="25%">Actions</th>
+    </tr>
+    <%@company.client_rep_roles.each do |client_rep_role|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <span class="textBlue11Height20">
+            <%= client_rep_role.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">
+            <%= client_rep_role.alvalue %>
+          </span>
+        </td>
+        <td>
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}),edit_company_client_rep_role_path(@company,client_rep_role),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

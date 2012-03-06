@@ -1,0 +1,24 @@
+<script type="text/javascript">
+  <% if params[:link_for].eql?('delete') %>
+    jQuery('#TB_ajaxWindowTitle').text("Delete Recurring Item");
+   <%else%>
+   jQuery('#TB_ajaxWindowTitle').text("Open Recurring Item");
+   <%end%>
+</script>
+<div id="loader1" style="display:none;"><img src="/images/loading.gif" alt="loading..."></img></div>
+<div id="activityForm">
+  <% if params[:link_for].eql?('delete') %>
+    <div>"<%= @appointment.name %>" is a recurring appointment. Would you like to delete only this instance or the series?</div><br />
+    <%= radio_button_tag "activity", "instance", false, :onClick => "deleteSeriesInstance('Edit Instance', '#{escape_javascript(params[:link][:path])}', '#{params[:link][:request_type]}');" %> Delete this instance <br />
+    <%= radio_button_tag "activity", "series", false, :onClick => "deleteSeriesInstance('Edit Series', '#{escape_javascript(params[:series][:path])}', '#{params[:series][:request_type]}');" %> Delete this series
+  <% else %>
+    <div>"<%= @appointment.name %>" is a recurring appointment. Would you like to open only this instance or the series?</div><br />
+    <% if params[:thickbox] %>
+      <%= radio_button_tag "activity", "instance", false, :onClick => "window.location.href='#{escape_javascript(params[:link])}';" %> Open this instance <br />
+      <%= radio_button_tag "activity", "series", false, :onClick => "window.location.href='#{escape_javascript(params[:series])}';" %> Open this series
+    <%else%>
+      <%= radio_button_tag "activity", "instance", false, :onClick => "editSeriesInstance('Edit Instance', '#{escape_javascript(params[:link])}');" %> Open this instance <br />
+      <%= radio_button_tag "activity", "series", false, :onClick => "editSeriesInstance('Edit Series', '#{escape_javascript(params[:series])}');" %> Open this series
+    <%end%>
+  <% end %>
+</div>

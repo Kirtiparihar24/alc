@@ -1,0 +1,41 @@
+<% class_name ="#{commentable.class.name}" %>
+<% remote_form_for :comment, @comment, :url=>{:controller=>:comments,:action=>:create},:method=>:post ,:html=> {:multipart=> true, :id=>'new_comment'} do |f| %>
+  <%= hidden_field_tag "comment[created_by_user_id]", get_employee_user_id %>
+  <%= hidden_field_tag "comment[commentable_id]", commentable.id %>
+  <%= hidden_field_tag "comment[title]", @comment_title || 'Comment' %>
+  <div id="one_field_error_div"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <%= hidden_field_tag "comment[commentable_type]", class_name %>
+  <table width="440" border="0" align="center" style="margin:10px auto;">
+ <tr  height="10">
+      <td  colspan="2"></td>
+    </tr>
+
+    <tr>
+      <td width="115" align="right" valign="top" class="pr8"><%= t(:text_comment) %> <span class="alert_message">*</span></td>
+      <td width="304" align="left"><%= f.text_area :comment, :cols=>"40", :rows =>"3", :id=>"comment_comment" %></td>
+    </tr>
+ <tr  height="10">
+      <td  colspan="2"></td>
+    </tr>
+    <tr>
+      <td align="left"></td>
+      <td align="left">
+        <%= f.submit t(:text_add_comment), :onclick => 'return checkloader(); on_valid_disable(this);' %>
+        <%= submit_tag "Please wait...", :style => "display:none", :id=> "disable_submit_tag", :disabled => true %>
+        <input type="button" id="cancel_btn" value="Cancel" onclick="tb_remove();" />
+        <input type="button" id="cancel_btn_hidden" value="Cancel" style="display:none" disabled ="disabled"/>
+      </td>
+    </tr>
+  </table>
+<% end %>
+<script type="text/javascript">
+  function on_valid_disable(comment_button){
+    jQuery("#comment_submit").hide();
+    jQuery("#disable_submit_tag").show();
+    jQuery("#cancel_btn").hide();
+    jQuery("#cancel_btn_hidden").show();
+  }
+</script>
+
+

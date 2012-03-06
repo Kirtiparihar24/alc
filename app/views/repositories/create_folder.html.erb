@@ -1,0 +1,23 @@
+<% remote_form_for(@folder, :complete=>'return enableAllSubmitButtons("button");',:loading=>'return disableAllSubmitButtons("button");', :url=>create_folder_repositories_path(:parent_id=>@parent_id)  ) do |f| %>
+  <div style="text-align:left;margin-top:10px;">
+    <div id="one_field_error_div" class="" style="display:none">
+      <%= error_messages_for(:folder) %>
+      <%= flash[:error]%>
+    </div>
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <table border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+      <tr>
+        <td width="30%" align="center"><label> <%= f.label :name %><span class="alert_message">*</span></label></td>
+        <td width="70%" align="left"><%= f.text_field :name, :maxlength => 255, :style => "width: 65%"%></td>
+      </tr>
+      <tr><td colspan="2" height="2"></td></tr>
+      <tr align="right">
+        <td align="center" colspan="2">
+          <%= f.submit t(:text_create), :onclick=>"return checkloader(); return setButtonPressed(this); return validate_field('folder_name','Please specify a folder name'); ",:class=>"button",:id=>"create_folder"%>
+          <input type="button" id="Login2" value="Cancel" onclick="tb_remove(); " class="button"/></td>
+      </tr>
+    </table>
+  </div>
+<% end %>
+<div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+<div class="pagiText"><%=t(:label_page)%>&nbsp;168</div>

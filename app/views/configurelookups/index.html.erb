@@ -1,0 +1,10 @@
+<div class="box-head"><h2 class="left"><%=t(:text_select_lookup_type)%></h2></div>
+<div class="buttons">
+ <%=t(:text_select_lookup_type)%> <%=select_tag "lookup",'<option value="">Please Select</option>'+ options_for_select(@lookups.collect{|x| x.type.to_s}, :selected => "#{params[:type]}"),:onchange=>"showlookupvalues(this.value);",:class=>"field size3"%>
+</div>
+
+<div id="lookupdiv">
+  <% unless params[:type] == nil%>
+    <%=render :partial => 'lookuplist'%>
+  <% end %>
+</div>

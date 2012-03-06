@@ -1,0 +1,17 @@
+<% html_class = financial_transactions_counter.even? ? 'bg1' : 'bg2' %>
+<tr class="<%=html_class%>">
+  <td width="8%" align="center"><%= link_to(h(transaction.transaction_date.to_date), transaction_url_str(transaction)) %></td>
+  <td width="18%"  align="left"><%= h transaction.details %></td>
+  <td width="8%" align="right"><%= h(livia_amount(transaction.amount)) if transaction.transaction_type %></td>
+  <td width="8%" align="right"><%= h(livia_amount(transaction.amount)) if transaction.matter_id %></td>
+  <% if view_type == "client_specific" %>
+   <td width="10%" align="right"><%= h(truncate_hover(transaction.financial_account.name,25)) %></td>
+  <% else %>
+   <td width="8%" align="right"><%= h(livia_amount(transaction.balance)) %></td>
+  <% end %>
+  <td width="10%" align="left"><%= h((transaction.account) ? truncate_hover(transaction.account.name,25) : "") %></td>
+  <td width="20%" align="left"><%= h((transaction.matter) ? truncate_hover(transaction.matter.name,45) : "") %></td>
+  <!--<td width="10%" align="left"><%#= h(transaction.transaction_status.lvalue.capitalize) if transaction.transaction_status %></td>
+  <td width="10%" align="left"><%#= h(transaction.approval_status.lvalue.capitalize) if transaction.approval_status %></td>-->
+  <td width="8%" align="center"><%= link_to 'Edit', transaction_url_str(transaction) %></td>
+</tr>

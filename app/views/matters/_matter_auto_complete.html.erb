@@ -1,0 +1,5 @@
+<%unless @search_result.empty?%>
+    <%@search_result.each do|result_obj|%>
+      <%= ("" + "#{result_obj.name}, " + "#{t(:text_contact)}: #{result_obj.contact.try(:full_name)}," + (result_obj.contact.accounts.length > 0 ? " #{t(:text_account)}: #{result_obj.contact.accounts[0].name}," : "") +  " #{t(:text_lead_lawyer)}: #{result_obj.user.full_name}") %>
+    <%end%>
+<%end%>

@@ -1,0 +1,24 @@
+<h2 class="title_main"><span class="fl">Upload Document for <%=@name%></span> <%= render :partial =>"layouts/reports_quick_links"%></h2>
+<div class="p5">
+  <div id="modal_document_home_errors" style="display : none"></div>
+  <div class="fr textR fix_mb fix_mb_ie link_blue">
+    <%= link_to("<span class='icon_mass_upload fl' id='common'></span><span class='fl mr5 icon_name' id='common'>File(s) Upload</span>","#", {:class=> "vtip",:multiple=>true, :id => "upload_multi", :title=> "File(s) Upload", :name=> "Mass Upload File" ,:company_id=>@company.id,  :employee_user_id=> @emp_user_id, :created_by_user_id=>current_user.id,:owner_user_id=>@emp_user_id,:mappable_id=>params[:mappable_id],:time_entry_date=>params[:time_entry_date],:from=>params[:from],:time_entry_date=>params[:time_entry_date],:path=>"/document_homes/upload?stop=",:return_path=>"#{request.request_uri}"})%>
+  </div>
+  <div id="document_upload_list" class="tabular_listing pt5">
+    <%= render :partial => "common/document_home"%>
+  </div>
+</div>
+<div id="mass_upload" style="display:none">  
+  <%= render :partial => "repositories/upload_multi",:locals => {:from => 'common'}%>
+  <br class="clear" />
+  <div id="uploader" name="uploader" style="width: 100%;"></div>
+  <div class="mt5 pt5">
+    <div class="mandatory mt12 pl5">
+      Note :Total mass upload limit is 100 mb with a limit on individual file size of 50 mb.
+
+      Files will be scheduled for upload as per sequence specified.Incase a file size
+      exceeds the individual limit or increases the overall limit, the system will
+      pick the next file in the sequence selected.
+    </div>
+  </div>
+</div>

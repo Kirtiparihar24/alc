@@ -1,0 +1,62 @@
+<script type="text/javascript">
+  // Need to removed to JS File
+  function set_bgclass(){
+    var bg = jQuery("#matter_comments").next().next().attr("class");
+    bg = bg == "bg1" ? "bg2" : "bg1"
+    jQuery("#matter_comments").next().attr("class", bg);
+  }
+
+  function update_comment_count() {
+    var n = jQuery("#comment_count").text();
+    n = n.substring(1, n.length-1);    
+    n = parseInt(n) + 1;
+    jQuery("#comment_count").text("["+n+"]");
+    jQuery('#no_comments_found').hide();
+    //Also uncheck the tick.
+    jQuery("#for_client").attr('checked', false);
+    new_tool_tip();
+  }
+
+</script>
+
+<!-- Hidden div for matter comment form -->
+<div  id="modal_matter_comment" style="display: none;">
+  <div id="comment_err"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  ﻿<div style="text-align:center;margin-top:20px;">
+    <div  id="loader1" style="display:none;text-align:center;"><img src='/images/loading.gif' /></div>
+    <% remote_form_for :comment, @comment, :url=>{:controller=>:comments,:action=>:matter_create},:method=>:post ,:html=> {:id=>'new_comment'},:loading => "disableAllSubmitButtons('matters')", :complete => "enableAllSubmitButtons('matters')" do |f| %>
+      <%= hidden_field_tag "comment[created_by_user_id]", get_employee_user_id %>
+      <%= hidden_field_tag "comment[commentable_id]", commentable_id %>
+      <%= hidden_field_tag "comment[title]", commentable_type%>
+      <%= hidden_field_tag "comment[commentable_type]", commentable_type%>
+      <%= hidden_field_tag "bg"%>
+      <div class="message_error_div" id="matter_comment_errors" style="display:none;"></div>
+      <table border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+        <tr>
+          <td width="82" align="left" valign="top"><label><%=t(:label_comment)%> <span class="alert_message">*</span></label></td>
+          <td width="257" align="left"><%= f.text_area :comment, :cols=>"40", :rows =>"3", :id=>"comment_comment", :onkeydown => "jQuery('#comment_err').hide()" %></td>
+        </tr>
+        <%if commentable_type.eql?("MatterTask") && @matter_task.client_task%>
+          <tr>
+            <td width="82" align="right" valign="top"></td>
+            <td width="257" align="left"><%=check_box_tag :for_client%> <label><%=t(:label_for_client)%></label></td>
+          </tr>
+        <%end%>
+          
+        <tr align="right">
+          <td>&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+        <tr align="right">
+          <td colspan="2" align="center">
+            <%= f.submit t(:text_save),:class=>'matters',:id => "save_link_account", :onclick => "return checkloader();return setButtonPressed(this);"%>
+            <input type="submit" id="Login2" value="Cancel" class="matters" onclick="jQuery('#comment_err').hide(); tb_remove(); jQuery('#for_client').attr('checked', false);jQuery('#comment_comment').val(''); return false;" />
+          </td>
+         </tr>
+        </table>
+       <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;62</div>
+    <%end%>
+  </div>
+  <div class="mandatory"><span class="alert_message">*</span><%= t(:text_required_field) %></div>
+</div>

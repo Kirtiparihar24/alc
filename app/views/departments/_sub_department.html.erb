@@ -1,0 +1,10 @@
+<div class="textBrwn11 fr "></div>
+<div class="adminForm">
+  <div class="txtC">
+    <label style="font-size:11px;"><%=t(:label_select_parent_department)%></label>
+    <%=collection_select :department,:parent_id,@sub_departments,:id,:name,{:include_blank => 'No Parent Department'},:class=>"dropbox"%>
+  </div>
+</div>
+
+
+

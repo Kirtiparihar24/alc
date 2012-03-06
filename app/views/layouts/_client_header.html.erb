@@ -1,0 +1,18 @@
+<div id="header-main">
+  <div class="container_12">
+    <div class="grid_8 mt20"><%=home_logo_link%></div>
+    <div class="grid_4">
+      <div class="userName"><%=t(:text_hello)%> <%=current_user.name.try(:capitalize) if current_user%> !</div>
+      <div class="frTr">
+        <%if current_user%>
+          <%= link_to(t(:text_change_password), change_password_user_path(current_user.id, :popup => "client", :width => 450, :height => 240), :class=> "thickbox")%> |
+          <%= link_to(t(:text_set_time_zone),set_user_time_zone_path(current_user.id, :popup => "client", :width => 450, :height => 240),:class=> "thickbox") %> |
+          <%=link_to(t(:text_logout), destroy_user_session_path)%>
+        <%else%>
+          <%=link_to(t(:text_login),new_user_session_path)%>
+        <%end%>
+      </div>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+</div>

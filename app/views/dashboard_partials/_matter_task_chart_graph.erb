@@ -1,0 +1,21 @@
+<div class="box_org">
+  <div class="fl pl4">
+    <% default_check = chart.parameters.values.flatten.uniq.length == 1 &&  chart.parameters.values.flatten.uniq[0].blank? %>
+
+    <% form_remote_for "dashboard_charts",:url=>{:controller=>'dashboards',:action=>'manage_dashboard'},:before => "validate_matter_task_checkbox()" do |f| %>
+      <input class ="valdiation_matter_task_check" type="checkbox" <%='checked' if chart.parameters["today"]=="today" || default_check %> name="today" value="today"/>
+      <label>Todays Tasks</label>
+      <input class ="valdiation_matter_task_check" type="checkbox" <%='checked' if chart.parameters["overdue"]=="overdue" || default_check %>  name="overdue" value="overdue"/>
+      <label>Overdue</label>
+      <input class ="valdiation_matter_task_check" type="checkbox" <%='checked' if chart.parameters["upcoming"]=="upcoming" || default_check %>  name="upcoming" value="upcoming"/>
+      <label>Upcoming</label>
+      <input type="hidden" name="dashboard_chart_id" value='<%= chart.dashboard.id%>'></input>
+      <input  id="dashboard_check_id" type="hidden" name="chart_id" value='<%= chart.chart.try(:id) %>' ></input>
+      <input type="submit" style="font-size:12px;" value="Submit" class="button"/>
+    <%end%>
+  </div>
+  <div class="fr mr5 link_blue">
+    <%=link_to(t(:text_add_to_favorite),"#",{:onclick => "return show_fav_div()",:style=>"line-height:30px;"})%>
+  </div>
+  <br class="clear" />
+</div>

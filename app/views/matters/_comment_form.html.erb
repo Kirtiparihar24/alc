@@ -1,0 +1,22 @@
+<div class="gridDiv">
+  <div class="titleHead">
+    <div class="fl"><%=t(:text_new_message)%></div>
+    <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div><br class="clear"/>
+  </div>
+  <div id="comment_info"> </div>
+  <div class="windowForm">
+    <table cellspacing="0" cellpadding="0" border="0">
+      <tr>
+        <td valign="top"><%=t(:text_message)%><span class="text_red">*</span></td>
+        <td><%=text_area_tag :matter_comment, '', :rows => 7, :cols => 65%></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type="button" value="Add Message" class="button" onclick="matterAddComment(<%=h @comment_user_id%>, <%=h @comment_commentable_id%>, '<%=h @comment_commentable_type%>', '<%=h @comment_title%>' );" id="add_comment"/>
+          <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="closeFaceBox();" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

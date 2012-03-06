@@ -1,0 +1,24 @@
+<% if new %> 
+  <%= raw contact_search_box('contact[id]', controller.controller_name, "", "") %>
+  <input id="matter_contact_id" name="matter[contact_id]" type="hidden"/>
+<% else %>
+  <%= collection_select(:matter, :contact_id, account_contacts,:id,:name,{},{:style => 'width:140px;margin-right:5px;'}) %>
+<% end %>
+<label><a href="#TB_inline?height=320&width=500&inlineId=modal_contact" class="thickbox link_blue" title="Create Contact" name="Create Contact">Create New Contact</a></label> 
+| <span id="reset_account" class="reset link_blue" style="cursor: pointer">Reset</span>
+
+<script>
+  // Need to removed to JS File
+  jQuery('.reset').click( function(){reset_search();});
+  jQuery("#_contact_ctl").val('Select Existing');
+  jQuery('#_contact_ctl').blur(function(){
+    if(jQuery('#_contact_ctl').val()==''){
+      jQuery("#_contact_ctl").val('Select Existing');
+    }
+  });
+  jQuery('#_contact_ctl').click(function(){
+    if(jQuery('#_contact_ctl').val()=='Select Existing'){
+      jQuery("#_contact_ctl").val('');
+    }
+  });
+</script>

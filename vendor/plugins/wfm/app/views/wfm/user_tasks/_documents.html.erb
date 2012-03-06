@@ -1,0 +1,50 @@
+<div class="mt8 box1">
+  <h3 class="heading">
+    <div class="fl">Documents </div>
+    <div class="fr">
+      <% unless @task.status.eql?("complete") %>
+        <%=link_to "<span><span>ADD NEW</span></span>",'#', :onclick=> "tb_show('New Document','#{ wfm_new_documents_path(@task.id)}?height=184&width=700','');", :class=> "button add_new"%>
+      <%end%>
+    </div>
+    <br class="clear" />
+  </h3>
+  <!--[if !IE]>start table_wrapper<![endif]-->
+  <div class="table_wrapper">
+    <div class="table_wrapper_inner">
+      <table cellpadding="0" cellspacing="0" width="100%">
+        <tbody>
+          <%unless @task.document_homes.blank? %>
+            <tr>
+              <th width="40%">Document Name</th>
+              <th width="15%" >Size</th>
+              <th width="15%">Uploaded On</th>
+              <th width="15%">Actions</th>
+              <th width="15%">Share With Client <div id="loader_doc"></div></th>
+            </tr>
+            <%for document_home in @task.document_homes%>
+              <% document = document_home.latest_doc%>
+              <tr class="<%=cycle('first','second')%>">
+                <td width="40%"><%=document.name%></td>
+                <td width="15%"><%=number_to_human_size(document.data_file_size, :separator => ".",:locale=>"us")%></td>
+                <td width="15%"><%=wfm_date_format(document.created_at) rescue "-"%></td>
+                <td width="15%">
+                  <%=link_to image_tag("../stylesheets/wfm/layout/site/icon/icon_document_download.png", :title=>"Download", :alt=>"Download"), download_document_wfm_user_task_path(document.id)%>&nbsp;&nbsp;
+                  <% unless  @task.status.eql?("complete") %>
+                    <%=link_to image_tag("../stylesheets/wfm/layout/site/icon/icon_supercede.gif", :title=>"#{t(:label_supercede)}", :alt=>"#{t(:label_supercede)}"), "#", :onclick=>"tb_show('#{t(:label_supercede)} Document #{document.name}','#{ supercede_document_wfm_user_task_path(document_home.id)}?height=184&width=700','');"%>
+                  <%end%>
+                  <%=link_to image_tag("../stylesheets/wfm/layout/site/icon/icon_history.png", :title=>"History", :alt=>"History"), "#", :onclick=>"tb_show('Document #{document.name} History','#{ document_history_wfm_user_task_path(document_home.id)}?height=105&width=700','');"%>
+                </td>
+                <td width="15%" style="text-align:center;"><%=check_box_tag(document.id, document.share_with_client, document.share_with_client, options = {:onclick =>"document_share_with_client('#{document.id}', this.checked);", :disabled=> (@task.status.eql?('complete') || disable_check_box?(document.user))})%></td>
+              </tr>
+            <%end%>
+          <%else%>
+            <tr>
+              <td>No documents yet for this task</td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--[if !IE]>end table_wrapper<![endif]-->
+</div>

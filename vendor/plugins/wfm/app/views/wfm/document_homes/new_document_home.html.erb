@@ -1,0 +1,70 @@
+<div class="p5">
+  <div class="message_error_div" id="document_errors" style="display: none;"></div>
+  <div class="message_sucess_div" id="document_success_div" style="display: none;"></div>
+  <%if @mapable.class.name != 'UserTask' or @mapable.status != 'complete'%>
+    <% form_for :document_home, @document_home ,:url => {:action => 'create', :mapable_id => @mapable.id}, :html => {:multipart => true,:target=>"upload_frame"} do |f| %>
+      <%=hidden_field_tag :mapable_type, @mapable.class.name%>
+      <%=hidden_field_tag :mapable_id, @mapable.id%>
+      <%for document in @document_home.documents%>
+        <%  fields_for 'document_home[document_attributes]', document do |d|%>
+          <table width="440" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+            <tr>
+              <td width="115" align="left" valign="top"><%= t(:label_document) %> <span class="alert_message">*</span></td>
+                <input type="hidden" name="MAX_FILE_SIZE" value="15728640"></input>
+              <td width="304" align="left"><%= d.file_field 'data', :onChange => "updatename('document_home_document_attributes_data','document_home_document_attributes_name')" %></td>
+            </tr>
+            <tr>
+              <td><label><%= t(:label_name) %><span class="alert_message">*</span></label></td>
+              <td><%= d.text_field :name, :size => "40"  %></td>
+            </tr>
+            <tr>
+              <td valign="top"><label><%="#{t(:label_tag)}" %></label></td>
+              <td><%=  f.text_area :tag_array, :cols => "30", :rows => '3', :style=>'width:200px;'%></td>
+            </tr>
+            <tr>
+              <td valign="top"><label><%= t(:label_description) %></label></td>
+              <td><%= d.text_area :description,:rows => 3, :cols => 30, :style=>'width:200px;' %></td>
+            </tr>
+            <% if is_secretary_or_team_manager? %>
+              <tr>
+                <td><%= d.check_box :share_with_client, :class=>"ml0" %></td>
+                <td valign="top"><label><%= "Share With Client" %></label></td>
+              </tr>
+            <%end%>
+            <tr>
+              <td colspan="2"></td>
+            </tr>
+            <tr align="right">
+              <td align="left"></td>
+              <td align="left">
+                <%= f.submit t(:label_upload), :onclick => 'on_valid_disable(this);' %>
+                <%= submit_tag "Please wait...", :style => "display:none", :id=> "disable_submit_tag", :disabled => true %>
+                <input type="button" id="cancel_btn" value="Cancel" onclick="tb_remove();" />
+                <input type="button" id="cancel_btn_hidden" value="Cancel" style="display:none" disabled ="disabled"/>
+              </td>
+            </tr>
+          </table>
+          <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <div class="tabular_listing pt5" id="documents">
+    <%if @document_homes.length>0 %>
+      <%= render :partial => "document_home", :locals => {:document_homes=> @document_homes} %>
+    <%else%>
+      <%=t(:label_No_documents_uploaded_yet)%>
+    <%end%>
+  </div>
+        <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+</div>
+
+<script type="text/javascript">
+  function on_valid_disable(comment_button){
+    jQuery("#document_home_submit").hide();
+    jQuery("#disable_submit_tag").show();
+    jQuery("#cancel_btn").hide();
+    jQuery("#cancel_btn_hidden").show();
+  }
+  // function findSize() : removed
+</script>

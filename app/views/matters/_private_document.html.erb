@@ -1,0 +1,51 @@
+<% if  @private_document.count > 0%>
+  <div id="private_document" style="display: none;" class="ptb10">
+    <p>
+      You have <%= @private_document.count%> “Private” documents in the matter.
+      (You can change the status and responsibility of individual documents by editing the same in the ”Documents” section)<br/>
+
+      Would you like to
+    </p>
+
+    <div id="selective_view"   class="ptb10"> <!-- style="display: none;" -->
+      <table cellspacing="1" cellpadding="1" width="100%" id="selective_doc" data-from_view='<%= params[:action] %>' >
+        <tr>
+          <th align="center"><%= t(:text_select) %></th>
+          <th align="left"><%= t(:text_name) %></th>
+          <th align="left"><%= t(:text_owner) %></th>
+        </tr>
+        <% @private_document.each do |matter_document| %>
+          <% matter_doc = matter_document.latest_doc %>
+          <tr class="<%= cycle('bg1', 'bg2')%>">
+            <td align="center" width="7%">
+              <%= check_box_tag 'private_document[]', matter_document.id,false,{:class=> "check"} %>
+            </td>
+            <td align="left" width="60%">
+              <%= matter_doc.name %>
+            </td>
+            <td align="left" width=33%">
+              <%= matter_document.owner.try(:full_name)%>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <table cellspacing="0" cellpadding="0" border="0" width="300">
+      <tr>
+        <td width="5"><%= radio_button_tag :private_document_radio, "transfer_ownership", false,{ :onclick => "for_private='transfer_ownership'", :style=>"padding:0;margin:4px 0 0 0"}%></td>
+        <td width="295">Transfer their ownership to the new lead lawyer</td>
+      </tr>
+      <tr>
+        <td width="5"><%= radio_button_tag :private_document_radio, "transfer_workspace", false, {:onclick => "openMoveAccessWindow('Move file(s)', '#{move_multiple_doc_document_homes_path(:matter_id => @matter.id, :height => 400, :width => 500, :update_list => false)}', 'Please Select file(s) to move.', this); for_private='transfer_workspace'", :style => "padding:0;margin:4px 0 0 0"} %></td>
+        <td width="295">Transfer the documents to your personal workspace</td>
+      </tr>
+      <tr>
+        <td width="5"><%= radio_button_tag :private_document_radio, "change_access", false, {:onclick => "openMoveAccessWindow('Change Access Control', '#{multi_documents_access_control_matter_document_homes_path(@matter, :height=>140,:width=>400)}', 'Please Select file(s) to change there access control.', this);", :style => "padding:0;margin:4px 0 0 0"} %></td>
+        <td width="295">Change access control</td>
+      </tr>
+    </table>
+    <div id="no_change" style="display: none;">
+      Nothing to be done, no change made in Lead Lawyer.
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,33 @@
+<div class="box-head"><h2 class="left"> <%= t(:label_deactivated_users) %></h2></div>
+<div class="actionLinks"><%= link_to t(:label_activated_users), '#', :onclick =>"show_data_for_record(#{@company.id}, 'userdiv', 'GET', '/companies/showusers')"%> </div>
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tbody>
+      <tr>
+        <th width="25%"><%=t(:text_name)%></th>
+        <th width="20%"><%=t(:text_email)%></th>
+        <th width="20%"><%=t(:text_login)%></th>
+        <th width="20%"><%=t(:text_designation)%></th>
+        <th width="15%"><%=t(:text_action)%></th>
+      </tr>
+      <%@users.each do |user|%>
+        <tr class="<%=cycle("bg1", "bg2")%>">
+          <td>
+            <%if user.product_licence_details.empty?%>
+              <span>&nbsp;&nbsp;<%=user.full_name.try(:capitalize)%></span>
+            <%else%>
+              <% user_id = user.id %>
+              <span style="cursor:pointer;" id="<%= user_id %>_plus" onclick="javascript:expand_details(<%= user_id %>, '<%= user_id %>_subproduct', 'minus', 'plus')" title="Click to view detail"><%= image_tag('/images/livia_portal/icon_plus.gif',:alt=>"Plus", :border => 0, :hspace => "0")%><%=user.full_name.try(:capitalize)%></span>
+              <span style="display: none; cursor:pointer;" id="<%= user_id %>_minus" onclick="javascript:minimize_details(<%= user_id %>, '<%= user_id %>_subproduct', 'plus', 'minus')" title="Click to hide detail"> <%= image_tag('/images/livia_portal/icon_minus.gif',:alt=>"Minus", :border => 0, :hspace => "0")%><%=user.full_name.try(:capitalize)%></span>
+            <%end%>
+          </td>
+          <td><%=user.email rescue "-"%></td>
+          <td><%=user.username%></td>
+          <td><%=user.deleted_employee.designation rescue "-"%></td>
+          <td><%=link_to t(:label_activate), '#', :onclick=>"activate_user_employee(#{@company.id}, #{user.id}, 'companies/activate_user')"%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<div class="pagging"></div>

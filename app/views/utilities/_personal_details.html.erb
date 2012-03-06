@@ -1,0 +1,106 @@
+<h3 class="title_gray"><%= t(:text_personal_details) %></h3>
+<div class="highlight_bg_1 p15p box_bg_bdr_1 bdr_bot_1">
+  <table width="100%" border="0" cellspacing="0" cellpadding="1">
+    <tr>
+      <td width="33%" valign="top" class="right-bg" style="padding-top:10px"><div class="pr30p w95 fl">
+          <div class="fl w65 pt5">
+            <table width="100%" border="0" cellspacing="1" cellpadding="1">
+              <% form_for :photo, @employee ,:url => {:action => 'update_docs', :mapable_id => @employee.id}, :html => {:multipart => true} do |p| %>
+                <% fields_for 'employee' do |d|%>
+                  <tr>
+                    <td width="12%"><img src="../../images/photo-icon.png" alt="" width="16" height="14" /></td>
+                    <td width="80%">
+                      <input type="hidden" name="MAX_FILE_SIZE" value="15728640"></input>
+                      <%= d.file_field 'photo', :size => "5"  %>                    </td>
+                  </tr>
+                  <tr><td colspan="2" height="4"></td></tr>
+                  <tr>
+                    <td width="25%">&nbsp;</td>
+                    <td width="63%"><%= submit_tag t(:label_upload), :onclick => "check_photo_field();", :disable_with=>'Please wait...'%></td>
+                  </tr>
+                <% end %>
+              <% end %>
+              <% form_for :employee, @employee, :url => {:action => 'update_docs', :mapable_id => @employee.id }, :html => {:multipart => true} do |f| %>
+                <tr><td colspan="2" height="6"></td></tr>
+                <% fields_for 'user' do |d|%>
+                  <tr>
+                    <td width="25%">Nick Name</td>
+                    <td width="63%"><%= d.text_field :nick_name , :class => "w110p", :size => 15 %></td>
+                  </tr>
+                <% end %>
+                <tr><td colspan="2" height="6"></td></tr>
+                <tr><td colspan="2" height="6"></td></tr>
+              </table>
+            </div>
+            <% if @employee.photo %>
+              <div class="fl" style="width:30%"><img src="../../<%="#{@photo_path}" %>" alt="" class="profile-img" onclick = "return check_photo_field();"/></div>
+            <% end %>
+          </div></td>
+        <td width="33%" valign="top"  class="right-bg" style="padding-top:10px"><div class="fl pl30p w90">
+            <table width="100%" border="0" cellpadding="1" cellspacing="1">
+              <tr>
+                <td width="6%" valign="top"><img src="../../images/references-icon.png" alt="" /></td>
+                <td colspan="2" valign="top"><strong><%= t(:text_references) %></strong></td>
+              </tr>
+              <tr>
+                <td width="6%" rowspan="5" valign="top">&nbsp;</td>
+                <td colspan="2" valign="top" height="4"></td>
+              </tr>
+              <tr>
+                <td valign="top"><%= t(:text_reference) %> 1</td>
+                <td valign="top"><%= f.text_field :reference1, :class=> "w136p" %></td>
+              </tr>
+              <tr><td colspan="2" height="6"></td></tr>
+              <tr>
+                <td valign="top"><%= t(:text_reference) %> 2</td>
+                <td valign="top"><%= f.text_field :reference2, :class=> "w136p" %></td>
+              </tr>
+              <tr><td colspan="2" height="6"></td></tr>
+              <tr><td colspan="2" height="6"></td></tr>
+            </table>
+          </div>
+        </td>
+        <td width="34%" valign="top" style="padding-top:10px">
+          <div class="fl pl30p" style="width:55%">
+            <table width="100%" border="0" cellpadding="1" cellspacing="1">
+              <tr>
+                <td width="10%" valign="top"><img src="../../images/references-icon.png" alt="" /></td>
+                <td colspan="2" valign="top"><strong><%= t(:text_additional_documents_upload) %></strong></td>
+              </tr>
+              <tr>
+                <td width="10%" rowspan="5" valign="top">&nbsp;</td>
+                <td colspan="2" valign="top" height="4"></td>
+              </tr>
+              <% 2.times do |i| %>
+                <% fields_for 'additional_documents[document_attributes]' do |d|%>
+                  <tr>
+                    <% if (!@employee_documents.blank? and !@employee_documents[i].blank?)   %>
+                      <%  doc = @employee_documents[i].latest_doc %>
+                      <td valign="top">
+                        <%= link_to("<span>#{doc.name}</span>", document_home_path(doc.id), :class => "link_blue" )%>&nbsp;&nbsp;&nbsp;
+                      </td>
+                      <td valign="top">
+                        <%= link_to("<span class='icon_supercede_document fl'></span>", "#{supercede_document_document_home_path(@employee_documents[i].id)}?replace=true&height=250&width=350", :class => "thickbox vtip", :title => "Replace Document", :name => "Replace Document")%>
+                      </td>
+                    <% else %>
+                      <td valign="top"><input name="additional_documents[document_attributes][data][]" type="file" class="w136p"/></td>
+                      <td valign="top"></td>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <td colspan="2" valign="top" height="6"></td>
+                  </tr>
+                <% end %>
+              <% end %>
+              <tr>
+                <td valign="top">&nbsp;</td>
+                <td valign="top"><%= f.submit t(:label_upload), :disable_with=>'Please wait...'%></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr><td colspan="3" height="15"></td></tr>
+      <tr><td colspan="3" align="center"><%= f.submit t(:text_save), :disable_with=>'Please wait...'%><% end %></td></tr>
+  </table>
+</div>

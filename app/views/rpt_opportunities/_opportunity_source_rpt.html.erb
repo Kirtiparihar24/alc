@@ -1,0 +1,19 @@
+<% unless @data.blank? %>
+  <div class="mt5">
+    <div class="w100">
+      <div class="title_blue fl"><%=pluralize_record(@total_rec,'Record', 1)%></div>
+      <div class="fr  textR pt5">
+        <%=raw(generate_send_email_rpt_link("opportunity_source_rpt")) unless params[:load_popup]%>
+        <%=raw(generate_rpt_fav_link("Opportunity")) unless params[:load_popup] %>
+        <%=raw(generate_reports_links("opportunity_source_rpt")) %>
+      </div>
+      <br class="clear" />
+    </div>
+    <%= render :partial => 'rpt_partials/list_col_array', :locals => {:col => @data} %>
+    <br class="clear" />
+    <div class="title_blue fl"><%=pluralize_record(@total_rec,'Record', 1)%> </div>
+  </div>
+<% else %>
+  <div class="title_blue fl"><%=pluralize_record((@total_rec rescue 0),'Record', 1)%></div>
+<% end %>
+<br class="clear"/>

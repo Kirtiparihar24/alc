@@ -1,0 +1,12 @@
+<% css_class =financial_accounts_counter.even? ? 'bg1' : 'bg2' %>
+<tr class="<%=css_class%>">
+  <td width="20%" align="left"><%= (!is_lawfirmadmin && !is_liviaadmin) ? link_to(h(financial_account.name),financial_account_path(financial_account)) : h(financial_account.name)%></td>
+  <td width="20%" align="left"><%= h(financial_account.bank_name) %></td>
+  <td width="8%" align="left"><%= h(financial_account.account_no) %></td>
+  <td width="10%" align="left"><%= h financial_account.financial_account_type.alvalue  %></td>
+  <td width="20%" align="left"><%= h((financial_account.matter_id) ? financial_account.matter.name : "NA") %></td>
+  <td width="14%" align="left"><%= h((financial_account.account_id) ? financial_account.account.name : "NA") %></td>
+  <td width="8%" align="right"><%= h(livia_amount(financial_account.amount))%></td>
+  <% if (is_lawfirmadmin || is_liviaadmin) %><td width="8%" align="right"><%= link_to(t(:text_edit), edit_financial_account_path(financial_account)) %></td><% end %>
+</tr>
+

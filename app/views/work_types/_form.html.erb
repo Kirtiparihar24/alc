@@ -1,0 +1,40 @@
+<% form_for(@work_type) do |f| %>
+  <div class="form">
+    <%if(@work_type.errors.length > 0)%>
+      <div class='errorCont'>
+        <%= f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%= f.label :name %> <span>*</span></label></td>
+        <td><%= f.text_field :name,:class=>"field size4" %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%= f.label :description %></label></td>
+        <td><%= f.text_area :description, :cols => 4, :rows => 10 ,:class=>"field size1" %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%= f.label :category_id %> <span>*</span></label></td>
+        <td><%= f.select :category_id, options_for_select(@categories.collect{ |cat| [cat.name, cat.id] },@work_type.category_id), {:include_blank => 'Please Select'},:class=>"field size3" %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= f.submit 'Save' , :class => 'button'%>
+    <%= link_to 'Back', work_types_path , :class => 'button'%>
+  </div>
+<% end %>

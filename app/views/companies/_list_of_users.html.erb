@@ -1,0 +1,62 @@
+<div class="box-head"><h2> Users</h2></div>
+<div class="actionLinks"><%= link_to t(:label_deactivated_users), '#', :onclick =>"redirect_to_path_for_company(#{@company.id}, 'companies/deactivated_users')"%> | <%=link_to('Add User', :controller=>'employees',:action => 'adduser' ,:company_id =>@company.id)%></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="18%" align="left"><%=t(:text_name)%></th>
+      <th width="20%" align="left"><%=t(:text_email)%></th>
+      <th width="20%" align="left"><%=t(:text_login)%></th>
+      <th width="15%" align="left"><%=t(:text_designation)%></th>
+      <th width="15%" align="left"><%=t(:text_role)%></th>
+      <th width="12%" align="left"><%=t(:text_action)%></th>
+    </tr>
+    <%@users.each do |user|%>
+      <tr>
+        <td align="left">
+          <%unless user.product_licence_details.empty?%>
+            <span style="cursor:pointer;" id="<%=user.id%>_plus" onclick="javascript:expand_details(<%=user.id%>)" title="Click to view detail"><%= image_tag('/images/icon_plus.gif',:alt=>"Plus", :border => 0, :hspace => "0")%><%=user.full_name.try(:capitalize)%></span>
+            <span style="display: none; cursor:pointer;" id="<%=user.id%>_minus" onclick="javascript:minimize_details(<%=user.id%>)" title="Click to hide detail"> <%= image_tag('/images/icon_minus.gif',:alt=>"Minus", :border => 0, :hspace => "0")%><%=user.full_name.try(:capitalize)%></span>
+          <%else%>
+            <span>&nbsp;&nbsp;<%=user.full_name.try(:capitalize)%></span>
+          <%end%>
+        </td>
+        <td align="left"><%=user.email rescue "-"%></td>
+        <td align="left"><%=user.username%></td>
+        <td align="left"><%=user.employee.designation.try(:capitalize) rescue "-"%></td>
+        <td align="left"><%=user.role.name.try(:capitalize) rescue "-"%></td>
+        <td align="left"><%=link_to(t(:label_reset_password), reset_password_form_user_path(:id=>user.id, :width => 450, :height => 240), :class=> "thickbox")%>
+          <%if can? :index, Company%>
+            <%unless (user.role?(:lawfirm_admin) || user.role?(:cgc))%>
+              &nbsp;|&nbsp;
+              <%=link_to t(:label_manage_access), editaccess_company_employee_path(@company, user.id) %>
+              &nbsp;|&nbsp;
+              <%=link_to("Reset TPIN", reset_tpin_form_path(user.id, :width => 450, :height => 240), :class=> "thickbox") unless user.employee.nil?%>
+            <%end%>
+          <%end%>
+        </td>
+      </tr>
+      <tr style="display: none;" id="<%=user.id%>_subproduct">
+        <td colspan="5">
+          <table width="90%" border="1" cellpadding="0" cellspacing="0">
+            <tr>
+              <th width="5%"><%=t(:text_s_no)%></th>
+              <th><%=t(:text_product_name)%></th>
+              <th><%=t(:text_licence_type)%></th>
+              <th><%=t(:text_use_from_date)%></th>
+            </tr>
+            <% i=0 %>
+            <%user.product_licence_details.each do |pld|%>
+              <tr>
+                <td width="5%"><%=i=i+1%></td>
+                <td><%=pld.product_licence.product.name%></td>
+                <td><%=ProductLicence::LICENCE_TYPE[pld.product_licence.licence_type][0]%></td>
+                <td><%=pld.created_at.to_date%></td>
+              </tr>
+            <%end%>
+          </table>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<div class="pagging"></div>

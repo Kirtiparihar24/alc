@@ -1,0 +1,44 @@
+<% inv = total_time_data %>
+<% for bill_expense in @total_expenses  %>
+  <%tne_invoice_details = (@tne_invoice.new_record? || @change_view) ? @tne_invoice_details : bill_expense[6]%>
+  <% f.fields_for :tne_invoice_details, tne_invoice_details do |tne_invoice_detail| %>
+    <%if params[:tne_invoice][:tne_invoice_details_attributes][inv.to_s].blank?%>
+      <% inv +=1  %>
+    <%end%>
+    <%detailed = @view_summery.eql?('Detailed') ? true : false%>
+    <% rowspan = detailed ? bill_expense[4].length+1 : ""%>
+    <tr class="<%=(detailed ? 'grey_border' : 'no_border')%>" >
+      <td rowspan="<%=rowspan%>" valign="top">
+        <%= bill_expense[2]%>
+      </td>
+      <%if detailed%>
+        <td class="no_bottom_border">&nbsp;</td>
+        <td class="no_bottom_border">&nbsp;</td>
+      <%end%>
+      <%class_name=(detailed ? 'no_bottom_border' : '') %>
+      <td class="<%=class_name%>">&nbsp;</td>
+      <td class="<%=class_name%>">&nbsp;</td>
+      <td width="8%" align="right" id="te_expense_amount_<%=bill_expense[0]%>" rowspan="<%=rowspan%>" valign="top">
+        <%= number_with_lformat(params[:tne_invoice][:tne_invoice_details_attributes]["#{inv}"][:amount] || bill_expense[3]) rescue ''%>
+      </td>
+    </tr>
+    <% i = 0 %>
+    <% if bill_expense[4].present? %>
+    <% bill_expense[4].each do |expense_entry| %>
+      <%if detailed%>
+        <% data = @tne_invoice.new_record? ? @tne_invoice_expense_entries : expense_entry%>
+        <% tne_invoice_detail.fields_for :tne_invoice_expense_entries, data do |expense| %>
+          <tr class="grey_border">
+            <td align="left"><%=@consolidated_by.eql?('Date') ? expense_entry.expense.alvalue : expense_entry.expense_entry_date %> </td>
+            <td align="left"><%=@consolidated_by.eql?('Date') || @consolidated_by.eql?('Activity') ? expense_entry.performer.try(:first_name) + " " + expense_entry.performer.try(:last_name) : expense_entry.expense.alvalue%></td>
+            <td align="right"><%= number_with_lformat(expense_entry.final_expense_amount) %></td>
+            <td align="left"><div style="word-wrap:break-word; width:200px;"><%= raw expense_entry.description%></div></td>
+          </tr>
+        <% end %>
+        <% i += 1 %>
+      <%end%>
+    <% end %>
+    <% end %>
+    <% inv += 1 %>
+  <% end %>
+<% end %>

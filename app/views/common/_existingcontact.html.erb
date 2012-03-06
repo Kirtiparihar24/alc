@@ -1,0 +1,21 @@
+<table width="100%" class="highlight_bg_1 mt8">
+  <tbody>
+    <tr>
+      <td width="<%= width %>"><label><%=t(:label_contact)%><span class="alert_message">*</span></label></td>
+      <td>
+        <%= raw contact_search_box('contact[id]', controller.controller_name, "#{@contact.full_name}", "#{@contact.id}") %>
+        <strong class="text12 mlr8"></strong>
+        <label>
+          <label>
+            <a href="<%="#{modal_new_form_contacts_path}?height=250&width=700&called_from=#{controller_name}"%>" class="thickbox link_blue" name="Add Contact"><%=t(:text_create_new)%></a>
+          </label>
+        </label>
+        <% if controller_name.eql?('accounts') &&  action_name == "edit" %>
+        <% end %>
+      </td>
+    </tr>  
+  </tbody>
+</table>
+<%= render :partial => "common/contacts_list" if controller_name == "accounts" && action_name != "new" %>
+
+

@@ -1,0 +1,2 @@
+module ConfigurelookupsHelper
+end

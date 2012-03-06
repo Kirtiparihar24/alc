@@ -1,0 +1,18 @@
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="mb_val_check" id="md_val_check<%=selected_dashboard.dashboard_chart.id%>" onclick="check_uncheck_dashboard(<%=selected_dashboard.dashboard_chart.id%>);" type="checkbox" checked />
+    </td>
+    <td align="left" valign="top">
+      <a  href='/dashboards/dashboard_show?chart_name=<%=selected_dashboard.dashboard_chart.template_name%>&height=530&width=500' class="thickbox preview" title="<%=selected_dashboard.dashboard_chart.chart_name.titleize %>" name="<%=selected_dashboard.dashboard_chart.chart_name.titleize %>" id="/images/charts/big_<%=selected_dashboard.dashboard_chart.id%>.jpg" >
+        <img class="border_gray" src="/images/charts/<%=selected_dashboard.dashboard_chart.template_name%>.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="lead_contact_stages" href='/dashboards/dashboard_show?chart_name=<%=selected_dashboard.dashboard_chart.template_name%>&height=490&width=500' class="thickbox" title="<%=selected_dashboard.dashboard_chart.chart_name.titleize %>" name="<%=selected_dashboard.dashboard_chart.chart_name.titleize %>"><%=selected_dashboard.dashboard_chart.chart_name.titleize %></a>
+    </td>
+  </tr>
+</table>
+

@@ -1,0 +1,32 @@
+<% if controller_name.eql?("repositories")%>
+  <%= raw(javascript_include_tag "jquery/jqueryFileTree.js") %>
+  <%= raw(javascript_include_tag "jquery/jquery.easing.js") %>
+  <%= stylesheet_link_tag "jqueryFileTree.css"%>
+  <div class="section_left">
+    <script type="text/javascript">
+      jQuery(document).ready(function()  {
+        jQuery("#movefileTree").fileTree({script: '/repositories/get_children<%= "?recycle_bin=true" if @recycle_bin %>',loadMessage :'Loading...', expandSpeed: 750, collapseSpeed: 750, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce' });
+      });
+    </script>
+    <h2 class="title_main"><%=t(:text_root_folder)%></h2>
+    <div id="movefileTree" class="demo"></div>
+  </div>
+<% elsif controller_name.eql?("document_managers") %>
+  <%= render :partial => "get_folders_list", :locals => {:folders_list => @folders_list}%>
+<% end %>
+<% if controller_name.eql?("document_homes") && (controller.action_name.eql?("index") ||controller.action_name.eql?("folder_list"))%>
+  <div class="section_left">
+    <%= raw(javascript_include_tag "jquery/jqueryFileTree.js") %>
+    <%= raw(javascript_include_tag "jquery/jquery.easing.js") %>
+    <%= stylesheet_link_tag "jqueryFileTree.css"%>
+    <div class="section_left">
+      <script type="text/javascript">
+        jQuery(document).ready(function()  {
+          jQuery("#fileTree").fileTree({script: '/document_homes/get_children<%= "?matter_id=#{params[:matter_id]}" if params[:matter_id] %>',loadMessage:'Loading...', expandSpeed: 750, collapseSpeed: 750, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce' });
+        });
+      </script>
+      <h2 class="title_main"><%=t(:text_root_folder)%></h2>
+      <div id="fileTree" class="demo"></div>
+    </div>
+  </div>
+<%end%>

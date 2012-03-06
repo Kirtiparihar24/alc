@@ -1,0 +1,49 @@
+<div class="container_12">
+  <!-- Example table -->
+  <div class="module">
+    <h2><span><%=t(:label_Matter_Activities)%></span></h2>
+    <div class="module-table-body">
+      <div class="links"><%=link_to(t(:text_all),"#",{:onclick=>"mattertaskDetailsClient(#{matter.id},'all');return false;"})%> | <%=link_to(t(:text_open),"#",{:onclick=>"mattertaskDetailsClient(#{matter.id},'open');return false;"})%> | <%=link_to(t(:text_overdue),"#",{:onclick=>"mattertaskDetailsClient(#{matter.id},'overdue');return false;"})%> | <%=link_to(t(:text_upcoming),"#",{:onclick=>"mattertaskDetailsClient(#{matter.id},'upcoming');return false;"})%> | <%=link_to(t(:text_closed),"#",{:onclick=>"mattertaskDetailsClient(#{matter.id},'closed');return false;"})%></div>
+      <table id="myTable" class="tablesorter">
+        <thead>
+          <tr>
+            <th width="35%" ><%=t(:text_task_name)%></th>
+            <th width="10%" align="center"><%=t(:text_start_date)%></th>
+            <th width="10%" align="center"><%=t(:text_due_date)%></th>
+            <th width="10%"><%=t(:text_status)%></th>
+            <th width="10%" align="center"><%=t(:text_actions)%></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%if matter_task.length > 0%>
+            <% matter_task.each do |activityhash|%>
+              <% activity = activityhash[:activity] %>
+              <% unless activity.blank? %>
+                <% is_appointment = activityhash[:activity_category]=="appointment" %>
+                <tr class="<%=cycle('odd', '')%>">
+                  <td width="35%"><%=truncate_hover_blue_tooltip(activityhash[:activity_name].try(:titleize),30)%></td>
+                  <% if is_appointment %>
+                    <td align="center"><%=raw "#{activityhash[:activity_instance_start_date]}  #{activityhash[:activity_start_date].strftime("%H:%M")}"%></td>
+                    <td align="center"><%=raw "#{activityhash[:activity_instance_end_date]} #{activityhash[:activity_end_date].strftime("%H:%M")}"%></td>
+                  <% else %>
+                    <td width="10%" align="center"><%=raw livia_date_effect(activity.start_date.to_date)%></td>
+                    <td width="10%" align="center"><%=raw livia_date_effect(activity.end_date.to_date)%></td>
+                  <% end %>
+                  <td width="10%"><%=matter_task_status(activity)%></td>
+                  <td width="10%" align="center">
+                    <%=link_to(image_tag('/images/cgc_images/icon_comment.gif',{:alt =>"Add Message", :title=>"Add Message", :border => 0}), client_comments_matter_clients_path(:task_id => activity.id, :return_path =>matter_details_path(activity.matter)))%>&nbsp;
+                    <%=link_to(image_tag('/images/cgc_images/upload-document.gif',{:alt =>"Upload Document", :title=>"Upload Document", :border => 0, :hspace => "2"}), client_new_doc_matter_client_path(activity.matter, :mapable_type=>'Matter', :mapable_id=> activity.matter.id,  :task_id=>activity.id, :return_path => matter_details_path(@matter)))%>
+                  </td>
+                <%end%>
+              <%end%>
+            </tr>
+          <%else%>
+            <tr class="odd"><td colspan="6"><div class="message"><%=t(:text_no_open_task_found)%></div></td></tr>
+          <%end%>
+        </tbody>
+      </table>
+      <div class="pagination"><%= will_paginate(@activities) unless @activities.blank? %></div>      
+      <div style="clear: both"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+  <div id="header-div" style="position:relative;">
+    <h1><%= link_to (image_tag '/images/admin/logo.png', :alt=>"LIVIA",:title=>""), root_path %></h1>
+    <div class="header_nav">
+      <table align="right">
+        <tr>
+          <td><div class="contact_number_div_header">(214) 269-8570 </div>&nbsp;</td>
+          <td valign="top">
+            <%## if current_user.role?:lawyer%>
+              <div class="link_blue lh18">
+                <a href="/manage_secretary/livian_access?height=350&width=440" class="thickbox"><strong>LIVIAN</strong> Access</a>&nbsp;&nbsp;
+                <a href="<%##= url_for "/application/new_instructions?height=250&width=820"%>" class="thickbox new_instructions_facebox" name="New Instructions"> <strong>LIVIAN</strong> - Instructions </a>
+              </div>
+            <%#end%>
+            <%#if current_user%>
+              <div class="text10 textR mt3"><%#= link_to("Set Time Zone",set_user_time_zone_path(current_user,:height=>150,:width=>400), :class =>"thickbox") %></div>
+            <%#end%>
+          </td>
+          <td rowspan="3">
+            <div class="welcomeUser">
+              <span class="icon_user fl"></span>&nbsp;
+              <%# if current_user.role?:secretary%>
+                <span style="color:#c56405;"><%#=h current_user.full_name%></span>
+              <%#elsif show_selected_lawyer && @sp_session%>
+                <span style="color:#c56405;"><%#=h @sp_session.assignment.user.full_name%></span>
+              <%#elsif current_user.end_user%>
+                <span style="color:#c56405;"><%#=h current_user.end_user.full_name%></span>
+              <%#end%>
+              <br />
+              <span class="text10 ml15">                
+                <%#if current_user%>
+                  <%#=link_to(t(:text_change_password), change_password_user_path(current_user.id,:height=>200,:width=>500), :class =>"thickbox")%>&nbsp;|
+                  <%#=link_to_unless_current(t(:label_logout),destroy_user_session_path ) do
+                    link_to(t(:label_login), new_user_session_path)
+                  end%>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <br class="clear" />
+        <!-- textR mt8 header_link @start -->
+        <div class="textR header_link">
+          <table align="right" cellpadding="2" cellspacing="2">
+            <tr>
+              <td valign="top" ><a href="<%#= root_path %>"><span class="icon_home fl"></span></a></td>
+              <!--<td valign="top"><%##= home_link %></td>
+              <%##if show_header_tabs%>
+                <%##if can? :manage, :zimbra_mail %>
+                  <td valign="top"><%##=link_to '<span class="icon_mail fl"></span>',zimbra_mail_index_path %></td>
+                  <td valign="top"><%##=link_to(t(:text_mail),zimbra_mail_index_path,:class =>controller.controller_name.eql?('zimbra_mail')? 'mr10 ml3 active' : 'mr10 ml3')%></td>
+                <%##end%>
+              <%##end%>-->
+            </tr>
+          </table>
+        </div>
+      </div>
+    <br class="clear" />
+  </div>

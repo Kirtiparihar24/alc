@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">Edit Opportunity Stage</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:opportunity_stage_type,@opportunity_stage, :url => company_opportunity_stage_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Stage Type", :modal_text => "Stage Name",
+    :all_modal_values => @company.opportunity_stage_types.collect{|cs|[cs.lvalue]}.uniq ,:modelclass=>'opportunity_stage_types'} %>
+<%end%>
+<br class="clear"/>

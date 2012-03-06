@@ -1,0 +1,118 @@
+<script type="text/javascript">
+ // livia_datepicker();
+ jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#date_start");
+    livia_matter_inception_datepicker_new("#date_end");
+  });
+</script>
+<% @widths_hash = {"Rating" => "8%" , "Created" => "6%" , "Owner" => "10%","Status" => "1%" , "Source" => "7%" , "Email" => "8%" ,"Phone" => "9%" ,"#{t(:label_Account)}" => "10%" ,"Stage" => "8%" ,"Contact" => "12%"} %>
+<div id="container-1">
+  <%#form_for "report", :url => {:action => :recent_contact_rpt,:format => 'html',:run_report => true}  ,:html => {:onsubmit => 'return validate_date()'} do |f| %>
+  <%form_for :report, :url=>{:action => :recent_contact_rpt},:html =>{:onsubmit => 'return validate_date()', :method => :get } do |f| %>
+      <%= hidden_field_tag :run_report, true %>
+    <%= render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+    <div id="fragment-1" class="tabs-container">
+      <%unless params[:load_popup]%>
+        <h2 class="title_main"><%= t(:text_recently_added_contacts) %></h2>
+      <%else%>
+        <%=raw(generate_spinner_my_favorite_link)%>
+      <%end%>
+      <div class="p5">
+        <%unless params[:load_popup]%>
+         <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+         </div>
+          <% opts = rpt_selection_helper(params[:get_records]) %>
+          <%=raw(radios_for_rpt(opts, "#{t(:label_contact)}"))%>
+          <br class="clear" />
+          <div class="box_gray">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+              <tbody>
+                <tr>
+                  <td  align="left" valign="middle" width="10%"><%= t(:text_duration) %></td>
+                  <td align="left" valign="middle" width="20%"><%= select("report","duration",[["Last 1 Week","1"],["Last 1 Month","2"],["Last 3 Months","3"],["Last 6 Months","4"],["Date Range","range"]],{:selected => params[:report][:duration]},{:onChange=>"date_change();"}) %></td>
+                  <% style = params[:report][:duration] == "range" ? "" : "display:none;" %>
+                  <td id="date_div"  width="60%" align="left" style=<%=style%>>
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" ><tr>
+                        <td width="5%"><div style="display:none;"><input type="checkbox" name="date_selected" id="date_selected" value="1" <%=params[:date_selected].blank? ? "" : "checked"%>/></div></td>
+                        <td width="12%" align="left"><%=t(:label_Start_Date)%></td>
+                        <td width="21%" align="left"><input type="text" id="date_start" name="date_start"  readonly="true" class="date_picker" value="<%=params[:date_start]%>" size="10" /></td>
+                        <td width="12%" align="left"><%=t(:label_End_Date)%></td>
+                        <td width="20%" align="left"> <input type="text" id="date_end" name="date_end"  readonly="true" class="date_picker" value="<%=params[:date_end]%>" size="10"  /></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td valign="middle" width="10%"><input type="submit" name="commit" value="Run Report" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <%end
+        if params[:run_report] %>
+          <%= render "rpt_partials/report_info" %>
+          
+            <div class="mt5">
+              <div class="w100">
+                <% unless @data.blank? %>
+                <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record', 1) %></div>
+                <%end%>
+                <div class="fr  textR mt2">
+                  <%=raw(generate_send_email_rpt_link("recent_contact_rpt")) unless params[:load_popup]%>
+                  <%= raw(generate_rpt_fav_link("Contact")) unless params[:load_popup]%>
+                  <%= raw(generate_reports_links("recent_contact_rpt")) %>
+                </div>
+                <br class="clear" />
+              </div>
+              <!--Tabular container div @start here -->
+              <% unless @data.blank? %>
+              <div class="tabular_listing">
+                <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+                  <tr>
+                    <% index = @table_headers.index("Rating")
+                    created = @table_headers.index("Created")
+                    @table_headers.each do |header| %>
+                    <%if (header=="Created")%>
+                    <%align='center'%>
+                    <%else%>
+                    <%align='left'%>
+                    <%end%>
+                    <th align="<%=align%>" width="<%= @widths_hash[header] if @widths_hash %>"><%= header %></th>
+                    <% end %>
+                  </tr>
+                  <% @data.each do |contact| %>
+                    <tr class="<%=cycle('bg1', 'bg2')%>">
+                      <% contact.each_with_index do |e,i|
+                        if i == index  %>
+                          <td>
+                            <div class="w50p txtC">
+                              <% e.times do %>
+                                <span class="icon_star_full fl mt5"></span>
+                              <%end%>
+                              <%(3-e).times do%>
+                                <span class="icon_star_empty fl mt5"></span>
+                              <%end%>
+                            </div>
+                          </td>
+                        <% else %>
+                          <td<%= " align='center'" if i==created %>><%= truncate_hover(e, 30) rescue "-"%></td>
+                        <% end
+                      end %>
+                    </tr>
+                  <% end %>
+                </table>
+              </div>
+              <!--Tabular container div #ends here -->
+            </div>
+            <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record', 1) %></div>
+            <br class="clear" />
+          <% else %>
+            <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record', 1) %></div>
+          <% end %>
+        <% end %>
+            <br class="clear" />
+             
+        <!--TABULAR DATA-->
+      </div>
+    </div>
+  <% end %>
+ 
+</div>

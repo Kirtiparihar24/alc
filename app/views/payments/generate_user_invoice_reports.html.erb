@@ -1,0 +1,79 @@
+<% emp_bill_records_blank = @emp_bill_records.blank? %>
+<div>
+  <div class="gridDiv">
+    <div class="titleHead" id="dashboard_toggle">
+      <div class="fl"><%=t(:text_invoice_details)%></div>
+      <br class="clear" />
+    </div>
+    <%unless emp_bill_records_blank %>
+      <table>
+        <tr><td><%=t(:text_company_name)%></td><td><%=@emp_bill_records.first.company.name%></td></tr>
+        <tr><td><%=t(:text_invoice_date)%></td><td><%=livia_date(@emp_bill_records.first.invoice.invoice_date)%></td></tr>
+        <tr><td><%=t(:text_invoice_from)%></td><td><%=livia_date(@emp_bill_records.first.billing_from_date)%></td><td>&nbsp;to&nbsp;</td><td><%=@emp_bill_records.first.billing_to_date.to_time.strftime('%m/%d/%y')%></td></tr>
+      </table>
+    <% end %>
+    <div id="payments">
+      <div id="payment_list" class="contactsDIV">
+        <div class="gridTable">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <%unless emp_bill_records_blank%>
+              <tr><td colspan="7" align="right" class="pr5"><%=will_paginate @emp_bill_records, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @emp_bill_records %></td></tr>
+              <tr><td colspan="7"><br/></td></tr>
+            <%end%>
+            <tr>
+              <th  style="width:15%;"><%=t(:text_user_name)%></th>
+              <th  style="width:10%;"><%=t(:text_product)%></th>
+              <th  style="width:10%;"><%=t(:text_used_days)%></th>
+              <th  style="width:10%;"><%=t(:text_unused_days)%></th>
+              <th  style="text-align: right; width:15%;"><%=t(:text_usage_cost)%></th>
+              <th  style="text-align: right; width:10%;"><%=t(:text_unusage_cost)%></th>
+              <th  style="text-align: right; width:15%;"><%=t(:text_total_cost)%></th>
+            </tr>
+            <%if emp_bill_records_blank %>
+              <tr>
+                <td colspan="3">
+                  <div class="warningCont m5">
+                    <%=t(:text_no_records_found)%>
+                  </div>
+                </td>
+              </tr>
+            <% else %>
+              <% @emp_bill_records.each do |record|%>
+                <tr class="<%=cycle("bg1", "bg2")%>">
+                  <td style="width:10%;" ><%= record[:username] %></td>
+                  <td style="width:10%;" ><%= record[:product] %></td>
+                  <td style="width:10%;" ><%= record[:billing_days] %></td>
+                  <td style="width:10%;" ><%= record[:unused_days] %></td>
+                  <td style="text-align: right; width:10%;" ><%= record[:used_amount] %></td>
+                  <td style="text-align: right; width:15%;" ><%= record[:unused_amount] %></td>
+                  <td style="text-align: right; width:10%;" ><%= record[:total_amount] %></td>
+                </tr>
+              <%end%>
+              <tr><td colspan="5" align="right"><%=t(:text_total_used_amount)%><%= @totalUsedAmount %></td>
+                <td align="right"><%=t(:text_total_unused_amount)%><%= @totalUnusedAmount %></td>
+                <td align="right"><%=t(:text_total_amount)%><%= @totalUsedAmount + @totalUnusedAmount %></td>
+              </tr>
+              <tr><td colspan="7"><br/></td></tr>
+              <tr><td colspan="7" align="right" class="pr5"><%=will_paginate @emp_bill_records, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @emp_bill_records %></td></tr>
+              <tr><td colspan="7"><br/></td></tr>
+            <%end%>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <%unless emp_bill_records_blank %>
+      <% unless @payments.blank? %>
+        <%=render :partial => "show_payment_records",:locals=>{:invoice_id=>@invoice_id, :payments=>@payments}%>
+      <% end %>
+      <%if @emp_bill_records.first.invoice.status.to_s != "Paid"%>
+        <div align="center"><button onclick="display_div('#enable_payment')"><%=t(:text_make_a_payment)%></button></div>
+      <% end %>
+      <div id="enable_payment" style="display: none">
+        <%=render :partial => "form_for_payment",:locals=>{:invoice_id=>@invoice_id}%>
+      </div>
+    </div>
+    <%= link_to t(:label_back), {:action => 'index'} %>
+  <% end %>
+</div>

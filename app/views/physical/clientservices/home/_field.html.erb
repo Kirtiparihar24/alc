@@ -1,0 +1,21 @@
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="grayTable">
+  <tr>
+    <td align="left" width="45%">
+      <textarea rows="2" name="com_notes_entries[<%=@index%>][name]" id="com_notes_entries_<%=@index%>_name" cols="40" class="textarea" style="height: 25px;margin-left:-1px;font-size:11px !important;"></textarea>
+    </td>
+    <td valign="top" align="center" width="25%">
+      <select name="com_notes_entries[100][matter_id]" id="com_notes_entries_100_matter_id" class="txtbox" style="height: 18px;font-size:11px !important;">
+        <option value=""><%=t(:text_please_select)%></option>
+      </select>
+    </td>
+    <td valign="top" align="left" width="25%">     
+      <select name="com_notes_entries[<%=@index%>][contact_id]" id="com_notes_entries_<%=@index%>_contact_id" style="font-size:11px;margin-left:2px; !important;">
+        <option value=""><%=t(:text_please_select)%></option>
+        <% @cont.each{|st| %>
+          <option value='<%=st.id%>'><%=st.full_name%></option>
+        <%}%>
+      </select>    
+    </td>    
+  </tr>
+</table>

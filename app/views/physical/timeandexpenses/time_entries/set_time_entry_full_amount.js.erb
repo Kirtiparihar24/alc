@@ -1,0 +1,24 @@
+jQuery('#hidden_billing_adjustment_'+<%=params[:id]%>).val("<%= @time_entry.final_billed_amount%>");
+jQuery('#hidden_billing_adjustment_'+<%=params[:id]%>).attr('name',"<%= @time_entry.billing_method_type%>");
+jQuery('#'+<%=params[:id]%>+'_show_amount').val("<%=number_with_lformat(@time_entry.final_billed_amount)%>");
+jQuery('#final_billed_amount_'+<%=params[:id]%>).children("span").html("<%=number_with_lformat(@final_billed_amount)%>");
+<!-- ---Feature 11298-----  -->
+  <!-- summary view -->
+  var total_open_amount = jQuery('#total_open_amount');
+  var total_app_amount = jQuery('#total_approved_amount');
+  var total_billed_amount = jQuery('#total_billed_amount');
+  var expense_open = jQuery('#total_expense_open');
+  var grand_total_open = jQuery('#grand_total_open');
+  var grand_total_amount =  jQuery('#grand_total_amount');
+  var grand_total_all = jQuery('#grand_total_all');
+  var grand_total_approved = jQuery('#grand_total_approved');
+  var grand_total_billed = jQuery('#grand_total_billed');
+
+  <!-- open hrs, amt, expense, total -->
+  total_open_amount.html(formatCurrency((<%= @total_amount_open%>).toFixed(2)));
+  grand_total_open.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(expense_open.html().replace(/,/g,''))).toFixed(2)));
+  <!-- total Amt-->
+  grand_total_amount.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(total_app_amount.html().replace(/,/g,'')) + parseFloat(total_billed_amount.html().replace(/,/g,''))).toFixed(2)));
+  <!-- grand total -->
+  grand_total_all.html(formatCurrency((parseFloat(grand_total_open.html().replace(/,/g,'')) + parseFloat(grand_total_approved.html().replace(/,/g,'')) + parseFloat(grand_total_billed.html().replace(/,/g,''))).toFixed(2)));
+<!-- ---Feature 11298-----  -->

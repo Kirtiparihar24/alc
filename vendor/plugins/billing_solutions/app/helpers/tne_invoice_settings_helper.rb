@@ -1,0 +1,2 @@
+module TneInvoiceSettingsHelper
+end

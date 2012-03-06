@@ -1,0 +1,124 @@
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    vertical_tabs_toggle();
+  });
+</script>
+<div class="" id="modal_new_risk_errors" style="display:none; text-align: left"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div>
+  <% remote_form_for([@matter, @matter_risk],:loading=>'return disableAllSubmitButtons("matters")',:complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+    <table width="100%" border="0" cellpadding="3" cellspacing="8" class="mt20">
+      <tr>
+        <td width="30%" align="left"><label><%=t (:label_risk)%> <span class="alert_message">*</span></label></td>
+        <td width="70%" align="left"><%= f.text_field :name, :size => "44" %></td>
+      </tr>
+      <% unless @other_matter_risks.blank? %>
+        <tr>
+          <td align="left"><label> <%= t(:label_parent_risk) %> </label></td>
+          <td align="left"> <%= f.collection_select  :parent_id, @other_matter_risks, :id, :clipped_name, { :include_blank => "----------Select----------" } %> </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td align="left" valign="top"><%=t (:label_risk)%> <%=t (:label_details)%></td>
+        <td align="left"><%= f.text_area :details, :rows => "3", :cols => "40" %></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%=t (:label_matterial_to_matter) %></label></td>
+        <td align="left"><%= f.check_box :is_material %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><% if task_available? %><%= t(:label_activity )%> /<%end%> <% if issue_available? %><%= t(:label_issues )%> /<%end%> <% if fact_available? %><%= t(:label_facts )%> /<%end%> <% if research_available? %><%=t(:label_research)%><%end%></td>
+        <td align="left" colspan="2">
+          <div id="verticaltabs" align="left">
+            <ul>
+              <% if task_available?  %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_tasks) %></a></li><%end%>
+              <% if issue_available?  %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_issues) %></a></li><%end%>
+              <% if fact_available?  %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_facts) %></a></li><%end%>
+              <% if research_available?  %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_research) %></a></li><%end%>
+            </ul>
+            <% if task_available?  %>
+              <div>
+                <% unless @matter_tasks.blank?%>
+                  <br />
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <% @matter_tasks.each do |mi| %>
+                      <tr>
+                        <td width="9%"><%= check_box_tag 'matter_risk[matter_task_ids][]', mi.id, false %></td>
+                        <td width="91%"><%= truncate_hover(mi.name, 40) %></td>
+                      </tr>
+                    <% end %>
+                  </table>
+                <% else %>
+                  <div class="warningCont m5"><%= t(:text_no_related_tasks_found_to_this_matter) %></div>
+                <%end%>
+              </div>
+            <%end%>
+            <% if issue_available?  %>
+              <div>
+                <% unless @matter_issues.blank? %>
+                  <br />
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <% @matter_issues.each do |mi| %>
+                      <tr>
+                        <td width="9%"><%= check_box_tag 'matter_risk[matter_issue_ids][]', mi.id, false %></td>
+                        <td width="91%"><%= truncate_hover(mi.name, 40) %></td>
+                      </tr>
+                    <% end %>
+                  </table>
+                <% else %>
+                  <div class="warningCont m5">No Related Issues Found For This Matter.</div>
+                <%end%>
+              </div>
+            <%end%>
+            <% if fact_available?  %>
+              <div>
+                <% unless @matter_facts.blank? %>
+                  <br />
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <% @matter_facts.each do |mi| %>
+                      <tr>
+                        <td width="9%"><%= check_box_tag 'matter_risk[matter_fact_ids][]', mi.id, false %></td>
+                        <td width="91%"><%= truncate_hover(mi.name, 40) %></td>
+                      </tr>
+                    <% end %>
+                  </table>
+                <% else %>
+                  <div class="warningCont m5">No Related Facts Found For This Matter.</div>
+                <%end%>
+              </div>
+            <%end%>
+            <% if research_available?  %>
+              <div>
+                <% unless @matter_researches.blank? %>
+                  <br />
+                  <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                    <% @matter_researches.each do |mi| %>
+                      <tr>
+                        <td width="9%"><%= check_box_tag 'matter_risk[matter_research_ids][]', mi.id, false %></td>
+                        <td width="91%"><%= truncate_hover(mi.name, 40) %></td>
+                      </tr>
+                    <% end %>
+                  </table>
+                <% else %>
+                  <div class="warningCont m5">No Related Researches Found For This Matter.</div>
+                <%end%>
+              </div>
+            <%end%>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" height="10"></td>
+      </tr>
+      <tr>
+        
+        <td align="center" colspan="2">
+          <%= f.submit t(:text_save), :id => "save_risk",:class=>'matters', :onclick=>'return checkloader(); return setButtonPressed(this);'%>
+          <input type="button" id="Login2" class='matters' value="Cancel" onclick="tb_remove();return setButtonPressed(this);disableAllSubmitButtons('matters')" />
+        </td>
+      </tr>
+      <tr><td align="left" colspan="2" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></td></tr>
+    </table>
+  <%end%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;42</div>

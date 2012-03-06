@@ -1,0 +1,14 @@
+<div id="com_notes_entries" style="position:absolute;" >
+  <ul class="ac_results" id="comm_mat_cont_drop" style=" max-height: 180px; overflow: auto;width:50px;">
+    <% if from == "matters" %>
+      <%matters.each do |lawfirm_user|%>
+        <li id="<%=lawfirm_user.id%>" class="<%=cycle('ac_even','ac_odd')%> search_text" onclick = "getCommMattersContacts('<%=  com_id %>','#matter_cnt_<%= com_id %>','#contact_cnt_<%=  com_id %>','<%=lawfirm_user.clipped_name%>','<%=lawfirm_user.id%>','');"><%=lawfirm_user.clipped_name%></li>
+      <%end%>
+    <% else %>
+      <%contacts.each do |lawfirm_user|%>
+        <li id="<%=lawfirm_user.id%>" class="<%=cycle('ac_even','ac_odd')%> search_text" onclick = "getCommMattersContacts('<%=  com_id %>','#matter_cnt_<%= com_id %>','#contact_cnt_<%= com_id %>','<%=lawfirm_user.full_name%>','','<%=lawfirm_user.id %>');"><%=lawfirm_user.full_name %></li>
+      <%end%>
+    <% end %>
+  </ul>
+</div>
+

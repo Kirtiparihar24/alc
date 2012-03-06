@@ -1,0 +1,3 @@
+<li><%=link_to t(:label_current_accounts),{:controller => :rpt_accounts , :action => :current_account}, :class => "#{@current_account}" %></li>
+<li><%=link_to t(:label_recently_added_accounts),{:controller => :rpt_accounts , :action => :recent_account}, :class => "#{@recent_account}" %></li>
+<li><%=link_to t(:label_contacts_linked_to_accounts),{:controller => :rpt_accounts , :action => :account_contact}, :class => "#{@account_contact}" %></li>    

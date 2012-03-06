@@ -1,0 +1,2 @@
+module SecurityQuestionsHelper
+end

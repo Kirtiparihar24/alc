@@ -1,0 +1,87 @@
+/* ------------------------------------------------------------------------------------------------------------
+	Personal CSS Framework 
+   * File Name:			base.css
+   * Description:		global classes
+   * Version:			1.0.0(20 April 2010)
+   * Author: 			Khushboo, vaishali, Naresh
+============STRUCTURE===========================================================================================
+   * Page width:		1280 to 1600 (controled by resolution_js.js)
+   * Header:			header-div
+   * Footer:			footer-div
+------------------------------------------------------------------------------------------------------------------ */
+html {font-size:100.01%; height:100%;}
+body {font-size:68.8%; color:#4a4b4a; background:#eff7fb url(../images/bg_login.png) repeat-x left top; font-family:Arial, Helvetica, sans-serif; height:100%; padding:0 8px; margin:0 auto; text-align:center;}
+#login-div{background:#eff7fb url(../images/login_body.png) no-repeat; width:518px; height:307px; margin:0 auto; position:relative;}
+#login-div h1{padding:15px 10px 30px 10px;}
+.fl{float:left;}
+.fr{float:right;}
+.w20{width:20%;}
+.w100{width:100%}
+.w180p{width:180px;}
+.clear{clear:both;}
+.textC{text-align:Center;}
+.textL{text-align:left;}
+
+.ml15{margin-left:35px;}
+.mt10{margin-top:10px;}
+.mt30{margin-top:30px;}
+
+
+.textgray{color:#9c9c9c;}
+
+.form_table td a{text-decoration:none; color:#22607d; line-height:18px; }
+label a:hover, .link_gray a:hover{text-decoration:underline; }
+
+/*========= Form =====================================================================================*/
+input[type=text], input[type=password], input.text, input.title, textarea, select {background-color:#ffffff;border:1px solid #d9d9d9; font-family:Arial, Helvetica, sans-serif; font-size:100%;}
+input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus {border-color:#cccccc;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {margin:2px 0; padding:2px 5px; }
+input[type=checkbox], input[type=radio], input.checkbox, input.radio {}
+textarea {}
+input[type=submit], input[type=button]{background:url(../images/livia_portal_base_images.png) no-repeat left -101px; border:1px solid #b2b2b2; padding:1px 15px 3px 15px; font-size:109.1%; font-weight:bold;}
+input.login{color:#9c9c9c;}
+.mlr8{margin:0 8px;}
+.icon_message_error, .icon_message_sucess, .icon_message_warning, .icon_message_normal{background-image:url(../images/livia_portal_base_images.png);}
+.icon_message_error{background-position:-29px -539px; width:24px; height:24px;}
+.icon_message_sucess{background-position:-54px -539px; width:24px; height:24px;}
+.icon_message_warning{background-position:-80px -539px; width:24px; height:24px;}
+.icon_message_normal{background-position:-131px -539px; width:32px; height:25px;}
+.message_error_div ul, .message_error_div ul li, .message_sucess_div ul, .message_sucess_div ul li, .message_warning_div ul, .message_warning_div ul li {padding:0; margin:0; }
+.message_error_div ul li, .message_sucess_div ul li, .message_warning_div ul li{list-style:none; }
+.message_error_div{background-color:#f8e3e2; border:1px solid #e89e9d;  padding:10px 8px 16px 9px;/* position:absolute; top:-20%; left:0;*/ width:498px;}
+.message_sucess_div{background-color:#cdfcd2; border:1px solid #60a200; padding:10px 8px 16px 9px; /*position:absolute; top:-20%; left:0;*/ width:498px; }
+.message_warning_div{background:#fdf0cd; border:1px solid #ecc635; padding:10px 8px 16px 9px; /*position:absolute; top:-20%; left:0;*/ width:498px;}
+
+
+/* Campaigns Response form*/
+.title_main{background-image:url(../images/livia_portal_base_images.png);background-repeat:repeat-x; padding:0 5px; color:#3a3a39; font-size:109.1%;font-weight:bold; background-position:left top; border-bottom:1px solid #dbdbdb; border-top:1px solid #ffffff; line-height:25px; text-align:left; }
+.textL{text-align:left;}
+#middleBody-div{ vertical-align:top;}
+.p8{padding:8px;}
+.alert_message{ font-size:109.1%;  font-weight:bold; font-family:Georgia, "Times New Roman", Times, serif;color:#d10202; margin:0px 2px; }
+.buttonSub_div{text-align:Center; padding:8px; margin-top:5px; text-align:Center;}
+#footer-div{background-position:left -27px; padding-top:4px; line-height:37px; margin:20px 0 0 0; background-image:url(../images/livia_portal_base_images.png); background-repeat:repeat-x; color:#393939; }
+.border_gray{ border:1px solid #cecece;}	
+
+.main_containt{width:100%;}
+#doc, #foot{/*max-width:1600px; min-width:1280px; */width:1200px; }
+#foot{margin:0  auto;}
+#doc{margin:0 auto 0 auto;}
+.errorpagediv{ margin:0 auto 0 auto; padding:8% 8px 8% 8px; text-align:center; font-family:Arial, Helvetica, sans-serif; background-color:#e3f1fa; border:1px solid #CECECE;}
+.errorpagediv h1{font-size:22px; color:#003e6d; font-weight:bold; text-align:left; padding-left:10px; line-height:30px;}
+.errorpagediv h2{font-size:18px; color:#0f0f0f; font-weight:normal; text-align:left; padding-left:10px; line-height:30px;}
+.errorpagediv p{font-size:12px; color:#444444; font-weight:normal; text-align:left; padding-left:10px; line-height:25px;}
+#footer-div {line-height:37px;}
+#footer-div, .link_gray a{color:#393939;}
+.link_gray a{text-decoration:none;}
+
+.header-div{margin:10px 0 10px 0;}
+
+#login-div label a{text-decoration: none;color: #074D6D;}
+#login-div label a:hover{text-decoration: underline;color: #074D6D;}
+
+/****************supriya 29-12-2010***********************/
+.pt5{padding-top:5px;}
+.border_top_gray{border-top:1px solid #cecece;}
+/**************added by supriya k 12-04-2011*************/
+.pagiText{color: #D0D0D0; padding-top:5px; text-align:right;}

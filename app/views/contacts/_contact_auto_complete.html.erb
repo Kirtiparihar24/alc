@@ -1,0 +1,7 @@
+<%unless @search_result.empty?%>   
+  <%@search_result.each do|result_obj|%>
+    <%  if result_obj %>
+      <%= ("" + ( "#{result_obj.last_name} #{result_obj.first_name} #{result_obj.middle_name}") + ((result_obj.accounts[0] != nil)? ", #{t(:label_Account)}: #{result_obj.accounts[0].name} " : "") +((result_obj.phone != nil)? ", #{t(:text_phone)}: #{result_obj.phone} " : "") + ((result_obj.email != nil)? ", #{t(:text_email)}: #{result_obj.email} " : "")) %>
+    <% end %>
+  <% end %>
+<% end %>

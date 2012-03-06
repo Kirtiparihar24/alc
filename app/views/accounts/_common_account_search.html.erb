@@ -1,0 +1,5 @@
+<%unless matching_accounts.empty?%>
+  <%matching_accounts.each do|result_obj|%>
+    <%=raw ("" + "<span style=display:none>" + result_obj.id.to_s + "</span>" + h( "#{result_obj.name}"))  %>
+  <%end%>
+<%end%>

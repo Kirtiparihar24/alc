@@ -1,0 +1,7 @@
+<%if @matching_contacts%>
+  <%@matching_contacts.each do|result_obj|%>
+    <%if result_obj %>
+      <%=raw ("" + "<span style=display:none>" + result_obj.id.to_s + "</span>" + h(( "#{result_obj.last_name} #{result_obj.first_name} #{result_obj.middle_name}") + ((!result_obj.accounts.first.blank?)? ", #{t(:text_acc)}: #{result_obj.get_account.name} " : "") +((result_obj.phone != nil)? ", #{t(:text_phone)}: #{result_obj.phone} " : "") + ((result_obj.email != nil)? ", #{t(:text_email)}: #{result_obj.email} " : ""))) %>
+    <%end%>
+  <%end%>
+<%end%>

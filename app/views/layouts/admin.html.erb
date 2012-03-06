@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title><%=t(:text_livia_legal)%></title>
+    <%= include_stylesheets :admin_stylesheet ,:media => 'all'%>
+    <%=style_sheet if controller.action_name =~ /portal_usage_report/%>
+    <%= stylesheet_link_tag "jquery.autocomplete.css"%>
+    <%=raw(javascript_include_tag "jquery/jquery-1.7.1.min.js",'jquery/jrails.js','jquery/jquery-ui-1.8.16/ui/minified/jquery-ui.min.js',"jquery/jquery-hint.js",'jquery/jquery-blink.js',"jquery/jquery.autocomplete.js")%>
+    <%=raw(javascript_include_tag "admin/application.js",'admin/livia_common.js', 'latest/list_sequence.js', "common.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery.hoverIntent.minified.js","dropdown_menu.js", "latest/thickbox_matter_clients.js","facebox.js")%>
+    <%= raw(javascript_include_tag "/javascripts/rails.js") %>
+    <%= csrf_meta_tag %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+    <div id="header">
+      <div class="shell">
+        <%unless controller_name.eql?('passwords')%>
+          <% if is_secretary_or_team_manager?%>
+            <%=render :partial =>'layouts/client_header'%>
+            <%=render :partial =>'layouts/client_header_tabs'%>
+          <%else%>
+            <%=render :partial =>'layouts/header'%>
+            <%=render :partial =>'layouts/admin_header_tabs'%>
+          <%end%>
+        <%else%>
+          <div class="logoDiv"><%= image_tag "/images/livia_portal/Livia_logo.gif", :alt=>'Livia Logo',:border=>'0',:hspace=>'3' %> </div>
+        <%end%>
+      </div>
+    </div>
+    <div id="container">
+      <div class="shell">
+        <%= yield(:company_selection) %>
+        <div id="flash_messages">
+          <%= render :partial => '/common/common_flash_message' %>
+        </div>
+        <div id="main">
+          <div class="cl">&nbsp;</div>          
+          <div id="content" <%if @type.present?%>class="w750"<%end%> >
+            <div class="fr dashbard_left" style="width:100%;">
+              <%=yield%>
+              <div class="cl">&nbsp;</div>
+            </div>         
+          </div>
+          <% if @type.present? %>
+            <div id="utility">
+              <%= render :partial=>"/company/utility_tabs" if @company && @type%>
+            </div>
+          <% end %>
+          <div class="cl">&nbsp;</div>
+        </div>        
+      </div>
+    </div>
+    <%=render :partial =>'layouts/admin_footer'%>    
+  </body>
+</html>

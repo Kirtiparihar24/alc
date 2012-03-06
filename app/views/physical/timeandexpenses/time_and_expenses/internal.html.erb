@@ -1,0 +1,92 @@
+<%= raw javascript_include_tag  'time_and_expense/form' %>
+<%=raw javascript_include_tag  'time_and_expense/new_time_entry' %>
+<%expense_types,activity_types = get_expense_type_and_activity_types(current_company)%>
+<script type="text/javascript">
+  var expensetypes = <%=raw expense_types%>
+  var activitytypes = <%=raw activity_types%>
+  var status = <%= raw Hash["Open" => "Open", "Approved" => "Approved"].to_json %>
+  initeditexpense_type(expensetypes);
+  initedit_timentry_activity(activitytypes);
+  init_edit_time_entry_status(status);
+  init_edit_expense_entry_status(status);
+</script>
+<script type="text/javascript">
+  function datewise_internal_entries()
+  {
+    var sdate = jQuery('#start_date').val();
+    var edate = jQuery('#end_date').val();
+    if(jQuery('#status').val()=="")
+    {
+      jQuery('#status').val('Open');
+    }
+    var status = jQuery('#status').val();
+    var current_tab=jQuery('#current_tab').val();
+    window.location = '/physical/timeandexpenses/internal?current_tab='+current_tab+'&start_date='+sdate+'&end_date='+edate+'&status='+status+'&view=internal';
+    return false;
+  }
+  //Added for the Feature #8234 - export to excel in all view pages in T & E
+  function datewise_internal_entries_xls_view()
+  {
+    window.location = '/physical/timeandexpenses/internal?current_tab='+'<%= @current_tab %>'+'&start_date='+'<%= @start_date %>'+'&end_date='+'<%= @end_date %>'+'&status='+'<%= @status %>'+'&view=internal'+'&format=xls';
+    return false;
+  }
+  livia_datepicker();
+</script>
+<% form_tag :action=>'internal' do %>
+  <div id="error_notice" ><%=@error if @error %></div>
+  <h2 class="title_main"><%=t(:text_time_and_expense_internal_work_hours)%></h2>
+  <div class="w100 fix_mb">
+    <table>
+      <tbody><tr>
+		<%# if matter_time_expense_available? %>
+          <td><input type="radio" <%= controller.action_name == 'matter_view' ? "checked='checked'" : '' %> onclick="window.location='<%=physical_timeandexpenses_matter_view_path(:view=>'matter')%>'" value="my" name="myallradio"/></td>
+          <td class="mr8" valign="bottom"><label><%=t(:label_Matter_Related)%><%#Billing%></label></td>
+          <td>&nbsp;</td>
+          <td><input type="radio" <%= controller.action_name == 'contact_view' ? "checked='checked'" : '' %> onclick="window.location='<%=physical_timeandexpenses_contact_view_path(:view=>'presales')%>'" value="all" name="myallradio"/></td>
+		<%# end %>
+          <td valign="bottom"><label><%=t(:label_Non_Matter_Related)%><%#Pre-Sales Billing%></label></td>
+          <td>&nbsp;</td>
+          <td><input type="radio" <%= controller.action_name == 'internal' ? "checked='checked'" : '' %> onclick="window.location='<%=physical_timeandexpenses_internal_path(:view=>'internal')%>'" value="all" name="myallradio"/></td>
+          <td valign="bottom"><label><%=t(:label_internal)%><%#Work Hours%></label></td>
+        </tr>
+      </tbody></table>
+  </div>
+  <div class="p5">
+    <div class="mt5">
+      <table width="100%" border="1">
+        <tr>
+          <td width="15%" valign="middle"><%=t(:text_time_expense_entry_date_between)%></td>
+          <td width="15%" valign="middle"><label><%=t(:text_start_date)%></label><span class="alert_message">*</span>
+            &nbsp;&nbsp;<input type="text" id="start_date" name="start_date"  readonly="true" size="11" class="date_picker" onclick="livia_datepicker(this);" value="<%=params[:start_date]%>"/></td>
+          <td width="15%" valign="middle"><label><%=t(:text_end_date)%></label><span class="alert_message">*</span>&nbsp;&nbsp; <input type="text" id="end_date" name="end_date"  readonly="true" size="11" class="date_picker" onclick="livia_datepicker(this);" value="<%=params[:end_date]%>"/></td>
+          <td width="45%" valign="middle">
+            <%= submit_tag t(:label_go), :class=>'button', :onclick =>'return datewise_internal_entries()' %></td>
+          <%=hidden_field_tag "status", "#{params[:status]}"%>
+          <%=hidden_field_tag "current_tab", "#{@current_stage}"%>
+          <%=hidden_field_tag "view", "#{params[:view]}"%>
+        </tr>
+      </table>
+    </div>
+    <div id="managed" class="mt15">
+      <!-- container-1 @start -->
+      <div id="summary_header">
+        <%= render :partial => "summary_header" %>
+      </div><br class="clear"/>
+      <div id="2container-1">
+        <!--Added for the Feature #8234 - export to excel in all view pages in T & E-->
+        <% unless (@saved_time_entries.blank? and @saved_expense_entries.blank?)%>
+          <span class='icon_xls fr mr5 vtip' title="Export to Excel" onclick="return datewise_internal_entries_xls_view()" style="cursor:pointer"></span>
+        <%end%>
+        <ul class="tabs-nav"><li class="<%= @current_stage=='fragment-1' ? 'tabs-selected' : '' %>"><a href="<%=physical_timeandexpenses_internal_path(:status => 'Open',:current_tab=>'fragment-1',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'internal')%>"><span><%=t(:label_open)%></span></a></li><li class="<%= @current_stage=='fragment-2' ? 'tabs-selected' : '' %>"><a href="<%=physical_timeandexpenses_internal_path(:status => 'Approved',:current_tab=>'fragment-2',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'internal')%>" onclick=""><span><%=t(:label_Approved)%></span></a></li><li class="<%= @current_stage=='fragment-3' ? 'tabs-selected' : '' %>"><a href="<%=physical_timeandexpenses_internal_path(:status => 'Billed',:current_tab=>'fragment-3',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'internal')%>"><span><%=t(:label_Billed)%></span></a></li></ul>
+        <div id="fragment-1" class="tabs-container">
+          <%= render :partial =>"summary_grid_entries_matter_view" , :locals =>{:saved_time_entries =>@saved_time_entries,:saved_expense_entries => @saved_expense_entries} %>
+        </div>
+      </div>
+      <!-- container-1 #end
+      T/E:- Time &amp; Expense, T:- Time, Dur:- Duration,  Amt:- Amount, Dis:- Discount, OA:- Override Amt, Attch:- Attachment, M:- Matter, C:- Contact, Fm:- From
+      -->
+    </div>
+       <div class="mandatory mt12">T/E:- Time/Expense, Int:- Internal, M:- Matter, C:-Contact, Fm:- From, HH:- Hour, MM:-Minute, Dur:- Duration, Amt:- Amount, <div class="icon_time" style="display:inline;padding-right:14px"></div>:- Time, <div class="icon_exp" style="display:inline;padding-right:14px"></div>:- Expense</div>
+  </div>
+<%end%>
+<%#*<div align="right" class="pagiText"> Page 71</div>%>

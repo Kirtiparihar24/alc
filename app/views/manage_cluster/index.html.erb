@@ -1,0 +1,9 @@
+<div class="box-head"><h2 class="left"><%=("Cluster-User Assignment/Unasignment")%></h2></div>
+<div class="buttons"><%=("Select Cluster")%>
+  <%= collection_select(:cluster, :id, @clusters, :id, :name, {:include_blank => 'Please select'},{:onchange=>"show_assigned_cluster_employee_list(this.value)",:class=>"field size3",:style=>"width:120px; font-size:100%"})%>
+</div>
+<div id="show_assigned_cluster_employee_list">
+  <% unless(params[:cluster_id].blank?) %>
+    <%=render :partial=>'show_assigned_cluster_employee_list', :locals => {:cluster => @cluster}%>
+  <%end%>
+</div>

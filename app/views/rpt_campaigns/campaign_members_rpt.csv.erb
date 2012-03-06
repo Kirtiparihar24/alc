@@ -1,0 +1,20 @@
+<%=@header_opts[:r_name]%>
+<%-if params[:report][:summarize_by] == "contact"-%>
+<%=@table_headers.join(",")%>
+<%-@data.each do |data|-%>
+<%=data.join(",")%>
+<%-end-%>
+
+<%="Total Records = #{@data.length}"%>
+<%-else-%>
+<%-@total_data.each do |label,data|-%>
+<%="#{(label == "" or !label) ? "None" : label}" + " (#{data.length} Records)"%>
+<%=@table_headers.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+
+<%-end-%>
+<%="Total Records = #{@length}"%>
+<%-end-%>

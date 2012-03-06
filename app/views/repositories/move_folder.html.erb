@@ -1,0 +1,37 @@
+<h2 class="title_main selected"><%=t(:label_please_select_destination_folder)%></h2>
+<%= raw(javascript_include_tag "jquery/jqueryFileTree.js", "jquery/jquery.easing.js") %>
+<%= stylesheet_link_tag "jqueryFileTree.css"%>
+<div class="demofiletreehome">
+  <div id="move_doc_error" style="display:none;"> </div>
+  <div class ="collapsed" id ="root" style="height: 22px"><span class="icon_collapse_folder mr5 mt3 fl"></span>
+    <%=link_to "Root Folder" ,"#", {:onclick=>"jQuery('#document_home_folder_id').val(''); jQuery('.selected').removeClass('selected'); jQuery('#root').addClass('selected');",:class => "link_blue vtip"}%>
+  </div>
+  <div class="section_left">
+    <%if params[:matter_id]%>
+      <%html_elem_id = 'movefileTree'%>
+      <script type="text/javascript">
+        jQuery(document).ready(function()  {
+          jQuery("#movefileTree").fileTree({script: '/document_homes/get_children<%= "?matter_id=#{params[:matter_id]}&move_for=folder&id=#{params[:id]}" + "&update_list=false" if params[:update_list]%>',loadMessage:'Loading...', expandSpeed: 750, collapseSpeed: 750, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce' });
+        });
+      </script>
+    <%else%>
+      <%url_str, html_elem_id = params[:selected_node] =~ /workspace/ ? ["/workspaces/get_children?move_for=folder&id=#{params[:id]}",'movefileTree'] : ["/repositories/get_children?move_for=folder&id=#{params[:id]}",'movefileTree']%>
+      <%html_elem_id = 'fileTree' if params[:selected_node] == nil%>
+      <script type="text/javascript">
+        jQuery(document).ready(function()  {
+          var html_elem_id = ("<%= html_elem_id %>");
+          jQuery("#" + html_elem_id).fileTree({script: "<%=url_str%><%=params[:update_list] ? '&update_list=false' : ''%>",loadMessage :'Loading...', expandSpeed: 750, collapseSpeed: 750, expandEasing: 'easeOutBounce', collapseEasing: 'easeOutBounce' });
+        });
+      </script>
+    <%end%>
+    <div id="<%=html_elem_id%>" class="demofiletree"></div>
+  </div>
+</div>
+<% remote_form_for :folder, @folder,:url => move_folder_repository_path(@folder) ,:loading=>"disableAllSubmitButtons('button');",:complete=>"enableAllSubmitButtons('button');", :html=> {:method => :post} do |f| %>
+  <%= hidden_field_tag "document_home_folder_id","000"%>
+  <%= hidden_field_tag "selected_node",params[:selected_node] %>
+  <%= hidden_field_tag "matter_id",params[:matter_id] if params[:matter_id]%>
+  <%= f.submit "Move" , :id=>"move_button", :class=>"button", :onclick=>"setButtonPressed(this);"%>
+  <input type="button" value="<%=t(:label_cancel)%>" id ="Login2" class="button" onclick="parent.tb_remove();return false"/>
+<% end %>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;167</div>

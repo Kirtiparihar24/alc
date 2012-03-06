@@ -1,0 +1,69 @@
+<table align="left" class="w18">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="rv_val_check<%=@selected_charts["get_opportunities_graph"][1]%>" id="get_opportunities_graph" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["get_opportunities_graph"][1]%>);" type="checkbox" <%=@selected_charts["get_opportunities_graph"][0]%>  name="charts[<%=@selected_charts["get_opportunities_graph"][1]%>]" value="<%=@checked_charts["get_opportunities_graph"] ? @checked_charts["get_opportunities_graph"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=get_opportunities_graph&height=500&width=600' class="thickbox preview" title="Opportunity Pipeline" name="Opportunity Pipeline" id="/images/charts/big_2.jpg">
+        <img class="border_gray" src="/images/charts/get_opportunities_graph.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+      <a id="get_opportunities_graph" href='/dashboards/dashboard_show?chart_name=get_opportunities_graph&height=500&width=600' class="thickbox" title="Opportunity Pipeline" name="Opportunity Pipeline">Opportunity Pipeline&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+
+<table class="ml15 w18" align="left">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="rv_val_check<%=@selected_charts["get_open_opportunities"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["get_open_opportunities"][1]%>);" type="checkbox" <%=@selected_charts["get_open_opportunities"][0]%> name="charts[<%=@selected_charts["get_open_opportunities"][1]%>]" value="<%=@checked_charts["get_open_opportunities"] ? @checked_charts["get_open_opportunities"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=get_open_opportunities&height=500&width=600' class="thickbox preview" title="Open Opportunities" name="Open Opportunities" id="/images/charts/big_6.jpg">
+        <img class="border_gray" src="/images/charts/get_open_opportunities.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+      <a id="get_open_opportunities" href='/dashboards/dashboard_show?chart_name=get_open_opportunities&height=500&width=600' class="thickbox" title="Open Opportunities" name="Open Opportunities">Open Opportunities&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table class="ml15 w18" align="left">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="rv_val_check<%=@selected_charts["get_closed_opportunities"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["get_closed_opportunities"][1]%>);" type="checkbox" <%=@selected_charts["get_closed_opportunities"][0]%> name="charts[<%=@selected_charts["get_closed_opportunities"][1]%>]" value="<%=@checked_charts["get_closed_opportunities"] ? @checked_charts["get_closed_opportunities"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=get_closed_opportunities&height=530&width=700' class="thickbox preview" title="Opportunities Closed" name="Opportunities Closed" id="/images/charts/big_5.jpg" >
+        <img class="border_gray" src="/images/charts/get_closed_opportunities.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+      <a id="get_closed_opportunities" href='/dashboards/dashboard_show?chart_name=get_closed_opportunities&height=530&width=700' class="thickbox" title="Opportunities Closed" name="Opportunities Closed">Opportunities Closed&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table class="ml15 w18" align="left">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="rv_val_check<%=@selected_charts["top_opportunities"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["top_opportunities"][1]%>);" type="checkbox" <%=@selected_charts["top_opportunities"][0]%> name="charts[<%=@selected_charts["top_opportunities"][1]%>]" value="<%=@checked_charts["top_opportunities"] ? @checked_charts["top_opportunities"] : ''%>" />
+
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=top_opportunities&height=500&width=600' class="thickbox preview" title="Key Opportunities to Focus" name="Key Opportunities to Focus" id="/images/charts/big_15.jpg" ><img class="border_gray" src="/images/charts/top_opportunities.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+      <a id="top_opportunities" href='/dashboards/dashboard_show?chart_name=top_opportunities&height=500&width=600' class="thickbox" title="Key Opportunities to Focus" name="Key Opportunities to Focus">Key Opportunities to Focus&nbsp; &nbsp;</a>
+    </td>
+  </tr>
+</table>

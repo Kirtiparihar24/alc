@@ -1,0 +1,12 @@
+jQuery('#work_type').html("<%=escape_javascript(render(:partial => 'worktypes'))%>");
+<%if(@category.has_complexity)%>
+  jQuery('.no_complex').remove();
+  jQuery('#complexity_div').show();
+  jQuery('#add_complexity_link').show();
+  jQuery('#complexity_div').append("<%=escape_javascript(render(:partial => 'complexity', :locals=>{:complexity=>WorkSubtypeComplexity.new,:from=>"new"}))%>");
+<%else%>
+  jQuery('#no_complexity_div').show();
+  jQuery('.complex').remove();
+  jQuery('#complexity_div').hide();
+  jQuery('#no_complexity_div').append("<%=escape_javascript(render(:partial => 'no_complexity', :locals=>{:complexity=>WorkSubtypeComplexity.new}))%>");
+<%end%>

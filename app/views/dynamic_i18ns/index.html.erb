@@ -1,0 +1,82 @@
+<%= javascript_include_tag "jquery/jquery.jeditable.js" %>
+<table>
+  <tr>
+    <td>
+      <strong>Select Company</strong>
+    </td>
+    <td>
+      <% form_tag('/dynamic_i18ns',:method=>:get,:id=>"company_select_form")  do %>
+        <%= select_tag :company,"<option value=en>Master Data</option>"+options_for_select(@companies,:selected=>@company_key )%>
+      <% end %>
+    </td>
+  </tr>
+</table>
+<br/>
+<table>
+  <tr>
+    <% form_tag('/dynamic_i18ns/replace_word',:id=>"replace_form")  do %>
+      <td><strong>Search</strong></td><td> <%= text_field_tag :search_value %></td>
+      <td> <strong>Replace</strong></td><td> <%=text_field_tag :replace_value %></td>
+      <%= hidden_field_tag :company,@company_key %>
+      <td><%= submit_tag "Find & Replace" %></td>
+    <% end %>
+  </tr>
+  <tr>
+    <td> <strong>Key</strong></td><td> <%= text_field_tag :i18n_key %></td>&nbsp;&nbsp;
+    <td><strong>Value</strong> </td><td><%=text_field_tag :i18n_value %></td>
+    <td> <%= submit_tag "Add" ,:id=>"add_i18n"%></td>
+  </tr>
+</table>
+
+<br/> <br/>
+<table>
+  <thead>
+    <tr>
+      <th> Key </th>
+      <th> ORIGINAL </th>
+      <th> Values </th>
+    </tr>
+  <tbody id="i18n_table_body">
+    <% @translations.each do |key| %>
+      <tr>
+        <td>
+          <%i18n_key = key.split(".").drop(1)%>
+          <%= key.split(".").drop(1).join(".") %>
+        </td>
+        <td> <%= @redis["en.#{i18n_key}"]%></td>
+        <td class="edit_in_place" id="<%= key %>" ><%= @redis[key]%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</thead>
+</table>
+
+<script type="text/javascript">
+  function in_line_edit(){
+    jQuery('.edit_in_place').editable('/dynamic_i18ns/modify', {
+      indicator : 'Saving...',
+      id:jQuery(this).attr('id'),
+      submit : 'OK',
+      width: '150',
+      cancel: "cancel"
+    });
+  }
+
+  in_line_edit();
+  jQuery("#company").live("change",function(){
+    jQuery("#company_select_form").submit(); 
+  });
+  jQuery("#add_i18n").live("click",function(){
+    jQuery.ajax({
+      type: "GET",
+      url: "/dynamic_i18ns/add",
+      data: "key="+jQuery("#i18n_key").val()+"&value="+encodeURIComponent(jQuery("#i18n_value").val())+"&i18n="+"<%= @company_key %>",
+      success: function(html){
+        /*html content response of city_list.xxx */
+        jQuery("#i18n_table_body").append(html);
+        jQuery("#i18n_key").val("");
+        jQuery("#i18n_value").val("");
+      }
+    });
+  });
+</script>

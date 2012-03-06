@@ -1,0 +1,49 @@
+<div class="row">
+  <label>Category</label>
+  <div class="inputs">
+    <span class="input_wrapper blank">
+      <input class="radio" name="task__radio_1" value="LivianTask" type="radio" onclick="update_work_type_select_for_note('LivianTask')"  <%unless @back_office_user%>checked<%end%>/><span class=""><%= get_category_name %> Task</span>
+      <input class="radio" id="back_office_task_radio_0" name="task__radio_1" value="BackofficeTask" type="radio" onclick="update_work_type_select_for_note('BackofficeTask')" <%if @back_office_user%>checked<%end%> /><span class="">Backoffice Task</span>
+    </span>
+  </div>
+</div>
+<div class="row">
+  <label>Work Type</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" id="task__work_types">
+      <%=select :work_type, :id, @work_types.collect {|w| [ w.name, w.id ]}, {:prompt=>'Please Select'},:onchange =>"update_work_subtype_select(this.value,'','#{@note.id}')"%>
+    </span>
+  </div>
+</div>
+<div class="row">
+  <label>Work Sub Type</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" id="task__work_subtypes">
+      <%=select :task, :work_subtype_id,[], {:prompt=>'Please Select'}%>
+    </span>
+  </div>
+</div>
+<% if @back_office_user %>
+  <div class="row" id="task__complexity">
+    <label>Complexity</label>
+    <div class="inputs">
+      <span class="input_wrapper blank" id="task__complexity_select">
+        <%=select :task, :work_subtype_complexity_id,[], {:prompt=>'Please Select'},:onchange =>"display_stt_tat(this.value,'')"%>
+      </span>
+    </div>
+  </div>
+<%end%>
+<div class="row">
+  <label>Priority</label>
+  <div class="input_wrapper blank"><%=select :task, :priority, options_for_select(UserTask::PRIORITIES,{:selected=>@note.note_priority.to_s,:disabled=>""})%></div>
+</div>
+<div class="row">
+  <div class="inputs"> <%=check_box :task, :share_with_client, :class=>"ml0"%> </div>
+  <label>Share With Client</label>
+</div>
+<div class="row" id="comment_div">
+  <label>Comment <span id="mandatory">*</span> </label>
+  <span class="input_wrapper textarea_wrapper">
+    <textarea id="comment" name="complete_comment" cols="10" rows="8" class="text "></textarea>
+  </span>
+</div>

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%=t(:text_livia_legal)%></title>
+    <%= stylesheet_link_tag "reset.css","login.css"%>
+
+    <!-- included jquery as well as it was giving error on 22/11/10 by anil -->
+    <%= raw(javascript_include_tag "livia_common.js","jquery/jquery-1.7.1.min.js") %>
+  </head>
+  <body>
+    <table height="100%" align="center" width="100%">
+      <tbody>
+        <tr>
+          <td>
+            <div style="margin:0 auto; width:518px;">
+              <% if flash[:forgotten_notice] %>
+                <div class="message_sucess_div" id="notice"><%= flash[:forgotten_notice] %></div>
+              <% end %>
+              <%= render :partial => '/common/common_flash_message' %>
+            </div>
+            <div id="login-div" style="position:relative;">
+              <h1 class="textC"><a href="dashboard.html"><%= image_tag "livia_logo.png" %></a></h1>
+              <% form_for @user, :url => access_code_path("user"), :html => { :method => :put } do |f| %>
+                <%= f.error_messages %>
+                <%= f.hidden_field :reset_tpin_token %>
+                <table width="56%" border="0" cellpadding="1" cellspacing="10" align="center" class="form_table" style="xborder:1px solid red; margin:0 auto;">
+                  <tr>
+                    <td align="right">
+                      <label>TPIN</label></td>
+                    <td style="padding-left:10px;">
+                      <%= password_field_tag :tpin, "" %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="right">
+                      <label>TPIN Confirmation</label>
+                    </td>
+                    <td style="padding-left:10px;">
+                      <%= password_field_tag :confirm_tpin, "" %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center">
+                      <%= submit_tag "Reset TPIN", {:class=>"button"} %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center">
+                      <%= link_to "Back To Login" , new_session_path("user") %><br />
+                    </td>
+                  </tr>
+                </table>
+              <% end %>
+              <br class="clear" />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

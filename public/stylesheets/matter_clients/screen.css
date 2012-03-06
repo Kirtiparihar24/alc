@@ -1,0 +1,272 @@
+/*Resets*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {line-height: 1;}
+ol, ul {list-style: none;}
+blockquote, q {	quotes: none;}
+blockquote:before, blockquote:after,
+q:before, q:after {	content: '';content: none;}
+:focus {outline: 0;}
+del {text-decoration: line-through;}
+table {border-collapse: collapse;border-spacing: 0;}
+/*Resets*/
+
+/*Grid css*/
+.container_12,.container_16{width: 92%;	margin-left: 4%;margin-right: 4%;}
+.grid_1,.grid_2,.grid_3,.grid_4,.grid_5,.grid_6,.grid_7,.grid_8,.grid_9,.grid_10,.grid_11,.grid_12,.grid_13,.grid_14,.grid_15,.grid_16{display: inline;float: left;margin-left: 1%;	margin-right: 1%;}
+.container_12 .grid_4{width: 31.333%;}
+.container_12 .grid_8{width: 64.666%;}
+html body * span.clear,html body * div.clear,html body * li.clear,html body * dd.clear{	background: none;border: 0;	clear: both;
+	display: block;	float: none;font-size: 0;list-style: none;margin: 0;padding: 0;
+	overflow: hidden;visibility: hidden;width: 0;height: 0;}
+.clearfix:after{clear: both;content: '.';display: block;visibility: hidden;	height: 0;}
+.clearfix{display: inline-block;}
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+
+/*Grid css*/
+
+/*****Style CSS******/
+/* -------------------- Basic HTML tags -------------------- */
+
+body {font: 12px/1.5 "Lucida Sans Unicode", "Lucida Grande", sans-serif;color: #444444;background-color: #f6f6f6;}
+a:focus {outline: 1px dotted invert;}
+hr {border-color: #ccc;border-style: solid;border-width: 1px 0 0;clear: both;height: 0;}
+h1 {font-size: 30px;letter-spacing: -1.5px;}
+h2 {font-size: 24px;letter-spacing: -1px;}
+h3 {font-size: 18px;}
+h4 {font-size: 14px;}
+h5 {font-size: 12px;}
+h6 {font-size: 10px;}
+ol {list-style: decimal;list-style-position: inside;}
+ul.bullets {list-style: disc;list-style-position: inside;}
+ul.bullets li {margin-left: 20px;margin-bottom: 5px;}
+p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset {margin-bottom: 15px;}
+a,a:visited {color:#0063be; text-decoration: none; }
+a:hover, a:active {text-decoration: underline; }
+h1 a, h1 a:visited, h2 a, h2 a:visited, h3 a, h3 a:visited, h4 a, h4 a:visited, h5 a, h5 a:visited, h6 a, h6 a:visited {color: #444444;}
+h1 a:hover, h1 a:active, h2 a:hover, h2 a:active, h3 a:hover, h3 a:active, h4 a:hover, h4 a:active, h5 a:hover, h5 a:active, h6 a:hover, h6 a:active {color:#0063be;}
+
+/* --------------------  Custom general classes -------------------- */
+.align-left{ text-align: left; }	
+.align-right   { text-align: right; }	
+.align-center  { text-align: center; }	
+.align-justify { text-align: justify; }	
+.float-left    { float: left; }	
+.float-right   { float: right; }
+.bottom-spacing { margin-bottom: 20px; }
+
+/* -------------------- Page elements -------------------- */
+#header {margin-bottom: 20px; }
+#header-main {background: url(../../images/matter_clients/bg-top.jpg) repeat-x scroll left top #005195;height: 98px;}
+#header-main #logo {background: url(../../images/matter_clients/logo.gif) no-repeat left 10px;width: 100%;height: 70px;}
+#subnav {background: #ffffff url(../../images/matter_clients/submenu-bg.gif) repeat-x bottom left;height: 48px;}
+#subnav ul {list-style: none;margin: 0;padding: 0;}
+#subnav ul li {	float: left; margin: 0 18px 0 0; padding: 0;}
+#subnav ul a, #subnav ul a:visited {display:block;float: left;color:#0063be; font-size: 14px; padding: 9px 0 0 0;text-decoration: none;}
+#subnav ul a:hover,#subnav ul a:active { text-decoration: underline;}
+#footer {padding: 0; color: #aaaaaa; padding: 12px 0 15px 0;margin-top: 30px; border-top: 1px solid #cccccc;}
+
+div.module, div.section {background: url(../../images/matter_clients/module-body-left-bg.gif) no-repeat scroll bottom left; float: left; 	width: 100%; margin-bottom: 20px;}
+div.module div.module-body {background: url(../../images/matter_clients/module-body-right-bg.gif) no-repeat scroll bottom right;padding: 20px 3% 20px 3%; float: left; width: 94%;}
+	
+	div.module div.module-body01 {background: url(../../images/matter_clients/module-body-right-bg.gif) no-repeat scroll bottom right;padding: 20px 1% 20px 1%; float: left; width: 98%;}
+	
+.grid_12 div.module div.module-body { padding: 20px 1.5% 20px 1.5%; float: left; width: 97%; }
+
+div.module div.module-table-body {background: url(../../images/matter_clients/module-body-right-bg.gif) no-repeat scroll bottom right; padding: 0;float: left;width: 100%;}
+div.module h2 { background: url(../../images/matter_clients/module-header-left-bg.gif) no-repeat scroll top left;	display: block;	float: left;height: 32px;margin-right: 0px;padding-right: 0px;text-decoration: none;color: #444444;font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;	font-weight:bold;width: 100%;margin-bottom: 0;letter-spacing: normal}
+div.module h2 span {background: url(../../images/matter_clients/module-header-right-bg.gif) no-repeat top right;display: block;line-height: 20px;padding: 7px 0 5px 18px;}
+div.module table {width: 100%;	margin: 0 0 10px 0;	border-left: 1px solid #d9d9d9;	border-bottom: 1px solid #d9d9d9;}
+div.module table.tr {border-collapse: separate;	border-right: 1px solid #aaaaaa;border-left: 1px solid #aaaaaa;	}
+div.module table th {background-color: #eeeeee;color: #444444;padding: 5px;border-top: 1px solid #d9d9d9;border-bottom: 1px solid #d9d9d9;border-right: 1px solid #d9d9d9;}
+div.module table td {background-color: #ffffff;	padding: 5px;border-right: 1px solid #d9d9d9;}
+div.module table tr.odd td {background-color: #f1f5fa;}
+.table-apply {width: 40%; float: right; text-align: right; margin-right: 10px;}
+
+/* -------------------- Pager -------------------- */
+.pager {display: block; padding: 0px 10px 10px 10px;  width: 40%; float: left; }
+.pager .first,.pager .prev,.pager .next,.pager .last {margin-bottom: -2px;}
+/* -------------------- Button (sliding door technique) -------------------- */
+
+/* -------------------- Pagination -------------------- */
+.pagination { margin:0 10px 20px 0; float: right;  }
+.pagination a.button { margin-right: 10px;/*added*->*/line-height: 26px; }
+.pagination a.last { margin-right: 0; }
+.pagination .numbers { float: left; padding-top: 3px; margin-right: 15px; }
+.pagination .numbers span { padding: 0 5px 0 5px; } 
+.pagination .current { font-weight: bold;padding: 0 0 0 5px; }
+.pagination a span{padding-top: 5px;}
+.pagination a{padding: 0 0px;}
+
+/* -------------------- Forms -------------------- */
+fieldset {margin-top: 15px; margin-bottom: 15px; }
+legend {margin-bottom: 10px; display: block; }
+label { display: block; margin-bottom: 5px;}
+	label span{color:#FF0000}
+.input-short,.input-medium,.input-long { padding: 3px; }
+select { padding: 2px; }
+textarea { padding: 3px;}
+.input-short {width: 25%}
+.input-medium {width: 50% }
+.input-long {width: 75%}
+input.input-short,input.input-medium,input.input-long,select, textarea {background: url(../../images/matter_clients/input-bg.gif) top left repeat-x #f6f6f6;border: 0;border: 1px solid #cccccc;}
+input.input-short:focus,input.input-medium:focus,input.input-long:focus,select:focus,textarea:focus {background: url(../../images/matter_clients/input-bg-focus.gif) top left repeat-x #ffffff;border-color: #a9c2d1;}
+input.submit-green {background: url(../../images/matter_clients/submit-green-bg.gif) top left repeat-x;border: 0;	color: #ffffff;	font-size: 14px;padding: 3px 12px;margin: 0px 10px 0 0;cursor: pointer;	}
+input.submit-green-hover {background-image: url(../../images/matter_clients/submit-green-bg-hover.gif);}
+input.submit-gray {background: url(../../images/matter_clients/submit-gray-bg.gif) top left repeat-x; border: 0;border-top: 1px solid #cccccc;border-left: 1px solid #cccccc;border-right: 1px solid #888888; border-bottom: 1px solid #888888; color: #ffffff;font-size: 14px;	padding: 2px 12px; margin: 0px 10px 0 0;cursor: pointer;}
+
+input.submit-gray-hover { 
+	background-image: url(../../images/matter_clients/submit-gray-bg-hover.gif);
+	}
+
+/* --------------------  Boxed notifications -------------------- */
+
+.notification {
+	display: block;
+	padding: 10px 20px 10px 45px;
+	border: 1px solid;
+	margin-bottom: 20px;
+	background-repeat: no-repeat;
+	background-position: 20px 10px;
+	}
+
+.message_sucess_div {
+	background-color: #a3e6bd;
+	border-color: #68d59b;
+	background-image: url(../../images/matter_clients/notification-tick.gif);
+        background-repeat: no-repeat;
+	}
+
+.n-information {
+	background-color: #9fddea;
+	border-color: #5fceea;
+	background-image: url(../images/matter_clients/notification-information.gif);
+        background-repeat: no-repeat;
+	}
+
+.n-attention {
+	background-color: #f9e497;
+	border-color: #ffcb4f;
+	background-image: url(../../images/matter_clients/notification-exclamation.gif);
+	}
+
+.message_error_div {
+	background-color: #ffc6ca;
+	border-color: #efb9c3;
+	background-image: url(../../images/matter_clients/notification-slash.gif);
+        background-repeat: no-repeat;
+	}
+
+/************new**************/	
+.links{text-align:right;padding:5px 10px 5px 0;}
+.links a, .linksOthertable a{text-decoration:none;padding:0 2px;color:#A4221B}
+
+.linksOthertable{text-align:right;padding:0px 0px;}
+
+ul.formEntries{padding:0;margin:0;}
+ul.formEntries li{padding-bottom:8px;}
+ul.formEntries li label{font-weight:bold;width:180px;float:left}
+ul.formEntries li .entries{font-weight:normal}
+
+.overdueMsg{color:#FF0000;}
+.upcomingMsg{color:#000000}
+.overdueMsg, .upcomingMsg{font-weight:bold}
+
+.message{padding:10px;font-weight:bold;display:block}
+
+.module-body h3{font-size:15px;}
+.radio{float:left;width:100%;padding-bottom:10px;}
+.radio ul li{float:left;padding-right:15px}
+
+h4{border-bottom:1px solid #ccc;padding-bottom:10px;}
+
+.mt20{margin-top:20px;}
+.userName{float:right;text-align:right;width:100%;padding-top:10px;}
+.frTr{float:right;text-align:right}
+
+.threeol .leftColumn{width: 17%;float:left;border-right:1px solid #ccc;padding:10px 0;}
+.threeol .middleColumn{width: 55%;float:left;border-right:1px solid #ccc;padding:10px 20px;}
+.threeol .rightColumn{width: 15%;float:left;padding:10px 0 0 20px;}
+
+.twoCol .leftColumn{width: 48%;float:left;border-right:1px solid #ccc;padding:10px 0;}
+.twoCol .rightCol{width: 50%;float:left;padding:10px 0 10px 20px}
+
+.col .leftCol{width: 49%;float:left;padding:10px 10px 10px 0;}
+.col .rightCol{width: 48%;float:left;padding:10px 0 10px 20px}
+
+/*****Style CSS******/
+
+/*****table sorter*/
+/* tables */
+table.tablesorter {	width: 100%;text-align: left;}
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {}
+table.tablesorter thead tr .header {background-repeat: no-repeat;background-position: center right;cursor: pointer;}
+table.tablesorter tbody td {color: #3D3D3D;padding: 4px;background-color: #FFF;	vertical-align: top;}
+table.tablesorter tbody tr.odd td {	background-color:#f1f5fa;}
+table.tablesorter thead tr .headerSortUp {background-image: url(asc.gif);}
+table.tablesorter thead tr .headerSortDown {background-image: url(desc.gif);}
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {background-color: #dddddd;}
+
+/****************navigation css***************************/
+#navigation li a {color:#454545;font-weight:bold;border-right:#d0d0d0 solid 1px;padding-right:10px;}
+#navigation li.sfHover, #navigation li.sfHover2 {background:#fff;border-left:#b2b2b2 solid 1px;	border-right:#b2b2b2 solid 1px;}
+#navigation li ul {	background:#fff;border:#b2b2b2 solid 1px;}
+#navigation li ul li {border-bottom:#ccc dotted 1px;background:#f0f0f0;}
+#navigation li ul li a {color:#7c7c7c;}
+#navigation li ul li a:hover {color:#696969;background:#f7f7f7;}
+#navigation li ul li.sfHover, #navigation li ul li.sfHover2 {background:#e0e0e0;}
+#navigation li ul li.sfHover a {color:#333;}
+#navigation li ul li ul li a:hover {color:#000;}
+#navigation li a, .portlet-header, .ui-datepicker-title, .page-title h1, .ui-widget-header, .hastable thead td, .hastable thead th, #page-wrapper .other-box h3 {text-shadow:0 1px 0 #fff;}
+
+
+#datepicker table td {padding:1px; border: none; text-align:center}
+#datepicker .ui-widget{font-size: .9em;}
+#datepicker .ui-datepicker { /*width: 15em; */}
+#datepicker .ui-state-default, #datepicker .ui-widget-content .ui-state-default, #datepicker .ui-widget-header .ui-state-default { border: 1px solid #d3d3d3/*{borderColorDefault}*/; background: #e6e6e6/*{bgColorDefault} url(images/ui-bg_glass_75_e6e6e6_1x400.png){bgImgUrlDefault}*/ 50%/*{bgDefaultXPos}*/ 50%/*{bgDefaultYPos}*/ repeat-x/*{bgDefaultRepeat}*/; font-weight: normal/*{fwDefault}*/; color: #555555/*{fcDefault}*/; }
+#datepicker .ui-state-default a, #datepicker .ui-state-default a:link, #datepicker .ui-state-default a:visited { color: #555555/*{fcDefault}*/; text-decoration: none; }
+#datepicker .ui-state-hover, #datepicker .ui-widget-content .ui-state-hover, #datepicker .ui-widget-header .ui-state-hover, #datepicker .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #999999/*{borderColorHover}*/; background: #dadada/*{bgColorHover} url(images/ui-bg_glass_75_dadada_1x400.png){bgImgUrlHover}*/ 50%/*{bgHoverXPos}*/ 50%/*{bgHoverYPos}*/ repeat-x/*{bgHoverRepeat}*/; font-weight: normal/*{fwDefault}*/; color: #212121/*{fcHover}*/; }
+#datepicker .ui-state-hover a, #datepicker .ui-state-hover a:hover { color: #212121/*{fcHover}*/; text-decoration: none; }
+#datepicker .ui-state-active, #datepicker .ui-widget-content .ui-state-active, #datepicker .ui-widget-header .ui-state-active { border: 1px solid #aaaaaa/*{borderColorActive}*/; background: #ffffff/*{bgColorActive} url(images/ui-bg_glass_65_ffffff_1x400.png){bgImgUrlActive}*/ 50%/*{bgActiveXPos}*/ 50%/*{bgActiveYPos}*/ repeat-x/*{bgActiveRepeat}*/; font-weight: normal/*{fwDefault}*/; color: #212121/*{fcActive}*/; }
+#datepicker .ui-state-active a, #datepicker .ui-state-active a:link, #datepicker .ui-state-active a:visited { color: #212121/*{fcActive}*/; text-decoration: none; }
+#datepicker .ui-widget :active { outline: none; }
+
+div.module .errorCont, .errorCont{color:#000; background-color: #ffc6ca; border:1px solid #efb9c3; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;}
+div.module .errorCont .errorExplanation, .errorCont .errorExplanation{height:100%;width:90%;clear:both;padding:1%;}
+div.module .errorExplanation ul, .errorExplanation ul {margin:0 0 0 13px;*margin:0 0 0 15px;padding:0;list-style-type:disc;}
+div.module .errorExplanation ul li, .errorExplanation ul li{margin:0px;padding:0px;height:auto;width:100% !important;font-size:11px;height:auto;}
+div.module .errorExplanation p, .errorExplanation p{margin:0px;padding:0px;list-style-type:none;width:100% !important;font-size:11px;height:auto;clear:both;display:none;}
+div.module .errorExplanation h2, .errorExplanation h2{margin:0px;padding:0 0 0 0;list-style-type:none;width:100%;font-size:12px;height:auto; background: none}
+
+.livia_dashboardroller {position: absolute; width:200px;word-wrap:break-word;padding: 10px 10px; margin-left:50px; z-index: 9999; color: #303030; border:1px solid #d9d9d9; background:#F1F5FA;line-height: 18px; color:#000;font:normal 1em Arial, Helvetica, sans-serif; text-decoration:none; text-align:left;}
+
+
+.mid_content_height {min-height:400px; height:auto !important; height:400px;}
+
+/*New Classes by Supriya K*/
+html,body{margin:0; padding:0; height:100%;}
+#vc-main{min-height:100%; position:relative;min-width: 1200px}
+#vc-header{/*background:#9F0;*/}
+#vc-body{padding-bottom:80px;}
+#vc-footer{position:absolute; bottom:0; width:100%;}
+
+.previousBtn, .nextBtn {height: 24px; display: block; }
+.previousBtn {background: url("../../images/matter_clients/prev.png") no-repeat; width: 59px; float: left;margin-right: 10px; }
+.nextBtn {background: url("../../images/matter_clients/next.png") no-repeat; width: 59px; float: right;margin-left: 10px;}

@@ -1,0 +1,33 @@
+<% companies_blank = @companies.blank? %>
+<div class="table" id="div_company_users_licences_details">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="26%" align="left"><%= t(:text_name) %></th>
+      <th width="16%" align="left"><%= t(:text_employees) %></th>
+      <th width="17%" align="left"><%= t(:text_active_users) %></th>
+      <th width="14%" align="left"><%= t(:text_active_licences) %></th>
+      <th width="15%" align="left"><%= t(:text_type) %></th>
+      <th width="12%" align="left"><%= t(:text_action) %></th>
+    </tr>
+    <%if companies_blank %>
+      <tr><td colspan="3"><div class="warningCont m5"><%= t(:text_no_records) %></div></td></tr>
+    <% else 
+      @companies.each do |company|%>
+        <tr class="<%=cycle("bg1", "bg2")%>">
+          <td><%= company.name %></td>
+          <td><%= company.employees.size %></td>
+          <td><%= company.users.size>0 ? company.users.size-1 : 0 %></td>
+          <td><%= link_to((company.licences.collect{|f|  f.licence_count }).sum, company_licences_companies_path(:id => company.id, :height=> 300, :width =>900), :class=>'thickbox')%></td>
+          <td><%= company.is_cgc? ? "Corporate Legal Dept" : "Law Firm" %></td>
+          <td><%= link_to t(:label_edit), edit_company_path(company) %></td>
+        </tr>
+      <% end
+    end %>
+  </table>
+</div>
+<% unless companies_blank %>
+  <div class="pagging">
+    <div class="left"><%=raw custom_page_entries_info @companies %></div>
+    <div class="right"> <%=will_paginate(@companies, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>', :separator=>'&nbsp;')%> </div>
+  </div>
+<% end %>

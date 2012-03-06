@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit)%> <%= t(:text_invoice) %> <%=t(:text_status)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%  remote_form_for(:tne_invoice_status,@tne_invoice_status, :url => company_tne_invoice_status_path(@company,@tne_invoice_status),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "#{t(:text_invoice)} #{t(:label_status)}", :modal_text => "#{t(:text_invoice)} #{t(:label_status)}",
+    :all_modal_values => @company.tne_invoice_statuses.collect{|invoice_status|[invoice_status.lvalue]}.uniq ,:modelclass=>'tne_invoice_statuses'} %>
+<%end%>
+<br class="clear"/>

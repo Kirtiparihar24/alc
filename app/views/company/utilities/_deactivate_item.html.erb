@@ -1,0 +1,21 @@
+<div id="topheadContainer"><div class="title fl">Select Replacement Value</div></div>
+<%form_tag update_item_path do -%>
+  <%=hidden_field_tag 'modelclass',params[:modelclass]%>
+  <%=hidden_field_tag 'linkage',params[:linkage]%>
+  <%=hidden_field_tag 'company',params[:company]%>
+  <%=hidden_field_tag 'original_item',params[:item]%>
+  <div class="form">
+    <table cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="25%"><label><%=t(:deactivate_label)%></label></td>
+        <td><%=collection_select 'item','item_id',all_items,:id ,:alvalue%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%=submit_tag t(:label_save), :class=>"button"%>
+    <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="tb_remove();" />
+  </div>
+  <div id="loading_gif" style="display: none"><%= image_tag"/images/loading.gif" %></div>
+<%end -%>

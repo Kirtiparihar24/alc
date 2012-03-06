@@ -1,0 +1,28 @@
+<div class="textBrwn11 fr "> <%= link_to t(:label_new_manager), new_manage_secretary_path%></div>
+<div class="p5 gridTable">
+  <table  cellpadding="0" cellspacing="0" border="0" align="left" width="100%">
+    <tr>
+      <th width="25%"><%=t(:text_name)%></th>
+      <th width="20%"><%=t(:text_email)%></th>
+      <th width="20%"><%=t(:text_login)%></th>
+
+      <th width="15%" colspan="3"><%=t(:text_action)%></th>
+    </tr>
+    <%unless @role.nil?%>
+    <%@role.users.each do |manager|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td><%=manager.first_name%>&nbsp; <%=manager.last_name%></td>
+        <td><%=manager.email%></td>
+        <td><%=manager.username rescue "-"%></td>
+        <td>
+          <%=link_to(t(:text_edit),edit_manage_secretary_path(manager.id))%>     &nbsp;|&nbsp;
+                       <%=link_to t(:label_reset_password), reset_password_form_user_path(:id=>manager.id), :rel=>:facebox%>
+ &nbsp;|&nbsp;
+  <%=link_to (t(:text_deactivate),{:controller=>"manage_secretary",:action=>"destroy",:id=>manager.id}, :confirm => 'Are you sure?', :method => :delete )%>
+        </td>
+      </tr>
+    <%end%>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

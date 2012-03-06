@@ -1,0 +1,24 @@
+<h4><%=t(:text_toe_docs)%></h4>
+<div class="module">    
+  <div class="module-table-body">
+    <table class="tablesorter">
+      <thead>
+        <tr>
+          <th align="left">User</th>
+          <th align="left">Document</th>
+          <th align="left">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @toe_docs.each do |e| %>
+          <tr class="<%= cycle('odd','') %>">
+            <td align="left"><%= e.user.try(:full_name)%></td>
+            <td align="left"><%=link_to(e.latest_doc.name, document_home_path(e.latest_doc, :company_id => e.company_id)) %></td>
+            <td align="left"><%= livia_date(e.created_at) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div style="clear: both"></div>
+  </div>
+</div>

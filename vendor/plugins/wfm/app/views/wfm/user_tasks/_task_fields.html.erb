@@ -1,0 +1,207 @@
+<%share = @note.logged_by.present? && @note.logged_by.role?('lawyer') ? true : false%>
+<div class="box_white mt8 task_forms <%unless index.eql?('0') %>sub_task_forms<%end%>" id="task_<%=index%>_form">
+  <% fields_for "tasks[#{index}]", UserTask.new do |f| %>
+    <div id="<%=index%>_loader_img"></div>
+    <div class="fl w49">
+      <div class="row">
+        <div class="inputs">
+          <input class="checkbox" name="" value="" type="checkbox" onclick="update_task_text(this,'<%=index%>')"/>
+        </div>
+        <label style="padding-left: 5px;">Copy <%= @from_edit=='true' ? "Task's" : "Note's"%> Contents</label>
+      </div>
+      <div class="row">
+        <label>Task <span class="text_red">*</span></label>
+        <div class="inputs">
+          <span class="input_wrapper textarea_wrapper_width_1" style="width:325px;">
+            <%= f.text_area "name",:class=>"text",:cols=>"10", :rows=>"8" %>
+          </span>
+        </div>
+      </div>
+      <div>
+        <div id="special_handling_<%=index%>">
+          <div class="row" style="width:auto;" id="scheduled_task_chk_<%=index%>">
+            <div class="inputs">
+              <label>Scheduled Task?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= check_box_tag "chk_scheduled_task_#{index}", '', false, :onclick=>"check_scheduled_task(#{index},this.checked);",:class => 'scheduled'%> Yes</label>
+            </div>
+          </div>
+          <div class="row" id="due_on_task_chk_<%=index%>" style="width:auto;">
+            <div class="inputs">
+              <label><%= check_box_tag "chk_due_on_task_#{index}", '', false, :onclick=>"check_due_at(#{index},this.checked);", :class=>"due_on"%> No</label>
+            </div>
+          </div>
+          <div style="display:none;" id="scheduled_task_<%=index%>">
+            <div class="row" id="time_zone_<%=index%>">
+              <label>Time Zone</label>
+              <div class="inputs">
+                <span class="input_wrapper_new" id="tasks_<%=index%>_time_zone" style="width: 240px;">
+                  <%=render :partial =>"wfm/user_tasks/time_zone", :locals => {:index => index, :time_zone => @time_zone}%>
+                </span>
+              </div>
+            </div>
+            <div class="row" id="start_at_<%=index%>">
+              <label>Start At</label>
+              <div class="inputs" >
+                <span class="input_wrapper_new" style="width: 125px;">
+                  <%= f.text_field "start_at",:class=>"datePicker expense_date_picker textfield", :readonly=>true %>
+                </span>
+                <span class="input_wrapper_new" style="width: 60px;">
+                  <%= text_field_tag "tasks[#{index}][start_time]",'', :size=>'8', :id=>"task_start_time_#{index}", :onchange=>"toggle_time_fields('#{index}','start');",:class=>'textfield' %>
+                </span>
+                <span id="reset_start_<%=index%>" onclick="reset_fields(this.id);">Reset</span>
+              </div>
+            </div>
+            <div class="row" id="due_at_<%=index%>" style="display:none;">
+              <label>Due At</label>
+              <div class="inputs" >
+                <span class="input_wrapper_new" style="width: 125px;">
+                  <%= f.text_field "due_at",:class=>"datePicker expense_date_picker textfield", :readonly=>true %>
+                </span>
+                <span class="input_wrapper_new" style="width: 60px;">
+                  <%= text_field_tag "tasks[#{index}][due_time]",'', :size=>'8', :id=>"task_due_time_#{index}", :onchange=>"toggle_time_fields('#{index}','due');" ,:class=>'textfield' %>
+                </span>
+                <span id="reset_due_<%=index%>" onclick="reset_fields(this.id);">Reset</span>
+              </div>
+            </div>
+            <div class="row" id="repeat_<%=index%>">
+              <label>Repeat</label>
+              <div class="inputs" >
+                <span class="input_wrapper_new" style="width: 90px;">
+                  <%= f.select :repeat, UserTask::REPEAT_OPTIONS, {}, {:onchange=>"display_wday_end_date_options(this.value,#{index},'');", :style=>"width:95px;"} %>
+                </span>
+              </div>
+            </div>
+            <div class="row" id="repeat_at_<%=index%>" style="display:none;">
+              <label>Repeat At</label>
+              <div class="inputs" >
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 2 %> MON</span>
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 4 %> TUE</span>
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 8 %> WED</span><br/>
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 16 %> THU&nbsp;</span>
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 32 %> FRI&nbsp;&nbsp;</span>
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 64 %> SAT</span><br/>
+                <span style="margin-right:10px;"><%=check_box_tag "tasks[#{index}][repeat_wday][]", 1 %> SUN</span>
+              </div>
+            </div>
+            <div class="row" id="end_at_<%=index%>" style="display:none;">
+              <label>End At</label>
+              <div class="inputs" >
+                <span class="input_wrapper_new" style="width: 90px;">
+                  <%= f.text_field "end_at",:class=>"datePicker expense_date_picker textfield", :readonly=>true %>
+                </span>
+                <span id="reset_end_<%=index%>" onclick="reset_fields(this.id);">Reset</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="inputs">
+          <label><%= f.check_box :share_with_client, :checked => share, :class => "ml0"%> Share With Client</label>
+        </div>
+      </div>
+      <% unless controller_name.eql?('notes') %>
+        <% unless index.eql?('0') %>
+            <div class="row">
+              <div class="inputs">
+                <label><%= f.check_box :parent_id,{:class=>'ml0'},'1',nil%> Mark as SubTask</label>
+              </div>
+            </div>
+        <% end %>
+      <% end %>
+      <div class="row">
+        <div class="inputs">
+          <label><%= f.check_box :status,{:class=>"ml0",:onclick=>"toggle_subtasks_div('#{index}',this.checked);"},'complete' %> Complete</label>
+        </div>
+      </div>
+    </div>
+    <div class="fr w49">
+      <div class="row" style="width:150%">
+        <div class="fl w20"><input class="radio" name="task_<%=index%>_radio_1" value="LivianTask" type="radio" onclick="update_work_type_select('LivianTask','<%=index%>','<%=@note.id%>')"  <%unless @back_office_user%>checked<%end%>/><span class="font_bld"><%= get_category_name %> Task</span></div>
+        <div class="fl ml8"><input class="radio" id="back_office_task_radio_<%=index%>" name="task_<%=index%>_radio_1" value="BackofficeTask" type="radio" onclick="update_work_type_select('BackofficeTask','<%=index%>','<%=@note.id%>')" <%if @back_office_user%>checked<%end%> /><span class="font_bld">Backoffice Task</span></div>
+        <br class="clear" />
+      </div>
+      <div class="row">
+        <label>Work Type <span class="text_red">*</span></label>
+        <div class="inputs">
+          <span class="input_wrapper blank" id="task_<%=index%>_work_types">
+            <%=select :work_type, :id, @work_types.collect {|w| [ w.name, w.id ]}, {:prompt=>'Please Select'},:onchange =>"update_work_subtype_select(this.value,'#{index}','#{@note.id}')"%>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <label>Work Type Skills <span class="text_red">*</span></label>
+        <div class="inputs">
+          <span class="input_wrapper blank" id="task_<%=index%>_work_subtypes">
+            <%=f.select :work_subtype_id, [], {:prompt=>'Please Select'}, :onchange=>"update_user_select('#{index}','#{@note.assigned_by_employee_user_id}')"%>
+          </span>
+        </div>
+      </div>
+      <% if current_user.service_provider.has_back_office_access? %>
+        <div class="row" id="task_<%=index%>_complexity">
+          <label>Complexity <span class="text_red">*</span></label>
+          <div class="inputs">
+            <span class="input_wrapper blank" id="task_<%=index%>_complexity_select">
+              <%=f.select :work_subtype_complexity_id,[], {:prompt=>'Please Select'},:onchange =>"display_stt_tat(this.value,'#{index}')"%>
+            </span>
+            <span class="sub_text_<%=index%>" id="tasks_<%=index%>_complexity_stt_tat"></span>
+          </div>
+        </div>
+      <%end%>
+      <div class="row">
+        <label>Priority</label>
+        <div class="inputs">
+          <span class="input_wrapper blank">
+            <%=f.select :priority, options_for_select(UserTask::PRIORITIES,{:selected=>@note.note_priority.to_s,:disabled=>""})%>
+          </span>
+        </div>
+      </div>
+      <span id="task_<%=index%>_user_select_option">
+        <div class="row" style="width:150%">
+          <div class="fl ml8 w20"><input class="radio common_queue_radio_<%=index%>" name="task_<%=index%>_radio_2" value="CommonPool" type="radio" onclick="update_user_select('<%=index%>','<%=@note.assigned_by_employee_user_id%>','CommonPool','<%=@back_office_user%>')"/><span class="font_bld"><span id="backoffice_<%=index%>" <%if @back_office_user == false%> style="display:none;"<%end%>>BO </span>Common Queue</span></div>
+          <div class="fl w20"><input class="radio cluster_users_radio_<%=index%>" name="task_<%=index%>_radio_2" value="ClusterUsers" type="radio" <%="checked" unless @common_pool_user %> onclick="update_user_select('<%=index%>','<%=@note.assigned_by_employee_user_id%>','ClusterUsers','<%=@back_office_user%>')"/><span class="font_bld" id="cluster_users_<%=index%>"><%if @back_office_user%>BO Agents<%else%>Cluster Users<%end%></span></div>
+          <div id="common_pool_agent_div_<%=index%>" <%if @back_office_user%>style="display:none;"<%end%>><div class="fl ml8 w20" id="task_<%=index%>_CommonPoolAgentRadio"><input class="radio common_pool_radio_<%=index%>" name="task_<%=index%>_radio_2" value="CommonPoolAgent" type="radio" <%="checked" if @common_pool_user %> onclick="update_user_select('<%=index%>','<%=@note.assigned_by_employee_user_id%>','CommonPoolAgent','<%=@back_office_user%>')"/><span class="font_bld">Common Pool Agent</span></div></div>
+          <br class="clear" />
+        </div>
+        <div class="row" id="task_<%=index%>_user_select">
+          <label>User</label>
+          <div class="inputs">
+            <span class="input_wrapper blank" id="task_<%=index%>_users">
+              <%=f.select :assigned_to_user_id,[], {:prompt=>'Please Select'}, {:class=>"users_select_#{index}"}%>
+            </span>
+          </div>
+        </div>
+      </span>
+      <% if(index != "0") %>
+        <div class="fr mr10"><span class="button grey_btn ml10"><span><span>Remove</span></span><%= button_to_function 'Remove', "jQuery('#task_#{index}_form').remove();"  %></span></div>
+      <%  end %>
+    </div>
+    <br class="clear" />
+  <%end%>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery(function() {
+      var index = '<%=index%>'
+      var timezone=jQuery("#tasks_"+index+"_time_zone option:selected").text();
+      startEndTimeFormat("task_start_time_"+index);
+      startEndTimeFormat("task_due_time_"+index);
+      var zone= timezone.split('T')[1].split(')')[0].split(':');
+      date_time_zone = getDate(zone.join('.'));
+        jQuery('#tasks_'+index+'_due_at').datepicker({
+        minDate: date_time_zone,
+        changeMonth: true,
+        changeYear: true
+      });
+      jQuery('#tasks_'+index+'_start_at').datepicker({
+        minDate: date_time_zone,
+        changeMonth: true,
+        changeYear: true
+      });
+      jQuery('#tasks_'+index+'_end_at').datepicker({
+        minDate: date_time_zone,
+        changeMonth: true,
+        changeYear: true
+      });
+    });
+  });
+</script>

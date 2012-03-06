@@ -1,0 +1,10 @@
+<ul class="tabs-nav"><li ><a href="#fragment-1" onclick="page_number_change(194)"><span><%= t(:text_campaign_members) %></span></a></li><li class=""><a href="#fragment-2" onclick="page_number_change(195)"><span><%= t(:text_mailers) %></span></a></li><li class=""><a href="#fragment-3" onclick="page_number_change(196)"><span><%= t(:text_response_reviews) %></span></a></li><li class=""><a href="#fragment-4" onclick="page_number_change(197)"><span><%= t(:text_suspended_list) %></span></a></li><li class=""><a href="#fragment-5" onclick="page_number_change(198)"><span><%= t(:text_opportunities) %></span></a></li><li class="tabs-selected"><a href="#fragment-6" onclick="page_number_change(77)"><span><%= t(:text_edit_campaign) %></span></a></li></ul>
+<script type="text/javascript">
+  function page_number_change(number){
+    jQuery(".pagiText").html("LL"+" "+number);
+  }
+  jQuery("#container-1 li a").click(function(){
+    jQuery('body').trigger('click');
+    window.location.href=this;
+  });
+</script>

@@ -1,0 +1,7 @@
+  <li><%=link_to(t(:text_matter_master),{:controller => :rpt_matters , :action => :matter_master}, :class => "#{@matter_master}" )%></li>
+  <li><%=link_to(t(:text_matter_time_spent),{:controller => :rpt_matters , :action => :matter_time_spent}, :class => "#{@matter_time_spent}" )%></li>
+  <%if task_available?%><li><%=link_to(t(:text_matter_task_status),{:controller => :rpt_matters , :action => :matter_task_status}, :class => "#{@matter_task_status }" )%></li><%end%>
+  <%if task_available?%><li><%=link_to(t(:text_matter_tasks_legal_team),{:controller => :rpt_matters , :action => :matter_team_tasks}, :class => "#{@matter_team_tasks }" )%></li><%end%>
+  <li><%=link_to(t(:text_matter_distribution),{:controller => :rpt_matters , :action => :matter_distribution}, :class => "#{@matter_distribution }" )%></li>
+  <li><%=link_to(t(:text_matter_duration_ageing),{:controller => :rpt_matters , :action => :matter_duration}, :class => "#{@matter_duration }" )%></li>
+  <li><%=link_to(t(:text_revenue_by_matter_type),{:controller => :rpt_matters , :action => :revenue_by_matter_type}, :class => "#{@matter_revenue_by_matter_type }" )%></li>

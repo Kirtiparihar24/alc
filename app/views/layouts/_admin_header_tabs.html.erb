@@ -1,0 +1,68 @@
+<ul id="topnav">
+  <% livia_active_class = (['products', 'subproducts','service_providers','configurelookups','security_questions','dynamic_i18ns'].include?(controller_name) || (controller_name == 'manage_secretary' && ['index','view_managers'].include?(action_name))) ? "active" : "" %>
+  <%if current_user.role?(:livia_admin)%>
+  <li>
+    <span class="btnLivia"><a href="#" class="<%= livia_active_class %>"><%= image_tag "admin/btn_livia.png" %></a></span>
+    <div class="sub">
+      <ul>
+        <li><%=link_to("Products", products_path)%></li>
+        <li><%=link_to("Modules", subproducts_path)%></li>
+        <li><%=link_to("Product Configuration", {:controller => 'products/product_dropdown_list'})%></li>
+        <li><%=link_to("Livians", "/manage_secretary")%></li>
+        <li><%=link_to("Configure Lookup", configurelookups_path)%></li>
+        <li><%=link_to("Configure Security Questions", security_questions_path)%></li>
+        <li><%=link_to("Dynamic i18n",dynamic_i18ns_path)%></li>
+      </ul>
+    </div>
+  </li>
+  <%end%>
+  <% company_active_class = (['companies', 'departments','designations','departments','employees','product_licences','assign_licence','rate_cards','invoices','company_email_settings','designations','utilities'].include?(controller_name) || (controller_name == 'manage_secretary' && action_name == 'manageprivilege')) ? "active" : "" %>
+  <li>
+    <span class="btnCompany"><a href="#" class="<%= company_active_class %>"><%= image_tag "admin/btn_company.png" %></a></span>
+    <div class="sub">
+      <ul>
+        <li><%=link_to("Portal Usage Report", portal_usage_report_form_companies_path)if current_user.role?(:livia_admin) %></li>
+        <li><%=link_to("Company", companies_url) if current_user.role?(:livia_admin)%></li>
+        <li><%=link_to("Designations", "/designations/")%></li>
+        <li><%=link_to("Departments", "/departments/")%></li>
+        <li><%=link_to("Employees", "/employees/")%></li>
+        <li><%=link_to("Employee Cluster Mapping", "/employees/employee_cluster_mapping")%></li>
+        <li><%=link_to("Users", "/companies/showusers")%></li>
+        <li><%=link_to("Company Clients", clients_companies_url) if current_user.role?(:livia_admin)%></li>
+        <li><%=link_to("Licences", "/product_licences/new") if current_user.role?(:livia_admin)%></li>
+        <li><%=link_to("Assign Licence", "/assign_licence/assignuser")%></li>
+        <li><%=link_to("Livian Privileges", "/manage_secretary/manageprivilege")%></li>
+        <li><%=link_to("Rate Card", "/rate_cards/")%></li>
+        <li><%=link_to("Billing & Payment", "/invoices/")%></li>
+        <li><%=link_to("Email Settings", "/company_email_settings/")%></li>
+        <li><%=link_to('Company Utilities', manage_company_utilities_path('contact_stages')) if current_user.role?(:livia_admin)%></li>
+        <li><%=link_to('Matter Utilities', manage_company_utilities_path('client_roles')) if current_user.role?(:livia_admin)%></li>
+        <li><%=link_to('Matter Documents', matter_documents_companies_path)%></li>
+        <li><%=link_to("Company Settings", "/company_settings")%></li>
+        <li>
+          <%if current_user.role?(:livia_admin)%>
+            <%=link_to("Import Histories", "/import_histories")%>
+          <% end %>
+        </li>
+        <li><%=link_to("Trust Account", "/financial_accounts")%></li>
+      </ul>
+    </div>
+  </li>
+    <%if current_user.role?(:livia_admin)%>
+   <% wfm_active_class = (['clusters','manage_cluster','categories','work_types','work_subtypes','roles'].include?(controller_name)) ? "active" : "" %>
+  <li>
+    <span class="btnWfm"><a href="#" class="<%= wfm_active_class %>"><%= image_tag "admin/btn_wfm.png" %></a></span>
+    <div class="sub">
+      <ul>
+        <li><%=link_to("Cluster", clusters_url)%></li>
+        <li><%=link_to("Manage Clusters", manage_cluster_index_path)%></li>
+        <li><%=link_to("Category", categories_url)%></li>
+        <li><%=link_to("WorkType", work_types_url)%></li>
+        <li><%=link_to("WorkSubtype", work_subtypes_url)%></li>
+        <li><%=link_to("Roles", roles_url)%></li>
+      </ul>
+    </div>
+  </li>
+  <%end%>
+</ul>
+

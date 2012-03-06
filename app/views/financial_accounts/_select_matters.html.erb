@@ -1,0 +1,11 @@
+<%
+# TODO: Need to re-factor the select tag code
+select_options = []
+if @matters.empty?
+  select_options =  options_for_select([["--No Matter Found--",nil]])
+else
+  data = [["--Please Select--",nil]] + @matters.collect{|matter|[matter.clipped_name,matter.id]}  
+  select_options = options_for_select(data)
+end
+%>
+<%= custom_select_tag "matter_id", select_options , {:class => "dropbox w100p", :style => "width:120px;"} %>

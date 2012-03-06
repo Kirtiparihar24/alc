@@ -1,0 +1,40 @@
+<div class="module" >
+  <h2><span><%=  t(:text_matter_tasks_by_date) %></span></h2>
+  <div class="module-table-body">
+    <table class="tablesorter">
+      <thead>
+        <tr>
+          <th><%= t(:text_matter_name) %></th>
+          <th align="left"><%= t(:text_name) %></th>
+          <th align="left"><%= t(:text_description) %></th>
+          <th align="center"><%= t(:text_start_date) %></th>
+          <th align="center"><%= t(:text_due_date) %></th>
+          <th align="center"><%= t(:text_start_time) %></th>
+          <th align="center"><%= t(:text_end_time) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%if @datetasks.length > 0%>
+          <%@datetasks.each do |task|%>
+            <tr class="<%=cycle("odd", "")%>">
+              <td><%=raw truncate_hover_link_blue_tooltip(task.matter.name.try(:titleize),20,matter_details_path(task.matter))%></td>
+              <td><%=truncate_hover_blue_tooltip(task.name.try(:titleize),20)%></td>
+              <td><%=truncate_hover_blue_tooltip(task.description.try(:titleize),20)%></td>
+              <td align="center"><%=raw livia_date_effect(task.start_date)%></td>
+              <td align="center"><%=raw livia_date_effect(task.end_date)%></td>
+              <td align="center"><%= raw livia_time_zone(task.start_date)if task.is_appointment?%></td>
+              <td align="center"><%= raw livia_time_zone(task.end_date)if task.is_appointment?%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr class="odd"><td colspan="7"><div class="message"><%=t(:text_no_open_task_found)%></div></td></tr>
+        <%end%>
+      </tbody>
+    </table>
+    <div class="pagination"><%# to add padding %></div>
+    <div style="clear: both"></div>
+  </div>
+</div>
+<script type="text/javascript">
+  initLiviaDashBoardView();
+</script>

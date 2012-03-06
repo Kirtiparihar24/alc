@@ -1,0 +1,90 @@
+<div id="assign_to_errors"></div>
+<% remote_form_for :note, @note, :url=>{:action=>'assign_note'} ,:html=>{:class=>"search_form general_form"},:loading=>"disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable','Assign');" do |f| %>
+  <%= hidden_field_tag :assign, 'assign' %>
+  <fieldset >
+    <div class="forms">
+      <div class="row">
+        <label>Note</label>
+        <span class="input_wrapper blank">
+          <%=@note.description %>
+        </span>
+      </div>
+      <div class="row">
+        <label>Lawyer</label>
+        <div class="inputs">
+          <span class="input_wrapper blank">
+            <%=@note.receiver.full_name%>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <label>Note Created On</label>
+        <div class="inputs">
+          <%=wfm_date_format(@note.created_at)%>
+        </div>
+      </div>
+      <div class="row">
+        <label>Matter</label>
+        <div class="inputs">
+          <span class="input_wrapper blank">
+            <%=@note.matter.name if @note.matter %>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <label>Contact</label>
+        <div class="inputs">
+          <span class="input_wrapper blank">
+            <%=@note.contact.full_name if @note.contact%>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <label>Priority</label>
+        <div class="inputs">
+          <span class="input_wrapper blank">
+            <%=get_note_priority(@note.note_priority) rescue '-'%>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <label>Assigned To</label>
+        <span class="input_wrapper blank">
+          <%= @note.assigned_to.full_name if @note.assigned_to%>
+        </span>
+      </div>
+      <div id="_loader_img"></div>
+      <%= render :partial => "assign_to" %>
+      <div class="button_div">
+        <span class="button send_form_btn buttons_to_disable"><span><span id="button_pressed">Assign</span></span><input type="submit" name="" onclick="return check_validation_on_note('assign_form');"/></span>
+        <span class="button send_form_btn ml10 buttons_to_disable" onclick="tb_remove();"><span><span>Cancel</span></span><input type="button" name=""/></span>
+        <br class="clear" />
+      </div>
+    </div>
+    <% if document_homes_nil_or_empty?(@note) %>
+      <div>
+        <label>Uploaded Documents</label>
+        <div class="table_wrapper">
+          <div class="table_wrapper_inner">
+            <table border="0" width="100%" style="float:left;">
+              <tr>
+                <th>Document Name</th><th>Uploaded By</th><th>Date</th>
+              </tr>
+              <% @note.document_homes.each do |document_home| %>
+                <% document_home.documents.each do |document| %>
+                  <tr>
+                    <td><%= document.name %>
+                      <%=link_to image_tag("../stylesheets/wfm/layout/site/icon/icon_document_download.png", :title=>"Download", :alt=>"Download"), download_document_wfm_user_task_path(document.id)%>
+                    </td>
+                    <td><%= document.user.full_name %></td>
+                    <td><%= document.created_at %></td>
+                  </tr>
+                <%end%>
+              <% end %>
+            </table>
+          </div>
+        </div>
+      </div>
+    <%end%>
+  </fieldset>
+<%end%>

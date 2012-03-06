@@ -1,0 +1,39 @@
+<% matters = @matters %>
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_matters)%></div>
+  <div class="gryBox">
+    <!--TABULAR DATA STARTS-->
+    <div class="gridTable">
+      <table cellspacing="0" border="0" cellpadding="0" width="100%">
+        <thead>
+          <tr>
+            <th><%=t(:text_name)%></th>
+            <th><%=t(:text_description)%></th>
+          </tr>
+        </thead>
+        <%unless matters.blank? %>
+          <tbody class="scrollY100">
+            <%matters.each do|matter|%>
+              <tr class="<%=cycle("bg1", "bg2")%>">
+                <td>
+                  <%=link_to(matter.name.try(:titleize), edit_matter_path(matter))%>
+                </td>
+                <% if matter.description.length > 100 %>
+                  <td class="liviadashboardview"><%=truncate(matter.description,:omission => "...", :length => 60)%>
+                    <span class="livia_mattersroller" style="display:none;"><%=matter.description%></span>
+                  </td>
+                <%else%>
+                  <td class="liviadashboardview"><%=matter.description%>
+                  </td>
+                <%end%>
+              </tr>
+            <%end%>
+          </tbody>
+        <%else%>
+          <tr><td colspan="4"><div class="warningCont m5"><%=t(:text_no_data)%></div></td></tr>
+        <%end%>
+      </table>
+    </div>
+    <!--TABULAR DATA ENDS-->
+  </div>
+</div>

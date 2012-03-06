@@ -1,0 +1,48 @@
+<%unless @error%>
+  var billingEntryObj = jQuery('#hidden_time_row_no_'+<%=@time_entry.id%>);
+  jQuery('#formatted_start_time_'+<%=params[:id]%>).children("span").html("<%=@formatedstarttime%>");
+  jQuery('#actual_duration_'+<%=params[:id]%>).children("span").html(<%=@time_entry.actual_duration%>);
+  jQuery('#billed_amount_'+<%=params[:id]%>).children("span").html("<%=@billed_amount%>");
+  jQuery('#final_billed_amount_'+<%=params[:id]%>).children('span').html("<%=number_with_lformat(@final_billed_amount)%>");
+  //jQuery('#formatted_end_time_'+<%=params[:id]%>).children("span").html("......");
+  jQuery('#error_notice').show();
+  jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");
+  var total_time_obj = jQuery('#te_duration_'+billingEntryObj.val()).children("span");
+  var billed_amount_obj = jQuery('#te_amount_'+billingEntryObj.val()).children("span");
+  var total_duration=0.0;
+  var billed_amount=0.0;
+  <% if(@time_entry.actual_duration > @previous_duration)
+    diff_duration = @time_entry.actual_duration - @previous_duration
+    diff_billed_amount = @final_billed_amount - @previous_final_billed_amount
+  %>
+    total_duration = parseFloat(total_time_obj.html()) + parseFloat(<%= diff_duration %>);
+    billed_amount = parseFloat(billed_amount_obj.html().replace(/,/g,'')) + parseFloat(<%= diff_billed_amount %>);
+    operate = '+';
+  <%   else
+    diff_duration = @previous_duration - @time_entry.actual_duration
+    diff_billed_amount = @previous_final_billed_amount - @final_billed_amount
+  %>
+    operate = '-';
+    total_duration = parseFloat(total_time_obj.html()) - <%= diff_duration %>;
+    billed_amount = parseFloat(billed_amount_obj.html().replace(/,/g,'')) - <%= diff_billed_amount %>;
+
+  <%end%>
+  total_time_obj.html(total_duration.toFixed(2));
+  <%unless @time_entry.is_override_amout?%>
+     if(total_duration > 0){
+      jQuery('#te_rate_'+billingEntryObj.val()).children("input").val((billed_amount/total_duration).toFixed(2));
+      subtotal = jQuery('#tne_invoice_invoice_amt');
+      operate =='+' ? subtotal.val(parseFloat(subtotal.val()) + parseFloat(<%= diff_billed_amount %>)) : subtotal.val(parseFloat(subtotal.val()) - parseFloat(<%= diff_billed_amount %>));
+    }
+    billed_amount_obj.html(billed_amount);
+     if(jQuery("#apply_final_discount").is(':checked')){
+        checkDiscount();
+        }else{
+        check_calculations();
+      }
+  <%end%>
+<%else%>
+  jQuery('#error_notice').show();
+  jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");
+  jQuery('#formatted_start_time_'+<%=params[:id]%>).children("span").html("<%=@old_start_time%>");
+<%end%>

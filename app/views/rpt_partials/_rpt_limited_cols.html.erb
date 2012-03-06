@@ -1,0 +1,17 @@
+<%= render "rpt_partials/report_info" %>
+<% unless @data.blank? %>
+  <div class="mt5">
+    <div class="w100">
+    <!-- <div class="title_blue  fl" >Client <span >(23 Records)</span></div>
+      <div class="fr  textR">
+        <a href="accounts_new.html" title="Contacts" class="vtip"><span class="icon_contacts fl"></span></a><a href="#"><span class="icon_deActivated fl ml15"></span></a>
+      </div>
+      <br class="clear" /> -->
+    </div>
+    <%= render :partial => 'rpt_partials/list_col_array', :locals => {:col => @data} %>
+  </div>
+  <div class="mt8 pagination"><%= t(:text_total_records) %> = <%= @data.length %> </div>
+<% else %>
+  <div class="textNormal pl5"><strong><%= t(:text_no_accounts_found) %></strong></div>
+<% end %>
+<br class="clear" />

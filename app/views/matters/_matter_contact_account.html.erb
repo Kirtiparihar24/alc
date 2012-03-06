@@ -1,0 +1,51 @@
+<!-- Created this partial for common matter info on all matter tabs, to be able to fix once and display everywhere. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>    
+    <td width="70%">
+      <strong><%=t(:text_matter)%>:</strong>&nbsp;<%=@matter.clipped_name.try(:titleize)%> -
+      <strong><%=t(:label_client)%>:</strong> <%= @matter.contact.try(:full_name) %>
+      <%=raw  "- <strong>#{t(:label_Account)}:&nbsp;</strong>" + @matter.contact.accounts[0].name if @matter.contact.accounts[0]  %>
+      <% role = get_role(get_employee_user_id,@matter) %>
+      - <strong> Role: </strong><%= (role.blank? && is_access_matter?) ? 'Firm Manager' : role %>
+      <% unless role.eql?("Lead Lawyer") %>
+        - <strong> Lead Lawyer: </strong><%= @matter.get_lawyer_name %>
+      <% end %>
+    </td>
+    <% if (controller_name.eql?("matter_tasks") and action_name.eql?("edit") || action_name.eql?("update")) %>
+      <td colspan="2">&nbsp;</td>
+      <td align="right" style="padding-right:20px">
+        <span>
+          <%=link_to('New Time Entry',time_expense_entry_matter_matter_task_path(@matter, @matter_task, :height => "400", :width => "1020",:view=>params[:view]), :class => "thickbox link_blue", :name=>t(:text_new_time_entry))%>
+        </span>
+      </td>
+      <td>
+        <a href="<%=time_expense_entry_matter_matter_task_path(@matter, @matter_task, :height => "400", :width => "1020")%>" class="thickbox link_blue vtip" title="<%=t(:text_new_time_entry)%>" name="<%=t(:text_new_time_entry)%>">
+          <span class="icon_task_maketime_entry fl"></span>
+        </a>
+      </td>
+    <% end %>
+    <% if params[:from].eql?("matters") and !params[:action].eql?('add_more_expenses')  %>
+      <td align="right" width="20%">
+        <span>
+          <a href="<%= physical_timeandexpenses_add_expense_entry_home_path(:matter_id => params[:matter_id],:height=>"355",:width=>"1210",:from=>"matters") %>" class="thickbox " name="New <%= t(:text_expense_entry) %>">New <%=t(:text_expense_entry)%>
+          </a>
+        </span>
+      </td>
+      <td>
+        <a href="<%= physical_timeandexpenses_add_expense_entry_home_path(:matter_id => params[:matter_id],:height=>"355",:width=>"1210",:from=>"matters") %>" class="thickbox vtip fl mt5" title="New <%=t(:text_expense_entry)%>" name="<%=t(:text_new_expenses)%>"><%=image_tag("icon-expenseentry.png") %>
+        </a>
+      </td>
+      <td align="right" width="20%">
+        <span>
+          <a href="<%= physical_timeandexpenses_new_time_entry_path %>?height=325&width=1020&from=matters&matter_id=<%=params[:matter_id]%>&status=<%=params[:status]%>&view=<%=params[:view]%>&current_tab=<%=params[:current_tab]%>&=start_date=<%=params[:start_date]%>&end_date=<%=params[:end_date]%>" class="thickbox" name="<%=t(:text_new_time_entry)%>"><%= t(:text_new_time_entry) %>
+          </a>
+        </span>
+      </td>
+      <td>
+        <a href="<%= physical_timeandexpenses_new_time_entry_path(:matter_id => params[:matter_id],:status=>params[:status],:view=>params[:view],:current_tab=>params[:current_tab],:start_date=>params[:start_date],:end_date=>params[:end_date],:height=> "400", :width=> "970", :from=>"matters") %>" class="thickbox vtip" title="<%=t(:text_time_entry)%>" name="<%=t(:text_new_time_entry)%>">
+          <span class="icon_task_maketime_entry fl mt3"></span>
+        </a>
+      </td>
+    <%end%>
+  </tr>
+</table>

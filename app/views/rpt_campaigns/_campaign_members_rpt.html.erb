@@ -1,0 +1,48 @@
+<div class="w100">
+  <div class="title_blue fl">
+    <% if params[:report][:summarize_by] == "contact"
+      unless @data.blank? %>
+        <%= t(:text_total_records) %> = <%=@data.length%>
+      <% end %>
+    <% else %>
+      <% unless @total_data.blank? %>
+        <%= t(:text_total_records) %> = <%=@length%>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="fr  textR">
+    <%=raw(generate_send_email_rpt_link("campaign_members_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("Campaign")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("campaign_members_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<% if params[:report][:summarize_by] == "contact"
+  unless @data.blank? %>
+    <div class="mt5">
+      <%= render :partial => 'rpt_partials/list_col_array', :locals => {:col => @data} %>
+    </div>
+    <div class="title_blue fl"><%= t(:text_total_records) %> = <%=@data.length%> </div>
+  <% else%>
+    <div class="title_blue fl"><%=t(:text_total_records)%> = 0 </div>
+  <% end %>
+<% else %>
+  <% unless @total_data.blank?
+    @total_data.each do |label,col| %>
+      <div class="mt5">
+        <div class="w100">
+          <div class="title_blue fl" ><%=(label == "" or !label) ? "None" : label%> <span >(<%= pluralize_record(col.length , 'Record',0)%>)</span></div>
+          <div class="fr textR"> <%# links %> </div>
+          <br class="clear" />
+        </div>
+        <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => col} %>
+      </div>
+      <% reset_cycle %>
+    <% end %>
+    <br class="clear" />
+    <div class="title_blue fl"><%= t(:text_total_records) %> = <%=@length%> </div>
+  <% else%>
+    <div class="title_blue fl"><%=t(:text_total_records)%> = 0 </div>
+  <% end %>
+<% end %>
+<br class="clear" /> 

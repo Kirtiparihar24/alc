@@ -1,0 +1,50 @@
+<% content_for :company_selection do %>
+  <%= render :partial => "/company/utilities/company_selection" %>
+<% end %>
+<div class="box-head"><h2 class="left">FTP Upload</h2></div>
+<div class="actionLinks"><%= link_to "Company Settings", company_settings_path %> | <%= link_to t(:label_upload_logo), logo_upload_path %> | <%= link_to "Automate Matter Numbering", automate_matter_numbering_path %> | <%=link_to "FTP Upload", ftp_upload_path%></div>
+<% unless @company.blank? %>
+  <% form_for(@user_setting, :url => ftp_upload_path) do |f| %>
+    <div class="form">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td  align="left"><label>Select Lawyer *</label></td>
+          <td align="left"><%=f.collection_select :user_id, @employees, :user_id, :full_name, {:include_blank => "Please select"}, {:onchange => "get_ftp_folder(this.value)"}%></td>
+        </tr>
+        <tr>
+          <td  align="left"><label>FTP Folder *</label></td>
+          <td  align="left">
+            <%= f.text_field :setting_value, :value => @ftp_folder, :class=>"field size3"%>
+            <%= f.hidden_field :setting_type, :value => 'FtpFolder'%>
+            <%= f.hidden_field :company_id, :value => @company.id%>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+    <div class="buttons">&nbsp;
+      <%=f.submit "Upload", :name => "save_and_upload", :class=>"button"%></div>
+    <% end %>
+  <% end %>
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery('.errorCont')
+    .fadeIn('slow')
+    .animate({
+      opacity: 1.0
+    }, 8000)
+    .fadeOut('slow', function() {
+      jQuery('.errorCont').remove();
+    });
+  });
+
+
+  function get_ftp_folder(uid) {
+    $.get("/get_ftp_folder", {"user_id" : uid }, function(data) {$("#user_setting_setting_value").val(data)});
+  }
+
+</script>
+

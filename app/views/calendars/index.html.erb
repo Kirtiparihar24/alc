@@ -1,0 +1,105 @@
+<div class="calenderDiv">
+  <div class="mt5 mb5">
+    <h3 class="fl">Week <%= @week  %> - <%= week_heading %> <% cur_year = (params[:cal_year]==@year ? nil : params[:cal_year]) %></h3>
+    <div class="fr">
+      <%= link_to((image_tag "calendar/arrow_left.png", :width=>"22", :height => "22"), "#", :class => "vtip", :title => "Previous Week", :onclick => "update_view('#{calendars_path(:cal_week=>@pre_week, :cal_year=>(@pre_week==52 ? @year-1 : cur_year), :params => @commonparams)}');") %>
+      <%= link_to((image_tag "calendar/arrow_right.png", :width=>"22", :height => "22"), "#", :class => "vtip", :title => "Next Week", :onclick => "update_view('#{calendars_path(:cal_week=>@nxt_week, :cal_year=>(@nxt_week==1 ? @year+1 : cur_year), :params => @commonparams)}');") %>
+    </div>
+    <br class="clear" />
+  </div>
+  <table cellpadding="0" cellspacing="0" class="bg_white" width="100%">
+    <%= render "task_todos" %>
+    <% all_day_appointments = @appointments.select{|appointment| appointment.all_day_event} %>
+    <% unless all_day_appointments.blank? %>
+      <% get_task_and_appointment_series(all_day_appointments) %>
+      <% a_id = all_day_appointments.collect{|appointment| appointment.id } %>
+      <% b_id = @task_appt.collect{|appt| appt[:activity_id] } %>
+    <% end %>
+    <tr><td height="2" style="background-color: #2b2b2b" colspan="2"></td></tr>
+    <tr>
+      <td colspan="2">
+        <div>
+          <div>
+            <div style="width: 100%; background: none repeat scroll 0% 0% rgb(111, 159, 180);">
+              <table cellspacing="1" cellpadding="0" border="0" bgcolor="" width="100%" class="calenderView">
+                <tbody>
+                  <tr>
+                    <th valign="top"  style="width:36px;">&nbsp;</th>
+                    <% (1..7).each do |i| %>
+                      <th width="14%">
+                        <span><%= (Date.commercial(@year, @week, i)).strftime("%d") %></span> ::
+                        <%= link_to calendar_day_name(i), calendar_day_calendars_path(:cal_date=>Date.commercial(@year, @week, i)) %>
+                      </th>
+                    <% end %>
+                  </tr>
+                  <tr>
+                    <th colspan="8"></th>
+                  </tr>
+                  <tr>
+                    <td style="background-color:#6F9FB4; width:36px;" valign="top">&nbsp;</td>
+                    <% (1..7).each do |i| %>
+                      <% for_height = 0 %>
+                      <td width="14%" class="bg8" valign="top">
+                        <ul style="margin:0; list-style:none">
+                          <% unless all_day_appointments.blank? %>
+                            <% all_day_date = (Date.commercial(@year, @week, i)) %>
+                            <% task_appt = @task_appt.select{|appointment| appointment[:activity_instance_start_date].to_date == all_day_date or appointment[:activity_instance_start_date].to_date < all_day_date} %>
+                            <% task_appt.each_with_index do |appointment, index| %>
+                              <% appt = appointment[:activity] %>
+                              <% matter = appt.attribute_present?("matter_id") %>
+
+                              <% if appointment[:activity_instance_start_date].to_date == all_day_date or (appointment[:activity_instance_start_date].to_date < all_day_date and appointment[:activity_instance_end_date].to_date >= all_day_date) %>
+                                <% day =  (appointment[:activity_instance_start_date].to_date == all_day_date) ? "first_day" : ((appointment[:activity_instance_end_date].to_date > all_day_date) ? "middle" : "last_day") %>
+                                <li class="<%#=day%>" style="<%#= "margin-top: #{appt.index_height*5}px;" if appt.index_height %> <%#= "border-right:3px solid #000;" if (appt.start_date.to_date == appt.end_date.to_date) %>" >
+                                  <%= ">>"  unless day=="first_day" %>
+                                  <% unless appt.repeat.blank? %>
+                                    <%= activity_description_with_hash(appointment, 1, "newtooltip", appt.name, true, (matter ? "thickboxInstance('#{instance_series_calendars_path(:appointment_id => appt.id, :height => 120, :width => 250, :matter => matter, :link => (edit_instance_matter_matter_task_path(appt.matter, appt, :instance_end_time => appt.end_date.to_time, :instance_end_date => appt.end_date.to_date,:ex_start_time=> appt.start_date.to_time, :instance_start_date => appt.start_date.to_date, :height => "400", :width => "800")), :series => ("#{edit_matter_activity_calendars_path(:matter_id => appt.matter_id, :id=>appt.id, :height => "400", :width=> "800", :cal_action => params[:action])}"))}')" : "thickboxInstance('#{instance_series_calendars_path(:appointment_id => appt.id, :height => 120, :width => 250, :link => (edit_zimbra_instance_calendars_path(:id => appt.id, :instance_end_time => appt.end_date.to_time, :instance_end_date => appt.end_date.to_date,:ex_start_time=> appt.start_date.to_time, :instance_start_date => appt.start_date.to_date, :height => "400", :width => "800")), :series => ("#{edit_activity_calendars_path(:id=>appt.id, :height => "400", :width=> "800")}"))}')")) %>
+                                  <% else %>
+                                    <%= activity_description_with_hash(appointment, 1, "newtooltip", "", false, false) %>
+                                  <% end %>
+                                </li>
+                                <% appt.index_height = for_height if day =="first_day" %>
+                                <% for_height+=1 %>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        </ul>
+                      </td>
+                    <% end %>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="scrollY400">
+            <div style="width: 100%;">
+              <table cellspacing="0" cellpadding="0" border="0" width="100%" class="calenderView">
+                <tbody>
+                  <tr>
+                    <td height="60px" width="30" valign="top" rowspan="2">
+                      <% 24.times do |i| %>
+                        <% time = week_time_tracking(i)  %>
+                        <div <% if time=="8am" %>id="eightam"<% end %> class="appointment_time">
+                          <%= time %>
+                        </div>
+                      <% end %>
+                    </td>
+                    <% (1..7).each do |day| %>
+                      <%@eachdate = Date.commercial(@year, @week, day) %>
+                      <td width="14%"><%= render :partial => "appointment_hour" %></td>
+                    <% end %>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery(".scrollY400").scrollTo( jQuery('#eightam'), 800 );
+  });
+</script>

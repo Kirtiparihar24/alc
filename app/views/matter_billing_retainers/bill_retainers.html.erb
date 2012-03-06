@@ -1,0 +1,34 @@
+<div>
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <!--Billing & Retainer Starts-->
+    <div style="min-width: 0px;" id="fragment-8" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container p5">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody><tr>
+            <td width="76%" style="padding:0">
+              <%=render :partial => "matters/matter_contact_account" %>
+            </td>
+          </tr>
+        </tbody></table>
+      <div class="seperator_dotted_hori"></div>
+      <!--Law Firm Team-->
+      <div id="display_summary">
+        <%= render :partial =>"summary", :locals => {:bills => @bills, :retainers => @retainers} %>
+      </div>     
+      <br class="clear" />      
+      <div id="display_matter_bills">
+        <%= render :partial => "billings", :locals => {:bills => @bills} %>
+      </div>
+      <!--Client Representatives-->
+      <br class="clear" />
+      <!--Other Related Parties-->
+      <div id="display_retainers">
+        <%= render :partial => 'retainers',:locals => {:retainers => @retainers} %>
+      </div>
+      <!--Other Related Parties-->
+    </div>
+    <!--Billing & Retainer Ends-->
+  </div>
+
+</div>
+

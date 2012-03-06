@@ -1,0 +1,30 @@
+<!Need to remove this file->
+<div class="rightCol">
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_file_import)%></div>
+    <div class="formMain">
+      <%form_tag  "/import_data/import_from_file", :method => 'post',:multipart => true  do%>
+        <div>
+          <div class="convertContact">
+            <div class="mt5">
+              <p><label><%=t(:label_import_type)%></label><%= select_tag "import_type", options_for_select(%w{ Contacts Accounts })%></p>
+              <p><label><%=t(:label_file_format)%></label>
+                <%= select_tag "file_format", options_for_select(%w{ CSV })%>
+                <br class="clear" />
+              </p>
+              <p><label><%=t(:label_select_a_file)%></label><%=file_field_tag :import_file%></p>
+              <br class="clear" />
+            </div>
+          </div>
+        </div>
+        <div class="txtC">
+          <%=submit_tag t(:label_import), :class => 'button', :onclick => 'return validateImportFile();'%>
+          <input type="submit" id="cancel" value="<%= t(:text_cancel) %>" onclick="window.location='<%=contacts_path%>';return false;"/>
+          <br class="clear"/>
+        </div>
+        <br class="clear"/>
+      <%end%>
+    </div>
+  </div>
+  <br class="clear"/>
+</div>

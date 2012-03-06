@@ -1,0 +1,39 @@
+<div>
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_category)%></div>
+    <div class="gryBox">
+      <div class="gridTable">
+        <table width="99%" align="center" cellpadding="5" cellspacing="2" border="0">
+          <tbody>
+            <tr>
+              <td align="Right" valign="top"  width="33%" class="linkred">
+                <%=link_to(t(:text_new_category), new_budget_category_path, { :class => "link", :rel => "facebox" })%>
+                <%= link_to t(:label_new_category), "#", :onclick=> "$('#addcategory').show();" %>
+                <div id="addcategory" style="display:none"><%= render "form" %></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tbody>
+            <tr>
+              <th width="25%"><%=t(:text_category)%></th>
+              <th width="25%"><%=t(:text_estimated_budget)%></th>
+              <th width="25%"><%=t(:text_actions)%></th>
+            </tr>
+            <% @budget_categories.each do |category| %>
+              <tr class="bg1" >
+                <td width="25%"><%=category.lvalue%>  </td>
+                <td width="25%"><%= getEstimatedAmt(category)%>   </td>
+                <td width="25%">  <%= link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_budget_category_path(category))%> |
+                  <%= link_to image_tag("/images/livia_portal/icon_reject.gif", :border=>0), category, :confirm => 'Are you sure?', :method => :delete %>
+                </td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br class="clear" />

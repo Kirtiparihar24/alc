@@ -1,0 +1,19 @@
+<div class="row">
+  <label>Assign To</label>
+  <div id="cluster_users_div" class="fl assign_to"><input id="cluster_users_radio" class="radio" name="user_type" value="ClusterUsers" type="radio" onclick="update_assign_note_user_select('cluster_users','<%=@note.id%>');" checked/><span class="radio_text" style="float:right;">Cluster Users</span></div>
+  <div id="common_pool_agent_div" class="fl ml8 assign_to"><input class="radio" name="user_type" value="CommonPoolAgent" type="radio"  onclick="update_assign_note_user_select('cpa','<%=@note.id%>');"/><span class="radio_text" style="padding:0 33px 0 0;float:right;">Common Pool Agent</span></div>
+  <div id="back_office_agent_div" class="fl ml8"><input id="bo_agent_radio" class="radio" name="user_type" value="BackOfficeAgent" type="radio"  onclick="update_assign_note_user_select('back_office_user','<%=@note.id%>');"/><span class="radio_text" style="padding:0 33px 0 0;float:right;">BO Agent</span></div>
+</div>
+<div class="row" id="users_select_div">
+  <label>User <span id="mandatory">*</span> </label>
+  <span class="input_wrapper blank" id="users_select">
+    <%=custom_select_tag 'note[assigned_to_user_id]', options_for_select(@livian_users,{:selected=>@note.assigned_to_user_id,:disabled=>""}), {:prompt=>"Please Select"}%>
+  </span>
+</div>
+<div class="row" id="comment_div">
+  <label>Comment <span id="mandatory">*</span> </label>
+  <span class="input_wrapper textarea_wrapper">
+    <textarea name="assign_comment" cols="10" rows="8" class="text "></textarea>
+  </span>
+</div>
+

@@ -1,0 +1,176 @@
+<% selected_employee = get_employee_user_id %>
+<div id="mass_upload" style="display:none">
+  <div id="middleBody-div">
+    <!--breadcrumb div #end here -->
+    <!--main container div @start here -->
+    <div class="main_containt">
+      <div class="">
+        <div class="column_main01 mb8">
+          <!--Title main starts-->
+          <!--Title main starts-->
+          <div class="p5 w99" style="overflow:auto">           
+            <!--w100 class starts-->
+            <div class="w100 ptb10 ">
+              <!--Left col-->
+              <div class="w48 fl">
+                <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+                  <tr>
+                    <td align="left"><%= t(:label_bookmark) %></td>
+                    <td align="left"><%= check_box_tag :bookmark ,'bookmark',false%>
+                      <span class="pl20p"><label><%= t(:label_type)%></label>
+                        <%=select_tag 'doc_type_id', options_for_select(current_company.document_types.collect{|doc_type| [doc_type.alvalue,doc_type.id]}),:class=>"widthSelectBox",:id=>"document_home_document_attributes_doc_type_id"%>
+                      </span></td>
+                  </tr>
+                  <tr>
+                    <td align="left" width="20%"><%= t(:label_privilege) %></td>
+                    <td align="left" width="80%">
+                      <%=select_tag 'privilege', options_for_select(@company.matter_privileges.collect{|mp| [mp.alvalue,mp.id]}),:class=>"widthSelectBox",:id=>"document_home_document_attributes_privilege"%>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" align="left"><%= "#{t(:label_tag)}"  %></td>
+                    <td align="left">
+                      <%=text_area_tag :tag_array,nil,:id=>'document_home_tag_array',:cols => "40", :rows => '3' %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" align="left"><%= t(:label_description) %></td>
+                    <td align="left">
+                      <%=text_area_tag :description,nil,:id=>'document_home_document_attributes_description',:cols => "40", :rows => '3' %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="left"><%= t(:label_author_s) %></td>
+                    <td align="left"><%=  text_field_tag :author,nil,:id=>'document_home_document_attributes_author', :size => "40" %><%#=  d.text_field :author, :size => "40" %></td>
+                  </tr>
+                  <tr>
+                    <td align="left" width="15%"><%= t(:label_source) %></td>
+                    <td align="left" width="85%">
+                      <%=select_tag 'doc_source_id', options_for_select(@company.doc_sources.collect{|ds| [ds.alvalue,ds.id]}),:class=>"widthSelectBox",:id=>"document_home_document_attributes_doc_source_id",:include_blank=>true%>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%">&nbsp;</td>
+                    <td width="80%">&nbsp;</td>
+                  </tr>
+                </table>
+              </div>
+              <!--Left col ends-->
+              <!--Right col-->
+              <div class="w48 fr">
+                <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+                  <tr>
+                    <td width="15%" >
+                    <%= check_box_tag :enforce_version_change, :disabled=> !(@emp_user_id == @matter.employee_user_id || (@team_member && @team_member.can_enforce_version_control?) )%></td>
+                    <td width="85%">
+                     <%= t(:label_enforce_version_change) %></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><span class="mass_note">(Only lead lawyer and legal team member having privilege can enforce version change)</span></td>
+                  </tr>
+                  <tr>
+                    <% secretary = current_user.role?(:secretary) %>
+                    
+                    <td colspan="2"><div class="radio-check mr10">
+                        <%= radio_button_tag(:access_control,:private,false,:onclick => "showaccessdetails(false,false);jQuery('#help_message').text('Note:-Only you will have access to this document'); check_owner_and_people_access('private', '#{selected_employee}', '#{secretary}','new', '0', '0'); set_flag(false);") %>
+                        <%= t(:text_private) %>
+                      </div>
+                      <div class="radio-check mr10">
+                        <%=radio_button_tag(:access_control,:selective,false,:onclick => "showaccessdetails(true,false);jQuery('#help_message').text('Note:-Document will be accessible to you and selected team members'); check_owner_and_people_access('select', '#{selected_employee}', '#{secretary}','new', '0', '0'); set_flag(false);"); %>
+                        <%= t(:text_select_view) %>
+                      </div>
+                      <div class="radio-check mr10">
+                        <%=radio_button_tag(:access_control,:matter_view,true,:onclick => "showaccessdetails(false,false);jQuery('#help_message').text('Note:-All matter team members will have access to this document'); check_owner_and_people_access('other', '#{selected_employee}', '#{secretary}','new', '0', '0');set_flag(true);") %>
+                        <%=t(:text_matter_view)%>
+                      </div>
+                      <div class="radio-check mr10">
+                        <%= radio_button_tag(:access_control,:public,false,:onclick => "showaccessdetails(false,true);jQuery('#help_message').text('Note:-All members of your law firm will have access to this document'); check_owner_and_people_access('other', '#{selected_employee}', '#{secretary}','new', '0', '0');set_flag(false);") %>
+                        <%= t(:text_public) %>
+                      </div></td>
+                  </tr>
+                  <tr >
+                    <td colspan="8" id="help_message">   <%= t(:text_note_only_you_will_have_access_to_this_document) %></td>
+                  </tr>
+                  <tr id="selective" style="display:none">
+                    <td colspan="8">
+                      <table width="100%" border="0">
+                        <tbody>
+                          <% unless @matter_peoples.nil? or @matter_peoples.empty? %>
+                            <% @matter_peoples.each do |mi| %>
+                              <% name =  mi.assignee.try(:full_name) %>
+                              <tr>
+                                <% disabled = (mi.employee_user_id==@emp_user_id ||mi.employee_user_id==@matter.employee_user_id)%>
+                                <td width="10%" align="left" name="<%= mi.employee_user_id %>">
+                                  <%= check_box_tag 'document_home[matter_people_ids][]', mi.id,{},{:class=> "check", :disabled=> disabled, :onClick=>"check_owner(this, '#{mi.employee_user_id}', '#{name}');"} %>
+                                </td>
+                                <td width="90%"><%= name %></td>
+                              </tr>
+                            <%end%>
+                          <%end%>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr id="check_box" style="display:none">
+                    <td width="10%" align="left">  <%=check_box_tag 'document_home[repo_update]',true,false,{:class=> "check"}%></td>
+                    <td width="90%">Show updates in public repository</td>
+                  </tr>                  
+                  <tr>                    
+                    <td width="15%">
+                      <%=  check_box_tag :document_home_client_access ,'document_home_client_access',false,:disabled =>  !@matter.primary_matter_contact.can_access_matter%>
+                    </td>
+                    <td width="85%">
+                    <%= t(:label_do_you_want_to_provide_access_to_client) %></td>
+                  </tr>
+                  <tr>
+                    <td>Owner</td>
+                    <% secretary = current_user.role?(:secretary) %>
+                    <% disble = secretary ? {:disabled => true} : {} %>
+                    <%= hidden_field_tag('document_home[owner_user_id]', selected_employee) if secretary %>
+                    <td>
+                     <% if @matter_peoples.present? %> <!-- please donot remove this its a bugfix  for Bug #11618 -->
+                      <%=select_tag 'owner_user_id', options_for_select(@matter_peoples.collect{|p| [p.assignee.try(:full_name), p.employee_user_id]},:selected => selected_employee),:class=>"widthSelectBox",:id=>"document_home_owner_user_id"%>
+                     <% end %>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <!--Right col ends-->
+            </div>
+          </div>
+          <div class="border_top_gray"></div>
+          <h1><b>&nbsp;&nbsp;Please scroll down to upload file(s).</b></h1>
+          <div class="p5">
+            <div id="uploader" name="uploader"></div>
+
+            <div class="mandatory mt12">
+              Note :Total mass upload limit is 100 mb with a limit on individual file size of 50 mb.
+
+              Files will be scheduled for upload as per sequence specified.Incase a file size
+              exceeds the individual limit or increases the overall limit, the system will
+              pick the next file in the sequence selected.
+              </div>
+            <!--Title main starts-->
+            <!--Title main starts-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--main container div @ends here -->
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    default_radio_select();
+  });
+
+  function default_radio_select(){
+    showaccessdetails(false,false);
+    jQuery('#access_control_matter_view').attr("checked",true);
+    jQuery('#help_message').text('Note:-All matter team members will have access to this document');
+    check_owner_and_people_access('other', <%= selected_employee %>, <%=  secretary %>,'new', '0', '0');
+    set_flag(true);
+  }
+
+</script>

@@ -1,0 +1,13 @@
+<%unless plicences.nil? %>
+  <%if plicences.empty?%>
+    <td>
+      <div>
+        <span id="licences_not_available" class="textNormal pl5" style="padding-left:400px;"><%=t(:text_licences_not_available)%></span>
+      </div>
+    </td>
+  <%else%>
+    <td width="25%" align="left" valign="top"><label>
+        <%=t(:text_select_licence)%></label></td>
+    <td width="75%"><%=custom_select_tag "role_assign[licence_id]", options_for_select( plicences.collect{|pl| [pl.key_with_type,pl.id]}),:prompt =>'--Select--',:class=>"field size3"%></td>
+  <%end%>
+<%end%>

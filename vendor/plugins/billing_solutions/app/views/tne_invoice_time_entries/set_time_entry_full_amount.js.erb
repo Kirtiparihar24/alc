@@ -1,0 +1,38 @@
+
+var billingEntryObj = jQuery('#hidden_time_row_no_'+<%=@time_entry.id%>);
+jQuery('#billing_percent_'+<%=params[:id]%>).children("input").val("");
+jQuery('#override_amount_' +<%=params[:id]%>).children("input").val("");
+jQuery('#final_billed_amount_'+<%=params[:id]%>).children('span').html("<%=@final_billed_amount%>");
+var total_time_obj = jQuery('#te_duration_'+billingEntryObj.val()).children("input");
+var billed_amount_obj = jQuery('#te_amount_'+billingEntryObj.val()).children("input");
+var total_duration= parseFloat(total_time_obj.val());
+var billed_amount=0.0;
+
+  <% if(@final_billed_amount > @previous_final_billed_amount)
+        diff_billed_amount = @final_billed_amount - @previous_final_billed_amount
+  %>
+    operate = '+';
+     billed_amount = parseFloat(billed_amount_obj.val().replace(/,/g,'')) + <%= diff_billed_amount %>;
+  <%else
+      diff_billed_amount = @previous_final_billed_amount - @final_billed_amount
+  %>
+     
+     operate = '-';
+     billed_amount = parseFloat(billed_amount_obj.val().replace(/,/g,'')) - <%= diff_billed_amount %>;
+   <%end%>
+     
+  billed_amount_obj.val(addCommas(billed_amount));
+  if(total_duration > 0){
+      jQuery('#te_rate_'+billingEntryObj.val()).children("input").val(addCommas(billed_amount/total_duration));
+      subtotal = jQuery('#tne_invoice_invoice_amt');
+       total_amt=removeCommas(subtotal.val());
+      var sub_total=0;
+      //operate =='+' ? subtotal.val(addCommas(parseFloat(subtotal.val()) + parseFloat(<%= diff_billed_amount %>))) : subtotal.val(addCommas(parseFloat(subtotal.val()) - parseFloat(<%= diff_billed_amount %>)));
+      operate =='+' ? sub_total=(parseFloat(eval(total_amt)) + parseFloat(eval(<%= diff_billed_amount %>))): sub_total=(parseFloat(eval(total_amt)) -parseFloat(eval(<%= diff_billed_amount %>)))
+      subtotal.val(sub_total);
+       if(jQuery("#apply_final_discount").is(':checked')){
+        checkDiscount();
+        }else{
+        check_calculations();
+      }
+  }

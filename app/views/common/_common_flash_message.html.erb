@@ -1,0 +1,38 @@
+<% flashmsg= flash[:warning] || flash[:notice] || flash[:error] %>
+<% other_class = ""%>
+<% if flashmsg.present? %>
+  <%if current_user && ( (current_user.role?('secretary')  && !current_user.verified_lawyer_id_by_secretary) || current_user.role?('manager') || current_user.role?('client') ) %>
+    <div id="notice" <%if flash[:warning]%> class="message_warning_div <%= other_class %>"><%span_class = "icon_message_warning fl mlr8 mt5"%><%elsif flash[:error]%>class="errorCont"><%else%>class="sucessCont"><%end%>
+      <span class="<%=span_class%>"></span>
+      <ul class="mt5 mb5 ml40">
+        <% flashmsg.each do |fmsg| %>
+          <li style="text-align:left;"><%= fmsg %></li>
+        <%end%>
+      </ul>
+    </div>
+  <%elsif current_user && (current_user.role?('secretary')  && (controller.controller_name.eql?('communications') || controller.controller_name.eql?('livia_secretaries')))%>
+    <div id="notice" <%if flash[:warning]%>class="warningCont"<%elsif flash[:error]%>class="errorCont"<%else%>class="sucessCont"<%end%>>
+      <%= flashmsg%>
+    </div>
+  <%else%>
+    <% other_class = "notification" if current_user && (current_user.role?('client') || current_user.role?('livia_admin') || current_user.role?('lawfirm_admin')) %>
+    <div id="notice" <%if flash[:warning]%>
+           class= "message_warning_div <%= other_class %>"><%span_class = "icon_message_warning fl mlr8 mt5"%>
+           <%elsif flash[:notice]%>
+        class= "message_sucess_div <%= other_class %>"><%span_class = "icon_message_sucess fl mlr8 mt5"%>
+      <%else%>
+        class= "message_error_div <%= other_class %>"> <%span_class = "icon_message_error fl mlr8 mt5"%>
+      <%end%>
+      <span class="<%=span_class%>"></span>
+      <ul class="mt5 mb5 ml40">
+        <% flashmsg.each do |fmsg| %>
+          <li style="text-align:left;"><%= fmsg %></li>
+        <%end%>
+      </ul>
+    </div>
+  <%end%>
+  <script type="text/javascript">
+    common_flash_message();
+  </script>
+<% end %>
+<% flash.discard %>

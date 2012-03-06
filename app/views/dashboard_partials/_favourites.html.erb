@@ -1,0 +1,7 @@
+<ul class="listing1">
+  <%j=0%>
+  <%for item in @fav_dashboard%>
+    <li class="bgnone"><a id="<%=item.dashboard_chart.template_name%>" href="/dashboards/dashboard_show?chart_name=<%=item.dashboard_chart.template_name%>&fav_id=<%=item.id%>&height=500&width=500" class="thickbox" name="<%= item.favorite_title%>"><%= h truncate(item.favorite_title, 30)%></a></li>
+    <% j += 1 %>
+  <%end%>    
+</ul>

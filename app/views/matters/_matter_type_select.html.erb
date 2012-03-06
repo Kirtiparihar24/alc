@@ -1,0 +1,13 @@
+<%unless @is_litigation_matter.nil?%>
+  <%if @is_litigation_matter%>
+    <label><%=t(:label_phase)%></label>
+    <%=collection_select(:matter, :phase_id, current_company.phases, :id, :lvalue, {:include_blank => "----------Select----------"})%>
+    <br />
+    <label><%=t(:label_matter_type)%></label>
+    <%=collection_select(:matter, :matter_type, current_company.liti_types,:id,:lvalue,{:include_blank => "----------Select----------"})%>
+  <%else%>
+    <label><%=t(:label_matter_type)%></label>
+    <%=collection_select(:matter, :matter_type, current_company.nonliti_types,:id,:lvalue,{:include_blank => "----------Select----------"})%>
+  <%end%>
+  <br class="clear" />
+<%end%>

@@ -1,0 +1,20 @@
+
+<tr>
+  <td width="51%"><%= t(:label_member_from) %>&nbsp;
+    <input type="text" class="date_picker" id="matter_access_start_date_<%= matter_access_period.id %>" value="<%=matter_access_period.start_date%>" size = "10" />
+  </td>
+  <td width="39%">&nbsp;<%= t(:label_to) %>&nbsp;
+    <input type="text" class="date_picker" id="matter_access_end_date_<%= matter_access_period.id %>" value="<%=matter_access_period.end_date%>" size = "10" />
+  </td>
+  <td width="9%">
+    <span id="edit_access_<%= matter_access_period.id %>" style="cursor:pointer" class="link_blue edit_access" onclick="editAccessPeriod('<%= matter_access_period.matter_id %>', '<%= matter_access_period.matter_people_id %>', '<%= matter_access_period.id %>');">Update</span>
+  </td>
+</tr>
+
+
+<script type="text/javascript">  
+  datepicker_matter_access_periods("#matter_access_start_date_<%= matter_access_period.id %>");
+  datepicker_matter_access_periods("#matter_access_end_date_<%= matter_access_period.id %>");  
+</script>
+
+

@@ -1,0 +1,33 @@
+<%unless @secretary.empty?%>
+  <div class="mid-box-head"><h2 class="left"><%=t(:label_unassigned_modules)%></h2></div>
+  <div class="table">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th width="47%" align="left" valign="top"><%=t(:label_unassigned_modules)%></th>
+        <th width="53%" align="left" valign="top"><%=t(:label_assigned_modules)%></th>
+      </tr>
+      <tr>
+        <td width="50%" valign="top">
+          <%unless @unassigned_subp.empty?%>
+            <table>
+              <%@unassigned_subp.each do|usp|%>
+                <tr><td style="width:200px;"><%=check_box_tag usp.id,usp.id,false,:class=>"unassigned_subproducts"%> <label style="font-size:11px;"> <%=usp.name%> </label></td></tr>
+              <%end%>
+              <tr><td style="width:250px;"><input type="button" value="<%=t(:label_assign)%>" class="button" style="font-size:11px;" onclick="assign_unassign_subproducts_to_secretary(<%=params[:user_id]%>, <%=params[:company_id]%>, 'unassigned_subproducts', 'Assign', '/manage_secretary/assignSubproducts_to_secretary')" /></td></tr>
+            </table>
+          <%end%>
+        </td>
+        <td width="50%" valign="top">
+          <%unless @assigned_subp.nil? or @assigned_subp.empty?%>
+            <table>
+              <%@assigned_subp.each do|asp|%>
+                <tr><td style="width:200px;"><%=check_box_tag asp.id,asp.id,false,:class=>"assigned_subproducts"%><label style="font-size:11px;"> <%=asp.name%> </label></td></tr>
+              <%end%>
+              <tr><td style="width:250px;"><input type="button" value="<%=t(:label_unassign)%>" class="button" style="font-size:11px;" onclick="assign_unassign_subproducts_to_secretary(<%=params[:user_id]%>,<%=params[:company_id]%>, 'assigned_subproducts', 'Unassign', '/manage_secretary/unassignSubproducts_from_secretary')" /></td></tr>
+            </table>
+          <%end%>
+        </td>
+      </tr>
+    </table>
+  </div>
+<%end%>

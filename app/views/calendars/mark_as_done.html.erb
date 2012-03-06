@@ -1,0 +1,33 @@
+<div id="modal_complete_task_errors" class="errorCont message_error_div" style="display:none"></div>
+﻿<div style="text-align:center;margin-top:10px;">
+  <% remote_form_for(@zimbra_activity, :url=>{:controller=>"calendars",:action=>"mark_as_done", :id => @zimbra_activity.id },:loading=>"disableAllSubmitButtons('submit_buttons')",:complete=>"enableAllSubmitButtons('submit_buttons')") do |f| %>
+    <%= f.hidden_field :progress, :value => "COMP" %>
+    <table width="300" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+      <tr>
+        <td width="110" align="left"><label><%=t(:text_completion_date)%></label></td>
+        <td width="169" align="left"><%=f.text_field :completed_at,  :value => @zimbra_activity.completed_at || livia_date(Time.zone.now.to_date), :class=>"date_picker", :size=>"10"%></td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td colspan="2" align="center">
+          <%=f.submit t(:text_save), :class => "button submit_buttons", :name => "save",:onclick=>"return setButtonPressed(this);"%>
+          <input type="button" id="Login2" value="Cancel" class="submit_buttons" onclick="tb_remove(); <%= "uncheck_the_checkbox(#{@zimbra_activity.id});" if params[:cal] %>" />
+        </td>
+      </tr>
+    </table>
+  <%end%>
+</div>
+<script type="text/javascript">
+  livia_datepicker_new("#calendars_completed_at");
+<% if params[:cal]  %>
+    if(jQuery("#TB_closeWindowButton").length>0){
+      jQuery("#TB_closeWindowButton").attr("onClick", "uncheck_the_checkbox(<%= @zimbra_activity.id %>);");
+    }
+<% end %>
+  jQuery(document).ready(function(){
+    livia_datepicker();
+  });
+</script>

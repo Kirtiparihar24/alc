@@ -1,0 +1,36 @@
+<div id="modal_new_task_errors" class=""><div id="loader1" style="display:none;"><img src="/images/loading.gif" alt="loading..."></img></div></div>
+<% remote_form_for @cluster_user,:before=>'show_spinner();', :url=>{:action=>'update_temp_assignment'},:html=>{:class=>"search_form general_form"}, :loading=>"disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable');" do |f| %>
+  <%= hidden_field_tag :cluster_id, "#{@cluster_user.cluster_id}" %>
+  <div class="forms">
+    <div class="row">
+      <label>Name</label>
+      <div class="inputs"><%= @cluster_user.user.full_name %></div>
+    </div>
+    <div class="row">
+      <label>From Date <span id="mandatory">*</span></label>
+      <div class="inputs">
+        <%=f.text_field "from_date", :value => @cluster_user.from_date.to_date.strftime("%m/%d/%Y"),:class=>"datePicker"%>
+      </div>
+    </div>
+    <div class="row">
+      <label>To Date <span id="mandatory">*</span></label>
+      <div class="inputs">
+        <%=f.text_field "to_date", :value => @cluster_user.to_date.to_date.strftime("%m/%d/%Y"),:class=>"datePicker"%>
+      </div>
+    </div>
+    <div class="button_div">
+      <span class="button send_form_btn buttons_to_disable" ><span><span>Save</span></span><%= f.submit '', :onclick=>"return validate_from_to_date('','update_temp_assignment');"%></span>
+      <span class="button send_form_btn ml10 buttons_to_disable" onclick="tb_remove();"><span><span>Cancel</span></span><input type="button" name=""/></span>
+      <br class="clear" />
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    $(function() {
+      $('#cluster_user_from_date').datepicker();
+      $('#cluster_user_to_date').datepicker();
+    });
+  });
+</script>

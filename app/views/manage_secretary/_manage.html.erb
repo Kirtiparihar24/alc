@@ -1,0 +1,106 @@
+<div class="box-head"><h2><%=t(:text_service_providers_list)%></h2></div>
+<div class="actionLinks">
+  <%if can? :create, ServiceProvider%>
+    <%=link_to(t(:text_add_new_secretary), new_service_provider_path)%> |
+  <%end%> 
+  <%if can? :update, ServiceProvider%>
+    <%=link_to(t(:text_view_deactivated_secretaries), {:controller=>'service_providers',:action=>'view_deactivated_secretaries'})%> |
+  <%end%> 
+  <% if !params[:action].eql?('view_managers') %>
+    <%=link_to 'View Managers', view_managers_path  %>
+  <% else %>
+    <%=link_to 'All Livians', "/manage_secretary"  %>
+  <% end %>
+</div>
+<%unless @secretaries.blank?%>
+  <div style="width:340px;float:right" >
+    <div style="float: right; margin-right: 12px;">
+      <input class="text" type="text" id="search_livian" value = "Search" style="width: 133px;" />
+      <%=raw page_entries_info @secretaries %>
+    </div>
+  </div>
+<%end%>
+<br class="clear"/>
+<div class="table">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tbody>
+      <tr>
+        <th width="18%" align="left"><%=t(:text_name)%></th>
+        <th width="19%"><%=t(:text_email)%></th>
+        <th width="16%"><%=t(:text_login)%></th>
+        <th width="7%" align="center">Role</th>
+        <th width="10%" align="center">Category</th>
+        <th width="8%" align="center"><%=t(:text_no_of_lawyers_serving)%></th>
+        <th width="32%" colspan="2" align="left"><%=t(:text_action)%></th>
+      </tr>
+      <%unless @secretaries.blank? %>
+        <%@secretaries.each do |secretary|%>
+          <tr>
+            <td>
+              <span style="cursor:pointer;" onclick='jQuery("#<%=secretary.id%>_lawyer_details_view").toggle()' title="Click here to view details">
+                <%if secretary.user.clusters.blank?%>
+                  <img alt="Alert" src="/images/cgc_images/icon_!.gif?1297072263" title="No Cluster Assigned" />
+                <%end%>
+                <%= secretary.sp_full_name%>
+              </span>
+            </td>
+            <td><%= secretary.user.email %></td>
+            <td><%= secretary.user.username %></td>
+            <td><%= secretary.user.role.name if secretary.user.role%></td>
+            <td><%= secretary.assign_categories.join(",") if secretary.user.role %></td>
+            <td><%= secretary.service_provider_employee_mappings.size %></td>
+            <td><%if can? :update, ServiceProvider%>&nbsp;&nbsp;<%=link_to t(:label_edit), edit_service_provider_path(secretary) %><%end%> | <%if can? :destroy, ServiceProvider%><%=link_to t(:label_deactivate), secretary,  :title=>'Deactivate', :confirm => 'Are you sure?', :method => :delete %><%end%> | <%if can? :create, ServiceProvider%> <%=link_to t(:label_reset_password), reset_password_form_user_path(:id=>secretary.user_id, :height=>240, :width => 450), :class=>"thickbox"%><%end%> <%if secretary.user.clusters.blank?%>| <%=link_to "Assign To Cluster", "/manage_cluster" %><%end%></td>
+          </tr>
+          <tr style="display: none" id="<%=secretary.id%>_lawyer_details_view">
+            <td>
+              <table width="90%" align="center" border="1" cellpadding="0" cellspacing="0">
+                <tr>
+                  <th width="30%"><%=t(:text_company)%></th>
+                  <th width="30%"><%=t(:text_lawyer)%></th>
+                  <th width="20%"><%=t(:text_from)%></th>
+                </tr>
+                <%unless secretary.service_provider_employee_mappings.blank? %>
+                  <%secretary.service_provider_employee_mappings.each  do |sa|%>
+                    <tr>
+                      <td><%=sa.user.company.name%></td>
+                      <td><%=sa.user.try(:full_name)%></td>
+                      <td><%=sa.created_at.to_date%></td>
+                    </tr>
+                  <%end%>
+                <%else%>
+                  <tr><td><div class="warningCont m5"><%= secretary.sp_full_name%><%=t(:text_is_not_serving_to_any_lawyer)%></div></td></tr>
+                <%end%>
+              </table>
+
+            </td>
+          </tr>
+        <%end%>
+      <%else%>
+        <tr><td><%=t(:text_no_records_found)%></td></tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<div class="pagging">
+  <%unless @secretaries.blank?%>
+    <div class="left"><%=will_paginate @secretaries%></div>
+    <div class="right"><%=raw page_entries_info @secretaries %></div>
+  <%end%>
+</div>
+<script type="text/javascript" language="javascript">
+  jQuery(document).ready(function() {
+    search_livian_for_admin("search_livian")
+    jQuery('#search_livian').click(function () {
+      v = jQuery('#search_livian').val();
+      if(v=='Search'){
+        jQuery('#search_livian').val('');
+      }
+    });
+    jQuery('#search_livian').blur(function () {
+      v = jQuery('#search_livian').val();
+      if(v==''){
+        jQuery('#search_livian').val('Search');
+      }
+    });
+  });
+</script>

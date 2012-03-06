@@ -1,0 +1,206 @@
+
+<!--[if IE 7]>
+<style type="text/css">
+    #verticaltabs > ul > li.selected {
+        border-right: 1px solid #fff !important;
+    }
+    #verticaltabs > ul > li {
+        border-right: 1px solid #ddd !important;
+    }
+    #verticaltabs > div {
+        z-index: -1!important;
+        left:1px;
+    }
+</style>
+<![endif]-->
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    var verttabs = jQuery("#verticaltabs > ul > li");
+    verttabs.click(function(){
+      verttabs.removeClass('selected');
+      jQuery(this).addClass('selected');
+
+      var ind = verttabs.index(jQuery(this));
+      jQuery('#verticaltabs > div').hide().eq(ind).show();
+    }).eq(0).click();
+  });
+</script>
+<div class="mt20">
+<div class="message_error_div" id="modal_new_issue_errors" style="display: none; text-align: left"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<% remote_form_for([@matter, @matter_issue],:loading=>'return disableAllSubmitButtons("matters")',:complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+<table width="100%" border="0" cellpadding="3" cellspacing="5" >
+    <tr>
+      <td align="left"><label><%=t(:label_issue)%><span class="alert_message">*</span></label></td>
+      <td align="left"><%= f.text_field :name, :size => "50" %></td>
+    </tr>
+    <% unless @other_matter_issues.blank? %>
+      <tr>
+        <td width="30%" align="left"><label><%= t(:label_parent_issue) %></label></td>
+        <td width="70%" align="left"><%= f.collection_select  :parent_id, @other_matter_issues, :id, :clipped_name, { :include_blank => "----------Select----------" } %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td width="30%" align="left"></td>
+      <td width="70%" align="left" style="padding-left:0;">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="left" valign="middle"><%= f.radio_button :is_primary, true, :checked => true, :style => "margin-left:0; padding-left:0;"%> </td>
+            <td align="left" valign="middle"><label><%= t(:label_preliminary) %></label></td>
+            <td align="left" valign="middle"><%= f.radio_button :is_primary, false%></td>
+            <td align="left" valign="middle"><label><%= t(:label_secondary) %></label></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="left"><%=t(:label_is_it_key_issue)%></td>
+      <td align="left"><%= f.check_box :is_key_issue %></td>
+
+    </tr>
+    <tr>
+      <td align="left" valign="top"><%=t(:label_linked)%></td>
+      <td align="left" colspan="2">
+        <div id="verticaltabs">
+          <ul>
+            <% if task_available?%><li><a href="javascript:void(0);" class="tabs"><%=t(:label_Activities)%></a></li><% end %>
+            <% if fact_available?%><li><a href="javascript:void(0);"><%=t(:label_facts)%></a></li><%end%>
+            <% if risk_available?%><li><a href="javascript:void(0);"><%=t(:label_risks)%></a></li><%end%>
+            <% if research_available?%><li><a href="javascript:void(0);"><%=t(:label_research)%></a></li><%end%>
+
+          </ul>
+          <% if task_available?%>
+            <div>
+              <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                <% unless @matter_tasks.blank? %>
+                  <% @matter_tasks.each do|e| %>
+                    <tr>
+                      <td width="9%"><%= check_box_tag 'matter_issue[matter_task_ids][]', e.id, false %></td>
+                      <td width="91%"><%= truncate_hover(e.name, 40) %></td>
+                    </tr>
+                  <%end%>
+                <%else%>
+                  <tr><td colspan="2">No Activities found.</td></tr>
+                <%end%>
+              </table>
+            </div>
+          <% end %>
+          <% if fact_available?%>
+            <div>
+              <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                <% unless @matter_facts.blank? %>
+                  <%@matter_facts.each do|e| %>
+                    <tr>
+                      <td width="9%">
+                        <%= check_box_tag 'matter_issue[matter_fact_ids][]', e.id, false %>
+                      </td>
+                      <td width="91%">
+                        <%=raw truncate_hover(e.name, 40) %>
+                      </td>
+                    </tr>
+                  <%end%>
+                <%else%>
+                  <tr><td colspan="2"></td>No Facts found.</tr>
+                <%end%>
+              </table>
+            </div>
+          <%end%>
+          <% if risk_available?%>
+            <div>
+              <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                <% unless @matter_risks.blank? %>
+                  <%@matter_risks.each do|e| %>
+                    <tr>
+                      <td width="9%">
+                        <%= check_box_tag 'matter_issue[matter_risk_ids][]', e.id, false %>
+                      </td>
+                      <td width="91%">
+                        <%=raw truncate_hover(e.name, 40) %>
+                      </td>
+                    </tr>
+                  <%end%>
+                <%else%>
+                  <tr><td colspan="2"></td>No Risks found.</tr>
+                <%end%>
+              </table>
+            </div>
+          <%end%>
+          <% if research_available?%>
+            <div>
+              <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                <% unless @matter_researches.blank? %>
+                  <%@matter_researches.each do|e| %>
+                    <tr>
+                      <td width="9%">
+                        <%= check_box_tag 'matter_issue[matter_research_ids][]', e.id, false %>
+                      </td>
+                      <td width="91%">
+                        <%=raw truncate_hover(e.name, 40) %>
+                      </td>
+                    </tr>
+                  <%end%>
+                <%else%>
+                  <tr><td colspan="2"></td>No Research found.</tr>
+                <%end%>
+              </table>
+            </div>
+          <%end%>
+        </div>
+      </td>
+    </tr>
+    <tr>
+
+      <td align="left"><label>Assigned To <span class="alert_message">*</span></label></td>
+      <td colspan="3" align="left">
+        <%= f.collection_select  :assigned_to_matter_people_id, @assignees, :id, :get_name, {:include_blank => "----------Select----------"}%>
+      </td>
+    </tr>
+    <tr align="right">
+      <td align="left">Target Resolution Date<span class="alert_message">*</span></td>
+      <td align="left">
+        <%= f.text_field :target_resolution_date, :value => @matter_issue.target_resolution_date, :class => "date_picker", :size => "11" %>
+      </td>
+    </tr>
+    <tr align="right">
+      <td align="left"><label><%= t(:label_resolved) %></label></td>
+      <td align="left"><%= f.check_box :resolved, :class => "radio", :onclick => 'check_matter_issue_resolved();'%></td>
+    </tr>
+    <tr align="right"  id="resolution" style="display:none;">
+      <td align="left" valign="top">&nbsp;</td>
+      <td align="left">
+        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="left"><%= t(:label_resolved_at) %><span class="alert_message">*</span></td>
+            <td align="left"><%=f.text_field :resolved_at, :value => @matter_issue.resolved_at, :class => "date_picker", :size => "10" %></td>
+          </tr>
+          <tr>
+            <td align="left"><%=t(:label_resolution)%></td>
+            <td align="left"><%=f.text_field :resolution, :cols => "40", :rows => "3"%></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr align="right">
+      <td align="left" valign="top"><%=t(:label_description)%></td>
+      <td align="left"><textarea name="textarea2" id="textarea2" cols="40" rows="3"></textarea></td>
+    </tr>
+    <tr align="right">
+      <td>&nbsp;</td>
+
+      <td align="left">&nbsp;</td>
+    </tr>
+    <tr align="right">
+      <td colspan="3" align="center">
+        <%= f.submit t(:text_save),:class=>'matters', :id => "save_issue", :onclick=>'return checkloader(); return setButtonPressed(this);'%>
+        <input type="button" class='matters' id="Login2" value="Cancel" onclick="tb_remove(); disableAllSubmitButtons('matters');return setButtonPressed(this);" />
+      </td>
+    </tr>
+    <tr><td align="left" colspan="2"><div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div></td></tr>
+  </table>
+</div>
+<%end%>
+<script type="text/javascript">
+  livia_matter_inception_datepicker_new("#matter_issue_target_resolution_date");
+  livia_matter_inception_datepicker_new("#matter_issue_resolved_at");
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;41</div>

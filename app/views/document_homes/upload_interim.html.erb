@@ -1,0 +1,50 @@
+﻿<div style="text-align:center;margin-top:10px;">
+  <div id="one_field_error_div" >
+    <div class='errorCont'> </div>
+  </div>
+  <br/>
+  <% form_for :document_home, @document_home ,:url => {:action=>'upload_interim', :controller=>'document_homes'}, :html=> {:target=>"upload_frame",:multipart=> true,:method => :post, :onsubmit=> "return validate_interim_doc('document_home_document_attributes_data','Please select the interim document');"} do |f| %>
+    <%= hidden_field_tag "document_home[owner_user_id]", @doc_in_progress.owner_user_id %>
+    <%for document in @document_home.documents%>
+      <%  fields_for 'document_home[document_attributes]', document do |d|%>
+        <table width="100%" border="0">
+          <tr>
+            <td colspan="3" align="left">Interim Doc</td>
+            <td colspan="5"  align="left">  <%= d.file_field :data %><br/><br/></td>
+          </tr>
+          <% if doc_checked_access(@doc_in_progress,@emp_user_id)!= '2'%>
+            <tr><td colspan="5" align="left">The main doc is  <b><%=DocumentHome::ACCESS_RIGHT[@access_right]%> </b></td></tr>
+            <tr id="selective"><td  colspan="8">
+                <table width="100%" border="0">
+                  <tbody>
+                    <% unless @accessible_to_people.nil? or @accessible_to_people.empty? %>
+                      <% @accessible_to_people.each do |mi| %>
+                        <% if mi.employee_user_id %>
+                          <tr>
+                            <% check = (mi.employee_user_id==@matter.employee_user_id || mi.employee_user_id==@doc_in_progress.owner_user_id) ? true : false
+                            disable_checkbox = (mi.employee_user_id==@matter.employee_user_id || mi.employee_user_id==@doc_in_progress.owner_user_id) %>
+                            <td colspan="2" align="right"> <%= check_box_tag 'document_home[matter_people_ids][]', mi.id, (@document_people_array.include?(mi.id) || check),{:class=> "check", :disabled=> disable_checkbox} %>
+                              <%= hidden_field_tag "document_home[matter_people_ids][]", mi.id if disable_checkbox %>
+                            </td>
+                            <td colspan="6" align="left"><%= mi.assignee.try(:full_name) %></td>
+                          </tr>
+                        <%end%>
+                      <%end%>
+                    <%end%>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          <%end%>
+          <tr>
+            <td align="center" colspan="8">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="center" colspan="8"><input type="submit" value="<%= t(:label_save) %>" name="save" /> <input type="button" id="Login2" value="Cancel" onclick="tb_remove()" /></td>
+          </tr>
+        </table>
+        <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+      <%end%>  
+    <%end%>
+  <%end%>
+</div>

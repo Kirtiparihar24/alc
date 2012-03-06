@@ -1,0 +1,22 @@
+<div class="gridDiv" id="div_unassign_livian" style="display: none;" >
+  <%if !@livians.empty?%>
+    <%= check_box_tag "toggle" , "toggle", false, :onclick =>"toggleCheckboxes('livian',this.checked);"%> Select All
+    <%form_remote_tag :url=> 'unassign_livian', :before=>"jQuery(loader).appendTo('#div_unassign_livian');" do -%>
+      <%@livians.each do |livian|%>
+        <%=check_box_tag 'livians[]',livian.id, false, :class=>"livian" %>
+        <%= livian.user.full_name %>
+        <%=link_to("Edit Temporary Assignment",'#',:onclick=> "tb_show('Edit Temporary Assignment','#{edit_temp_assignment_wfm_manage_cluster_path({:id=>livian.user.id,:cluster_id=>@cluster.id})}&height=150&width=500','');") if is_temp_livian(@cluster.id,livian.user.id)%>
+        <br/>
+      <%end%>
+      <%=hidden_field_tag "cluster_id",@cluster.id%>
+      <span class="button send_form_btn ml10"><span><span>Unassign</span></span>
+        <%=submit_tag 'submit', :class=>'button', :onclick=>"return check_if_checkboxes_are_checked('div_unassign_livian');"%>
+      </span>
+    <% end -%>
+  <%else%>
+    No Livians to Unassign!
+  <%end%>
+
+  <br class="clear" />
+
+</div>

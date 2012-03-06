@@ -1,0 +1,96 @@
+<%=raw paginate_for_five_links(accounts.total_pages, {:mode_type =>params[:mode_type],:action=>"index",:letter=>params[:letter],:col=>params[:col],:dir=>params[:dir],:per_page=>params[:per_page]}, params[:page]) if accounts.total_pages > 1 %>
+<% h = {}
+h[:search_item] = true
+if params[:search_items]
+  h[:search_items] = params[:search_items]
+  h[:search] = {}
+  if params[:search]
+    params[:search].keys.each do |key|
+      h[:search][key] = params[:search][key] unless params[:search][key].blank?
+    end
+  end
+end %>
+<%= raw all_pagination(accounts, params[:per_page], "willpaginate", accounts_path(), {:mode_type =>params[:mode_type],:action=>"index",:letter=>params[:letter],:per_page=>params[:per_page]})  %>
+<div class="tabular_listing">
+  <%form_for :search,:url=>{:controller => :accounts,:action => :index},:html =>{:method => :get } do |f| %>
+    <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+      <tr>
+        <%=hidden_field_tag  'col' ,params[:col] if params[:col]%>
+        <%=hidden_field_tag  'dir' ,params[:dir] if params[:dir]%>
+        <%=hidden_field_tag  'mode_type' ,@mode_type if @mode_type%>
+        <%=hidden_field_tag  'per_page' ,params[:per_page] if params[:per_page] %>
+        <%=hidden_field_tag  'search_items' ,true%>
+        <%= column_sort_link(t(:text_name),'accounts.name',params[:col], '', "left", {:mode_type=>params[:mode_type], :letter=>params[:letter], :action=>"index", :per_page => params[:per_page], :class=>"tablesorter"}.merge(h)) %>
+        <%= column_sort_link(t(:text_primary_contact),'contacts.last_name',params[:col], '15%', "left",{:mode_type=>params[:mode_type], :letter=>params[:letter],:action=>"index", :per_page => params[:per_page], :class=>"tablesorter"}.merge(h)) %>
+        <% assignee = params[:search].present? ? params[:search]["accounts--assigned_to_employee_user_id"].to_s : ''%>
+        <%= column_sort_link(t(:text_assigned_to),'accounts.assigned_to_employee_user_id',params[:col], '12%', "left",{:mode_type=>params[:mode_type], :letter=>params[:letter],:action=>"index", :per_page => params[:per_page], :class=>"tablesorter"}.merge(h),nil,'accounts.assigned_to_employee_user_id','assigned_to',"collection_select :search, 'accounts--assigned_to_employee_user_id', current_company.employees, :full_name, :full_name,{:selected=>'#{assignee}',:prompt => true}, {:style => '#{params[:search_items].blank? ? 'width:95px;display:none;' : 'width:95px;'}'}" ) %>
+        <%= column_sort_link(t(:text_phone),'accounts.phone',params[:col], '10%', "left",{:mode_type=>params[:mode_type], :letter=>params[:letter],:action=>"index", :per_page => params[:per_page], :class=>"tablesorter"}.merge(h)) %>
+        <th align="left" width="5%"><%= t(:text_contacts) %></th>
+        <th align="left" width="2%"><%=t(:lable_opp)%></th>
+        <%= column_sort_link(t(:text_website),'accounts.website',params[:col], '15%', "left",{:mode_type=>params[:mode_type], :letter=>params[:letter],:action=>"index", :per_page => params[:per_page], :class=>"tablesorter"}.merge(h)) %>
+        <th align="center" width="5%"><%= t(:text_actions) %>
+          <div class="action_column" style="position: relative; width:53px;">
+            <%if params[:search_items] %>
+              <div style="position: absolute;">
+              <%else%>
+                <div style="position: absolute;">
+                <%end%>
+                <%= f.submit "Go" ,{:style=>(params[:search_items] ? "" : "display:none;")}%>
+              </div>
+            </div>
+          </div>
+        </th>
+      </tr>
+      <% unless accounts.empty?
+        accounts.each do |account|
+          primary = account.get_primary_contact
+          contact_count= account.contacts.count
+          len = account.get_opportunity_length
+          account_website = account.website %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <td>
+      <%# unless account.deleted_at %>
+              <%= raw(truncate_hover_link_with_created_at(account.name, account.created_at.to_time.strftime('%m/%d/%y'), 60, edit_account_path(:id => account.id,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:search=>params[:search],:q=>params[:q],:col=>params[:col],:dir=>[:dir],:mode_type=>params[:mode_type]))) %>
+      <%# else %>
+      <%#= raw(truncate_hover_with_created_at(account.name,account.created_at.to_time.strftime('%m/%d/%y'),60)) %>
+      <%# end %>
+            </td>
+            <td><%= raw(truncate_hover_contacts(primary.full_name.try(:titleize),25, primary.title, primary.preference, primary.created_at, primary.department)) if primary %> </td>
+            <td><%= account.get_assigned_to %></td>
+            <td>
+              <% if account.toll_free_phone.present? %> <%= account.toll_free_phone %> <br /><% end %>
+              <%= account.phone %>
+            </td>
+      <%#contact_count=(account.deleted_at.blank? ? account.contacts.count : account.account_contacts.count_with_deleted)%>
+            <td align="center">
+              <span id="contact_count_asdas<%=account.id%>">
+      <%#= link_to_unless(account.deleted_at, contact_count, account_path(account.id,:height=>"auto",:width=>700,:fetch=>"contacts"),:class=>"thickbox vtip",:title=>t(:text_current_contacts),:name=>t(:text_current_contacts),:id=>"contact_count_#{account.id}")%>
+                <%= link_to contact_count, account_path(account.id,:height=>"auto",:width=>700,:fetch=>"contacts"),:class=>"thickbox vtip",:title=>t(:text_current_contacts),:name=>t(:text_current_contacts),:id=>"contact_count_#{account.id}" %>
+              </span>
+            </td>
+            <td align="center">
+      <%# if len > 0 %>
+      <%#= link_to_unless(account.deleted_at,len, account_path(account.id,:height=>"auto",:width=>700,:fetch=>"opportunities"),:class=>"thickbox vtip",:title=>t(:text_current_opportunities),:name=>t(:text_current_opportunities))%>
+      <%# else %>
+      <%#= len %>
+      <%# end %>
+              <%= link_to_unless(len <= 0, len, account_path(account.id,:height=>"auto",:width=>700,:fetch=>"opportunities"),:class=>"thickbox vtip",:title=>t(:text_current_opportunities),:name=>t(:text_current_opportunities))%>
+            </td>
+            <td>
+              <% if (account_website.include? "http://" if account_website) %>
+                <a href="<%= account_website %>" target="_blank"> <%= account_website %> </a>
+              <% else %>
+                <a href="http://<%= account_website %>" target="_blank"> <%= account_website %> </a>
+              <% end %>
+            </td>
+            <td align="center"><%= raw account_action_links(account) %></td>
+          </tr>
+        <% end 
+      else %>
+        <tr><td colspan="8"><%= render :partial => "common/empty" %></td></tr>
+      <% end %>
+    </table>
+  <%end%>
+</div>
+<%= raw all_pagination(accounts, params[:per_page], "bottom-pagination", accounts_path(), {:mode_type =>params[:mode_type],:action=>"index",:letter=>params[:letter],:per_page=>params[:per_page]})  %>
+<div class="mandatory mt12"><%=t(:lable_opp)%>:- <%=t(:label_Opportunity)%></div>

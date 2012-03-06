@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">New Matter Privilege</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:matter_privilege,@matter_privilege, :url => company_matter_privileges_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Privileges", :modal_text => "Privilege Name",
+    :all_modal_values => @company.matter_privileges.collect{|cs|[cs.lvalue]}.uniq ,:modelclass=>'matter_privileges' } %>
+<%end%>
+<br class="clear"/>

@@ -1,0 +1,31 @@
+<div class="gridTable">
+  <div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+    <%= link_to(t(:text_new),new_company_document_category_path(@company),:rel=>"facebox") %>
+  </div>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left" id="document_categories">
+    <tr>
+      <th width="25%">Document Categories</th>
+      <th width="25%">Custom Document Categories</th>
+      <th width="25%">Actions</th>
+    </tr>
+    <%@company.document_categories.each do |category|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <%= hidden_field_tag "support_#{category.id}", category.id, :class=>"supportFieldID" %>
+          <span class="textBlue11Height20">
+            <%= category.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">
+            <%= category.alvalue %>
+          </span>
+        </td>
+        <td >
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_document_category_path(@company,category),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

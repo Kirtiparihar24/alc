@@ -1,0 +1,7 @@
+jQuery('#TB_ajaxWindowTitle').text('Edit Activity')
+jQuery('#TB_window').width(830)
+jQuery('#TB_ajaxContent').width(778)
+jQuery('#TB_window').css("margin-left","-355px")
+jQuery('#TB_window').css("margin-top","-230px")
+jQuery('#TB_ajaxContent').html("<%=escape_javascript(render(:partial => "personal_activity", :locals => {:controller => "zimbra_activities", :action => "update", :id => @zimbra_activity.id}))%>")
+jQuery("#fragment-1").removeClass('tabs-container')

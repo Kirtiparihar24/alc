@@ -1,0 +1,128 @@
+<% @widths_hash = {"Rating" => "7%" , "Created" => "7%" , "Owner" => "14%","Status" => "10%" , "Source" => "11%" , "Email" => "18%" ,"Phone" => "12%" ,"#{t(:label_Account)}" => "11%" ,"Stage" => "11%" ,"Contact" => "12%"} %>
+<div id="container-1">
+  <%#form_for "report", :url => {:action => :contact_account_rpt,:format => 'html',:run_report => true} ,:html => {:onsubmit => 'return validate_date()'}  do |f| %>
+  <%form_for :report, :url=>{:action => :contact_account_rpt},:html =>{:onsubmit => 'return validate_date()', :method => :get } do |f| %>
+      <%= hidden_field_tag :run_report, true %>
+    <%= render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+    <div id="fragment-1" class="tabs-container">
+      <%unless params[:load_popup]%>
+        <h2 class="title_main"><%= t(:text_contacts_linked_to_accounts) %></h2>
+      <%else%>
+        <%=raw(generate_spinner_my_favorite_link)%>
+      <%end%>
+      <div class="p5">
+        <%unless params[:load_popup]%>
+         <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+         </div>
+        <% opts = rpt_selection_helper(params[:get_records]) %>
+        <%=raw(radios_for_rpt(opts,"#{t(:label_contact)}"))%>
+        <br class="clear" />
+        <div class="box_gray">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+            <tbody>
+              <tr>
+                <td  align="left" valign="middle"><%= t(:text_summarize_by) %></td>
+                <td align="left" valign="middle"><%=select("report","summarize_by",[["#{t(:label_Account)}","account"],["#{t(:label_Account)} Owner","act_owner"]],{:selected => params[:report][:summarize_by]})%></td>
+                <%=render :partial => 'rpt_partials/date_picker', :locals => {:opt_style => opts[:style], :checked => opts[:checked]} %>
+                <td valign="middle"><input type="submit" name="commit" value="Run Report" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <%end
+         if params[:run_report] %>
+          <%= render "rpt_partials/report_info" %>
+          <div class="w100">
+            <%unless @total_data.blank? %>
+            <div class="title_blue fl"><%= t(:text_total_records) %> = <%= @conditions[:col_length] %> </div>
+            <% end %>
+            <div class="fr textR pt5">
+              <%=raw(generate_send_email_rpt_link("contact_account_rpt")) unless params[:load_popup]%>
+              <%=raw(generate_rpt_fav_link("Contact")) unless params[:load_popup]%>
+              <%=raw(generate_reports_links("contact_account_rpt"))%>
+            </div>
+            <br class="clear" />
+          </div>
+
+          <%unless @total_data.blank? 
+             @total_data.each do |label,data|
+             if data.class == Array %>
+                <div class="mt5">
+                  <div class="w100">
+                    <div class="title_blue  fl" ><%= ((label == "" or !label) ? "None" : label) %><span> (<%= pluralize_record(data.length , 'Record',0)%>)</span></div>
+                    <div class="fr textR"> <%# links %> </div>
+                    <br class="clear" />
+                  </div>
+                  <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => data} %>
+                </div>
+                <% reset_cycle %>
+            <%else%>
+        <%
+              (label == "" or !label) ? label = "None" : ""
+            %>
+             <div class="title_blue  fl" >
+              <%=label%> : Contacts (<%=@conditions[label]%> Records)
+               </div>
+               <br class="clear" />
+              <%data.each do |account,col|%>
+              <div class="mt5">
+                <div class="w100">
+                  <div class="title_blue  fl" >
+                      <%= account %> <span>(<%= pluralize_record(col.length , 'Record',1)%>)</span>
+                  </div>
+                  <div class="fr  textR">
+        <%# no links%>
+                  </div>
+                  <br class="clear" />
+                </div>
+                <!--Tabular container div @start here -->
+                <div class="tabular_listing">
+                  <table width="100%" cellpadding="1" cellspacing="1">
+                    <tr>
+                      <% index = @table_headers.index("Rating")
+                      created = @table_headers.index("Created")
+                      @table_headers.each do |header| %>
+                       <th width="<%=@widths_hash[header]%>" align="<%=  header=="Created" ? 'center' : 'left'%>"><%=header%></th>
+                      <% end %>
+                    </tr>
+                    <% col.each do |contact| %>
+                      <tr class="<%= cycle('bg1', 'bg2') %>">
+                        <% contact.each_with_index do |e,i| %>
+                          <% if i == index %>
+                            <td>
+                              <% e.times do %>
+                              <div class="mt2"><span class="icon_star_full fl mt4 mr5"></span></div>
+                              <% end %>
+                              <% (3-e).times do %>
+                              <div class="mt2"><span class="icon_star_empty fl mt4 mr5"></span></div>
+                              <% end %>
+                            </td>
+                          <% else %>
+                            <td<%= " align='center'" if i==created %>><%= e %></td>
+                          <% end %>
+                        <% end %>
+                      </tr>
+                    <% end %>
+                  </table>
+                  <% reset_cycle %>
+                
+              </div>
+              <!--Tabular container div #ends here -->
+            </div>
+               <% end %>
+            <%end%>
+            <br class="clear" />
+           <%end%>
+             <div class="title_blue fl"><%= pluralize_record(@conditions[:col_length] , 'Record', 1) %></div>
+          <% else %>
+             <!--<div class="title_blue fl"><%#= t(:text_no_contacts_found) %></div>-->
+             <div class="title_blue fl"><%= pluralize_record(0 , 'Record', 1) %></div>
+          <% end %>
+          <br class="clear" />   
+        <% end %>
+
+      </div>
+    </div>
+  <% end %>
+</div>
+

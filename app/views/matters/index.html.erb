@@ -1,0 +1,39 @@
+<div id="container-1">
+  <div id="report-info">
+    <% arr = ['matters--matter_no','matters--name','contacts--last_name','accounts--name','matters--matter_date','users--username'] %>
+    <h2 class="title_main"><span class="fl"><%= t(:text_matters) %></span><%= render :partial =>  "layouts/reports_quick_links" %></h2>
+    <div class="p5">
+      <div class="w100 fix_mb">
+        <div class="fl"><%= raw radios_for_my_all_matters %></div>
+        <div class="fr textR link_blue">
+          <a href="<%= calendars_path %>"  > <span class='fl mr5' ><%=image_tag("calendar_task.png")%></span><span class="fl mr10 icon_name">Calender View</span></a>
+          <a href="#"  id="add_filters" onclick="add_filters('<%=arr.join(",")%>', '15')" style="<%=params[:search_items] ? "display:none;" : ""%>"><span class="icon_filter fl mr5" ></span><span class="fl mr10 icon_name"><%=t(:label_Add_Filter)%></span></a>
+          <a href="#" onclick="remove_filters('<%=arr.join(",")%>')"  id="remove_filters"  style="<%=params[:search_items] ? "" : "display:none;"%>"><span class="icon_remove_filter fl mr5" ></span><span class="fl mr10 icon_name"><%=t(:label_Remove_Filter)%></span></a>
+          <%= link_to "<span class='icon_create_new fl mr5'></span><span class='fl mr10 icon_name'>New Matter</span> ", new_matter_path %>
+          <% unless current_user.role?("lawyer")%>
+          <%= link_to '<span class="icon_imports mr5 fl "></span><span class="fl mr10 icon_name">Import Matter</span>', '/excel_imports?module_type=matter'%>
+          <%end%>
+        </div>
+        <br class="clear" />
+      </div>
+      <div class="box_gray">
+        <div class="fl pl5">
+          <table cellpadding="0" cellspacing="0">
+            <tr>
+              <td><strong><%=t(:label_status)%></strong>&nbsp;&nbsp;</td>
+              <td><%=select_tag(:matter_status, options_for_select(@matter_statuses,{:selected=>@matter_status_id}),{:onchange =>"matter_status('#{@mode_type}',this.value)"}) %></td>
+            </tr>
+          </table>
+        </div>
+        <div class="fr fix_mr">
+          <div class="search_div">
+            <%= text_field_tag 'matter_sphinx_search','', :size =>'30', :title=>'', :class => "search" %><span class="icon_search fr"></span>
+          </div>
+        </div>
+        <br class="clear" />
+      </div>
+      <div id="matters_div"><%= render :partial => 'matter'%></div>
+    </div>
+  </div>
+  <div id="report-content"></div>
+</div>

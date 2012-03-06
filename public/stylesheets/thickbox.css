@@ -1,0 +1,16 @@
+#TB_window .tb_top_left {background:url(../images/thickbox/top_left_mdl.png); height:33px;}
+#TB_window .tb_top_middle {background:url(../images/thickbox/top_border_mdl.png); height:33px;}
+#TB_window .tb_top_right {background:url(../images/thickbox/top_right_mdl.png);height:33px;}
+#TB_window .tb_center_left {background:url(../images/thickbox/border_left_bg_mdl.png) repeat-y bottom;}
+#TB_window .tb_center_right {background:url(../images/thickbox/border_right_bg_mdl.png) repeat-y bottom; width:12px;}
+#TB_window .tb_bottom_left {background:url(../images/thickbox/bottom_left_mdl.png);}
+#TB_window .tb_bottom_middle{background:url(../images/thickbox/border_bottom_mdl.png);height:15px;}
+#TB_window .tb_bottom_right{background:url(../images/thickbox/bottom_right_mdl.png);}
+#TB_window .tb_body {background:#fff url(../images/thickbox/bg_mdl.png) repeat-x bottom;}
+#TB_window .close_x {background:url(../images/thickbox/close_mdl.png) no-repeat; height:16px;padding-right:20px;}
+#TB_window table {border-collapse: collapse;}
+#TB_window form table{border-collapse: separate;}
+#TB_window .tb_top_left, #TB_window .tb_top_right, #TB_window .tb_bottom_left, #TB_window .tb_bottom_right {height: 10px;width: 10px;overflow: hidden;padding: 0;}
+
+
+

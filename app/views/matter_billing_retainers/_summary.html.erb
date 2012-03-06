@@ -1,0 +1,154 @@
+<div class="box_gray_new">
+  <div class="fl" style="width: 52.5%">
+    <strong>Summary:</strong>
+  </div>
+  <div class="fl">
+    <strong>Retainer:</strong>
+  </div>
+  <br class="clear" />
+</div>
+<div class="tabular_listing fl w48">
+  <table width="100%" border="1">
+    <tbody>
+      <tr>
+        <td valign="top" width="55%" align="left"><strong><%=t(:text_invoices)%>:</strong></td>
+        <td valign="top" width="20%" align="right">&nbsp;</td>
+        <td valign="top" width="25%" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">&nbsp;<%= t(:text_total_invoice_amount)%></td>
+        <td valign="top" align="right">$ <%= number_with_lformat(@matter.total_bill_amount) %></td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <% count, tot_bill = @matter.settled_bills_total %>
+      <tr>
+        <td valign="top" align="left">&nbsp;(Less) <%=t(:text_billing_adjustments)%>:</td>
+        <td valign="top" align="right">$ <%= number_with_lformat(tot_bill) %></td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>      
+      <tr>
+        <td valign="top" align="left">&nbsp;</td>
+        <td valign="top" align="right"><div class="seperator_dotted_hori" style="width:80px;"></div></td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <% adjusted_invoice_amount = @matter.total_bill_amount - tot_bill %>
+      <tr>
+        <td valign="top" align="left"><strong><%=t(:text_financial_account_adjusted_amount)%></strong></td>
+        <td valign="top" align="right">&nbsp;</td>
+        <td valign="top" align="right"><strong>$ <%= number_with_lformat(adjusted_invoice_amount) %></strong></td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">&nbsp;</td>
+        <td valign="top" align="right">&nbsp;</td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" align="left"><strong><%=t(:text_receipts)%></strong></td>
+        <td valign="top" align="right">&nbsp;</td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <% @receipts_applied_to_invoices = 0 %>
+      <% unless bills.empty? %>
+      <% bills.each do |bill| %>
+        <% @receipts_applied_to_invoices += number_with_lformat(bill.try(:computed_bill_amount_paid)).to_f %>
+      <% end %>
+      <% end %>
+      <tr>
+        <td valign="top" align="left">&nbsp;<%=t(:text_receipts_applied_to_invoices)%></td>
+        <td valign="top" align="right">$ <%= number_with_lformat(@receipts_applied_to_invoices) %></td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <% @receipts_unapplied = 0 %>
+      <% unless retainers.empty? %>
+        <% retainers.each do |retainer| %>
+          <% @receipts_unapplied += retainer.amount%>
+        <% end %>
+      <% end %>
+      <tr>
+        <td valign="top" align="left">&nbsp;<%=t(:text_receipts_unapplied)%></td>
+        <td valign="top" align="right">$ <%= number_with_lformat(@receipts_unapplied) %></td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">&nbsp;</td>
+        <td valign="top" align="right"><div class="seperator_dotted_hori" style="width:80px;"></div></td>
+        <td valign="top" align="right">&nbsp;</td>
+      </tr>
+      <% total_receipt = @receipts_applied_to_invoices + @receipts_unapplied %>
+      <tr>
+       <td valign="top" align="left"><strong><%=t(:text_total_receipts)%></strong></td>
+       <td valign="top" align="right">&nbsp;</td>
+       <td valign="top" align="right"><strong>$ <%= number_with_lformat(total_receipt) %></strong></td>       
+      </tr>
+      <tr>
+        <td valign="top" align="left">&nbsp;</td>
+        <td valign="top" align="right">&nbsp;</td>
+        <td valign="top" align="right"><div class="seperator_dotted_hori" style="width:80px;"></div></td>
+      </tr>      
+      <% current_balance = total_receipt - adjusted_invoice_amount%>
+      <tr>
+        <td valign="top" align="left"><strong><%=t(:text_balance_credit_debit)%></strong></td>
+        <td valign="top" align="right">&nbsp;</td>
+        <td valign="top" align="right"><strong>$ <%= livia_amount(current_balance) %></strong></td>
+      </tr>
+      <tr>
+        <td valign="top" align="left">&nbsp;</td>
+        <td valign="top" align="right">&nbsp;</td>
+        <td valign="top" align="right"><div class="seperator_dotted_hori" style="width:80px;"></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="tabular_listing fr w48">
+  <table width="100%" border="1">
+    <tbody>
+      <tr>
+        <td valign="top" width="55%" align="left"><strong><%=t(:text_retainer_agreed)%></strong></td>
+        <td valign="top" width="45%" align="right"><strong>$ <% if @matter.retainer_fee %><%= number_with_lformat(@matter.retainer_fee) %><% else %> 0.00 <% end %></strong></td>
+      </tr>
+      <tr>        
+        <td valign="top" align="left"><strong><%=t(:text_minimum_retainer)%></strong></td>
+        <td valign="top" align="right"><strong>$ <% if @matter.min_retainer_fee %><%= number_with_lformat(@matter.min_retainer_fee) %><% else %> 0.00 <% end %></strong></td>
+      </tr>      
+      <tr>        
+        <td valign="top"align="left"><strong><%=t(:text_current_balance)%></strong></td>
+        <td valign="top" align="right"><strong>$ <%= livia_amount(current_balance) %></strong></td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>      
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>
+      <tr>        
+        <% deficit =  current_balance.to_f - @matter.min_retainer_fee.to_f %>
+        <td valign="top" align="left"><strong><%=t(:text_Deficit)%></strong></td>
+        <td valign="top" align="right"><strong>$ <%= deficit < 0 ? livia_amount(deficit) : 0.00 %></strong></td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>      
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>      
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>     
+      <tr>
+       <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>      
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="2" align="left">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

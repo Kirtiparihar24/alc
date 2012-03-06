@@ -1,0 +1,51 @@
+<div class="mt20">
+  <% form_for :contact, :url => {:action => 'change_status',:id=>@contact.id},:html=>{:onsubmit=>"return validate_field('notes_comment','Please specify the reason');disableAllSubmitButtons('contacts');"} do |contact| %>
+    <div id="one_field_error_div" >
+
+    </div>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+          <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+          <%=hidden_field_tag  :contact_type,params[:contact_type]%>
+      <tr>
+        <td><label><%= t(:label_current_stage) %> <span class="alert_message">*</span></label></td>
+        <td><strong><%= @contact.contact_stage.alvalue.try(:capitalize) if @contact.contact_stage %></strong></td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><label> <%= t(:label_change_to) %></label></td>
+        <td><%= contact.select :contact_stage_id,@status %></td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><label><%= t(:label_reason) %> <span class="alert_message">*</span></label></td>
+        <td><%= text_field :notes,:comment %></td>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="4" height="10"></td>
+      </tr>
+      <tr>
+        <td> </td>
+        <td colspan="3">
+          <%= contact.submit t(:text_update),:class=>'contacts',:id=>'update_status' %>
+          <input type="button"class="contacts" id="Login2" value="Cancel" onclick="parent.tb_remove();disableAllSubmitButtons('contacts');return false" />
+        </td>
+
+      </tr>
+      <tr>
+        <td colspan="4" align="center">
+          <div id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+        </td>
+      </tr>
+
+    </table>
+
+  <% end %>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;23</div>
+</div>
+<%#=t(:text_change_status_for_contact) %>
+<%#=@contact.full_name %>
+<%#=t(:text_required_field) %>
+
+

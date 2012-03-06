@@ -1,0 +1,32 @@
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+  <tr class="bg2">
+    <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_total_users)%></strong></td>
+    <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_active_users)%></strong></td>
+    <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_total_licence)%></strong></td>
+    <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_active_licence)%></strong></td>
+    <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_licence_remaining)%></strong></td>
+  </tr>
+  <tr class="bg2">
+    <td colspan="2"></td>
+    <td align="center" valign="top" class="textNormal pl5">(<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</td>
+    <td align="center" valign="top" class="textNormal pl5">(<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</td>
+    <td align="center" valign="top" class="textNormal pl5">(<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</td>
+  </tr>
+  <tr class="bg1">
+    <td align="center" valign="top" class="textNormal pl5"><%= @totalusers.size%></td>
+    <td align="center" valign="top" class="textNormal pl5"><%= @activeusers.size%></td>
+    <td align="center" valign="top" class="textNormal pl5"><span><%= @activepermlicence.size%></span> / <span><%= @activetemplicence.size%></span></td>
+    <td align="center" valign="top" class="textNormal pl5"><span><%= @usedpermlicence.size%></span> / <span><%= @usedtemplicence.size%></span></td>
+    <td align="center" valign="top" class="textNormal pl5"><span><%=@remainlicence.size%></span> / <span><%=@remaintemplicence.size%></span></td>
+  </tr>
+  <tr>
+    <td colspan="5">&nbsp;</td>
+  </tr>
+</table>
+<div class="textNormal" style="padding-left:400px;">
+  <%=t(:text_select_employee)%>&nbsp;&nbsp;
+  <%= collection_select(:role_assign, :user_id, @employees, :id, :name, {:prompt => true},{:onchange=>"populateproducts(this.value,#{@company_id})"})%>
+  <%= hidden_field_tag 'company_id',@company_id%>
+</div>
+<div id="productdiv"></div>

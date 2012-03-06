@@ -1,0 +1,79 @@
+<script type="text/javascript">
+  function validate_setting_value(is_upcoming){
+    if(is_upcoming == 'true'){
+      if(jQuery('#setting_value').val() == "" || parseInt(jQuery('#setting_value').val()) < 1 ){
+        alert('Days should not be empty or less than 1');
+        return false;
+      }else{
+        tb_remove();
+        return true;
+      }
+    }else{
+      return true;
+    }
+  }
+  jQuery(document).ready(function() {  
+    livia_datepicker();
+    var a = <%= params[:category].eql?('appointment')%>
+    if (a == true){
+      jQuery('#category_appointment').attr("checked", "checked")
+      jQuery('#task_todo').hide();
+      jQuery('#task_appt').show();
+      jQuery('#date_range_select').show();
+    }
+  });
+</script>
+<div>
+  <% is_upcoming = task_type.eql?('upcoming')
+  is_all_type = task_type.eql?('all')
+  url_path = is_upcoming ? "home/update_user_setting" : "home/view_matter_tasks" %>
+  <% form_remote_tag :url => url_path, :onsubmit => "return validate_setting_value(is_upcoming);" do%>
+    <div class="mt10 mb8">
+      <div class="mt5 ">
+        <div  id="date_range_loader" style="display:none;" align="center"><img src='/images/loading.gif' /></div>
+        <% if is_upcoming  %>
+          <%= hidden_field_tag 'setting_id', user_setting.id %>
+          <div id="upcoming_tasks" style="display : none"></div>
+          <div  id="upcoming_loader" style="display:none;" align="center"><img src='/images/loading.gif' /></div>
+          Upcoming Activities For Next <%= text_field_tag 'setting_value',user_setting.setting_value, :maxlength => 2, :width => '90px'%> days <%= submit_tag "Update", :class=>'linknormal', :onclick =>("jQuery('#upcoming_loader').show()") %>
+        <% end %>
+        <br class="clear"/>
+      </div>
+      <% unless task_type.eql?('overdue') %>
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td id="task"><%= radio_button_tag :category, "todo", true,:onclick => "jQuery('#task_todo').show();jQuery('#task_appt').hide();jQuery('#date_range_select').hide();jQuery('#task_check').show();" %></td>
+            <td><%= t(:text_to_do_task) %></td>
+            <td><%= radio_button_tag :category, "appointment", false,:onclick => "jQuery('#task_todo').hide();jQuery('#task_appt').show();jQuery('#date_range_select').show();jQuery('#task_check').hide();" %></td>
+            <td><%= t(:text_schedule_task) %></td>
+            <td id="date_range_select" style="display:none; ">
+              <table class="fl">
+                <tr>
+                  <% if is_all_type %>
+                    <td align="right">&nbsp; &nbsp; &nbsp; <%= t(:text_start_date)%></td>
+                    <td align="left"><input type="text" id="date_start" name="date_start" class="date_picker"  size="10" value="<%= params[:date_start]%>" onchange="validate_end_date('#date_start', '#date_end', this)"/></td>
+                    <td align="right">&nbsp;&nbsp;<%=t(:text_end_date)%></td>
+                    <td align="left"><input type="text" id="date_end" name="date_end" class="date_picker" size="10" value="<%= params[:date_end]%>" onchange="validate_end_date('#date_start', '#date_end', this)"/></td>
+                    <%= hidden_field_tag 'search', 'date_range' %>
+                    <%= hidden_field_tag 'task_type', 'all' %>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<td align="left"><%= submit_tag "Apply", :class=>'linknormal', :onclick =>("jQuery('#date_range_loader').show()") %></td>
+                  <% end %>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="tabular_listing border_gray">
+    <% categ = "todo" %>
+    <div id="task_todo" <%if categ.eql?("appointment")%> style="display:none;"<%end%>>
+      <%= render :partial => "task_todo_appointment", :locals => {:dir => 'ASC',:task_type => @typ, :task_todo_appt => task_todo, :text_task_appiontment_name => t(:text_task_name) ,:end_date=> t(:text_due_date)}%>
+    </div>
+    <div id="task_appt" <%if categ.eql?("todo")%> style="display:none;"<%end%>>
+      <%= render :partial => "task_todo_appointment", :locals => {:dir => 'ASC',:task_type => @typ, :task_todo_appt => task_appt, :text_task_appiontment_name => t(:text_appointment_name),:end_date=> t(:text_end_date) } %>
+    </div>
+  </div>
+</div>
+<div class="mandatory mt12" id="task_check" <%if params[:category].eql?("appointment")%> style="display:none;"<%end%> > Note: Please select the relevant check box to complete the task</div>

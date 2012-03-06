@@ -1,0 +1,33 @@
+<% cache('footer') do %>
+  <!--Footer div @start here -->
+<div id="footer">
+<div id="footer-div">
+    <!-- foot @start -->
+    <div id="foot">
+      <div class="fl">
+       This site is best viewed with Internet Explorer 8.0; Firefox 3.0 or higher;  Chrome 7.0 or higher; Safari 5.0.3 and at a minimum screen resolution of 1280  * 1024.
+      </div>
+      <div class="fr link_gray">
+        Powered by-LIVIA | <%=link_to("About","#{physical_clientservices_about_path}?height=180&width=400",:class =>"thickbox vtip",:title=>"About",:name=>"About")%>
+          <% if APP_URLS[:use_helpdesk] %>| <%= link_to t(:text_helpdesk), helpdesk_path, :class => "vtip", :title => "#{t(:text_helpdesk)}"%> <%end%>
+          <% if current_user  %>
+            | <a href="/LIVIA Portal FAQ.pdf" target="_blank" class="vtip" title="FAQ"> FAQ </a>
+          <%end%>
+      </div>
+      <br class="clear" />
+    </div>
+    <!-- foot #end -->
+  </div>
+</div>
+  <!--Footer div #ends here -->
+<% end %>
+  <%=render :partial=>"sessions/logout_timer"%>
+
+  <script language="javascript">
+    function send_email_id()
+    {
+     var user=jQuery('#user_username').val();
+      window.location = "/support?username=" + user + "height=150&width=200";
+
+    }
+    </script>

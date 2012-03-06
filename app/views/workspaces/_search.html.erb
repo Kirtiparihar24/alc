@@ -1,0 +1,135 @@
+<div class=" w100">
+  <h2 class="title_main" id="toggle_busi_cont_detail_toggle">
+    <div class="fl">Search Workspace</div>
+    <div class="fr pt7"><%=image_tag("/images/icon_small_plus.png", :width => 12, :height => 12,:id=>"plusminusicon",:title=>"Display Search",:name =>"Display Search",:onclick=>"var search='false'; search_toggle(search);") %></div>
+  </h2>
+  <div class="p5" id="toggle_busi_cont_detail_div" style="display:none">
+    <table width="100%" border="0">
+      <tr>
+        <td width="50%"><h3 class="title_gray"><%#=t(:text_what_do_you_want_to_search)%></h3></td>
+        <td width="50%"><h3 class="title_gray"><%=t(:text_when_was_it_created)%></h3></td>         
+      </tr>
+      <tr>
+        <td valign="top">
+          <table width="100%">
+            <tr>
+              <td width="21%"><label><%=t(:label_name_of_the_document)%></label></td>
+              <td width="32%"><input type="text" id="document_name" /></td>
+              <td width="2%">&nbsp;</td>
+              <td width="28%"><label><%=t(:label_type_of_document_extension)%></label></td>
+              <td width="17%"><%=select '','document_extension', @file_ext, :include_blank=>""%></td>
+            </tr>
+          </table>
+        </td>
+        <td valign="top">
+          <table width="100%" border="0">
+            <tr>
+              <td><input type="radio" id="radio" name="search_date" CHECKED onClick="disable_date();" /></td>
+              <td><%=t(:text_dont_remember)%></td>
+            </tr>
+            <tr>
+              <td><input type="radio" id="radio2" name="search_date" value="2" onClick="disable_date();" /></td>
+              <td><%=t(:text_within_the_last_week)%></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><input type="radio" id="radio3" name="search_date" value="3" onClick="disable_date();" /></td>
+              <td><%=t(:text_past_month)%></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td width="4%"><input type="radio" id="radio4" name="search_date" value="4" onClick="disable_date();" /></td>
+              <td width="40%"><%=t(:text_within_the_past_year)%></td>
+              <td width="6%">&nbsp;</td>
+              <td width="23%">&nbsp;</td>
+              <td width="4%">&nbsp;</td>
+              <td width="23%">&nbsp;</td>
+            </tr>
+            <tr>
+              <td width="4%"><input type="radio" id="search_date" name="search_date" value="5" onClick="enable_date();"/></td>
+              <td  width="40%"><%=t(:text_specify_date)%>&nbsp;
+                <select class="option_left" id="search_date_type" name="select2">
+                  <option><%=t(:text_modified_date)%></option>
+                  <option><%=t(:text_created_date)%></option>
+                </select>
+              </td>
+              <td width="6%">&nbsp;</td>
+              <td width="23%">&nbsp;</td>
+              <td width="4%">&nbsp;</td>
+              <td width="23%">&nbsp;</td>
+            </tr>
+            <tr>
+              <td width="4%"></td>
+              <td colspan="5">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+
+                    <td width="5%">From</td>
+                    <td width="15%"><input type="text" id="search_from_date" value='' readOnly="true" class="date_picker" size="10"  /></td>
+                    <td width="3%">To</td>
+                    <td width="43%"><input type="text" id="search_to_date" value="" readOnly="true" class="date_picker" size="10"  /></td>
+                    <!--td width="30%"></td-->
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <div class="buttonSub_div">
+      <input type="submit" class="button" value="<%=t(:label_search)%>" id="search_buton_leftside" style="font-size:11px" />
+      <input type="button" class="button" value="<%=t(:label_reset)%>" onclick="resetForm('toggle_busi_cont_detail_div');jQuery('#document_name').focus();jQuery('#search_date_type').val('<%=t(:text_modified_date)%>');" style="font-size:11px"/>
+    </div>
+  </div>
+</div>
+<br class="clear"/>
+<script type="text/javascript" language="javascript">
+  // Need to removed to JS File
+  jQuery(document).ready(function() {
+    jQuery('.ui-datepicker-trigger').attr('disabled', true);
+    livia_matter_inception_datepicker_new("#search_from_date");
+    livia_matter_inception_datepicker_new("#search_to_date");
+    var search='<%=params[:display_search]%>' ;
+    search_toggle(search);
+    search_date_enable_disable();
+  });
+
+  jQuery('#search_buton_leftside').click(function() {
+    if(validate_search_date()){
+      disableAllSubmitButtons('button');
+      jQuery(this).val('Please wait..');
+   
+      var path_url =''
+      path_url= '<%=search_document_document_homes_path()%>';
+      jQuery.get(
+      path_url ,{
+        'name' : jQuery('#document_name').val(),
+        'creator' : jQuery('#search_creator').val(),
+        'access_rights' : get_privilege,
+        'source' : jQuery('#_search_source').val(),
+        'author' : jQuery('#search_author').val(),
+        'creator': jQuery('#search_document_creator').val(),
+        'extension' : jQuery('#_document_extension').val(),
+        'date' : jQuery('input[name=search_date]:checked').val(),
+        'date_type' : jQuery('#search_date_type').val(),
+        'date_from' : jQuery('#search_from_date').val(),
+        'date_to' : jQuery('#search_to_date').val()
+
+      },
+      function (data) {        
+        jQuery('#search_results_DIV').html(data);
+        enableAllSubmitButtons('button');
+        jQuery('#search_buton_leftside').val('<%=t(:label_search)%>');
+        new_tool_tip();
+        LiviaTooltipAP();
+      });
+    }
+  });
+</script>

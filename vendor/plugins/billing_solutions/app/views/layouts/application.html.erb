@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title>TneInvoiceDetails: <%= controller.action_name %></title>
+    <%= stylesheet_link_tag 'base.css' %>
+  </head>
+  <body class="body_container main_page_body">
+    <div id="doc" class="body_container">
+      <script type="text/javascript">
+        jQuery.noConflict();
+      </script>
+      <table width="100%">
+        <tbody>
+          <tr>
+            <td>
+              <%= render :partial =>'layouts/header' %>
+              <%= render :partial =>'layouts/header_tabs' %>
+              <div id="middleBody-div">
+                <div class="mtb5">
+                  <div id="breadcrumb" class="fl"><%#= raw render_breadcrumbs :separator => '<div class="arrow_dotted"></div>' %></div>
+                  <br class="clear" />
+                </div>
+                <div id="altnotice" class="errorCont" style="display:none"></div>
+                <div class="main_containt">
+                  <%= render :partial => 'layouts/common_flash_message' %>
+                  <div class="column_main">
+                    <%= yield %>
+                  </div>
+                     <br class="clear" />
+                </div>
+                </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+<%#= render :partial =>'layouts/footer' %>
+    <%=hidden_field_tag "user_offset",Time.zone.now.utc_offset%>
+    <%=hidden_field_tag "user_date", Time.zone.now.to_date %>
+    <%=hidden_field_tag "user_of", Time.zone.now.to_time.strftime("%Z")%>
+    <%=hidden_field_tag "user_time", Time.zone.now.to_time.strftime("%H:%M:%S") %>
+  </body>
+</html>

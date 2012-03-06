@@ -1,0 +1,84 @@
+<div class="remote">
+  <% remote_form_for(@user) do |f| %>
+    <%= link_to_close edit_user_path(@user) %>
+    <%= f.error_messages %>
+    <div class="section">
+      <table style="width:500px" cellpadding="0" cellspacing="0">
+        <tr>
+          <td valign="top">
+            <label class="top"><%=t(:label_first_name)%></label>
+            <%= f.text_field :first_name %>
+          </td>
+          <td class="spacer"></td>
+          <td valign="top">
+            <label class="top"><%=t(:label_last_name)%></label>
+            <%= f.text_field :last_name %>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            <label class="top"><%=t(:label_title)%></label>
+            <%= f.text_field :title %>
+          </td>
+          <td class="spacer"></td>
+          <td valign="top">
+            <label class="top"><%=t(:label_company)%></label>
+            <%= f.text_field :company %>
+          </td>
+        </tr>
+      </table>
+      <div class="subtitle"><%=t(:label_contact)%>&nbsp;<%=t(:label_information)%></div>
+      <div class="section">
+        <table style="width:500px" cellpadding="0" cellspacing="0">
+          <tr>
+            <td valign="top">
+              <label class="top"> <%=t(:label_email)%> </label>
+              <%= f.text_field :email %>
+            </td>
+            <td class="spacer"></td>
+            <td valign="top">
+              <label class="top"> <%=t(:label_Alternative)%>&nbsp;<%=t(:label_email)%> </label>
+              <%= f.text_field :alt_email %>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">
+              <label class="top"> <%=t(:label_phone)%> </label>
+              <%= f.text_field :phone ,:maxlength=>"15"%>
+            </td>
+            <td class="spacer"></td>
+            <td valign="top">
+              <label class="top"> <%=t(:label_Mobile)%> </label>
+              <%= f.text_field :mobile %>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">
+              <label class="top"> <%=t(:label_aol)%>&nbsp;<%=(:label_IM)%> </label>
+              <%= f.text_field :aim %>
+            </td>
+            <td class="spacer"></td>
+            <td valign="top">
+              <label class="top"> <%=t(:label_yahoo)%>&nbsp;<%=(:label_IM)%> </label>
+              <%= f.text_field :yahoo %>
+            </td>
+            <td class="spacer"></td>
+            <td valign="top">
+              <label class="top"> <%=t(:labe_Google)%>&nbsp;<%=(:label_IM)%> </label>
+              <%= f.text_field :google %>
+            </td>
+            <td class="spacer"></td>
+            <td valign="top">
+              <label class="top"> <%=t(:label_skype)%> </label>
+              <%= f.text_field :skype %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="buttonbar">
+      <%= f.submit "Save Profile" %>
+      <%= link_to_cancel edit_user_path(@user) %>
+    </div>
+  <% end %>
+</div>

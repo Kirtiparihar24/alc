@@ -1,0 +1,162 @@
+<% if @view_summery=='Summary' %>
+  <% disableradio_btn = "disabled='disabled'" %>
+<% end %>
+  <tr class="bg1 <%= classname %>" id="expense_<%=expense_entry.id%>" style='<%=@view_summery=='Summary' ? 'display:none' : ''%>'>
+  <%= hidden_field_tag "hidden_expense_row_no_#{expense_entry.id}", bill_entry_id %>
+  
+    <td>
+      <%if @consolidated_by=='Date'%>
+        <%=expense_entry.expense.alvalue%>
+      <%else%>
+        <%= expense_entry.expense_entry_date %>
+      <%end%>
+    </td>
+  <td>
+    <%if @consolidated_by=='User'%>
+      <strong><%= expense_entry.performer.try(:first_name) + " " + expense_entry.performer.try(:last_name) %></strong>
+      <br/>
+      <%= get_role(expense_entry.performer.id, expense_entry.matter_id) %>
+     <% elsif @consolidated_by=='Date' %>
+      <%= expense_entry.expense_entry_date %>
+    <%else%>
+      <div id="expense_type_<%=expense_entry.id%>"> <span id="<%=expense_entry.id%>" class="editexpense_type"><%=expense_entry.expense.alvalue%></span></div>
+    <%end%>
+    <%= hidden_field_tag("#{expense_entry.id}_is_internal_for_expense_entry", true)  %>
+  </td>  
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+  <td>
+    <%if @consolidated_by=='User'%>
+      <div id="expense_type_<%=expense_entry.id%>"> <span id="<%=expense_entry.id%>" class="editexpense_type"><%=expense_entry.expense.alvalue%></span>  </div>
+    <%else%>
+      <strong><%= expense_entry.try(:performer).try(:first_name) + " " + expense_entry.try(:performer).try(:last_name) %></strong>
+      <br/>
+      <%= get_role(expense_entry.performer.id, expense_entry.matter_id) %>
+    <%end%>
+  </td>
+  <td>
+    <div>
+      <% desc = raw(truncate_withscroll(expense_entry.description,150))%>
+      <% if @view_summery=='Summary' %>
+        <%= desc %>
+        <!--<input type="hidden" id="tne_invoice_tne_invoice_details_attributes_<%= inv %>_tne_invoice_expense_entries_attributes_<%= i %>_description" name="tne_invoice[tne_invoice_details_attributes][<%= inv %>][tne_invoice_expense_entries_attributes][<%= i%>][description]" value="<%= desc %>" />-->
+      <% else %>
+        <%= hidden_field_tag "hidden_description",expense_entry.description,:id=>"editexpensedescription_hidden_#{expense_entry.id}"%>
+        <span class="editexpensedescription vtip" id="<%=expense_entry.id%>">
+          <%=raw(truncate_withscroll(expense_entry.description,150))%>
+        </span>
+      <% end %>
+    </div>
+  </td> 
+
+  <%discount_disabled=over_ride_disabled=""%>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+<% if(expense_entry.billing_method_type.to_i == 1) %>
+      jQuery("#full_radio_<%=expense_entry.id %>").attr('checked', 'checked');
+  <%discount_disabled=over_ride_disabled="disabled"%>
+<% elsif(expense_entry.billing_method_type.to_i == 2) %>
+      jQuery("#disc_radio_<%=expense_entry.id %>").attr('checked', 'checked');
+  <%over_ride_disabled="disabled"%>
+<% elsif(expense_entry.billing_method_type.to_i == 3) %>
+      jQuery("#over_radio_<%=expense_entry.id %>").attr('checked', 'checked');
+  <%discount_disabled="disabled"%>
+<% end %>
+  });
+</script>
+
+<td>
+  <div class="w100" id="expense_entry_billing_options_<%=expense_entry.id%>" style="display:<%= expense_entry.is_billable ? '' : 'none' %>">
+    <% disabled= false
+      onblur_method=""
+      case  expense_entry.billing_method_type
+      when 1
+        adjustment = expense_entry.final_expense_amount
+        disabled= true
+      when 3
+        adjustment = expense_entry.final_expense_amount
+        onblur_method ="invoiceUpdateTimeUtilities(this,'expense_entries','set_expense_entry_billing_amount',#{expense_entry.id})"
+      when 2
+        adjustment = expense_entry.billing_percent
+        onblur_method ="invoiceUpdateTimeUtilities(this,'expense_entries','set_expense_entry_billing_percent',#{expense_entry.id})"
+      when 4
+        adjustment = expense_entry.markup
+        onblur_method ="invoiceUpdateTimeUtilities(this,'expense_entries','set_expense_entry_markup',#{expense_entry.id})"
+      end %>
+      <table id="<%=expense_entry%>_adjustment_table"width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td width="16%"></td>
+                  <td align="right" width="16%"><div id="expenseamount_<%=expense_entry.id%>"><span ><%= number_with_lformat(expense_entry.expense_amount)%></span></div>
+                  <!--<input type="hidden" id="tne_invoice_tne_invoice_details_attributes_<%= inv %>_tne_invoice_expense_entries_attributes_<%= i %>_expense_amount" name="tne_invoice[tne_invoice_details_attributes][<%= inv %>][tne_invoice_expense_entries_attributes][<%= i%>][expense_amount]" value="<%= expense_entry.expense_amount.to_f.fixed_precision(2) %>" />-->
+                  </td>
+                </tr>
+                <tr>
+                  <td width="60%" align="left" style="margin:0;padding:0">
+                    <%=dynamic_select("#{expense_entry.id}[expense_entry]","billing_method_type",'expense_entries',{:selected=>expense_entry.billing_method_type},{:class=>"w75select expense_entry_inline_edit",:route=>'tne_invoice_',:disabled=> (@view_summery=='Summary' ? true : false)})%>
+                    </td>
+                   <td width="18%" align="left" style="margin:0;padding:0;">
+                      <%= text_field_tag "show_full_amount", '',:size => 8 ,:maxlength=>5,:id=>"#{expense_entry.id}_show_amount_expense", :value=>number_with_lformat(adjustment),:disabled=>(@view_summery=='Summary' ? true : false),:style=>"text-align: right;",:onkeypress=>"if(event.keyCode==13){return false}",:onblur=>onblur_method%>
+                   </td>
+                </tr>
+              </tbody>
+     </table>
+  </div>
+</td>
+<% unless primary_tax_disable %>
+<td width="5%" align="center" class="tne_p_tax_<%=bill_entry_id%> expense_ptne_<%=inv%>">
+<%= check_box_tag "#{expense_entry.id}[primary_tax]",{}, @tne_invoice.new_record? ? false : expense_entry.primary_tax, {:class => "expense_primary_#{bill_entry_id} time_entry_p_tax_expense time_entry_p_tax expense",:disabled=>(@view_summery=='Summary'), :onClick => "check_uncheck_main_tax(this, 'ptax', '#{bill_entry_id}','#{inv}', 'expense'); check_detailed_tax(this)"} %>
+<%= hidden_field_tag "tne_ptax_hidden_#{expense_entry.id}", 0 %>
+<%= hidden_field_tag "check_p_tax_#{expense_entry.id}", false if @view_summery=='Summary'%>
+<%= hidden_field_tag "check_detailed_expense_p_tax_#{expense_entry.id}", @tne_invoice.new_record? ? false : expense_entry.primary_tax if @view_summery=='Detailed'%>
+</td>
+<% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+<td width="5%" align="center" class="tne_s_tax_<%=bill_entry_id%> expense_stne_<%=inv%>">
+<%= check_box_tag "#{expense_entry.id}[secondary_tax]",{}, @tne_invoice.new_record? ? false : expense_entry.secondary_tax,  {:class => "expense_secondary_#{bill_entry_id} time_entry_s_tax expense time_entry_s_tax_expense",:disabled=>(@view_summery=='Summary'), :onClick => "check_uncheck_main_tax(this, 'stax', '#{bill_entry_id}','#{inv}', 'expense'); check_detailed_tax(this)"} %>
+<%= hidden_field_tag "tne_stax_hidden_#{expense_entry.id}", 0 %>
+<%= hidden_field_tag "check_s_tax_#{expense_entry.id}", false if @view_summery=='Summary'%>
+<%= hidden_field_tag "check_detailed_expense_s_tax_#{expense_entry.id}", @tne_invoice.new_record? ? false : expense_entry.secondary_tax if @view_summery=='Detailed'%>
+</td>
+<% end %>
+<% end %>
+<td align="right">
+  <strong>
+    <% if @view_summery=='Summary' %>
+    <span> <%= number_with_lformat(expense_entry.final_expense_amount) %></span>
+    <% else %>
+      <span id="expense_final_billed_amount_<%=expense_entry.id%>" style="text-align: right;padding: 5px 0;"><%= number_with_lformat(expense_entry.final_expense_amount) %></span>
+    <% end %>
+  </strong>
+</td>
+<td align="center">
+
+    <div class="icon_action  mt3"><a href="#"></a></div>
+  <div id="liquid-roundAP" class="tooltip" style="display:none;">
+    <!--Icon table strt here -->
+
+    <% if expense_entry.tne_expense_entry_id.present?  %>
+      <% link = (link_to "Delete", delete_expense_entry_path(:height=>300, :width=>300, :page_reload => "true", :expense_entry_id => expense_entry.id,:counter=> inv+total_time_data,:detail_id=> detail_id), :class=>"thickbox link_blue vtip" ,:title=>"Delete Entry" ,:name=>"Delete Entry")%>
+    <% else %>
+      <% link = (link_to "Delete", "#", :onClick=>"delete_expense_entry_basic(#{expense_entry.id});" )%>
+    <% end %>
+
+    <table width="100%" border="1" cellspacing="0" cellpadding="0">
+      <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+          :deactivate_path=> "NO",
+          :deactivate_link => link,
+          :deactivate_text => "NO",
+          :comment_path=> "NO",
+          :comment_title => "NO",
+          :document_path=>"NO",
+          :history_path=>"NO",
+          :history_title => "NO"}) %>
+      <tr>
+        <td valign="top" class="ap_bottom_curve_left"></td>
+        <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+        <td valign="top" class="ap_bottom_curve_right"></td>
+      </tr>
+    </table>
+  </div>
+  </td>
+</tr>
+<div id="excluded_expense"></div>

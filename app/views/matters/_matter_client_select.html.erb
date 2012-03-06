@@ -1,0 +1,5 @@
+<%unless @matter_contact.nil?%>
+  <%=collection_select :matter, :contact_id, @contacts, :id, :contact_full_details, { :include_blank => "----------Select----------", :selected => @matter_contact.id }, {:class => "txtbox", :style=>"width:200px;",:onchange=> "jQuery('#matter_contact_id.hiv').val(this.value);" }%>
+<%else%>
+  <%=collection_select :matter, :contact_id, @contacts, :id, :contact_full_details, { :include_blank => "----------Select----------" }, {:class => "txtbox",:style=>"width:200px;", :onchange=> "jQuery('#matter_contact_id.hiv').val(this.value);" }%>
+<%end%>

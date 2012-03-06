@@ -1,0 +1,36 @@
+<div id="clientdocrelatedtasksToggle_div" class="gridTable" style="display:none;" >
+  <table width="100%" border="0" cellpadding="2" cellspacing="0" class="tableBg" align="center" style="font-size:90%;">
+    <tr class ="f1 oppProspects">
+      <th width="30%"><%=t(:text_document_name)%></th>
+      <th width="30%"><%=t(:text_description)%></th>
+      <th width="20%"><%=t(:text_creation_date)%></th>
+      <th width="20%"><%=t(:text_actions)%></th>
+    </tr>
+    <%if client_documents && client_documents.length>0%>
+      <%doc_count = 0%>
+      <%client_documents.each do |matter_document|%>
+        <%if  document_accesible?(matter_document) %>
+          <%matter_doc=matter_document.latest_doc%>
+          <tr class="<%=cycle("bg1", "bg2")%>">
+            <td><%doc_count += 1%><%=matter_doc.name.try(:titleize)%></td>
+            <td><%=h matter_doc.description%></td>
+            <td><%=h matter_doc.created_at.to_time.strftime('%m/%d/%y') %></td>
+            <td>           
+              <%if matter_doc %>
+                <%=link_to(
+                  image_tag('/images/livia_portal/download.gif',
+                    {:alt =>"Download", :title=>"Download", :border => 0, :hspace => "2"}
+                  ),document_home_path(matter_doc.id))%>
+              <%end%>
+            </td>
+          </tr>
+        <%end%>
+      <%end-%>
+      <%if doc_count==0%>
+        <tr><td colspan="10%"><div  class="warningCont m5"><%=t(:text_no_client_document_found_for_the_matter)%><i><%=@matter.name%></i>.</div></td></tr>
+      <%end%>
+    <%else%>
+      <tr><td colspan="10%"><div  class="warningCont m5"><%=t(:text_no_client_document_found_for_the_matter)%><i><%=@matter.name%></i>.</div></td></tr>
+    <%end%>
+  </table>
+</div>

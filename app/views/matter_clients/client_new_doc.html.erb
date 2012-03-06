@@ -1,0 +1,55 @@
+<div class="container_12">
+  <div class="module">
+    <h2><span><%=t(:text_upload_document)%> For [ <%=@matter.name.try(:titleize) %> ]</span></h2>
+    <div class="module-body">
+      <% form_for([@matter,@document_home], :url => { :action => "client_create_doc", :matter_id => @matter.id, :task_id => @task.nil? ? nil : @task.id, :return_path =>@return_path }, :html=> {:multipart=> true}) do |f| %>
+        <%for document in @document_home.documents%>
+          <%  fields_for 'document_home[document_attributes]', document do |d|%>
+            <% if @document_home.errors.length >0 %>
+              <div class='errorCont'>
+                <%= error_messages_for(:document)%>
+                <div class="clear"></div>
+                <%= flash[:error]%>
+              </div>
+            <%end%>
+            <%unless @task.nil?%><%=hidden_field_tag('document_home[matter_task_ids][]', @task.id)%>
+              <p>
+                <label><%=t(:label_name)%></label>
+                <span class='textNormal'><%= truncate(@task.name, :length=>30)%></span>
+                <br class="clear" />
+              </p>
+            <%end%>
+            <p>
+              <label><%=t(:label_document)%><span>*</span></label>
+              <%= d.file_field :data, :onChange=> "updatename(this.value,'document_home_document_attributes_name')", :class=>"input-short" %>
+            </p>
+            <p>
+              <label><%=t(:label_name)%><span>*</span></label>
+              <%=d.text_field :name, :class=>"input-short" %>
+            <div class="radio">
+              <ul>
+                <li>
+                  <label>
+                    <%=d.radio_button(:privilege, 'Not-Privilege',:onclick => "jQuery('#help_message').text(' ')", :checked => true,:class=>"radio" )%>
+                    <%=t(:label_not_privileged)%></label>
+                </li>
+                <li>
+                  <label>
+                    <%=d.radio_button(:privilege, 'Privilege',:onclick => "jQuery('#help_message').text('Matter team will be alerted about the Privileged status.')",  :class=>"radio")%>
+                    <%=t(:label_privileged)%></label>
+                </li>
+              </ul>
+            </div>
+            </p>
+            <p>
+              <label><%=t(:label_description)%></label>
+              <%=d.text_area :description, :class=>"input-short",:cols=>"45", :rows=> '4' %>
+            </p>
+            <%=f.submit t(:text_upload), :disable_with=>'Please wait...', :class=>"submit-green"%>&nbsp;&nbsp;&nbsp;
+            <input type="submit" id="cancel" value="Cancel" onclick="window.location='<%=@return_path%>';return false;" class="submit-gray"/>
+          <%end%>
+        <%end%>
+      <%end%>
+    </div>
+  </div>
+</div>

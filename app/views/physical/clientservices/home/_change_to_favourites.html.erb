@@ -1,0 +1,27 @@
+<ul id="Change_to_fav" class="favorite">
+    
+  <%@favourites.each do |fav|%>
+    <%# matter = true %>
+    <%# if fav.url.include?('task')  %>
+      <%#unless can? :manage, MatterTask %>
+        <%#matter = false%>
+      <%# end %>
+    <%# end %>
+    <%# if matter == true %>
+
+      <li class="<%= cycle('bg1', 'bg2') %>" style="height:21px;line-height:21px">
+        <%if fav.fav_type=='RSSFeed'%>
+          <a id="favorite_item_<%=fav.id%>" href="/physical/clientservices/show_rssfeed?url=<%= CGI::escape(fav.url.to_s)%>&height=400&width=800" class="thickbox" Name = "RSS: <%= truncate(fav.name.try(:titleize), :length => 20) %>"  >
+            <%= truncate(fav.name.try(:titleize), :length => 20) %>&nbsp;</a>
+        <%else%>
+          <a id="favorite_item_<%=fav.id%>" href="<%= fav.fav_type == 'Internal' ? "http://#{request.env["HTTP_HOST"]}/#{fav.url}" : fav.url %>" <%if fav.fav_type == 'External' %>target="_blank" <%else%> target="_parent"<%end%> > <%= truncate(fav.name, :length => 20) %> </a>
+        <%end%>
+        <span style="float:right">
+          <%=link_to (image_tag("inactive_edit.gif")), "#", :onclick=> "tb_show('Edit Form to #{t(:text_favorite)}','#{physical_clientservices_edit_favourite_path}?height=100&width=300&id=#{fav.id}','');return false;", :class => "vtip", :title => "Edit"%>
+          <a href="#"  onclick="delete_favourite('<%=fav.id%>','<%=fav.fav_type%>');"><img src="/images/inactive_deactivate.gif" class="vtip" title="Delete"/></a>
+        </span>
+      </li>
+    <%# end %>
+  <%end%>
+
+</ul>

@@ -1,0 +1,42 @@
+<div class="mt5">
+  <div class="gridDiv">
+    <div id="dashboard_toggle" class="titleHead">
+      <div class="fl"><%=t(:text_company)%></div>
+      <br class="clear"/>
+    </div>
+    <div>
+      <div class="gryBox">
+        <div class="textBrwn11 fr "><%=link_to(t(:text_add_new_company), new_company_path)%></div>
+        <div class="p5 gridTable">
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+            <tbody>
+              <tr>
+                <th width="35%"><%=t(:text_name)%></th>
+                <th width="20%"><%=t(:text_number_of_licences)%></th>
+                <th width="25%"><%=t(:text_number_of_active_users)%></th>
+                <th width="25%" colspan="3"><%=t(:text_action)%></th>
+              </tr>
+              <%@companies.each do |company|%>
+                <tr class="<%=cycle("bg1", "bg2")%>">
+                  <td><%=company.name %></td>
+                  <td><%=link_to(Licence.total_licence(company.id),"#",:onclick=>"fetch_data_based_for_company(#{company.id}, 'div_company_licence', 'companies/company_licences');")%></td>
+                  <td><%=company.users.length %></td>
+                  <td>
+                    <%=link_to t(:label_user_employees), company_path(company) %>
+                    &nbsp;|&nbsp;
+                    <%=link_to t(:label_edit), edit_company_path(company) %>
+                    &nbsp;|&nbsp;
+                    <%=link_to t(:label_deactive), company, :confirm => 'Are you sure?', :method => :delete %>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <br class="clear"/>
+      </div>
+    </div>
+  </div>
+  <div id="div_company_licence"></div>
+</div>
+<br/>

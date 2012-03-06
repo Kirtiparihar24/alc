@@ -1,0 +1,103 @@
+      <div>
+        <div class="box_gray_new">
+          <div class="fl">
+            <strong><%= t(:text_retainer_invoice_receipts) %></strong>
+          </div>
+          <br class="clear" />
+        </div>
+        <div class="mtbrl5">
+          <% form_for(@matter, :url => save_retainer_fees_matter_path(@matter)) do |f| %>
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td width="12%"><strong><%=t(:text_retainer_fee)%></strong></td>
+                  <td class="mr8" width="18%"><%=f.text_field :retainer_fee, :size => 20, :maxlength => 14%></td>
+                  <td width="1%">&nbsp;</td>
+                  <td width="15%"><strong><%=t(:text_min_retainer_fee)%></strong></td>
+                  <td width="18%"><%=f.text_field :min_retainer_fee, :size => 20, :maxlength => 12%></td>
+                  <td width="7%" align="left">
+                    <span class="buttonSub_div">
+                      <%=submit_tag t(:label_save)%>
+                    </span></td>
+                  <td width="29%" align="right"><a href="<%=raw new_retainer_matter_matter_billing_retainers_path(@matter, :height=>280, :width=>470, :page_reload => "true")%>" class="thickbox fr link_blue vtip" title="<%=t(:text_add_retainer_receipt)%>" name="<%=t(:text_add_retainer_receipt)%>"><span class="icon_bill_payment_details fl"></span></a></td>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+        <div class="tabular_listing">
+          <table width="100%" cellpadding="1" cellspacing="1">
+            <tbody>
+              <tr>
+                <th width="8%" align="center"><a href="#"><strong><%=t(:text_date)%></strong></a></th>
+                <th width="12%" align="right"><strong><%=t(:text_amount_received)%></strong></th>
+                <th width="40%" align="left"><strong><%=t(:text_details)%></strong></th>
+                <th width="35%" align="left"><strong><%=t(:text_source)%></strong></th>
+                <th width="5%" align="center"><%=t(:text_actions)%></th>
+              </tr>
+              <% unless retainers.empty? %>
+                <% retainers.each do |retainer| %>
+                  <tr class="<%= cycle('bg1','bg2') %>">
+                    <td align="center"><%= livia_date(retainer.date.to_time)%></td>
+                    <td align="right">$ <%= number_with_lformat(retainer.amount)%></td>
+                    <td><%= retainer.financial_transaction_id.nil? ? truncate_hover(retainer.remarks, 40) : truncate_hover(retainer.financial_transaction.details,40) %></td>
+                    <td><%= retainer.financial_transaction.financial_account.name if retainer.financial_transaction_id%></td>
+                    <td align="center">
+                      <div class="icon_action mt3"><a href="#"></a></div>
+                      <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                        <!--Icon table strt here -->
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                          <%url_str = retainer.financial_transaction_id ? edit_financial_account_financial_transaction_path(retainer.financial_transaction.financial_account, retainer.financial_transaction, :width => 850, :height => 250, :check_action => 'matter_billing') : edit_retainer_matter_matter_billing_retainer_path(@matter.id, retainer, :width => 500, :height => 230)%>
+                          <%=
+                          raw action_pad_top_blue_links({
+                              :edit_path => url_str,
+                              :edit_modal => true,
+                              :edit_text => "Edit #{t(:text_retainer_invoice_receipts)}",
+                              :deactivate_path => "NO",
+                              :comment_path => "NO",
+                              :document_path => "NO",
+                              :history_path => "NO"
+                            })
+                        %>
+                          <tr>
+                            <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+                            <td style="background: #fff;">
+                              <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                                <tr>
+                                  <td colspan="4"><div class="ap_pixel10"></div></td>
+                                </tr>
+                                <tr>
+                                  <td width="7%" align="center" valign="middle">
+                                    <%doc = retainer.get_document%>
+                                    <%unless doc.nil?%><img src="/images/icon_child_action.png" width="15" height="14" /><%end%>
+                                  </td>
+                                  <td width="40%" align="left" valign="middle">
+                                    <%unless doc.nil?%><%= link_to("Download Bill", document_home_path(doc.latest_doc.id))%><%end%>
+                                  </td>
+                                  <td width="7%" align="left" valign="middle"></td>
+                                  <td width="40%" align="left" valign="middle" nowrap></td>
+                                </tr>
+                                <tr>
+                                  <td colspan="4"><div class="ap_pixel10"></div></td>
+                                </tr>
+                              </table>
+                            </td>
+                            <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="ap_bottom_curve_left"></td>
+                            <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                            <td valign="top" class="ap_bottom_curve_right"></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr> <td colspan="4"> <div class="warningCont m5"> <%= t(:text_no_record_s_found) %> </div> </td> </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+</div>

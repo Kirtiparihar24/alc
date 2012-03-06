@@ -1,0 +1,21 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="33%"><h3 class="title_gray"><%= t(:label_import) %></h3></td>
+    <td width="33%"><h3 class="title_gray"><%= t(:text_export) %></h3></td>
+    <td width="34%"><h3 class="title_gray"><%= t(:text_quick_books) %></h3></td>
+  </tr>
+  <tr><td colspan="3" height="1"></td></tr>
+  <tr>
+    <td colspan="3">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="highlight_bg_1 box_bg_bdr_1 bdr_bot_1">
+        <tr><td colspan="3">&nbsp;</td></tr>
+        <tr>
+          <td width="33%" valign="top" class="right-bg"><%= render :partial => "import" %><br/></td>
+          <td width="33%" valign="top" class="right-bg"><%= render :partial => "export" %><br/></td>
+          <td width="34%" valign="top"><%= render :partial => "quick_book" %><br/></td>
+        </tr>
+        <tr><td colspan="3">&nbsp;</td></tr>
+      </table>
+    </td>
+  </tr>
+</table>

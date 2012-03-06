@@ -1,0 +1,1 @@
+<%= select_tag("stages", '<option value="All">All</option>' + options_for_select(current_company.contact_stages.collect{|stage|[stage.alvalue, stage.id]},{:selected=>params[:contact_type].to_i}),{:onchange =>"filterContact('#{params[:mode_type]}', this.options[this.selectedIndex].value, '#{params[:per_page]}', '#{params[:letter]}')",:style=>"height:22px;"}) -%>

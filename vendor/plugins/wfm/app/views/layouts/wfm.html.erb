@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link rel="shortcut icon" href="/stylesheets/wfm/layout/site/favicon.gif" type="image/gif" />
+    <title>WFM - <%= controller_name.capitalize%></title>
+    <%= stylesheet_link_tag "jquery-ui.css"%>
+    <%= stylesheet_link_tag "wfm/style.css","wfm/main.css","globe.css" %>
+    <%= stylesheet_link_tag "wfm/custom.css", "wfm/wfm_thickbox.css"%>
+    <%= stylesheet_link_tag "jquery.autocomplete.css"%>
+    <%=raw(javascript_include_tag "jquery/jquery-1.7.1.min.js", "jquery/jquery.quicksearch.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery.thickbox.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery.tablesorter.min.js")%>
+    <%=raw(javascript_include_tag "wfm/wfm_application.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery.hoverIntent.minified.js","jquery/jquery.timeentry.pack.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery.MultiFile.js","jquery/jquery.MultiFile.pack.js" )%>
+    <%= raw(javascript_include_tag "jquery/jquery.ui.core.js") %>
+    <%=raw(javascript_include_tag "jquery/jquery.autocomplete.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery-ui-1.8.16/ui/minified/jquery-ui.min.js",'jquery/jquery.timeentry.pack.js','livia_common.js' )%>
+    <%=raw(javascript_include_tag "jquery/jquery.scrollTo-min.js")%>
+    <%= raw(javascript_include_tag "rails.js") %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
+    <!--[if !IE]>start wrapper<![endif]-->
+    <div id="wrapper">
+      <%= render :partial =>'layouts/head' %>
+      <div id="altnotice"></div>
+      <!--[if !IE]>start content<![endif]-->
+      <div id="content">
+        <% if flash[:notice].present? %>
+          <div id="notice" class="message_success_div"><%=flash[:notice]%></div>
+        <% end %>
+        <% if flash[:error].present? %>
+          <div id="notice" class="message_error_div"><%=flash[:error]%></div>
+        <%end%>
+        <%= yield %>
+        <%= render :partial =>'layouts/sidebar' %>
+      </div>
+      <!--[if !IE]>end sidebar<![endif]-->
+    </div>
+    <!--[if !IE]>end wrapper<![endif]-->
+    <%= render :partial =>'layouts/foot' %>
+  </body>
+  <script type="text/javascript">
+    show_flash_notice();
+    jQuery(function () {
+      jQuery('input#id_search').quicksearch('ul#side_bar_lwayers_list li span.search_text');
+    });
+  </script>
+  <%flash.discard%>
+</html>

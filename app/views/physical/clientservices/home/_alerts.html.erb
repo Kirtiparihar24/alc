@@ -1,0 +1,132 @@
+<%
+can_manage_home = can?(:manage,:home)
+view_all_tasks = get_matter_task_count(current_company.id, get_employee_user_id)
+upcoming_title_for_tip_n_popup = "Upcoming Activities For Next #{user_setting.setting_value.blank? ? "7" : user_setting.setting_value}" "#{user_setting.setting_value.to_i > 1 ? " Days":" Day"}"
+opps_overdue = get_opportunity_followup_overdue(current_user.company_id, current_user.id)
+opps_today = get_lawyer_opportunity_followup_today(current_user.company_id, current_user.id)
+upcoming_opportunity_title_for_tip_n_popup = "Upcoming Opportunities For Next #{upcoming_opportunity.setting_value.blank? ? "7" : upcoming_opportunity.setting_value}" "#{upcoming_opportunity.setting_value.to_i > 1 ? " Days":" Day"}"
+opps_upcoming = get_lawyer_opportunity_followup_upcoming(current_user.company_id, current_user.id, @upcomingopportunity)
+client_docs = lawyer_client_documents(current_user.company_id, current_user.id)
+unread = lawyer_client_task_comments2 %>
+
+<h2 class="title_main"><%= t(:text_alerts) %></h2>
+<div class="ptb5lr8">
+  <div class="fl w32 border_dotted_right" >    
+    <div>
+      <h3 class="fl title_blue"><%= t(:text_activities) %></h3>
+      <% if can_manage_home %>
+        <div class="fr link_blue_underline mr10 mt5">
+          <a href="#" onclick="tb_show('All Open Activities','<%= raw physical_clientservices_view_matter_tasks_path %>?task_type=all&height=350&width=950','','fixed')" title ="View All Open Activities"class="vtip"><%= t(:text_view_all_open_activities)%></a>
+        </div>
+      <% end %>
+      <br class="clear" />
+    </div>
+    
+    <div id="overdue"><span class="icon_overdue fl mt5 mr5"></span> &nbsp;
+      <% if view_all_tasks['overdue'] > 0 %>
+        <a href="#" onclick="tb_show('Overdue','<%=raw physical_clientservices_view_matter_tasks_path(:task_type=>"overdue") %>&height=350&width=950','','fixed')" title="Overdue Tasks" class="vtip"><%= view_all_tasks['overdue'] %> <%= t(:text_overdue) %></a>
+      <% else %>
+        <%= t(:text_0_overdue) %>
+      <% end %>
+    </div>
+
+    <div id="today"><span class="icon_today fl mt4 mr5"></span> &nbsp;
+      <% if view_all_tasks['today'] > 0 %>
+        <a href="<%=raw physical_clientservices_view_matter_tasks_path(:height=> 350, :width=>950, :task_type=>"today")%>" class="thickbox vtip" title="Today's Activities"  name="Today's Activities"><%= view_all_tasks['today'] %> <%= t(:text_today) %></a>
+      <% else %>
+        0 <%= t(:text_today) %>
+      <% end %>
+    </div>
+
+    <div id="upcoming"><span class="icon_upcoming fl mt4 mr5"></span> &nbsp; <a href="<%=raw physical_clientservices_view_matter_tasks_path(:height=> 350, :width=>950, :task_type=>"upcoming")%>" class="thickbox vtip" title="<%= upcoming_title_for_tip_n_popup %>" name="<%= upcoming_title_for_tip_n_popup %>"><%= view_all_tasks['upcoming'] %> <%= t(:text_upcoming) %></a></div>
+    <% if can_manage_home %>
+      <div class="fr link_blue_underline mr10 mt5">
+        <%= link_to "New Activity", create_activity_calendars_path(:height =>"360", :width=>"900"), :class=> "thickbox mr10 ml3 vtip", :title => "New Activity", :name => "New Activity" %>
+      </div>
+    <% end %>
+    <br class="clear" />
+  </div>
+
+  <div class="fl w32 ml15 border_dotted_right">
+    <div>
+      <h3 class="fl title_blue"><%= t(:text_opportunity_followups) %></h3>
+      <%if can_manage_home
+        height_width = @ipad_req ? "height=40&width=900" : "height=350&width=1020" %>
+        <div class="fr link_blue_underline mr10 mt5">
+          <a href="#" onclick="tb_show('All Opportunities','<%=raw opportunities_path %>?<%= height_width %>&load_popup=true&format=html','','fixed')"title ="View All Open Opportunities"class="vtip" >View All Open Opportunities </a>
+        </div>
+      <%end%>
+      <br class="clear" />
+    </div>
+
+    <% if opps_overdue.size > 0 %>
+      <div style="display:none" id="overdue_opps_data"><%= render :partial => "followup_data", :locals => {:opps => opps_overdue, :opps_type => "overdue", :title => "Overdue Opportunities"} %></div>
+      <div id="overdue"><span class="icon_overdue fl mt5 mr5"></span> &nbsp; <a href="#TB_inline?height=350&width=500&inlineId=overdue_opps_data" class="thickbox vtip" title="Overdue Opportunities" name="Overdue Opportunities"><%= opps_overdue.size %> <%= t(:text_overdue) %></a></div>
+    <% else %>
+      <div id="overdue"><span class="icon_overdue fl mt5 mr5"></span> &nbsp; 0 <%= t(:text_overdue) %></div>
+    <% end %>
+
+
+    <% if opps_today.size > 0 %>
+      <div style="display:none" id="today_opps_data"><%= render :partial => "followup_data", :locals => {:opps => opps_today, :opps_type => "today", :title => "Today's Opportunities"}%></div>
+      <div id="today"><span class="icon_today fl mt4 mr5"></span> &nbsp; <a href="#TB_inline?height=350&width=500&inlineId=today_opps_data" class="thickbox vtip" title="Today's Opportunities" name="Today's Opportunities"><%= opps_today.size %> <%= t(:text_today) %></a></div>
+    <% else %>
+      <div id="today"><span class="icon_today fl mt4 mr5"></span> &nbsp; 0 <%=t(:text_today)%></div>
+    <% end %>
+
+
+    <div style="display:none" id="upcoming_opps_data"><%= render :partial => "followup_data", :locals => {:opps => opps_upcoming, :opps_type => "upcoming", :upcoming_opportunity => upcoming_opportunity, :title => "Upcoming Opportunities for For Next #{upcoming_opportunity.setting_value.blank? ? "7" : upcoming_opportunity.setting_value} Days" }%></div>
+    <div id="upcoming"><span class="icon_upcoming fl mt4 mr5" ></span> &nbsp; <a href="#TB_inline?height=350&width=500&inlineId=upcoming_opps_data" class="thickbox vtip" title="<%= upcoming_opportunity_title_for_tip_n_popup %>" name="<%= upcoming_opportunity_title_for_tip_n_popup %>" id="upcomingopp"><%= opps_upcoming.size %> <%= t(:text_upcoming) %></a></div>
+
+    <% if can_manage_home %><div class="fr link_blue_underline mr10 mt5"><%= link_to("New Opportunity", url_for(:action => :new_opportunity, :height=>"350", :width=>"700"), :class=>"thickbox vtip", :title => "New Opportunity", :name => "New Opportunity", :id=>"new_opp_home") %></div><% end %>
+    <br class="clear" />
+  </div>
+
+  <div class="fl w32 ml15">
+    <h3 class="title_blue"><%= t(:text_client_messaging) %></h3>
+
+    <% if client_docs > 0 %>
+      <div style="display:none" id="client_docs_data"></div>
+      <div class="lh18 text_black"><span class="icon_document_receiv fl mt5 mr10"><a href="<%=all_matter_client_docs_matters_path(:height=>350, :width=>550)%>" class="thickbox vtip" title="<%= t(:text_documents_received) %>" name="<%= t(:text_documents_received) %>"></a></span>
+        <a href="<%=all_matter_client_docs_matters_path(:height=>350, :width=>550)%>" class="thickbox vtip" title="<%= t(:text_documents_received) %>" name="Client Documents"><%= client_docs %> <%= t(:text_documents_received) %></a></div>
+    <% else %>
+      <div class="lh18 text_black"><span class="icon_document_receiv fl mt5 mr5"></span> &nbsp; <%= t(:text_0_documents_received) %></div>
+    <% end %>
+    <br class="clear"/>
+
+    <% if((unread) > 0)%>
+      <div style="display:none" id="client_comments_data"></div>
+      <% if task_available? %>
+        <div class="lh18 text_black"><span class="icon_comment_receiv fl mt4 mr5"></span>
+          <a href="<%=all_matter_client_comments_matters_path(:height=> 350, :width=>760)%>" class="thickbox vtip" title="<%= t(:text_new_messages) %>" name="Client Messages">
+            <span id="new_comments_count"><%= unread %></span> <%= t(:text_new_messages) %>
+          </a>
+        </div>
+      <% end
+    else %>
+      <div class="lh18 text_black"><span class="icon_comment_receiv fl mt4 mr5"></span><%= t(:text_0_messages_received) %></div>
+    <% end %>
+  </div>
+  <br class="clear" />
+</div>
+<br class="clear" />
+
+<script type="text/javascript">
+  // Function to display the last updated setting_value for upcoming opportunity
+  function set_opp_upcoming_value(){
+    value = jQuery("#setting_id").val();
+    jQuery('#upcoming_opps').html('').hide();
+    jQuery.ajax({
+      type: "GET",
+      url: "/get_opp_upcoming_setting_value",
+      data: "upcoming_opportunity_id="+value,
+      success: function(html){
+        jQuery("#setting_value").val(html);
+      }
+    });
+  }
+
+  jQuery("#upcomingopp").live("click",function(){
+    set_opp_upcoming_value();
+  });
+</script>

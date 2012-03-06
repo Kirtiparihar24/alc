@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <%= stylesheet_link_tag "reset.css", "new_thickbox.css", "login.css" %>
+      <%=style_sheet %>
+  </head>
+  <table align="right">
+    <tr>
+      <td rowspan="3">
+            <div class="welcomeUser">
+              <span class="icon_user fl"></span>&nbsp;
+              <% if current_user.role?:secretary%>
+                <span style="color:#c56405;"><%=h current_user.full_name%></span>
+              <%elsif show_selected_lawyer && @sp_session%>
+                <span style="color:#c56405;"><%=h @sp_session.assignment.user.try(:full_name)%></span>
+              <%elsif current_user.end_user%>
+                <span style="color:#c56405;"><%=h current_user.end_user.try(:full_name)%></span>
+              <%end%>
+              <br />
+                 <span class="text10">
+                  <%=link_to_unless_current(t(:label_logout),destroy_user_session_path ) do
+                    link_to(t(:label_login), new_user_session_path)
+                  end%>
+                </span>
+              </div>
+      </td>
+    </tr>
+  </table>
+
+<table height="100%" align="center" width="100%">
+  <tbody>
+    <tr>
+      <td>
+	
+        <!--Header div @start here -->
+        <div id="login-div" style="position:relative;"> <div class="contact_number_div">(214) 269-8570 </div>
+	   <h1 class="textC"><%= image_tag "livia_logo.png" %></h1>
+             <% if APP_URLS[:use_helpdesk] %> <div class="link_gray mr8" style="position: absolute; right: 0pt; text-decoration:underline;"><%= link_to t(:text_helpdesk), "#{support_path}?height=475&width=650", :class => "thickbox vtip", :title => "#{t(:text_helpdesk)}", :name => "#{t(:text_helpdesk)}" %> </div> <%end%>
+             <div style="text-align: center;margin-top:50px;font-size: 13px"><strong>No active license assigned. Please contact your administrator</strong></div>
+             <br class="clear" />
+        </div>
+        <div  style="width:518px; margin:0 auto; color:#767676; padding-top:8px;">This site is best viewed with Internet Explorer 8.0; Firefox 3.0 or higher;  Chrome 7.0 or higher; Safari 5.0.3 and at a minimum screen resolution of 1280  * 1024.</div>
+      </td>
+
+     </tr>
+    
+  </tbody>
+     </table>
+
+</html>
+
+

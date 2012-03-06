@@ -1,0 +1,74 @@
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#campaign_start");
+    livia_matter_inception_datepicker_new("#campaign_end");  
+    jQuery("#campaign_save").click(function(){
+      jQuery('#camp_button_pressed').val("save");     
+    });
+    jQuery("#campaign_saveexit").click(function(){
+      jQuery('#camp_button_pressed').val("save_exit");     
+    });
+  });  
+  jQuery(function() {
+    jQuery("#campaign_name").focus();
+  });
+</script>
+<div id="fragment-6" class="tabs-container-tabs tabular_listing">
+  <%form_for(@campaign, :url => {:controller=>'campaigns', :action=>'update'}, :html=>{:onsubmit => "return disableAllSubmitButtons('campaigns')"}) do |f|%>
+    <%=hidden_field_tag :button_pressed%>
+    <%=hidden_field_tag :camp_button_pressed%>
+    <%=hidden_field_tag :action_name, params[:action_name] if params[:action_name]%>
+    <%=hidden_field_tag :stage, params[:stage] if params[:stage]%>
+    <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+    <%if(@campaign.errors.length > 0)%>
+      <div class='message_error_div'>
+        <%= error_messages_for :campaign%>
+      </div>
+    <%end%>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" class="form_table pt5">
+
+<tr>
+        <td colspan="5"  class="mt10">&nbsp;</td>
+      </tr>
+
+
+      <tr>
+        <td width="15%" valign="top"><label><%= t(:label_campaign_name) %><span class="alert_message">*</span></label></td>
+        <td width="10%"><%= f.text_area :name,:id=>"campaign_name", :cols =>'30', :rows =>'2'%></td>
+        <td width="15%">&nbsp;</td>
+        <td width="10%">&nbsp;</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><label><%= t(:label_status) %></label></td>
+        <td><%= f.collection_select :campaign_status_type_id, @status_types, :id, :alvalue, {:selected => @campaign.campaign_status_type_id}, {:onChange => "campaign_status_change()"}%></td>
+        <td>&nbsp;</td>
+        <td class="reason_tds" <% unless @campaign.campaign_status_type_id_changed?%> style="display: none;" <%end%> ><label><%=t(:label_reason)%> <span class="alert_message">*</span></label>
+        </td>
+        <td class="reason_tds" <% unless @campaign.campaign_status_type_id_changed?%> style="display: none;" <%end%>> <%= f.text_field  :reason, :class=>'txtbox', :size =>'22'%>
+        </td>
+      </tr>
+      <tr>
+        <td ><label><%= t(:label_campaign_details) %></label></td>
+        <td ><label><%= f.text_area :details,:cols => 30, :rows => 3 %></label></td>
+        <td>&nbsp;</td>
+        <td><label><%= t(:label_owner) %></label></td>
+        <td><%= f.collection_select :owner_employee_user_id, @employees, :id, :full_name, { :include_blank => "--None--" }%></td>
+      </tr>
+      <tr>
+        <td><label><%= t(:label_start_date) %></label></td>
+        <td><input id="campaign_start" class="date_picker" type="text" value="<%=@campaign.starts_on ? @campaign.starts_on.strftime('%m/%d/%Y') : ''%>" readonly="true" name="campaign[starts_on]" size="10"  /></td>
+        <td>&nbsp;</td>
+        <td><label><%= t(:label_end_date) %></label></td>
+        <td><input type="text" value="<%=@campaign.ends_on ? @campaign.ends_on.strftime('%m/%d/%Y') : ''%>" readonly="true" name="campaign[ends_on]" id="campaign_end" class="date_picker" size="10"  /></td>
+      </tr>
+    </table>
+    <div class="buttonSub_div">
+      <%= submit_tag t(:label_save), :name => "save", :id=> "campaign_save" ,:class => "campaigns", :onclick => "return setButtonPressed(this);" %>
+      <%= submit_tag t(:text_save_n_exit), :name => "save_exit", :id=> "campaign_saveexit" ,:commit=>"save_exit", :class => "campaigns", :onclick => "return setButtonPressed(this);"%>
+      <%= f.submit t(:label_cancel), :name => "cancel", :type=>"button",:class => "campaigns", :onclick => "disableAllSubmitButtons('campaigns');setButtonPressed(this);window.location.href='#{remember_past_path}';" %>
+      <%= hidden_field_tag :commit,'',:id=>"updateme" %>
+    </div>
+    <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></div>
+  <% end %>
+</div>

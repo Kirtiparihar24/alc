@@ -1,0 +1,36 @@
+<% content_for :company_selection do %>
+  <div id="topheadContainer"><div class="title fl"><%= @company.name  if (session[:company_id].present? and current_user.role?:livia_admin) %></div></div>
+<% end %>
+<div class="box-head"><h2><%=t(:text_new_department)%></h2></div>
+<% form_for @department,:html =>{:onsubmit => "jQuery('#department_submit').attr('disabled', true); return true;"} do |u| %>
+  <%if(@department.errors.length > 0)%>
+    <div class='errorCont'>
+      <%=u.error_messages %>
+      <div class="clear"></div>
+    </div>
+  <%end%>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :name, t(:text_name_of_the_department)%><span>*</span></label></td>
+        <td><%=u.text_field :name,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :location, t(:text_location)%><span>*</span></label></td>
+        <td><%=u.text_field :location,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :parent_id, t(:text_parent_department)%><span>*</span></label></td>
+        <td><%=collection_select :department,:parent_id,@sub_departments,:id,:name,{:include_blank => 'No Parent Department'},:class=>"field size3"%>
+        </td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%=u.submit t(:text_create) , :class=>"button"%>
+    <%=link_to t(:label_back),departments_path, :class=>"button"%>
+  </div>
+<% end %>

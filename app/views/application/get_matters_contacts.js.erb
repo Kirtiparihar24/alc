@@ -1,0 +1,14 @@
+<% if params[:matter_id].present?%>
+  jQuery('<%=params[:cnt_span_id]%>').html("<%=escape_javascript(render(:partial => 'select_new_contacts',
+      :locals => {:contact_id => @contacts.collect(&:id).to_s,:formINDEX=>params[:formINDEX], :spanid=> params[:cnt_span_id]}))%>")
+<%end%>
+<%if params[:contact_id].present?%>
+  jQuery('<%=params[:mtr_span_id]%>').html("<%=escape_javascript(render(:partial => 'select_new_matters',
+      :locals => {:matter_id => params[:matter_id],:formINDEX=>params[:formINDEX], :spanid=> params[:mtr_span_id]}))%>")
+<%end%>
+<% if params[:matter_id].blank? && params[:contact_id].blank? %>
+  jQuery('<%=params[:cnt_span_id]%>').html("<%=escape_javascript(render(:partial => 'select_new_contacts',
+      :locals => {:contact_id => params[:contact_id],:formINDEX=>params[:formINDEX], :spanid=> params[:cnt_span_id]}))%>")
+  jQuery('<%=params[:mtr_span_id]%>').html("<%=escape_javascript(render(:partial => 'select_new_matters',
+      :locals => {:matter_id => params[:matter_id],:formINDEX=>params[:formINDEX], :spanid=> params[:mtr_span_id]}))%>")
+<%end%>

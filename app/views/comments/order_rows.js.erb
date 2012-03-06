@@ -1,0 +1,1 @@
+jQuery('#comrelatedtasksToggle_div').html("<%=escape_javascript(render(:partial => 'sort_comments',:locals => {:comments => @comments , :commentable_type => params[:commentable_type],:commentable_id => params[:commentable_id]}))%>")

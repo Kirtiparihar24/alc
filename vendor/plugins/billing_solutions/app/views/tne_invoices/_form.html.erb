@@ -1,0 +1,69 @@
+<%=raw javascript_include_tag  'time_and_expense/editables' %>
+
+<%
+is_new_invoice = @tne_invoice.new_record?
+primary_tax_disable = @tne_invoice_setting.nil? || (@tne_invoice_setting.present? && !@tne_invoice_setting.primary_tax_enable)
+%>
+<div id="display_loader">
+   <div id="show_add_time_expense_link">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="link_blue">
+    <tr>
+      <td width="75%">&nbsp;</td>
+      <%#if @tne_invoice.matter_id.present? || @tne_invoice.contact_id.present? %>
+   
+        <%= render :partial=>"new_time_and_expense_links", :locals => {:primary_tax_disable => primary_tax_disable} %>
+    
+<%#end%>
+    </tr>
+  </table>
+     </div>
+</div>
+<% form_for @tne_invoice ,:html=>{:id=>"tne_invoice",:onsubmit => "return disableAllSubmitButtons('tne_invoices')"} do |f|%>
+  <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type]=(params[:mode_type] ? params[:mode_type] : params[:view].eql?('presales') ? 'client' : 'matter'),params[:controller])%>
+  <%=hidden_field_tag "actionname", params[:actionname] ? params[:actionname] : params[:action]%>
+  <div id="errorCont"> </div>
+  <%if(@tne_invoice.errors.length > 0)%>
+    <div class="message_error_div"> <%=f.error_messages %> </div>
+  <%end%>
+  <span id="loader_container"></span>
+
+  <div id="bill_details" class="p5">
+    <%= render :partial => 'bill_details', :locals => {:f => f, :is_new_invoice => is_new_invoice, :primary_tax_disable => primary_tax_disable} %>
+    <%= hidden_field_tag "from_unbilled", params[:from_unbilled] if params[:from_unbilled] %>
+    <%= hidden_field_tag "mode_type", params[:mode_type] %>
+    <%= hidden_field_tag "flag", params[:flag] if params[:flag] %>
+  </div>
+
+  <div id="time_and_expense_details" class="p5">
+    <%=  render :partial=>'detailed_view',:locals=> {:f=>f, :is_new_invoice => is_new_invoice, :primary_tax_disable => primary_tax_disable}%>
+    <br /><div style="text-align: center"><input type="button" value="Preview" class ="tne_invoices" onclick="preview_bill_details();"  style = <%="#{'color:gray' if @total_data.blank? && @total_expenses.blank?}"%> <%="#{@total_data.blank? && @total_expenses.blank? ? 'disabled= disabled' : ''}"%>/>
+  <% if controller.action_name=='regenerate_bill' || (params[:tne_invoice].present? && params[:tne_invoice][:regenerate] == "true")%>
+        <%=submit_tag 'Regenerate Bill',:class=>"tne_invoices"%>
+      <%else%>
+        <%=submit_tag  "#{is_new_invoice ? 'Generate Bill' : 'Update'}",:class=>"tne_invoices" ,:onclick=>"return check_date();" ,:disabled=>@total_data.blank? && @total_expenses.blank?, :style => "#{'color:gray' if @total_data.blank? && @total_expenses.blank?}"%>
+      <%end%>
+      <input type="button" value="Cancel" class="tne_invoices" onclick="window.location.href='<%=@remember_path%>'"/>
+      <!--//commented code :calculate_primary_secondary_tax()-->
+    </div><br />
+  </div>
+<% end %>
+
+<script>
+  jQuery(document).ready(function(){
+  <% if (params[:tne_invoice].present? && params[:tne_invoice][:regenerate] == true) %>
+    display_data();
+  <% else %>
+    check_calculations();
+  <% end %>
+});
+  //to check for start date and end date validation :Rashmi N
+  function check_date(){
+    var d1 = jQuery('#tne_invoice_invoice_date_ID').val();//start date
+    var d2 = jQuery('#tne_invoice_invoice_due_date_ID').val();//end date
+    if(new Date(d1) > new Date(d2)){//start date should not be greater than end date
+      alert('Due date is less than Invoice date');
+      jQuery('#tne_invoice_invoice_due_date_ID').focus();
+      return false;
+    }
+  }
+</script>

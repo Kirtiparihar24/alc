@@ -1,0 +1,35 @@
+<div class="box-head"><%=t(:text_edit_company_role_rate)%></div>
+<% form_for(@company_role_rate) do |f| %>
+  <div class="form">
+    <%if(@company_role_rate.errors.length > 0)%>
+      <div class='errorCont'>
+        <%=f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label for="employee_role_rates_company_id"><%=t(:label_company)%></label></td>
+        <td width="75%"><%= @company_role_rate.company.name%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_role)%></label></td>
+        <td width="75%"><%= @role.lvalue %></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_billing_rate)%><span class="text_red">*</span></label>          </td>
+        <td><%= f.text_field :billing_rate ,:maxlength=>11,:onblur => "check_rate(this);"%></td>
+      </tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= f.submit t(:text_update), :class=>"button"%>
+    <%= link_to t(:label_cancel), rate_cards_url ,:class=>"button" %>
+  </div>
+<% end %>
+
+
+
+

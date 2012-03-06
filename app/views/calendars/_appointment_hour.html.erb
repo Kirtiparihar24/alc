@@ -1,0 +1,56 @@
+<% 24.times do |i| %>
+  <%generate_count(i)%>
+  <div class="appointment_hour">
+    <% counttasks =0 %>
+    <% if !@matter_appointments.blank? && @matter_appointments.count>0 %>
+      <% @matter_appointments.each do |appointmenthash| %>
+        <% app = appointmenthash[0] %>
+        <% appointment, end_time = app[:activity], appointmenthash[2] %>
+        <% endshere = (end_time.eql?("full_day") or end_time.eql?("ends_here"))%>
+        <% (0..59).each do |k| %>
+          <% if (k == app[:activity_start_date].strftime('%M').to_i and !endshere ) or (( endshere && k == 0)) %>
+            <% divheight, instance = appointmenthash[3], appointmenthash[4] %>
+            <div style="text-align: left; position:relative;">
+              <% divwidth = @counttotaltasks>1 ? 96/@counttotaltasks : 96 %>
+              <div class="appointment_box<%= @userclass.collect{|cls| cls[0]== appointment.assigned_to_user_id ? " app#{cls[1]}" : "" } %>" style="height:<%= divheight - 4 %>px; position:absolute; width:<%= "#{divwidth}%" %>; margin-top: <%= k %>px; <%= "margin-left: #{divwidth*(counttasks)}%;" if counttasks>0 %> ">
+                <div style="margin:0 3px;">
+                  <% matter = app[:activity_is_matter] %>
+                  <% if appointment.assigned_to_user_id == @userid %>
+                    <% if instance %>
+                      <% ex_start_time = app[:activity_start_date].to_time %>
+                      <span class="link_blue">
+                        <%= activity_description_with_hash(app, 1, "newtooltip", appointmenthash[1], true, (matter ? "thickboxInstance('#{instance_series_calendars_path(:appointment_id => app[:activity_id], :height => 120, :width => 250, :matter => matter, :link => (edit_instance_matter_matter_task_path(app[:activity_matter], appointment, :instance_end_time => app[:activity_end_date].to_time, :instance_end_date => app[:activity_instance_end_date],:ex_start_time=> ex_start_time, :instance_start_date => app[:activity_instance_start_date], :height => "400", :width => "800")), :series => ("#{edit_matter_activity_calendars_path(:matter_id => app[:activity_matter], :id=>app[:activity_id], :height => "400", :width=> "800", :cal_action => params[:action])}"))}')" : "thickboxInstance('#{instance_series_calendars_path(:appointment_id => app[:activity_id], :height => 120, :width => 250, :link => (edit_zimbra_instance_calendars_path(:id => app[:activity_id], :instance_end_time => app[:activity_end_date].to_time, :instance_end_date => app[:activity_instance_start_date],:ex_start_time=> ex_start_time, :instance_start_date => app[:activity_instance_start_date], :height => "400", :width => "800")), :series => ("#{edit_activity_calendars_path(:id=>app[:activity_id], :height => "400", :width=> "800")}"))}')")) %>
+                      </span>
+                    <% else %>
+                      <%= activity_description_with_hash(app, 1, "newtooltip", appointmenthash[1], false, false) %>
+                    <% end %>
+                  <% else %>
+                    <% if matter %>
+                      <% if instance %>
+                        <% ex_start_time = app[:activity_start_date].to_time %>
+                        <span class="link_blue">
+                          <%= activity_description_with_hash(app, 1, "newtooltip", appointmenthash[1], true, "thickboxInstance('#{instance_series_calendars_path(:appointment_id => app[:activity_id], :height => 120, :width => 250, :matter => matter, :link => (edit_instance_matter_matter_task_path(app[:activity_matter], appointment, :instance_end_time => app[:activity_end_date].to_time, :instance_end_date => app[:activity_instance_end_date],:ex_start_time=> ex_start_time, :instance_start_date => app[:activity_instance_start_date], :height => "400", :width => "800")), :series => ("#{edit_matter_activity_calendars_path(:matter_id => app[:activity_matter], :id=>app[:activity_id], :height => "400", :width=> "800", :cal_action => params[:action])}"))}')") %>
+                        </span>
+                      <% else %>
+                        <%= activity_description_with_hash(app, 1, "newtooltip", appointmenthash[1], false, false) %>
+                      <% end %>
+                    <% else %>
+                      <%if app[:activity].mark_as=="PUB" %>
+                        <%= app[:activity_name] %>
+                      <% else %>
+                        <%= app[:activity_user_name] %> (Time blocked for appointment)
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+        <% counttasks +=1 %>
+      <% end %>
+    <% end %>
+    <div class="bg7 first30">&nbsp;</div>
+    <div class="bg8 second30">&nbsp;</div>
+  </div>
+<% end %>

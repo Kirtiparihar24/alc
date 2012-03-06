@@ -1,0 +1,110 @@
+<h2 class="title_main">New Invoice <span class="title_value"></span></h2>
+<%#= render "form" %>
+<%#= link_to 'Back', tne_invoices_path %>
+
+
+<%=raw javascript_include_tag  'time_and_expense/billing' %>
+<%=raw javascript_include_tag  'time_and_expense/new_time_entry' %>
+<% expense_types,activity_types=get_expense_type_and_activity_types(current_company)%>
+<script type="text/javascript">
+  var expensetypes = <%=raw expense_types%>
+  var activitytypes = <%=raw activity_types%>
+  var status = <%= raw Hash["Open" => "Open", "Approved" => "Approved", "Billed" => "Billed"].to_json %>
+  initeditexpense_type(expensetypes);
+  initedit_timentry_activity(activitytypes);
+  init_edit_time_entry_status(status);
+  init_edit_expense_entry_status(status);
+
+  //livia_datepicker();
+
+
+  function matter_view()
+  {
+
+    var sdate = jQuery('#start_date').val();
+    var edate = jQuery('#end_date').val();
+    var matter_id = jQuery('#tne_invoice_matter_id').val();
+    var contact_id = jQuery('#tne_invoice_contact_id').val();
+    var consolidated_by = jQuery('#consolidated_by').val();
+    var view_by = jQuery('#view_by').val();
+<%if params[:view]=='presales'%>
+  <%mattercontact="+'&tne_invoice_contact_id='+contact_id"%>
+<%else%>
+  <%mattercontact="+'&tne_invoice_matter_id='+matter_id"%>
+<%end%>
+    var view=jQuery('#tne_invoice_view').val();
+    window.location = '<%= params[:action]=="create" ? "tne_invoices/" : nil %>new?start_date='+sdate+'&end_date='+edate+'&view='+view+'&consolidated_by='+consolidated_by<%= mattercontact %>+'&view_by='+view_by;
+    return false;
+
+  }
+
+  function hide_show_billentry(link, classname){
+    if(jQuery("."+classname).css("display")=="none"){
+      jQuery("."+classname).show();
+    }else{
+      jQuery("."+classname).hide();
+    }
+  }
+
+function show_errors(screen)
+{   classname='message_error_div';
+    msg='';
+    if(screen=='first' && jQuery('#tne_invoice_invoice_no').val()=="")
+      {
+        msg="Invoice No cannot be blank. <br/>"
+      }
+
+    if(screen=='first' && jQuery('#tne_invoice_view').val()=='presales')
+    {
+      if(jQuery('#tne_invoice_contact_id').val()=="")
+        {
+          msg+="Please select the contact from the list"
+        }
+    }
+    else
+      {
+        if(screen=='first' && jQuery('#tne_invoice_matter_id').val()=="")
+        {
+          msg+="Please select a matter from matters list."
+        }
+      }
+    if(msg)
+    {
+    jQuery('#errorCont')
+    .html("<div class="+classname+">"+msg+"</div>")
+    .fadeIn('slow')
+    .animate({
+        opacity: 1.0
+    }, 8000)
+    .fadeOut('slow');
+    return false;
+    }
+  
+    return true;
+    
+
+}
+
+function toggle_form_for_invoice(showdiv, hidediv){
+  jQuery("#"+showdiv).show();
+  jQuery("#"+hidediv).hide();
+}
+
+
+jQuery(document).ready(function() {
+   jQuery('#tne_invoice_invoice_no').val('');
+   jQuery('#tne_invoice_matter_id').attr("selectedIndex",0);
+   jQuery('#show_add_time_expense_link').hide();
+    
+    livia_matter_inception_datepicker_new("#tne_invoice_invoice_date_ID");
+    livia_matter_inception_datepicker_new("#tne_invoice_invoice_due_date_ID");
+    livia_matter_inception_datepicker_new("#start_date_ID");
+    livia_matter_inception_datepicker_new("#end_date_ID");
+    
+    
+  });
+  
+</script>
+<div id="display">
+    <%=render :partial=>'form'%>
+</div>

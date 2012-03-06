@@ -1,0 +1,18 @@
+<h1><%=t(:text_listing_product_dependents)%></h1>
+<table>
+  <tr>
+    <th><%=t(:text_product)%></th>
+    <th><%=t(:text_parent)%></th>
+  </tr>
+<% @product_dependents.each do |product_dependent| %>
+  <tr>
+    <td><%=h product_dependent.product_id %></td>
+    <td><%=h product_dependent.parent_id %></td>
+    <td><%= link_to t(:label_show), product_dependent %></td>
+    <td><%= link_to t(:label_edit), edit_product_dependent_path(product_dependent) %></td>
+    <td><%= link_to t(:label_destroy), product_dependent, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<br />
+<%= link_to t(:label_new_product_dependent), new_product_dependent_path %>

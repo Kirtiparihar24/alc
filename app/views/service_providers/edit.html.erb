@@ -1,0 +1,170 @@
+<div class="box-head"><h2><%=t(:text_editing_secretary)%></h2></div>
+<div class="form">
+  <% form_for(@secretary) do |f| %>
+    <%if(@secretary.errors.length > 0)%>
+      <div class='errorCont'>
+        <%= f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <%=render :partial =>'fields', :locals=>{:f=>f}%>
+      <%fields_for @user do |u|%>    
+        <%fields_for @user.role do |r|%>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <tr>
+            <td align="left" valign="top"><label>Select Role</label></td>
+            <td>
+              <%=r.collection_select :id,@roles,:id,:name, {:include_blank => 'Please select'},{:class=>"field size3",:onchange=>"get_work_subtypes(value);show_hide_is_cpa(jQuery('option:selected',this).text());"} %></td>
+          </tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+        <%end%>
+        <tr id="service_provider_type" >
+          <td align="left" valign="top"><label>Type</label></td>
+          <td>
+            <%=check_box_tag "type[]", 1, @secretary.has_front_office_access?, {:class=>'cluster type_livian'}%>&nbsp;&nbsp;Livian (Front Office)<br/>
+            <%=check_box_tag "type[]", 2, @secretary.has_back_office_access?, {:class=>'cluster type_back_office'}%>&nbsp;&nbsp;Back Office<br/>
+            <%=check_box_tag "type[]", 4, @secretary.has_common_pool_access?, {:class=>'cluster type_common_pool'}%>&nbsp;&nbsp;Common Pool<br/>
+          </td>
+        </tr>
+         <tr><td>&nbsp;</td></tr>
+        <tr id="clusters_tr">
+          <td align="left" valign="top"><label>Select Cluster(s) <span>*</span></label></td>
+          <td class="bdrbox">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr class ="fo_cluster"> <th width="100%" align="center">---------------------------Front Office Clusters---------------------------<span class="text_red"></span></th></tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr>
+                <td class ="fo_cluster" style="padding: 0px;">
+                  <%= check_box_tag 'toggle' , 'toggle', false, :onclick =>"toggleCheckboxes('fo_cluster',this.checked);"%> Select All
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <%i=0%>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <% @fo_clusters.each do |cluster| %>
+                        <td>
+                          <%= check_box_tag "cluster_ids[]", cluster.id, @user_cluster.include?(cluster), :class=>"fo_cluster" %>
+                          <%= cluster.name %>
+                        </td>
+                        <% i += 1 %>
+                        <%= "<tr> </tr>" if i%5 == 0 %>
+                      <% end %>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="bo_cluster"><th align="center">---------------------------Back Office Clusters---------------------------<span class="text_red"></span></th> </tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="bo_cluster">
+                <td>
+                  <%j=0%>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <% @bo_clusters.each do |cluster| %>
+                        <td>
+                          <%= check_box_tag "cluster_ids[]", cluster.id, @user_cluster.include?(cluster), :class=>"bo_cluster"%>
+                          <%= cluster.name %>
+                        </td>
+                        <% j += 1 %>
+                        <%= "<tr> </tr>" if j%5 == 0 %>
+                      <% end %>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="cp_cluster"><th align="center">---------------------------Common Pool Clusters---------------------------<span class="text_red"></span></th></tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="cp_cluster">
+                <td>
+                  <%k=0%>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <% @cp_clusters.each do |cluster| %>
+                        <td>
+                          <%= check_box_tag "cluster_ids[]", cluster.id, @user_cluster.include?(cluster), :class=>"cp_cluster"%>
+                          <%= cluster.name %>
+                        </td>
+                        <% k += 1 %>
+                        <%= "<tr> </tr>" if k%5 == 0 %>
+                      <% end %>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr id="skills_tr">
+          <td align="left" valign="top"><label>Select Skills(s)</label></td>
+          <td class="bdrbox">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr class ="fo_skills cp_skills"> <th width="100%" align="center">---------------------------Front Office Skills---------------------------<span class="text_red"></span></th></tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="fo_skills cp_skills">
+                <td class ="fo_cluster" style="padding: 0px;">
+                  <%= check_box_tag 'toggle' , 'toggle', false, :onclick =>"toggleCheckboxes('fo_skills',this.checked);"%> Select All
+                </td>
+              </tr>
+              <tr class ="fo_skills cp_skills">
+                <td>
+                  <%i=0%>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <% @fo_skills.each do |skill|  %>
+                        <td>
+                          <%= check_box_tag "work_skills[]", skill.id, @user_work_subtypes.include?(skill), :class=>"fo_skills cp_skills"%>
+                          <%= skill.name %>
+                        </td>
+                        <% i += 1 %>
+                        <%= "<tr> </tr>" if i%5 == 0 %>
+                      <% end %>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="bo_skills"><th align="center">---------------------------Back Office Skills---------------------------<span class="text_red"></span></th> </tr>
+              <tr><td>&nbsp;</td></tr>
+              <tr class ="bo_skills">
+                <td class ="bo_skills">
+                  <%= check_box_tag 'toggle' , 'toggle', false, :onclick =>"toggleCheckboxes('bo_skills',this.checked);"%> Select All
+                </td>
+              </tr>
+              <tr class ="bo_cluster">
+                <td>
+                  <%j=0%>
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <% @bo_skills.each do |skill| %>
+                        <td>
+                          <% complexity = (skill.work_subtype_complexities & @user_work_subtypes_complexities).first %>
+                          <%= check_box_tag "work_ids[]", skill.id, @user_work_subtypes.include?(skill), :class=>"bo_skills", :onclick => "check_disabled_selected_tag(this.value,this.checked)"%>
+                          <%= skill.name %>
+                          <%= select_tag "work_skills[]",options_for_select(skill.work_subtype_complexities.map{|x| [x.complexity_level, [x.id, skill.id].join('-')]},:selected => complexity.present? ? "#{complexity.id}-#{skill.id}" : ""), options ={:id => skill.id, :disabled => !@user_work_subtypes.include?(skill)}%>
+                        </td>
+                        <% j += 1 %>
+                        <%= "<tr> </tr>" if j%5 == 0 %>
+                      <% end %>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+      </table>
+    </div>
+    <div class="buttons">
+      <%= f.submit t(:text_update), :class=>"button", :onclick=>"return check_cluster_for_team_manager();"%>
+      <%= link_to t(:label_cancel), '/manage_secretary', :class=>"button"%>
+    </div>
+  <%end%>
+<%end%>
+

@@ -1,0 +1,123 @@
+<% disable = (current_user.role?:lawfirm_admin) ? '' : 'disabled' %>
+<h3 class="title_gray"><%= t(:text_firm_details) %></h3>
+<div class="highlight_bg_1 box_bg_bdr_1" style="padding:15px;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="1">
+    <tr>
+      <td width="33%" class="right-bg"><div class="pr30p w95 fl ptb10">
+          <div class="fl w65 pt5">
+            <table width="100%" border="0" cellspacing="1" cellpadding="1">
+              <tr>
+                <td width="25%"><img src="../../images/logo-icon.png" alt="" /></td>
+                <td width="63%">
+                  <% form_for(:company , @company, :url => {:action => :update_docs, :mapable_id => @employee.id}, :html => { :multipart => true }) do |f| %>
+                    <%= f.file_field :logo, :size => "5", :disabled => disable %>                  </td>
+                </tr>
+                <tr><td height="6" colspan="2"></td></tr>
+                <tr>
+                  <td width="25%">&nbsp;</td>
+                  <td width="63%"><%= f.submit t(:text_upload_logo), :disabled => disable, :onclick => "return check_logo_field();", :class=> "w110p" %>
+                  <% end %></td>
+              </tr>
+            </table>
+          </div>
+          <div class="fl" style="width:30%">
+            <% if @company.logo_file_name.present? %>
+              <%= image_tag @company.logo.url, :class=> "profile-img" %>
+            <% end %>
+          </div>
+        </div></td>
+      <td width="33%"  class="right-bg">
+        <div class="fl pl30p w80">
+          <table border="0" cellspacing="1" cellpadding="1" class="link_blue">
+            <tr><td height="4" colspan="2"></td></tr>
+            <tr>
+              <td width="21%"><img src="../../images/utility/user-setup-icon.png" alt="" /></td>
+              <td width="75%">
+                <% label_user_setup = "#{t(:text_user)} #{t(:text_setup)}" %>
+                <% if disable.eql?('disabled') %>
+                  <span class="vtip" title="<%= label_user_setup%>"><%= label_user_setup %></span>
+                <% else %>
+                  <a href="#" class="vtip" title="<%= label_user_setup%>"><%= label_user_setup%></a>
+                <% end %>
+              </td>
+            </tr>
+            <tr><td height="4" colspan="2"></td></tr>
+            <tr>
+              <td width="21%"><img src="../../images/utility/client-setup-icon.png" alt="" /></td>
+              <td>
+                <% label_client_setup = "#{t(:text_client)} #{t(:text_setup)}" %>
+                <% if disable.eql?('disabled') %>
+                  <span class="vtip" title="<%= label_client_setup %>"><%= label_client_setup %></span>
+                <% else %>
+                  <a href="#" class="vtip" title="<%= label_client_setup %>"><%= label_client_setup %>  </a>
+                <% end %>
+              </td>
+            </tr>
+            <tr><td height="4" colspan="2"></td></tr>
+            <tr>
+              <td width="21%"><img src="../../images/utility/access-privialge-icon.png" alt="" /></td>
+              <td>
+                <% label_access_privileges = "#{t(:text_menu_access)} #{t(:text_privileges)}" %>
+                <% if disable.eql?('disabled') %>
+                  <span class="vtip" title="<%= label_access_privileges %>"><%= label_access_privileges %></span>
+                <% else %>
+                  <a href="#" class="vtip" title="<%= label_access_privileges %>"><%= label_access_privileges %></a>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <td width="21%">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+      </td>
+      <% form_for :company, @company , :url => {:action => :update_docs, :mapable_id => @employee.id} do |f| %>
+        <td width="33%" valign="top">
+          <div class="fl pl30p w82">
+            <table width="100%" border="0" cellspacing="1" cellpadding="1">
+              <tr><td height="15" colspan="2"></td></tr>
+              <tr>
+                <td width="18%" valign="top"><%= t(:text_parent) %></td>
+                <td width="82%"><%= f.text_field :parent_company, :class => "w156p", :disabled => disable %></td>
+              </tr>
+              <tr>
+                <td height="6" colspan="2" valign="top"></td>
+              </tr>
+              <tr>
+                <td valign="top"><%= t(:text_subsidary)%></td>
+                <td><%= f.text_field :subsidiary, :class => "w156p", :disabled => disable %></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="highlight_bg_1 p15p bdr_bot_1" style="border-top:1px dotted #9c9c9c">
+    <table width="100%" border="0" cellspacing="0" cellpadding="1" >
+      <tr>
+        <td width="48%">
+          <table width="100%" border="0" cellspacing="1" cellpadding="1">
+            <tr>
+              <td width="12%" valign="top"><%= t(:text_general) %> <%= t(:text_info) %></td>
+              <td width="88%" valign="top"><%= f.text_area :general_info, :rows => 3, :class => "w380p", :disabled => disable %></td>
+            </tr>
+          </table>
+        </td>
+        <td width="50%">
+          <div class="fl pl30p w90">
+            <table width="100%" border="0" cellspacing="1" cellpadding="1">
+              <tr>
+                <td valign="top"><%= t(:text_company) %> <%= t(:text_write_up) %></td>
+                <td valign="top"><%= f.text_area :write_up, :rows => 3, :class => "w380p", :disabled => disable %></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr><td colspan="2" height="15"></td></tr>
+      <tr><td colspan="2" align ="center"><%=  f.submit t(:text_save), :disable_with=>'Please wait...', :disabled => disable %></td></tr>
+    </table>
+  <% end %>
+</div>

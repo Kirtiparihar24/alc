@@ -1,0 +1,23 @@
+<%if @from_edit%>
+  <%if @has_complexity%>
+    <%=select :task, :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]}, {:prompt=>'Please Select'},:onchange =>"update_complexity_select_edit(this.value,#{@task_index},'#{@note.id}');"%>
+  <%else%>
+    <%=select :task, :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]}, {:prompt=>'Please Select'},:onchange =>"get_users_from_edit(this.value,'#{@note.assigned_by_employee_user_id}');"%>
+  <%end%>
+<%elsif(@task_index.blank?)%>
+  <% fields_for "task", UserTask.new do |f| %>
+    <%if @has_complexity%>
+      <%=f.select :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]},  {:prompt=>'Please Select'},:onchange =>"update_complexity_select(this.value,'');"%>
+    <%else%>
+      <%=f.select :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]},  {:prompt=>'Please Select'},:onchange =>"reassign_task_block();"%>
+    <%end%>
+  <%end%>
+<%else%>
+  <% fields_for "tasks[#{@task_index}]", UserTask.new do |f| %>
+    <%if @has_complexity%>
+      <%=f.select :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]},  {:prompt=>'Please Select'},:onchange =>"update_complexity_select(this.value,#{@task_index});"%>
+    <%else%>
+      <%=f.select :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]},  {:prompt=>'Please Select'},:onchange =>"update_user_select('#{@task_index}','#{@note.assigned_by_employee_user_id}');"%>
+    <%end%>
+  <%end%>
+<%end%>

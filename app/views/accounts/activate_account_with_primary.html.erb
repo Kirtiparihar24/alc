@@ -1,0 +1,132 @@
+<div>
+  <div id="activate_account_errors"  style="display: none;"></div>
+  <div id="same_contact_errors"></div>
+  <%if @account_contacts.size > 0%>
+    <div id="cont_errs"></div>
+    <%form_tag activate_account_account_path(@account),:onsubmit => "return checkContactSelected();" do%>
+      <div class="w100">
+        <div><%=t(:label_Select_contacts_to_be_activated)%></div>
+        <table  >
+          <tr>
+            <td><%=radio_button_tag "contact_nos", "all", true, :onclick => "jQuery('#contact_list').show();jQuery('#select_primary').hide();jQuery('#activate').show();"%></td>
+            <td><label><%=t(:text_all)%></label></td>
+            <td>&nbsp;</td>
+            <td><%=radio_button_tag "contact_nos", "none",false, :onclick => "jQuery('#contact_list').hide();jQuery('#select_primary').show();jQuery('#activate').hide();"%></td>
+            <td><label><%=t(:label_None)%></label></td>
+          </tr>
+        </table>
+      </div>
+      <div id="contact_list" class="p5 mt5 w100">
+        <table>
+          <%@account_contacts.in_groups_of(3,false) do |acc_conts| %>
+            <tr>
+              <%for contact in acc_conts%>
+                <td><%=check_box_tag "contact_ids[]",contact.id, true %> </td>
+                <td><label><%=contact.last_name ? contact.first_name + " " + contact.last_name : contact.first_name%></label></td>
+              <%end%>
+            </tr>
+          <%end%>
+        </table>
+      </div>
+      <div class="buttonSub_div" id="activate"><%=submit_tag "Activate", :disable_with => "Please wait ..."%></div>
+    <%end%>
+  <%end%>
+  <div id="select_primary" class="p5 mt5 ml5 w100" <%if @account_contacts.size > 0%> style ="display:none;"<%end%>>
+    <%remote_form_for(:contact, @contact, :complete=>'return enableAllSubmitButtons("accounts")',:loading=>'return disableAllSubmitButtons("accounts")',:url => url_for(:controller => :accounts, :action => :activate_account_with_primary,:html=>{:id=>'contact_form',:style => "padding:0;margin:0;"})) do |contact| %>
+      <%= hidden_field_tag :id,params[:id],:style => "height:0px;padding:0px;margin:0px;"%>
+      <div style="text-align:center;margin-top:0px;" id="modal_primary_contact">
+        <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+        <table width="75%" cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr>
+              <td  align="left"><label><%=t(:label_contact)%><span class="alert_message">*</span></label></td>
+              <td  align="left">
+                <%= raw contact_search_box('contact[id]', controller.controller_name, "", "") %>
+                <strong class="text12 mlr8"><%=t(:text_or)%></strong>
+                <label><%= raw link_to "#{t(:label_create_new)}", "#", {:onclick => "toggle_form();",:id=>'selector_link', :style=>'color:#4081a2;' } %></label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table width="100%" id="create_new_table" style="display:none" class="mt5">
+          <tbody>
+            <tr>
+              <td width="24%" align="left"><label><%= t(:label_salutation) %></label></td>
+              <td width="26%" align="left"><%= contact.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+              <td width="2%">&nbsp;</td>
+              <td width="24%" align="left">&nbsp;</td>
+              <td width="26%" align="left">&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+              <td align="left"><%= contact.text_field :first_name,:maxlength=>"64", :size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+              <td>&nbsp;</td>
+              <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+              <td align="left"><%= contact.text_field :last_name,:maxlength=>"64" ,:size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+            </tr>
+            <tr>
+              <td align="left"><label><%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+              <td align="left"><%= contact.text_field :phone,:maxlength=>"15", :size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+              <td>&nbsp;</td>
+              <td align="left"><label><%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+              <td align="left"><%= contact.text_field :email, :size =>'15' ,:class=>'toggle_handler',:disabled=>true%></td>
+            </tr>
+            <tr>
+              <td align="left"><label><%= t(:label_nick_name) %></label></td>
+              <td align="left"><%= contact.text_field :nickname, :size =>'15', :id => 'nickname',:class=>'toggle_handler',:disabled=>true %></td>
+              <td>&nbsp;</td>
+              <td align="left"><label><%= t(:label_preference) %></label></td>
+              <td align="left"><%= contact.text_field :preference, :size =>'15',:id => 'preference' ,:class=>'toggle_handler',:disabled=>true%></td>
+            </tr>
+            <tr>
+              <td align="left"><label><%= t(:label_stage) %></label></td>
+              <td align="left">
+                <%= contact.collection_select :contact_stage_id,current_company.contact_stages.reverse,:id,:alvalue,  { :selected => current_company.contact_stages.array_hash_value('lvalue','Lead','id')}, {:class=>"textBoxwidth disundis toggle_handler",:disabled=>true} %>
+              </td>
+              <td>&nbsp;</td>
+              <td align="left"><label><%=t(:label_status)%></label></td>
+              <td align="left">
+                <%= contact.collection_select :prospect_status,current_company.prospect_status_types,:id,:alvalue, {:selected => current_company.prospect_status_types.find_by_lvalue("Active")}, {:id=>"prospect",:class=>"textBoxwidth disundis toggle_handler",:disabled=>true } %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="buttonSub_div"><%=contact.submit t(:text_save) , :class => 'accounts', :onclick => "return setButtonPressed(this)", :name => "activate_account_with_primary"  %> <input type="button" id="Login2" value="Cancel" class="accounts" onclick="tb_remove();" /></div>
+        <div class="mandatory textL"><span class="alert_message">*</span><%=t(:label_Required_field)%>, <span class="alert_message"># </span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %>   </div>
+      </div>
+    <%end%>
+  </div>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;163 </div>
+</div>
+<script type="text/javascript">
+  // function checkExistingContact() : removed
+
+  function toggle_form(){
+    jQuery('#create_new_table').toggle();
+    var selector=jQuery('#selector_link');
+    var selectorText=selector.text();
+    var inputArr=jQuery('.toggle_handler');
+    for(i=0;i<inputArr.length;i++){
+      if ((selectorText=='Create New')){
+        jQuery(inputArr[i]).removeAttr("disabled")
+        jQuery(inputArr[i]).removeClass('textgray')
+      }else{
+        jQuery(inputArr[i]).attr("disabled",true);
+        jQuery(inputArr[i]).addClass('textgray')
+      }
+    }
+
+    if (selectorText=='Create New') {
+      jQuery('#_contact_ctl').attr("disabled",true)
+      jQuery('#_contact_ctl').addClass('textgray')
+      selector.text('Select Existing');
+    }else{
+      jQuery('#_contact_ctl').removeAttr("disabled");
+      jQuery('#_contact_ctl').removeClass('textgray')
+      selector.text('Create New');
+    }
+  }
+
+  // function check_fields_activate() : removed
+</script>

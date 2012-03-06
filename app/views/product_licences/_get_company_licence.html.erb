@@ -1,0 +1,68 @@
+<% company_id = session[:company_id].nil? ? nil : session[:company_id]
+company_id = params[:company_id] unless params[:company_id].nil? %>
+<% unless company_id.nil? %>
+  <div class="mid-box-head"><h2 class="left">Product Licensing</h2></div>
+  <div class="table">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th align="left" valign="top"><%= t(:text_name) %></th>
+        <th align="center" valign="top"><%= t(:text_no_of_licences) %></th>
+      </tr>
+      <tr>
+        <th width="60%" align="left" valign="top">&nbsp;</th>
+        <th width="40%" align="center" valign="top"><strong><%= t(:text_permanent_temporary) %></strong></th>
+      </tr>
+      <% licences = get_licences_by_company_id(company_id)
+      licences.each do |lic|
+        if lic[1] > 0 %>
+          <tr>
+            <td align="left">
+              <% if lic[1] > 0
+                 lic_id = lic[0].id %>
+                <span style="cursor:pointer;" id="<%= lic_id %>_plus" onclick="javascript:expand_collapse_div_details(<%= lic_id %>, 'product_licence_<%= lic_id %>', 'minus', 'plus')" title="Click to view detail"><%= image_tag('/images/icon_plus.gif',:alt=>"Plus", :border => 0, :hspace => "0")%> <%=lic[0].name%></span>
+                <span style="display: none; cursor:pointer;" id="<%= lic_id %>_minus" onclick="javascript:expand_collapse_div_details(<%= lic_id %>, 'product_licence_<%= lic_id %>', 'plus', 'minus')" title="Click to hide detail"> <%= image_tag('/images/icon_minus.gif',:alt=>"Minus", :border => 0, :hspace => "0")%> <%=lic[0].name%></span>
+              <% else %>
+                <span>&nbsp;&nbsp;<%= lic[0].name %></span>
+              <% end %>
+            </td>
+            <td align="center"><%= "#{lic[2]} / #{lic[3]}" %></td>
+          </tr>
+          <tr class="tog" id='<%= "product_licence_#{lic[0].id}" %>' style="display:none;padding-left:10px;">
+            <td colspan="2">
+              <div id="products_licence_list">
+                <table width="95%" border="1" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+                  <tr>
+                    <th width="5%"><%= t(:text_s_no) %></th>
+                    <th width="10%"><%= t(:text_licence_type) %></th>
+                    <th width="10%"><%= t(:text_user) %></th>
+                    <th width="10%"><%= t(:text_licence_start_date) %></th>
+                    <th width="10%"><%= t(:text_licence_expiry_date) %></th>
+                    <th width="10%"><%= t(:text_price) %></th>
+                  </tr>
+                  <% product_licences = lic[4]
+                  if product_licences.blank? %>
+                    <tr><td colspan="5"><div class="warningCont m5"><%= t(:text_no_product_licences_found) %></div></td></tr>
+                  <% else
+                    i = 0
+                    product_licences.each do |licence| %>
+                      <tr>
+                        <td><%= i = i+1 %></td>
+                        <td><%= ProductLicence::LICENCE_TYPE[licence.licence_type][0] rescue "-" %></td>
+                        <td><%= licence.subproduct_assignments.first.user.name rescue "-" %></td>
+                        <td><%= licence.start_at.to_time.strftime("%d-%b-%y") rescue "-" %></td>
+                        <td><%= licence.end_at.to_time.strftime("%d-%b-%y") rescue "-" %></td>
+                        <td><%= licence.licence_cost %></td>
+                      </tr>
+                    <% end
+                  end %>
+                </table>
+              </div>
+            </td>
+          </tr>
+        <% end
+      end %>
+    </table>
+    <%= hidden_field_tag 'company', company_id || current_user.company_id %>
+    <div class="pagging"></div>
+  </div>
+<% end %>

@@ -1,0 +1,7 @@
+<%unless @msg.present?%>
+jQuery('#productdiv').html("");
+jQuery('#empdiv').html("<%=escape_javascript(render(:partial => '/assign_licence/employees',:locals=>{:productlicence=>@productlicence, :totalusers=>@totalusers, :activeusers=>@activeusers, :employees=>@employees, :company_id=>@company_id,:activepermlicence=>@activepermlicence,:activetemplicence=>@activetemplicence,:usedpermlicence=>@usedpermlicence,:usedtemplicence=>@usedtemplicence,:remainlicence=>@remainlicence,:remaintemplicence=>@remaintemplicence,:licences=>@licences}))%>");
+<%else%>
+jQuery('#errorslist').show();
+jQuery('#errorslist').html("<%=@msg.to_json%>");
+<%end%>

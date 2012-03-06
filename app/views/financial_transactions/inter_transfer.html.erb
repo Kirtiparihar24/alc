@@ -1,0 +1,19 @@
+<!--div class="mb8">
+  <div class="column_main01"-->
+    <h2 id="toggle_busi_cont_detail_toggle" class="title_main">
+      <div class="fl"><%= t(:text_financial_account_transfer_between_bank_acs) %></div>
+    </h2>
+    <div style="display: block;" id="toggle_busi_cont_detail_div" class="p8">
+      <div class="w100 fl bg_white">
+        <% form_for :financial_transaction, @financial_transaction, :url => inter_transfer_financial_account_financial_transactions_path(@financial_account), :html => {:method => :post} do |f| %>
+          <%= render :partial => "payment_form", :locals => {:f => f} %>
+        <% end %>
+      </div>
+      <div class="p5">
+        <div class="buttonSub_div">
+        </div>
+      </div>
+      <div style="clear: both; height:30px;"></div>
+    </div>
+  <!--/div>
+</div-->

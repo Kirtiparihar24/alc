@@ -1,0 +1,7 @@
+<%unless @error%>
+jQuery('#expense_final_billed_amount_'+<%=params[:id]%>).html("<%=number_with_lformat(@final_expense_amount)%>");
+<%else%>
+jQuery('#error_notice').show();
+jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");  
+<%end%>
+jQuery('#expenseamount_'+<%=params[:id]%>).children("span").html("<%=@expense_entry.expense_amount%>");

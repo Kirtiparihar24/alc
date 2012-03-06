@@ -1,0 +1,35 @@
+<%unless @error%>
+  var billingEntryObj = jQuery('#hidden_expense_row_no_'+<%=@tne_invoice_expense_entry.id%>);
+  jQuery('#expensebillingpercent_'+<%=params[:id]%>).children("input").val("<%= @tne_invoice_expense_entry.billing_percent%>");
+  jQuery('#<%=params[:id]%>_show_amount').val("<%= number_with_lformat(@tne_invoice_expense_entry.billing_percent)%>");
+  jQuery('#expenseoverrideamt_' +<%=params[:id]%>).children("input").val("");
+  jQuery('#expense_final_billed_amount_'+<%=params[:id]%>).html("<%=number_with_lformat(@final_expense_amount)%>");
+ var billed_amount_obj = jQuery('#te_expense_amount_'+billingEntryObj.val()).children("input");
+  <% if(@final_expense_amount > @previous_final_billed_amount)
+    diff_billed_amount = @final_expense_amount - @previous_final_billed_amount
+  %>
+    operate = '+';
+    billed_amount = parseFloat(billed_amount_obj.val().replace(/,/g,'')) + <%= diff_billed_amount %>;
+  <%else
+    diff_billed_amount = @previous_final_billed_amount - @final_expense_amount
+  %>
+    operate = '-';
+    billed_amount = parseFloat(billed_amount_obj.val().replace(/,/g,'')) + <%= diff_billed_amount %>;
+  <%end%>
+   billed_amount_obj.val(addCommas(billed_amount));
+   subtotal = jQuery('#tne_invoice_invoice_amt');
+   total_amt=removeCommas(subtotal.val());
+   var sub_total=0;
+   //operate =='+' ? subtotal.val(addCommas(parseFloat(subtotal.val()) + parseFloat(<%= diff_billed_amount %>))) : subtotal.val(addCommas(parseFloat(subtotal.val()) - parseFloat(<%= diff_billed_amount %>)));
+   operate =='+' ? sub_total=(parseFloat(eval(total_amt)) + parseFloat(eval(<%= diff_billed_amount %>))): sub_total=(parseFloat(eval(total_amt)) -parseFloat(eval(<%= diff_billed_amount %>)))
+   subtotal.val(sub_total);  
+    if(jQuery("#apply_final_discount").is(':checked')){
+        checkDiscount();
+        }else{
+        check_calculations();
+      }
+<%else%>
+  jQuery('#error_notice').show();
+  jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");
+<%end%>
+//jQuery('#expensebillingpercent_'+<%=params[:id]%>).children("input").html("<%= @tne_invoice_expense_entry.billing_percent%>");

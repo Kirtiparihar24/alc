@@ -1,0 +1,3 @@
+"*Required Fields",,,"# Either Primary Email or Primary Phone required ",,,"Data entered should be exactly in the format as in the Portal",,,,,,
+,,,,,,"Contact",,,,,"Lead Lawyer",
+"*Matter Id","*Matter Name","Status","*Matter Category-      Litigation/Non-litigation","*Matter type","Matter inception date (mm/dd/yyyy)","*FirstName","LastName","Contact Stage","#Email","#Phone","FirstName MiddleName LastName","Plaintiff / Defendant"

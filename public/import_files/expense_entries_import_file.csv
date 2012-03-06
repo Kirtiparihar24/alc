@@ -1,0 +1,3 @@
+"*RequiredField",,,"#Contact name must be there  if matter name present",,,,,"Data entered should be exactly in the format as in the Portal",,,
+"mm/dd/yyyy","Employee Details","Matter Details",,"Contact Details",,,,,,"(Yes/No)",
+"*Date","*First Name Middle Name Last Name","*Matter ID","*Matter Name","*First Name","Middle Name","Last Name","*Expense Type","*Description","*Expense Amt($)","Billable","Final Amount($)"

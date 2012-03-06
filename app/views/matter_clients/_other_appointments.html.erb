@@ -1,0 +1,28 @@
+<%=render :partial=>'task_headers', :locals=>{:type=>'appointments'}%>
+<div id="third">
+  <br class="clear" />
+  <div class="gryBox">
+    <div class="gridTable" >
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th width="12%"><%=t(:text_matter_name)%></th>
+          <th width="12%"><%=t(:text_to_do_date)%></th>
+          <th width="12%"><%=t(:text_from_time)%></th>
+          <th width="12%"><%=t(:text_to_time)%></th>
+        </tr>
+        <%unless @other_appointments.blank?%>
+          <%@other_appointments.each do |appointment|%>
+            <tr class="<%=cycle("bg1", "bg2")%>">
+              <td><%=appointment.matter.name%></td>
+              <td><%=raw livia_date_effect(appointment.complete_by)%></td>
+              <td><%=raw appointment.matter_client_task_detail.from_time.to_time.strftime("%H:%M") if appointment.matter_client_task_detail.from_time%></td>
+              <td><%=raw appointment.matter_client_task_detail.to_time.strftime("%H:%M") if appointment.matter_client_task_detail.to_time%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr><td colspan="4"><div class="warningCont m5"><%=t(:text_no_meeting_details_present)%></div></td></tr>
+        <%end%>
+      </table>
+    </div>
+  </div>
+</div>

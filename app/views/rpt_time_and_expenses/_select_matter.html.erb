@@ -1,0 +1,1 @@
+<%=select 'report', 'matter_id', @matters.collect{|matter|[matter.clipped_name,matter.id ]},{:include_blank => 'All' },{ :class=>"dropbox1"}%>

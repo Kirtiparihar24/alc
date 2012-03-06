@@ -1,0 +1,82 @@
+
+<div id="page">
+  <div class="inner">
+    <!--[if !IE]>start section<![endif]-->
+    <div class="section table_section">
+      <!--[if !IE]>start title wrapper<![endif]-->
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Skills</span></span>", get_skills_path, :class=>'active'%></li>
+          <li><%=link_to "<span><span>Priorities</span></span>", wfm_manage_priorities_path %></li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <!--[if !IE]>end title wrapper<![endif]-->
+      <!--[if !IE]>start section content<![endif]-->
+      <div class="section_content">
+        <!--[if !IE]>start section content top<![endif]-->
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <div id="skills_spinner"></div>
+                  <div style="overflow: visible;">
+                    <div class="search_form general_form">
+                      <table width="100%">
+                        <tbody>
+                          <tr>
+                            <td colspan="4">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td align="left" valign="top" width="11%"><b>Lawyers</b></td>
+                            <td align="left" valign="top" width="20%">
+                              <div class="inputs">
+                                <%= custom_select_tag 'lawfirm_users', options_for_select(@lawfirm_users.collect{ |lu| [lu.full_name, lu.id] }), :prompt=>"Please Select", :onchange => "get_clusters_livians_and_skills_for_selected_lawyer(this.value);"  %>
+                              </div>
+                            </td>
+                            <td align="left" width="25%" >
+                              <div id = "clusters_of_selected_lawyer"></div>
+                            </td>
+                            <td align="left">
+                              <div id = "livians_of_lawyers_clusters"></div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              <div id="livians_skills"></div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4" align="right"><span class="button send_form_btn buttons_to_disable" style="text-align: right; float: right;"><%=link_to "<span><span>Livian Skills</span></span>", skills_by_livians_wfm_user_work_subtypes_path,:style=>"color:#ffffff;"%></span></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4" align="right"><span class="button send_form_btn buttons_to_disable" style="text-align: right; float: right;"><%=link_to "<span><span>BackOffice Skills</span></span>", skills_by_backoffice_agents_wfm_user_work_subtypes_path,:style=>"color:#ffffff;"%></span></td>
+                          </tr>
+                        </tbody>
+                      </table>                      
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--[if !IE]>end section content top<![endif]-->
+        <!--[if !IE]>start section content bottom<![endif]-->
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+        <!--[if !IE]>end section content bottom<![endif]-->
+
+      </div>
+      <!--[if !IE]>end section content<![endif]-->
+    </div>
+    <!--[if !IE]>end section<![endif]-->
+
+  </div>
+</div>
+<!--[if !IE]>end page<![endif]-->

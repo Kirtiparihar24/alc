@@ -1,0 +1,68 @@
+<% generate_calendar_task_grid("bymatter") %>
+<div class="mt10 calenderDiv">
+  <div class="activities_div">
+    <table cellpadding="0" cellspacing="0">
+      <td width="2%" valign="middle" class="bg6" style="padding:0 10px;"><%= image_tag "calendar/task_text.png" %></td>
+      <td width="98%"align="left" valign="top">
+        <div class="scrollY250">
+          <table cellpadding="0" cellspacing="0" class="bg_white" width="100%">
+            <tr>
+              <td align="left" valign="top">
+                <div>
+                  <% @rec_flag = false %>
+                  <% @total_data.each do |totaldata| %>
+                  <% unless totaldata[1].blank? %>
+                    <%mattername = Matter.find(totaldata[0]).name rescue ''%>
+                    <% @rec_flag = true %>
+                    <div>
+                      <div class="title_blue text_orange pl5"><%= mattername %></div>
+                      <%= render :partial => "matter_tasks", :locals => {:col => totaldata[1], :matter_or_people => true} %>
+                    </div>
+                  <%end%>
+                  <% end %>
+                  <% if(!@rec_flag) %>
+                  <%= render "blank_activities", {:activity => "tasks", :matter_or_people => false} %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </table>
+    <br class="clear" />
+  </div>
+
+  <div class="mt5 activities_div">
+    <table cellpadding="0" cellspacing="0">
+      <td width="2%" valign="middle" class="bg6" style="padding:0 8px;"><%= image_tag "calendar/appointment_text.png" %></td>
+      <td width="98%"align="left" valign="top">
+        <div class="scrollY250">
+          <table cellpadding="0" cellspacing="0" class="bg_white" width="100%">
+            <tr>
+              <td align="left" valign="top">
+                <div>
+                   <% @app_rec_flag = false %>
+                  <% @total_app.each do |totaldata| %>
+                  <% unless totaldata[1].blank? %>
+                     <% mattername = Matter.find(totaldata[0]).name rescue ''%>               
+                     <% @app_rec_flag = true %>
+                  <div>
+                      <div class="title_blue text_orange pl5"><%= mattername %></div>
+                      <%= render :partial => "matter_appointments", :locals => {:col => totaldata[1], :matter_or_people => true} %>
+                    </div>
+                   <% end %>
+                  <% end %>
+                  <% if(!@app_rec_flag)  %>
+                 <%= render "blank_activities", {:activity => "appointment", :matter_or_people => false} %>
+                  <%end%>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </table>
+    <br class="clear" />
+  </div>
+</div>

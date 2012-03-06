@@ -1,0 +1,17 @@
+<div  id="back_ground_overlay" class="back_ground_overlay">
+  <ul id="matters_box">
+    <%@matters.each do |matter|%>
+      <li class="matters_is_by_date" date_str="<%=matter.matter_date%>">
+        <span id="matter_<%=matter.id%>" style="cursor:pointer;" onclick="setContactORMatter(this,'_matter_ctl','physical_timeandexpenses_time_entry_matter_id','set_matters_contact');"><%=h matter.name%></span>
+      </li>
+    <%end%>
+  </ul>
+</div>
+
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function() {
+    
+    setMatterORContactSearchInputFields('_contact_ctl',"_matter_ctl","<%=get_employee_user_id%>","<%=get_company_id%>",'physical_timeandexpenses_time_entry_contact_id',"physical_timeandexpenses_time_entry_matter_id",'001');
+    //setMatterORContactSearchInputFields('_contact_ctl','_matter_ctl',this.value,@company_id,'physical_timeandexpenses_time_entry_contact_id','physical_timeandexpenses_time_entry_matter_id','001');
+  });
+</script>

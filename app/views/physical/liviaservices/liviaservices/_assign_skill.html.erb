@@ -1,0 +1,41 @@
+<div class="gridDiv">
+  <div class="formMain">
+    <form action="" method="get" >
+      <div class="timeExp">
+        <p>
+          <label class="w50"><%=t(:label_select_secretary)%></label>          
+          <%=select(:service_provider_skill, :provider_id, sp_list.collect{|e|[e.sp_full_name, e.id]}, { :include_blank => "", :selected => sp_id }, {:class => "dropbox", :onchange => 'pickSkillsForLilly(this.value)' })%>
+        </p>        
+        <br class="clear" />
+      </div>
+      <div class="gridTable">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+          <tbody>
+            <tr>
+              <th>                
+                <input type="checkbox" id="check_all_unassigned" class="chkbox" onclick="checkAllUnassigned(this)" />
+                <label for="check_all_unassigned"><%=t(:label_unassigned_skills)%></label>
+              </th>
+              <th>
+                <input type="checkbox" id="check_all_assigned" class="chkbox" onclick="checkAllAssigned(this)" />
+                <label for="check_all_assigned"><%=t(:label_assigned_skills)%></label>                
+              </th>
+            </tr>
+            <tr>
+              <td width="50%">
+                <%=render :partial =>"unassigned_skills", :locals=>{:unassigned_skills=>unassigned_skills}%>
+              </td>
+              <td width="50%">
+                <%=render :partial =>"assigned_skills", :locals=>{:assigned_skills=>assigned_skills}%>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"><div id="skills_spinner"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>
+<%# Need to check this view if in use %>

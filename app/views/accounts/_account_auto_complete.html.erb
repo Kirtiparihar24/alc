@@ -1,0 +1,6 @@
+<%unless search_result.empty?%>
+  <%search_result.each do|result_obj|%>
+    <% pri_contact = result_obj.get_primary_contact.try(:full_name).titleize.to_s if result_obj.get_primary_contact%>
+    <%="" "#{result_obj.name}" + ((pri_contact == "")?"":(", Primary Contact: #{pri_contact}"))  %>
+  <%end%>
+<%end%>

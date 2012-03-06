@@ -1,0 +1,35 @@
+<div class="box-head"><h2>Cluster</h2></div>
+<div class="actionLinks"><%=link_to('Add New Cluster', new_cluster_path)%></div>
+<%unless @clusters.blank?%>
+  <div class="watermark"><%=raw custom_page_entries_info @clusters %></div>
+<%end%>
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+      <tr>
+        <th width="301" align="left"><%=t(:label_cluster)%></th>
+        <th width="523" align="left"><%=t(:label_description)%></th>
+        <th width="523" align="left"><%=t(:text_type)%></th>
+        <th width="174" align="left"><%=t(:text_action)%></th>
+      </tr>
+      <%if @clusters.blank? %>
+        <tr><td colspan="3"><div class="warningCont m5"><%=t(:text_no_records)%></div></td></tr>
+      <% else %>
+        <%@clusters.each do |cluster|%>
+          <tr>
+            <td><%=cluster.name %></td>
+            <td><%=cluster.description%></td>
+            <td><%=cluster.types_of_cluster.join(", ")%></td>
+            <td><%=link_to t(:label_edit), edit_cluster_path(cluster) %></td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<div class="pagging">
+  <%unless @clusters.blank?%>
+    <div class="left"><%=raw custom_page_entries_info @clusters %></div>
+    <div class="right"><%=will_paginate @clusters, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%></div>
+  <%end%>
+</div>

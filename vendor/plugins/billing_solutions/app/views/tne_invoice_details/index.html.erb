@@ -1,0 +1,18 @@
+<h1>Listing tne_invoice_details</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% @tne_invoice_details.each do |tne_invoice_detail| %>
+  <tr>
+    <td><%= link_to 'Show', tne_invoice_detail %></td>
+    <td><%= link_to 'Edit', edit_tne_invoice_detail_path(tne_invoice_detail) %></td>
+    <td><%= link_to 'Destroy', tne_invoice_detail, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New tne_invoice_detail', new_tne_invoice_detail_path %>

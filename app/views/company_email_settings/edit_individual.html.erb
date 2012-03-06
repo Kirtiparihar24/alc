@@ -1,0 +1,53 @@
+<% content_for :company_selection do %>
+  <div id="topheadContainer"><div class="title fl"><%#= @company.name  if (session[:company_id].present? and current_user.role?:livia_admin) %></div></div>
+<% end %>
+<% form_tag update_individual_company_email_settings_path, :method => :put do %>
+  <% for company_email_setting in @company_email_settings %>
+    <% fields_for "company_email_settings[]", company_email_setting do |f| %>
+      <%if(company_email_setting.errors.length > 0)%>
+        <div class='errorCont'>
+          <%=f.error_messages %>
+          <div class="clear"></div>
+        </div>
+      <%end%>
+      <div class="box-head"><h2>Edit <%=company_email_setting.setting_type%> Settings</h2></div>
+      <div class="form">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+          <%if company_email_setting.setting_type == 'SMTP'%>
+            <tr>
+              <td align="right"><label for="company_email_setting_domain"><%=t(:label_Domain)%> <span>*</span></label></td>
+              <td><%=f.text_field :domain, :class=>"field size4"%></td>
+            </tr>
+            <tr><td colspan="2">&nbsp;</td></tr>
+          <%end%>
+          <tr>
+            <td align="right"><label for="company_email_setting_address"><%=t(:label_address)%> <span>*</span></label></td>
+            <td><%=f.text_field :address, :class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <tr>
+            <td align="right"><label for="company_email_setting_port"><%=t(:label_Port)%> <span>*</span></label></td>
+            <td><%=f.text_field :port, :class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <tr>
+            <td align="right"><label for="company_email_setting_user_name"><%=t(:label_user)%>&nbsp;<%=t(:label_name)%> <span>*</span></label></td>
+            <td><%=f.text_field :user_name, :class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+          <tr>
+            <td align="right"><label for="company_email_setting_password"><%=t(:label_password)%> <span>*</span></label></td>
+            <td><%=f.text_field :password, :class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="2">&nbsp;</td></tr>
+        </table>
+      </div>
+    <%end%>
+  <%end%>
+  <div class="buttons">
+    <%= submit_tag 'Save', :class=>"button" %>
+    <%= link_to t(:label_cancel), company_email_settings_url, :class=>"button" %>
+  </div>
+<%end%>
+
+

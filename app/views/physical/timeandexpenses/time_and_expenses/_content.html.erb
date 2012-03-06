@@ -1,0 +1,110 @@
+<h2 class=title_main><%=t(:label_time)%>&nbsp;<%=t(:label_account)%> <%= render :partial =>  "layouts/reports_quick_links" %></h2>
+<% monthly_time_entries = @calendar.time_entries_in_month %>
+<div class=p5>
+  <div id=container-1>
+    <div class="box_yellow fl w77 ">
+      <table width="100%" cellpadding="0">
+        <tr>
+          <td width="26%" align="center" class="title_blue text_orange"><%= month_name(@month) %>&nbsp;<%=  @year %></td>
+          <% time_accounted = get_total_time_accounted(monthly_time_entries) %>
+          <td width="26%" ><div class="tm_accounted"><%=t(:text_time_accounted)%> : <strong><%= time_accounted.blank? ? "0" : time_accounted %>&nbsp;<%=t(:label_hrs)%></strong></div></td>
+          <% billed_time = get_total_time_billed(monthly_time_entries) %>
+          <td width="26%" ><div class="tm_billed "><%=t(:text_time_billed)%> : <strong><%= billed_time.blank? ? "0" : billed_time %>&nbsp;<%=t(:label_hrs)%></strong></div></td>
+          <% billed_time = get_total_billed_amount(monthly_time_entries) %>
+          <td width="26%" ><div class="total_amount "><%=t(:text_total_amount)%> :$&nbsp;<strong><%= billed_time.blank? ? "0" : billed_time %></strong></div></td>
+        </tr>
+      </table>
+    </div>
+    <div class="fr link_blue mt20">
+      <%= link_to_remote "« prev month",
+        {:update => "content", :url => { :year => (@month==1 ? @year-1 : @year), :month =>(@month==1 ? 12 : @month-1) }},
+        {:href => url_for(:action => 'calendar', :year => (@month==1 ? @year-1 : @year), :month =>(@month==1 ? 12 : @month-1))} %>
+      &nbsp;
+      <%= link_to_remote "next month »",
+        {:update => "content", :url => { :year => (@month==12 ? @year+1 : @year), :month =>(@month==12 ? 1 : @month+1) }},
+        {:href => url_for(:action => 'calendar', :year => (@month==12 ? @year+1 : @year), :month =>(@month==12 ? 1 : @month+1))} %>
+    </div>
+    <br class="clear" />
+    <div id=fragment-2 class="tabs-container">
+      <div class="bg3">
+        <table class="calender_table" cellSpacing="1" cellPadding="0"  width="100%" >
+          <tbody>
+            <tr>
+              <th class="week" width="14%"><%=t(:text_week)%></th>
+              <% 7.times do |i| %><th width="8%"><%= day_name( (@calendar.first_wday+i)%7 ) %></th><% end %>
+            </tr>
+            <tr>
+              <% day = @calendar.startdt
+              while day <= @calendar.enddt
+                time_entries = @calendar.time_entries_on(day)
+                if day.cwday == @calendar.first_wday
+                  first_day,last_day= day,day + 6
+                  weekly_time_entries = @calendar.time_entries_in_week(first_day, last_day)%>
+                  <td class="week" width="13%">
+                    <%= day.cweek %>
+                    <% time_accounted = get_total_time_accounted(weekly_time_entries)
+                    unless time_accounted.blank? %>
+                      <div class="tm_accounted" style="margin: Opt auto; width:94%;">
+                        <div style="padding-right: 5px;" class="fl"><strong>Time Acctd&nbsp;(<%=t(:label_hrs)%>)&nbsp;</strong></div><div class="fl">:</div>
+                        <div class="fr"><%= time_accounted %></div>
+                        <div style="clear: both;"></div>
+                      </div>
+                    <% end
+                    time_billed = get_total_time_billed(weekly_time_entries)
+                    unless time_billed.blank? %>
+                      <div class="tm_billed" style="margin: 0pt auto; width: 94%;">
+                        <div style="padding-right: 6px;" class="fl"><strong><%=t(:text_time_billed)%>&nbsp;(<%=t(:label_hrs)%>)&nbsp;</strong></div>
+                        <div class="fl">:</div><div class="fr"><%= time_billed %></div>
+                        <div style="clear: both;"></div>
+                      </div>
+                    <% end
+                    billed_time = get_total_billed_amount(weekly_time_entries)
+                    unless billed_time.blank? %>
+                      <div class="total_amount" style="margin: 0pt auto; width: 94%;">
+                        <div style="padding-right: 28px;" class="fl"><strong><%=t(:text_total_amount)%> (<%=t(:label_doller)%>)</strong></div>
+                        <div class="fl">:</div><div class="fr"><%= billed_time%></div>
+                        <div style="clear: both;"></div>
+                      </div>
+                    <% end %>
+                  </td>
+                <% end %>
+                <td width="8%" class="<%= day.month==@calendar.month ? '' : 'prvmonth' %> <%= 'today' if Time.zone.now.to_date == day %>" onclick="return validate_future_date('<%= Time.zone.now.to_date %>','<%= day %>');">
+                  <a onclick="return validate_future_date('<%= Time.zone.now.to_date %>','<%= day %>');">
+                    <%= day.day %>
+                    <% if time_entries.present? %>
+                      <div class="mAuto w75" >
+                        <div class="tm_accounted"><%= get_total_time_accounted(time_entries) %>&nbsp;</div>
+                        <%unless get_total_time_billed(time_entries).blank?%><div class="tm_billed"><%= get_total_time_billed(time_entries) %>&nbsp;</div> <%end%>
+                        <%unless get_total_billed_amount(time_entries).blank?%><div class="total_amount"><%= get_total_billed_amount(time_entries) %>&nbsp;</div><%end%>
+                      </div>
+                    <% end %>
+                  </a>
+                </td>
+                <%=raw '</tr><tr>' if day.cwday==@calendar.last_wday and day!=@calendar.enddt %>
+                <% day = day + 1
+              end %>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function validate_future_date(date ,day){    
+    return window.location.href='/physical/timeandexpenses/time_and_expenses/new?time_entry_date='+day
+  }  
+  jQuery(document).ready(function(){    
+    var config = {
+      sensitivity: 2, // number = sensitivity threshold (must be 1 or higher)
+      interval: 100, // number = milliseconds for onMouseOver polling interval
+      over: megaHoverOver, // function = onMouseOver callback (REQUIRED)
+      timeout: 500, // number = milliseconds delay before onMouseOut
+      out: megaHoverOut // function = onMouseOut callback (REQUIRED)
+    };
+    jQuery("ul#topnav li .sub").css({
+      'opacity':'0'
+    });
+    jQuery("ul#topnav li").hoverIntent(config);
+  });
+</script>

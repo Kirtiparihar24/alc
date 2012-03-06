@@ -1,0 +1,85 @@
+<%= raw javascript_include_tag  'time_and_expense/form' %>
+<%=raw javascript_include_tag  'time_and_expense/new_time_entry' %>
+<% from_matters = params[:from].eql?("matters")%>
+<% from_matter_path = from_matters ? "matters" : "" %>
+<% if from_matters %>
+  <div>
+    <div id="container-1">
+      <%= render :partial => "matters/matter_tabs" %>
+      <!--Task Starts-->
+      <div id="fragment-3" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container">
+        <div style="padding:0px 0px;"><%=render :partial => "matters/matter_contact_account"%></div>
+        <div class="seperator_dotted_hori"></div>
+        <div>
+        <% end %>
+        <% form_tag :action=>'matter_view' do %>
+          <%=hidden_field_tag "from", "matters" if from_matters%>
+          <div id="error_notice" ><%=@error if @error %></div>
+          <h2 class="title_main"><%=t(:text_time_and_expense_matter_billing)%></h2>
+          <div class="w100 fix_mb">
+            <table>
+              <tbody>
+                <tr>
+                  <% unless from_matters %>
+                    <td><input type="radio" <%= controller.action_name == 'matter_view' ? "checked='checked'" : '' %> onclick="window.location='<%=physical_timeandexpenses_matter_view_path(:view=>'matter')%>'" value="my" name="myallradio"/></td>
+                    <td class="mr8" valign="bottom"><label><%=t(:label_Matter_Related)%><%#Billing%></label></td>
+                    <td>&nbsp;</td>
+                    <td><input type="radio" <%=controller.action_name == 'contact_view' ? "checked='checked'" : ''%> onclick="window.location='<%=physical_timeandexpenses_contact_view_path(:view=>'contact')%>'" value="all" name="myallradio"/></td>
+                    <td valign="bottom"><label><%=t(:label_Non_Matter_Related)%><%#Pre-Sales Billing%></label></td>
+                    <td>&nbsp;</td>
+                    <td><input type="radio" <%=controller.action_name == 'internal' ? "checked='checked'" : ''%> onclick="window.location='<%=physical_timeandexpenses_internal_path(:view=>'internal')%>'" value="all" name="myallradio"/></td>
+                    <td valign="bottom"><label><%=t(:label_internal)%><%#Work Hours%></label></td>
+                  <% end %>
+                </tr>
+              </tbody></table>
+          </div>
+          <div class="p5">
+            <div class="mt5">
+              <table width="100%" border="1">
+                <tr>
+                  <td width="15%" valign="middle"><label><%=t(:label_matter)%><span class="alert_message">*</span></label>&nbsp;&nbsp;
+                    <%=select_tag "matter_id","<option value=''/>" + options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id]},(params[:matter_id] ? params[:matter_id].to_i : '')),{ :id=>"matter_id",:class=>"w65", :disabled => from_matters}%>
+                    <%=hidden_field_tag 'matter_id', params[:matter_id ] if from_matters%>
+                  </td>
+                  <td width="15%" valign="middle"><label><%= t(:text_start_date) %></label>&nbsp;&nbsp;<input type="text" id="start_date" name="start_date" readonly="true" size="11"  class="date_picker" value="<%=params[:start_date]%>" /></td>
+                  <td width="15%" valign="middle"><label><%= t(:text_end_date) %></label>&nbsp;&nbsp;<input type="text" id="end_date" name="end_date" readonly="true" size="11"  class="date_picker" value="<%=params[:end_date]%>" /></td>
+                  <td width="15%" valign="middle"><label><%#= t(:text_status) %></label>&nbsp;&nbsp;
+                    <%= submit_tag t(:text_go), :onclick =>'return object_view()' %>
+                    <%=hidden_field_tag "status", "#{params[:status]}"%>
+                    <%=hidden_field_tag "current_tab", "#{@current_stage}"%>
+                    <%=hidden_field_tag "view", "#{params[:view]}"%>
+                  </td>
+                  <%if params[:from_billing]%>
+                    <td><input type="button" value="Back" onclick="window.location.href='<%=view_unbilled_entries_tne_invoices_path(:view=>params[:view])%>'"/></td>
+                  <%end%>
+                </tr>
+              </table>
+            </div>
+            <div id="managed" class="mt15">
+              <!-- container-1 @start -->
+              <div id="summary_header">
+                <%= render :partial => "summary_header" %>
+              </div><br class="clear"/>
+              <div id="2container-1">
+                <!--Added for the Feature #8234 - export to excel in all view pages in T & E-->
+                <% unless @matter.blank? && (@saved_time_entries.blank? || @saved_expense_entries.blank?)%>
+                  <span class='icon_xls fr mr5 vtip' title="Export to Excel" onclick="return object_xls_view()" style="cursor:pointer"></span>
+                <%end%>
+                <ul class="tabs-nav"><li class="<%= @current_stage=='fragment-1' ? 'tabs-selected' : '' %>"><a href="<%=physical_timeandexpenses_matter_view_path(:status => 'Open',:current_tab=>'fragment-1',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'matter', :from => from_matter_path)%>"><span><%=t(:label_open)%></span></a></li><li class="<%= @current_stage=='fragment-2' ? 'tabs-selected' : '' %>"><a href="<%=physical_timeandexpenses_matter_view_path(:status => 'Approved',:current_tab=>'fragment-2',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'matter', :from => from_matter_path)%>" onclick=""><span><%=t(:label_Approved)%></span></a></li><li class="<%= @current_stage=='fragment-3' ? 'tabs-selected' : '' %>"><a href="<%=physical_timeandexpenses_matter_view_path(:status => 'Billed',:current_tab=>'fragment-3',:start_date=>params[:start_date],:end_date=>params[:end_date],:matter_id=>params[:matter_id],:view=>'matter', :from => from_matter_path)%>"><span><%=t(:label_Billed)%></span></a></li></ul>
+                <div id="fragment-1" class="tabs-container">
+                  <%= render :partial =>"summary_grid_entries_matter_view" , :locals =>{:saved_time_entries =>@saved_time_entries,:saved_expense_entries => @saved_expense_entries} if @object%>
+                </div>
+              </div>
+              <!-- container-1 #end -->
+            </div>
+            <div class="mandatory"><span class="alert_message">*</span><%=t (:label_Required_field)%></div>
+            <div class="mandatory mt12">T/E:- Time/Expense,Int:- Internal ,M:- Matter , C:-Contact, Fm:- From, HH:- Hour, MM:- Minute, Dur:- Duration, Hrs:- Hours, Amt:- Amount,&nbsp;<div class="icon_time" style="display:inline;padding-right:14px"></div>:- Time,&nbsp;<div class="icon_exp" style="display:inline;padding-right:14px"></div>:- Expense</div>
+          </div>
+        <% end %>
+        <% if from_matters %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<%= render :partial=>"load_inline_edit_js.html.erb" ,:locals=>{:current_company=>current_company,:view_path=>"matter_view",:object_type=>"matter"}%>

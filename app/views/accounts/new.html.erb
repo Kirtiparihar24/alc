@@ -1,0 +1,8 @@
+<h2 class="title_main"><%=t(:text_new_accounts)%></h2>
+<div class="p8"> 
+  <% form_for :account, @account ,:url => {:action => 'create'},:html => {:onsubmit => "return disableAllSubmitButtons('accounts')"} do |f|%>
+    <%= raw same_account_show %>
+    <% check_available_contact %>
+    <%=render :partial=>'form',:locals=> {:f => f}%>
+  <%end%>
+</div>

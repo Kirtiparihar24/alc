@@ -1,0 +1,190 @@
+<%manager = is_team_manager%>
+<div class="sct">
+  <div class="sct_left">
+    <div class="sct_right">
+      <div class="sct_left">
+        <div class="sct_right">
+          <form action="#">
+            <fieldset>
+              <div class="table_wrapper">
+                <div class="table_wrapper_inner">
+                  <table cellpadding="0" cellspacing="0" width="100%" class="tablesorter" id="notes_index_table">
+                    <thead>
+                      <tr>
+                        <th style="padding-top:10px;"><%= check_box_tag "toggle" , "toggle", false, :onclick =>"toggleCheckboxes('note',this.checked);" if manager%></th>
+                        <th nowrap="nowrap" width="14%">Client</th>
+                        <th width="60%" style="border-right: 0px !important">Note</th>
+                        <th style="width:auto; "></th>
+                        <th nowrap="nowrap" style="width:9%">Created By</th>
+                        <%if manager%>
+                          <th style="width:10%;">Assigned To</th>
+                        <%end%>
+                        <th style="width:9%;" nowrap="nowrap">Created On</th>
+                        <%if manager%>
+                          <th nowrap="nowrap" style="width:15%;">Lawyer Cluster(s)</th>
+                        <%end%>
+                        <th>Priority</th>
+                        <th>Lock</th>
+                        <th>Actions </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% unless notes.blank? %>
+                        <% notes.each do |note|%>
+                          <%note_id = note.id%>
+                          <tr class="<%cycle('first','second')%>">
+                            <td>
+                              <%=alert_image('note',note)%><%=check_box_tag :task_id, note.id, false,:class=>"note" if manager %>
+                            </td>
+                            <td><%= note.receiver.full_name %><br />
+                              <i><%= note.receiver.company.name %> </i></td>
+                            <td width="60%" style="width:auto; border-right: 0px !important">
+                              <div id="hoverIntent" style="position:relative;">
+                                <span>
+                                  <%=link_to(truncate(h(note.description),:length => 80),edit_wfm_note_path(note_id)) %>
+                                  <div id="<%= note_id%>" class="task_details" style="display:none; position:absolute; top:35px;">
+                                    <div class="task_details_scroll"> <%=note.description%></div>
+                                  </div>
+                                </span>
+                              </div>
+                            </td>
+                            <td>
+                              <%notify = notification_count(note)%>
+                              <%unless notify.blank?%>
+                                <div style="position:relative;float:right;">
+                                  <div style="left:-13px; margin:0px;position:absolute;top:-6px;">
+                                    <a class="spch-bub-inside notify_link" href="<%=edit_wfm_note_path(note_id)%>">
+                                      <span class="point"></span>
+                                      <em><%=notify[1]%></em>
+                                    </a>
+                                  </div>
+                                </div>
+                              <%end%>
+                            </td>
+                            <td><%= note.logged_by_with_destroyed.full_name if note.logged_by_with_destroyed%></td>
+                            <%if manager%>
+                              <td style="width:9%;"><%= assigned_to_user(note)  rescue '-'%> </td>
+                            <%end%>
+                            <td width="90"><%= wfm_date_format(note.created_at) %></td>
+                            <%if manager%>
+                              <td><%= get_clusters(note) %></td>
+                            <%end%>
+                            <td>
+                              <%= get_note_priority(note.note_priority) %>
+                            </td>
+                            <% if note.lock_by_user_id.blank? %>
+                              <% if note.assigned_by_employee_user_id== note.created_by_user_id  %>
+                                <td><%=check_box_tag "lock_#{note_id}", note.id,false,:name=>"notes_lock_id",:class=>"note",:onclick=>"check_for_livian('#{note_id}','#{current_user.id}');" %> </td>
+                              <% else %>
+                                <td><%=check_box_tag "lock_#{note_id}", note.id,false,:name=>"notes_lock_id",:class=>"note",:disabled=>true%></td>
+                              <% end %>
+                            <% else %>
+                              <% if note.assigned_by_employee_user_id== note.created_by_user_id  && (current_user.id == note.lock_by_user_id  || manager) %>
+                                <td> <%=check_box_tag "lock_#{note_id}", note.id,true,:class=>"note",:onclick=>"check_for_livian('#{note_id}','#{current_user.id}');" %></td>
+                              <% else %>
+                                <td> <%=check_box_tag "lock_#{note_id}", note.id,true,:class=>"note",:disabled=>true %></td>
+                              <% end %>
+                            <% end %>
+                            <td>
+                              <div style="position:relative">
+                                <div class="action_pad" style="text-align:center" onclick="jQuery('#action_div_note_<%=note_id%>').toggle('slow'); jQuery('.actions').not(jQuery('#action_div_note_<%=note_id%>')).hide('slow');"><%= image_tag("/stylesheets/wfm/layout/site/icon/icon_action.gif", :title=>'Actions', :alt=>'Actions') %></div>
+                                <div id = "action_div_note_<%=note_id%>" class="actions list_div" style="display:none; width: 430px;">
+                                  <ul>
+                                    <%if is_completed %>
+                                      <li class="icon_generate_task_disable">Generate Task</li>
+                                      <li class="icon_complete_note_disable">Complete Note</li>
+                                      <li class="icon_call_recording_disable">Call Recording</li>
+                                      <li class="icon_reassign_task_disable">Assign</li>
+                                    <%else %>
+                                      <li class="icon_edit">
+                                        <%=link_to("Edit",edit_wfm_note_path(note_id)) %>
+                                      </li>
+                                      <li class="icon_generate_task">
+                                        <%=link_to 'Generate Task', new_wfm_user_task_url(:note_id=>note_id,:page=>params[:page])%>
+                                      </li>
+                                      <li class="icon_complete_note">
+                                        <% if note.assigned_by_employee_user_id== note.created_by_user_id &&  current_user.id != note.lock_by_user_id %>
+                                          <%=link_to 'Complete Note', edit_wfm_note_path(note_id) %>
+                                        <% else %>
+                                          <%=link_to 'Complete Note','#', :onclick=> "tb_show('Complete Note','#{complete_note_wfm_note_path(note_id)}?height=360&width=700','');"%>
+                                        <% end %>
+                                      </li>
+                                      <li class="icon_call_recording">
+                                        <span style="color:#406F85;">Call Recording</span>
+                                      </li>
+                                    <%end%>
+                                    <%if manager %>
+                                      <li class="icon_reassign_task">
+                                        <% if  note.assigned_by_employee_user_id== note.created_by_user_id &&  current_user.id != note.lock_by_user_id  %>
+                                          <%= link_to 'Assign',edit_wfm_note_path(note_id) %>
+                                        <% else %>
+                                          <%= link_to 'Assign','#', :onclick=> "tb_show('Assign Note','#{assign_note_form_wfm_note_path(note_id)}?height=360&width=700','');" %>
+                                        <% end %>
+                                      </li>
+                                    <%end%>
+                                  </ul>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        <%end%>
+                      <%else%>
+                        <tr><td colspan="6"><%="No Notes Assigned."%></td></tr>
+                      <%end%>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <%unless notes.blank?%>
+            <% if manager %>
+              <div class="table_menu" >
+                <ul class="left">
+                  <li>
+                    <%if !(params[:search].present? && params[:search][:status].eql?('Completed'))%>
+                      <%=link_to '<span><span>Assign Notes</span></span>','#', :onclick=> "assign_multiple_notes();",:class=>"button orange_btn",:style=>"padding: 0;" unless notes.blank?%>
+                    <%end%>
+                  </li>
+                </ul>
+              </div>
+            <% end %>
+            <div class="pagination">
+              <span class="page_no">
+                <%= custom_page_entries_info notes %><br/>
+                <span class="pag_list" style="float: left;" ><%= per_page_pegination_links(params,wfm_notes_path) %></span>
+              </span>
+              <ul class="pag_list">
+                <%= will_paginate notes, :seperator=>'',:previous_label=> "<li><span class='button light_blue_btn' href='#'><span><span>PREVIOUS</span></span></span></li>", :next_label=> "<li style='float:right; margin-left: 10px;'><span class='button light_blue_btn' href='#'><span><span>NEXT</span></span></span></li>"%>
+              </ul>
+            </div>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+  // call the tablesorter plugin
+  jQuery("#notes_index_table").tablesorter({ headers: { 0: { sorter: false} } });
+  });
+
+  jQuery('#hoverIntent span').hoverIntent({
+  sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
+  interval: 350,   // number = milliseconds of polling interval
+  over: showNav,  // function = onMouseOver callback (required)
+  timeout: 100,   // number = milliseconds delay before onMouseOut function call
+  out: hideNav    // function = onMouseOut callback (required)
+  });
+
+  function showNav()
+  {//alert(jQuery(this).attr('id'));
+  jQuery(this).children('.task_details').fadeIn();
+  }
+  function hideNav()
+  {
+  jQuery(this).children('.task_details').fadeOut('fast');
+  }
+</script>

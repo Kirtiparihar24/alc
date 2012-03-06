@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">New Activity Type</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:activity_type,@activity_type, :url => company_activity_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f, :modelclass => "activity_types",
+    :select_modal_text => "#{t(:text_activity_type)}", :modal_text => "#{t(:text_activity_type)}",
+    :all_modal_values => @company.company_activity_types.collect{|dc|[dc.lvalue]}.uniq} %>
+<%end%>
+<br class="clear"/>

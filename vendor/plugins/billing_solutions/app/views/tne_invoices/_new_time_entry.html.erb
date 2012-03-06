@@ -1,0 +1,191 @@
+<% time_entry_rows==[0,0,0]?time_entry_rows=0 : time_entry_rows
+expense_entry_rows==[0,0,0]?expense_entry_rows=0 : expense_entry_rows
+total_rows= time_entry_rows+expense_entry_rows %>
+<tr><td colspan="11"></td></tr>
+<% form_tag('/tne_invoice_time_entries/add_new_time_entry',:class=>'new_invoice_time_entry') do %>
+  <tr class="bg2">
+    <td>&nbsp;</td>
+    <td><%= select_tag("activity_type",options_for_select(list_activity_types(current_company)),:class=>'act_type', :style=>"width:160px")%></td>
+    <td align="center"><%= text_field_tag "actual_duration","0.00",:class=>'textR duration',:size=>5%></td>
+    <td align="center"><%= text_field_tag "activity_rate","0.00",:size=>5, :class=>'textR rate'%></td>
+    <td></td>
+    <td><%= text_field_tag "description","",:size=>25 %></td>
+    <td></td>
+    <% unless primary_tax_disable %>
+      <td align="center"><%= check_box_tag "primary_tax","",false,:disabled=>true%></td>
+      <%if secondary_tax_enable%>
+        <td align="center"><%= check_box_tag "secondary_tax","",false,:disabled=>true%></td>
+      <% end %>
+    <% end %>
+    <td align="right"><%= text_field_tag "final_billed_amount","0.00",:size=>5,:class=>'tne_invoice_amount',:readonly=>true,:id=>"tne_invoice_tne_invoice_details_attributes_"+total_rows.to_s+"_amount" %></td>
+    <td align=center>
+      <%= hidden_field_tag "time_invoice_id",time_invoice_id %>
+      <%= hidden_field_tag "matter_id","",:id=>"matter_id" %>
+      <%= hidden_field_tag "contact_id","",:id=>"contact_id" %>
+      <%= hidden_field_tag "consolidated_by",consolidated_by %>
+      <%= hidden_field_tag "regenerate",regenerate %>
+      <div style='width:32px;'>
+        <a href='#this'  class='vtip new_te_save' title='Save Time Entry'>
+          <div class='icon_save  mt3' style='width:14px;float:left;'></div>
+        </a>
+        <a href='#this' onClick="delete_table_row(this,'#add_time_row_but');" class='vtip' title='Delete Time Entry'>
+          <div class='icon_remove mt3' style='width:13px; float:right;'></div>
+        </a>
+      </div>
+    </td>
+  </tr>
+<% end %>
+<script type="text/javascript">
+  function get_random_no(){
+    var d= new Date();
+    var random_values = Math.floor(Math.random()*11);
+    var random_no= d.getMilliseconds()+"_"+random_values;
+    return random_no;
+  }
+
+  function add_time_entry_id(){
+    var no = get_random_no();
+    // setting form id
+    jQuery('.new_invoice_time_entry').last().attr('id',no);
+    //setting parent tr id
+    jQuery('.new_invoice_time_entry').last().parent().parent().attr('id',no);
+    //setting  id to save button
+    jQuery('.new_te_save').last().attr('id',no);
+    //console.log(no);
+    jQuery("input#matter_id").val(jQuery('#tne_invoice_matter_id').val());
+    jQuery("input#contact_id").val(jQuery('#tne_invoice_contact_id').val());
+    jQuery(".act_type").last().attr('form_id',no);
+    get_tne_act_rate(jQuery(".act_type").last().val(),no,"<%= emp_user_id %>");
+  }
+
+  add_time_entry_id();
+  jQuery(".new_te_save").live("click",function(event){
+    var activity_duration = jQuery("#actual_duration").val();
+    var activity_rate = removeCommas(jQuery("#activity_rate").val());
+    var activity_desc = jQuery("#description").val();
+    var matter_id_val = jQuery('#matter_id').val();
+    var contact_id_val = jQuery('#contact_id').val();
+    var activity_type_id = jQuery("#activity_type").val();
+    var invoice_id_val = jQuery("#time_invoice_id").val();
+    var consolidated_by = jQuery("#consolidated_by").val();
+    var regenerate = jQuery("#regenerate").val();
+
+    if( activity_duration==""){
+      alert("Please enter duration");
+      jQuery("#tne_invoice_tne_invoice_details_attributes_"+dbrow+"_duration").focus();
+      return false;
+    }
+
+    if(activity_duration!=""){
+      if(isNaN(activity_duration) || eval(activity_duration)<=0) {
+        alert("Please enter duration between 0.01 to 24.00")
+        jQuery("#tne_invoice_tne_invoice_details_attributes_"+dbrow+"_duration").focus();
+        return false;
+      }
+
+    }
+
+    if( activity_rate=="" || eval(activity_rate)<=0 || isNaN(activity_rate)){
+      alert("Rate should be between 0.01 and 9999.99");
+      jQuery("#tne_invoice_tne_invoice_details_attributes_"+dbrow+"_rate").focus();
+      return false;
+    }
+
+    if(eval(activity_rate)>0){
+      frate = parseFloat(activity_rate);
+      if ((activity_rate.indexOf('.') != -1) && ((activity_rate.length - activity_rate.indexOf('.') -1) > 2)){
+        frate = frate.toFixed(2);
+      }
+
+      if (frate > 9999.99 || frate < 0.01)
+      {
+        alert("Rate should be between 0.01 and 9999.99");
+        jQuery("#tne_invoice_tne_invoice_details_attributes_"+dbrow+"_rate").focus();
+        return false;
+      }
+    }
+
+    if(activity_desc==""){
+      alert("Please enter description");
+      jQuery("#tne_invoice_tne_invoice_details_attributes_"+dbrow+"_description").focus();
+      return false;
+    }
+    form_id = jQuery(this).attr('id');
+    jQuery.ajax({
+      type: 'GET',
+      url: '/tne_invoice_time_entries/add_new_time_entry',
+      data: {
+        activity_type : activity_type_id,
+        description: activity_desc,
+        activity_rate : activity_rate,
+        activity_duration : activity_duration,
+        matter_id: matter_id_val,
+        time_invoice_id: invoice_id_val,
+        contact_id : contact_id_val,
+        consolidated_by : consolidated_by,
+        regenerate : regenerate
+      },
+      dataType: 'script',
+      beforeSend: function(){
+        loader.prependTo('#loader_container');
+        jQuery('body').css("cursor", "wait");
+      },
+      success: function(){
+        show_error_msg("errorCont",'Time Entry Saved Successfully',"message_sucess_div");
+        tb_remove();
+        time_entry_refresh();
+      },
+      complete: function(){
+        jQuery('body').css("cursor", "default");
+        loader.remove();
+        jQuery("tr#"+form_id).remove();
+      }
+    })
+    return false;
+  });
+
+  jQuery(".act_type").live("change",function(){
+    get_tne_act_rate(jQuery(this).val(),jQuery(this).attr('form_id'),"<%= emp_user_id %>");
+  });
+
+  jQuery(".duration").live("change",function(){
+    var form_id =jQuery(this).parent().parent();
+    var duration = form_id.find(".duration");
+    var rate = parseFloat(form_id.find(".rate").val());
+    var amount = form_id.find("#tne_invoice_tne_invoice_details_attributes_"+<%=total_rows%>+"_amount");
+    var duration_value =parseFloat(duration.val());
+    if(duration_value <=0 || duration_value > 24 || isNaN(duration_value)) {
+      alert("Please enter duration between 0.01 to 24.00");
+      duration.focus();
+      duration.val("0.00");
+      return false;
+    }
+    amount.val(addCommas(parseFloat(duration_value) * parseFloat(rate)));
+  });
+
+  jQuery(".rate").live("change",function(){
+    var form_id =jQuery(this).parent().parent();
+    var duration = form_id.find(".duration");
+    var rate = form_id.find(".rate");
+    var amount = form_id.find("#tne_invoice_tne_invoice_details_attributes_"+<%=total_rows%>+"_amount");
+    var duration_value =parseFloat(duration.val());
+    var rate_value =parseFloat(rate.val());
+
+    if(isNaN(rate_value)){
+      alert("Rate should be between 0.01 and 9999.99");
+      rate.focus();
+      rate.val("0.00");
+      return false;
+    }
+
+    if(rate_value > 9999.99 || rate_value < 0.01){
+      alert("Rate should be between 0.01 and 9999.99");
+      rate.focus();
+      rate.val("0.00");
+      return false;
+    }
+    amount.val(addCommas(parseFloat(duration_value) * parseFloat(rate_value)));
+    duration.val(parseFloat(duration_value).toFixed(2));
+    rate.val(rate_value.toFixed(2));
+  });
+</script>

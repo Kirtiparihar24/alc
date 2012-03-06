@@ -1,0 +1,22 @@
+<%if @suggestions.ntuples > 0%>
+  <table>
+    <tr>
+      <td width="99px" valign="top" > Tip   </td>
+      <td width="440px">
+        <table>
+          <tr>
+            <td style=" background-color: #FFEBC1;border:2px solid #FDBF3B;"><div style="width:300px;height:60px; overflow-y:auto; overflow-x:hidden;"><%= @suggestions[0]['description']%> </div></td>
+          </tr>
+          <tr>
+            <td> <a href="#" onclick= "h=window.open('','suggestion','width=300,height=200'); h.document.write('<%= @suggestions[0]['description']%>'); h.document.close();" >Open in new window</a></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<%end%>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    document.getElementById('descript_value').value='<%=@description[0]['description']%>'
+  });
+</script>

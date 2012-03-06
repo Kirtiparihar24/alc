@@ -1,0 +1,22 @@
+<ul class="jqueryFileTree" style="display: none;">
+  <%if  @all_folders.length > 0%>
+    <% @all_folders.each do |folder| %>
+      <li class="directory collapsed">
+        <% if @recylce_bin %>
+          <% count = folder.children.find_only_deleted(:all).count %>
+        <% else %>
+          <% count = folder.children.count %>
+        <% end %>
+        <% if count  > 0 %>
+          <a href="#" rel="<%= folder.id%>/" onclick="GetFoldersList('<%=folder.id%>','<%= params.has_key?(:update_list) ? false : true %>',this,'<%= @recylce_bin %>');return false;" style="width:auto"><span class="icon_expand_folder mr5 mt3 fl" ></span><%= escape_javascript(h(folder.name)) %></a>
+        <% else %>
+          <a href="#" rel="<%= folder.id%>/" onclick="GetFoldersList('<%=folder.id%>','<%= params.has_key?(:update_list) ? false : true %>',this,'<%= @recylce_bin %>');return false;" style="width:auto"><span class="icon_folder_01 mr5 mt3 fl" ></span><%= escape_javascript(h(folder.name)) %></a>
+        <% end%>
+    <%#=link_to(escape_javascript(h("<span class="icon_expand_folder mr5 mt3 fl" >folder.name</span>)) ,"#",{:onclick=>"GetFoldersList(#{folder.id},#{params.has_key?(:update_list) ? false : true});toggle_plus_minus(this);return false;", :rel=>"#{folder.id}/"}, :style=>"width:auto")%>
+      </li>
+    <%end%>
+  <%else%>
+    <li class="collapsed"><i>No Subfolders Present</i></li>
+  <%end%>
+</ul>
+

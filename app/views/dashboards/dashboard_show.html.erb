@@ -1,0 +1,47 @@
+<%=raw(javascript_include_tag 'highcharts.js','FusionCharts.js','FusionChartsExportComponent.js')%>
+
+<%if params[:fav_id] and params[:fav_id] != ""%>
+  <div class="box_gray  ">
+    <div class="fl pl4">
+      <%=link_to(t(:text_remove),{:controller=>"dashboards",:action=>"fav_destroy",:fav_id=>params[:fav_id]})%>
+      <%=link_to(t(:text_change_name),"#",{:onclick => "rename_fav(#{params[:fav_id]})"})%>
+    </div>
+    <br class="clear"/>
+  </div>
+  <br class="clear"/>
+  <div class="mt2 bg1 border_gray p4" style="display:none;" id="rename_dash_board_favorite">
+  </div>
+<%else%>
+  <%=render :partial=>"dashboard_partials/""#{@dashboard.dashboard.template_name}",:locals=>{:chart=>@dashboard}%>
+  <br class="clear"/>
+  <div class="mt2 bg1 border_gray p4" style="display:none;position:absolute;top:60px;right:27px;" id="show_dash_board_favorite">
+    <h3 class="title_gray"><%=t(:text_add_to_favorite)%></h3>
+    <div id="nameerror" style="display:none"></div>
+    <% form_remote_tag :url => {:action => :create_fav} ,:method=>:post,:class=>"favourite_form" do  -%>
+      <%=hidden_field_tag "dashboard_chart_id",@dashboard.dashboard.id%>
+       <%=hidden_field_tag "parameters"%>
+       <%=hidden_field_tag "thresholds"%>
+      <table width="100%">
+        <tr>
+          <td width="50%"><label><%=t(:label_dashboard_name)%><span class="alert_message">*</span></label></td>
+          <td width="50%"><%=text_field_tag "favorite_title", "" , :maxlength => 60%></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <%=submit_tag t(:label_add_to_favorite), :class=>"button",:onclick=>"return validate_dashboard_name();"%>
+            <input type=button value="Close" class="button" onclick="jQuery('#show_dash_board_favorite').hide();" />
+          </td>
+        </tr>
+      </table>
+    <%end%>
+  </div>
+
+<%end%>
+
+  <div id="charts_div">
+    <center>
+  <%=render :partial=>"dashboards/dashbords_chart" ,:locals=>{ :dashboard=>@dashboard}%>
+  </center>
+</div>
+  <div  class="pagiText"><%=t(:label_page)%>&nbsp;107</div>
+  

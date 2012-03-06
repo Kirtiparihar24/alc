@@ -1,0 +1,19 @@
+<div id="display_div">
+  <br/>
+  <%if params[:from_matter_billing] %>
+    <%= radio_button_tag "invoice", "manual", false, :onClick => "openThicboxForInvoice('#{new_bill_matter_matter_billing_retainers_path(:matter_id=>params[:matter_id], :height => 300,:width=>600, :page_reload => 'true',:flag=>'matter')}');" %> <%= t(:text_manual)%> <br/>
+    <%= radio_button_tag "invoice", "system", false, :onClick => "window.location.href='#{new_tne_invoice_path(:matter_id=>params[:matter_id],:view=>params[:view],:flag=>"matter")}';" %>  <%=t(:text_system)%> <br/>
+  <%else%>
+    <%= radio_button_tag "invoice", "manual", false, :onClick => "jQuery('#display_matter_list').toggle();" %>  <%= t(:text_manual)%> <br/>
+    <div id="display_matter_list" style="display:none;"><br/>
+      Matters &nbsp;&nbsp;&nbsp;<%= custom_select_tag(:matter_id,options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id ]}, 'matter' ),{:class => "w65 matter_select_box",:prompt=>"Please Select"})%><br/><br/>
+    </div>
+    <%= radio_button_tag "invoice", "system", false, :onClick => "jQuery('#display_matter_list').hide();window.location.href='#{new_tne_invoice_path(:view=>params[:view])}';" %>  <%=t(:text_system)%> <br/>
+  <%end%>
+</div>
+
+<script type="text/javascript">
+jQuery('.matter_select_box').bind('change', function(){    
+  openThicboxForInvoice('/matters/'+jQuery(this).val()+'/matter_billing_retainers/new_bill?height=300&width=550');
+});
+ </script>

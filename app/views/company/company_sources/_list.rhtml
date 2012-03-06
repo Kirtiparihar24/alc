@@ -1,0 +1,31 @@
+<div class="p5 gridTable">
+  <div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+    <%= link_to(t(:text_new),new_company_company_source_path(@company),:rel=>"facebox") %>
+  </div>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left" id="company_sources">
+    <tr>
+      <th width="25%"><%=t(:text_source)%></th>
+      <th width="25%">Custom Source</th>
+      <th width="25%"><%=t(:text_actions)%></th>
+    </tr>
+    <%@company.company_sources.each do |source|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <%= hidden_field_tag "support_#{source.id}", source.id, :class=>"supportFieldID" %>
+          <span class="textBlue11Height20">
+            <%= source.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">
+            <%= source.alvalue %>
+          </span>
+        </td>
+        <td>
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_company_source_path(@company,source),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

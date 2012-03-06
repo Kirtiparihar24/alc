@@ -1,0 +1,58 @@
+<% accounts = @accounts %>
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_accounts)%></div>
+  <div class="gryBox">
+    <!--TABULAR DATA STARTS-->
+    <div class="gridTable">
+      <table id="notestable" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <thead>
+          <tr>
+            <th><%=t(:text_name)%></th>
+            <th width="12%"><%=t(:text_primary_contact)%></th>            
+            <th><%=t(:text_assigned_to)%></th>
+            <th><%=t(:text_phone)%></th>
+            <th width="50"><%=t(:text_contacts)%></th>            
+            <th><%=t(:text_opportunities)%></th>
+            <th><%=t(:text_website)%></th>
+            <th><%=t(:text_created)%></th>
+          </tr>
+        </thead>
+        <tbody class="scrollY100">
+          <%unless accounts.blank? %>
+            <% accounts.each do |account| %>
+              <tr class="<%=cycle("bg1", "bg2")%>">
+                <td width="15%"><%=link_to(account.name,edit_account_path(account))%></td>
+                <td width="12%"><%=account.get_primary_contact.try(:full_name).try(:titleize) if account.get_primary_contact%></td>
+                <td width="11%"><%=account.get_assigned_to%></td>
+                <td width="75">
+                  <%if account.toll_free_phone!="" %><%=account.toll_free_phone %><br/><%end%>
+                  <%=account.phone%>
+                </td>
+                <td width="50" class="txtC"><%=link_to(account.contacts.length,{:controller=>"accounts/show_contacts/#{account.id}"},:rel=>"facebox")%></td>
+                <td width="90" class="txtC"><%=account.get_opportunity_length%></td>
+                <td width="10%"><%=account.website%></td>
+                <td width="68"><%=account.created_at.to_time.strftime('%m/%d/%y') if account.created_at %></td>
+              </tr>
+            <%end%>
+            <%unless accounts.empty?%>
+              <tr><td colspan="8"><br/></td></tr>
+              <tr>
+                <td colspan="8" align="right" class="pr5">
+                </td>
+              </tr>
+              <tr><td colspan="8"><br/></td></tr>
+            <%end%>
+          </tbody>
+        <%else%>
+          <tr><td colspan="8"><div class="warningCont m5"><%=t(:text_no_data)%></div></td></tr>
+        <%end%>
+
+      </table>
+    </div>
+    <!--TABULAR DATA ENDS-->
+  </div>
+</div>
+<!--CONTENT STARTS-->
+<script type="text/javascript">
+  jQuery('a[rel*=facebox]').facebox();
+</script>

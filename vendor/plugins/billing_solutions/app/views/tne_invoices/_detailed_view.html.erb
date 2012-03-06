@@ -1,0 +1,251 @@
+<% total_num_rows,total_exp_rows=0,0%>
+<% newrecord = @tne_invoice.new_record? %>
+<div class="border_top_gray mt5 pl3" style="background:#F1E3C4;line-height: 30px;">
+  <table width="100%" border="1">
+    <tr>
+      <td width="15%" valign="middle"><label><%= t(:text_start_date) %></label>&nbsp;&nbsp;<input type="text" name="start_date" readonly="true" size="11"  class="date_picker" value="<%=params[:start_date]%>" id="start_date_ID" /></td>
+      <td width="15%" valign="middle"><label><%= t(:text_end_date) %></label>&nbsp;&nbsp;<input type="text" name="end_date" readonly="true" size="11" class="date_picker" value="<%=params[:end_date]%>" id="end_date_ID"/></td>
+      <td width="20%" valign="middle"><label>Consolidated By</label>&nbsp;&nbsp;
+        <% viewbyselected = params[:tne_invoice].nil? ? 'Activity' : params[:tne_invoice][:consolidated_by] %>
+        <%=f.select "consolidated_by",options_for_select(["Activity", "User","Date"],viewbyselected )%>
+      </td>
+      <td width="15%" valign="middle"><label>Invoice detail</label>&nbsp;&nbsp;
+        <% viewbyselected = params[:tne_invoice].nil? ? 'Summary' : params[:tne_invoice][:view_by] %>
+        <%=f.select "view_by",options_for_select(["Summary", "Detailed"], viewbyselected )%>
+      </td>
+      <td width="25%" valign="middle"><%= submit_tag 'Show Results',:type=>'button',:id=>"display_data", :onclick=>"return check_date();" %></td>
+    </tr>
+  </table>
+</div>
+<div>
+  <div id="managed">
+    <div id="2container-1">
+      <% tne_invice_id=@tne_invoice.id %>
+      <%= hidden_field_tag 'row_count'%>
+      <div class="tabular_listing mt5">
+        <div class='icon_time fl'></div><strong> - Time to be billed </strong>
+        <table width="100%" cellspacing="1" cellpadding="1" class="border_gray mt5">
+          <thead>
+            <tr>
+              <th align="center" width=<%=@consolidated_by=="Date" ? "10%" : "7%"%>><%=@consolidated_by=="Date" ? "#{t(:text_activity)}" : "#{t(:text_date)}"%></th>
+              <th align="<%=@consolidated_by=="Date" ? 'center' : 'left'%>" width=<%=@consolidated_by=="Date" ? "5%" : "20%"%>><%=@consolidated_by=="Activity" ?  "#{t(:text_activity)}" : (@consolidated_by == "User" ? 'Lawyer Designation' : "#{t(:text_date)}")%></th>
+              <th align="right" width="5%"><%=t(:text_dur)%><br/>(<%=t(:text_hour)%>)</th>
+              <th align="right" width="5%"><%=t(:text_rate)%> <br/>($)</th>
+              <th align="left" width="15%"><%=@consolidated_by=="User" ?  "#{t(:text_activity)}" :  'Lawyer Designation'%></th>
+              <th align="left" width="20%"><%=t(:text_description)%></th>
+              <th align="left" width="16%"><%=t(:text_billing_adjustments)%></th>
+              <% unless primary_tax_disable %>
+                <th width="6%"><span id="header_p_tax"></span></th>
+                <%if @tne_invoice_setting.try(:secondary_tax_enable) %>
+                  <th width="6%"><span id="header_s_tax"></span></th>
+                <% end %>
+              <% end %>
+              <th align="right" width="8%">Total&nbsp;<%=t(:text_invoice)%><br/><%=t(:text_amt)%></th>
+              <th align="center" width="5%"><%= t(:text_actions) %></th>
+            </tr>
+          </thead>
+          <%= hidden_field_tag "not_new", @tne_invoice.id  unless @tne_invoice.new_record? %>
+          <% unless @total_data.blank? %>
+            <% total_num_rows=@total_data.size %>
+            <%= render :partial=>"summary_grid_time_entries_matter_view", :locals => {:f => f, :primary_tax_disable => primary_tax_disable} %>
+            <tr id="add_timeentry"><td colspan="14"></td></tr>
+          <% else %>
+            <tr id="add_timeentry"><td colspan="14" align="center"><strong><%=t(:text_no_record_s_found)%></strong></td></tr>
+          <% end %>
+          <% if @tne_invoice.matter_id.present? || @tne_invoice.contact_id.present? %>
+            <tr id="add_time_row_but">
+              <td colspan="14" align="right" class="pb5">
+                <div class="pr5">
+                  <a href="#this" onClick="addNewTimeEntry('#add_timeentry')" class='vtip' title='Add Time Entry'>
+                    <span class="icon_add_row fr mt3"></span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+          <tr>
+            <td colspan="14" valign="top">
+              <div class='icon_exp fl mt5'></div><strong> - Expense to be billed</strong>
+            </td>
+          </tr>
+          <% unless @total_expenses.blank?
+            total_exp_rows=@total_expenses.size %>
+            <%= render :partial=>"summary_grid_expense_entries_matter_view", :locals => {:f => f,:total_time_data => @total_data.size , :primary_tax_disable => primary_tax_disable} %>
+            <tr id="add_expenseentry"> <td colspan="14"></td> </tr>
+          <% else %>
+            <tr id="add_expenseentry"> <td colspan="14" align="center"><strong><%=t(:text_no_record_s_found)%></strong></td> </tr>
+          <%end%>
+          <%if @tne_invoice.matter_id.present? || @tne_invoice.contact_id.present? %>
+            <tr id="add_exp_row_but">
+              <td colspan="14" align="right" class="pb5">
+                <div class="pr5">
+                  <a href="#this" onClick="addExpenseTableRow('#add_expenseentry')" class='vtip' title='Add Expense Entry'>
+                    <span class="icon_add_row fr mt3"></span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+        </table>
+        <br/>
+      </div>
+      <div class="tabular_listing p5" id="calculation_detail" <%if params[:action]=="new"%>style="display:none"<%end%>>
+        <table width="100%" cellspacing="0" cellpadding="0" border="0" class="border_gray">
+          <tr><td colspan="6" style="line-height:5px"><br class="clear"/></td></tr>
+          <% unless primary_tax_disable %>
+            <tr>
+              <td colspan="3"></td>
+              <td align="right"></td>
+              <td colspan="2">
+                <% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+                  <input type="button" value="Calculate Changes in tax" onClick = "calculate_primary_secondary_tax(); return false;"/>
+                <% else %>
+                  <input type="button" value="Calculate Changes in tax" onClick = "calculate_primary_tax(); return false;"/>
+                <% end %>
+              </td>
+            </tr>
+            <tr><td colspan="6" style="line-height:5px"><br class="clear"/></td></tr>
+          <% end %>
+          <tr>
+            <td width="10%"></td>
+            <td width="20%" align=""></td>
+            <td width="20%" align=""></td>
+            <td width="20%" align="right">Sub Total</td>
+            <td width="20%" align="left"><%= f.text_field :invoice_amt,:value=>@total_amount.to_f.fixed_precision(2),:readonly=>true,:onchange=>'get_change_status();',:maxlength=>20,:class=>'textR'%></td>
+            <td width="10%"></td>
+          </tr>
+          <tr id="discount_tr">
+            <td width="10%"></td>
+            <td width="20%" align=""></td>
+            <td width="20%" align=""></td>
+            <td width="20%" align="right">(-) Discount </td>
+            <td width="20%" align="left"><%= f.text_field :discount ,:class=>'textR',:maxlength=>20, :onblur => "checkDiscount();"%></td>
+            <td width="10%"></td>
+          </tr>
+          <% unless primary_tax_disable %>
+            <tr id="primary_tax_tr">
+              <td width="10%"></td>
+              <td width="20%" align=""></td>
+              <td width="20%" align=""></td>
+              <td width="20%" align="right"><span id=p_tax></span></td>
+              <td width="20%" align="left"><%= text_field_tag :primary_tax_value,'',:readonly=>true, :class=>'textR'%></td>
+              <td width="10%"></td>
+            </tr>
+            <% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+              <tr id="secondary_tax_tr">
+                <td width="10%"></td>
+                <td width="20%" align=""></td>
+                <td width="20%" align=""></td>
+                <td width="20%" align="right"><span id=s_tax></span></td>
+                <td width="20%" align="left"><%=text_field_tag :secondary_tax_value,'',:readonly=>true, :class=>'textR'%></td>
+                <td width="10%"></td>
+              </tr>
+            <% end %>
+          <% end %>
+          <tr>
+            <td width="10%"></td>
+            <td width="20%" align=""></td>
+            <td width="20%" align=""></td>
+            <td width="20%" align="right">Total </td>
+            <td width="20%" align="left"><%= f.text_field :final_invoice_amt,:value=>@final_invoice_amt,:readonly=>true,:maxlength=>20, :class=>'textR'%></td>
+            <td width="10%"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="mandatory"><span class="alert_message">*</span><%= t(:text_required_field) %><br />
+    <div class="mt12">T/E:- Time &amp; Expense, Dur:- Duration,  Amt:- Amount, M:- Matter, C:- Contact, Fm:- From </div>
+    <div class="mt12">Note: "The above entry will not impact original Time and Expense records" </div>
+  </div>
+</div>
+<%=hidden_field_tag 'time_entry_rows',total_num_rows%>
+<%=hidden_field_tag 'expene_entry_rows',total_exp_rows%>
+<script type="text/javascript">
+  function check_duration(obj) {
+    obj_val = parseFloat(obj.value);
+    if(obj_val <=0 || obj_val > 24 || isNaN(obj_val)){
+      alert("Please enter duration between 0.01 to 24.00");
+      obj.focus();
+      old_value = jQuery(obj).attr("old_value");
+      obj.value = old_value;
+      return false;
+    }
+    dur = jQuery('#'+obj.id);
+    amount = jQuery('#'+obj.id.split('duration')[0]+'amount');
+    rate = jQuery('#'+obj.id.split('duration')[0]+'rate');
+    if (dur.val()== "") {
+      dur.val(0);
+    }
+    if (rate.val()== "") {
+      rate.val(0);
+    }
+    amount.val(addCommas(parseFloat(dur.val()) * parseFloat(rate.val())));
+    var recs = jQuery(".tne_invoice_amount");
+    var total=0;
+    for (var i=0; i<recs.length; i++) {
+      total += parseFloat(jQuery('#' + recs[i].id).val().replace(/\,/g,''));
+    }
+    jQuery('#tne_invoice_invoice_amt').val(addCommas(total));
+    amount.next().val(amount.val().replace(/\,/g,''));
+<% if @dur_setng_is_one100th %>
+      dur.val(parseFloat(dur.val()).toFixed(2));
+<% else %>
+      dur.val(parseFloat(dur.val()).toFixed(1));
+<% end %>
+    check_calculations();
+  }
+
+  function check_rate(obj) {
+    rate = jQuery('#'+obj.id);
+    amount = jQuery('#'+obj.id.split('rate')[0]+'amount');
+    dur = jQuery('#'+obj.id.split('rate')[0]+'duration');
+    if (dur.val()== "") {
+      dur.val(0);
+    }
+    if (rate.val()== "") {
+      rate.val(0);
+    }
+    frate = parseFloat(removeCommas(rate.val()));
+    if ((rate.val().indexOf('.') != -1) && ((rate.val().length - rate.val().indexOf('.') -1) > 2)) {
+      frate = frate.toFixed(2);
+      jQuery('#'+obj.id).val(frate);
+    }
+    if (frate > 9999.99 || frate < 0.01) {
+      alert("Rate should be between 0.01 and 9999.99");
+      obj.focus();
+      return false;
+    }
+    amount.val(addCommas(parseFloat(dur.val()) * parseFloat(rate.val())));
+    var recs = jQuery(".tne_invoice_amount");
+    var total=0;
+    for (var i=0; i<recs.length; i++) {
+      var recs_amt = jQuery('#' + recs[i].id).val().replace(/\,/g,'');
+      total += parseFloat(recs_amt);
+    }
+    jQuery('#tne_invoice_invoice_amt').val(addCommas(total));
+    amount.next().val(amount.val().replace(/\,/g,''));
+    rate.val(addCommas(rate.val()));
+    check_calculations();
+  }
+  //Pass an id of table
+  // i.e add_timeentry
+  function addNewTimeEntry(row_id){
+    jQuery(row_id).after("<%= escape_javascript(render :partial=>'new_time_entry',:locals=>{:time_invoice_id=>tne_invice_id,:emp_user_id=>get_employee_user_id,:time_entry_rows=>total_num_rows,:expense_entry_rows=>total_exp_rows, :primary_tax_disable => primary_tax_disable,:consolidated_by=>@tne_invoice.consolidated_by,:regenerate => (params[:tne_invoice].present? && params[:tne_invoice][:regenerate].present? ? params[:tne_invoice][:regenerate] : false), :secondary_tax_enable => @tne_invoice_setting.try(:secondary_tax_enable)}) %>");
+    jQuery('#add_time_row_but').hide();
+  }
+
+  if(eval('<%=total_num_rows%>')==0){
+    jQuery('#add_time_row_but').show();
+  }
+
+  if(eval('<%=total_exp_rows%>')==0){
+    jQuery('#add_exp_row_but').show();
+  }
+
+  function addExpenseTableRow(row_id){
+    jQuery(row_id).after("<%= escape_javascript(render :partial=>'new_expense_entry',:locals=>{:invoice_id=>tne_invice_id,:emp_user_id=>get_employee_user_id,:time_entry_rows=>total_num_rows,:expense_entry_rows=>total_exp_rows,:consolidated_by=>@tne_invoice.consolidated_by, :regenerate => (params[:tne_invoice].present? && params[:tne_invoice][:regenerate].present? ? params[:tne_invoice][:regenerate] : false), :secondary_tax_enable => @tne_invoice_setting.try(:secondary_tax_enable), :primary_tax_disable => primary_tax_disable}) %>");
+    jQuery('#add_exp_row_but').hide();
+  }
+
+</script>

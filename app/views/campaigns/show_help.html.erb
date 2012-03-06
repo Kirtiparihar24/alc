@@ -1,0 +1,23 @@
+<div class="gridDiv">
+  <div class="titleHead">
+    <div class="fl"><%=t(:text_help)%></div>
+    <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div><br class="clear"/>
+  </div>
+  <div class="windowForm">
+    <table border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td valign="top" colspan="2" class="pl10 txtL">
+          <%=image_tag('/images/livia_portal/campaign_upload.jpeg',{:alt =>"Edit", :title => "Edit", :border => 0, :hspace => "2"})%>
+        </td>
+        <td></td>
+        <td valign="top" colspan="2" class="pl10 txtL bdrRight ">
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="6" class="txtC">
+          <input type="button" class="button" value="<%=t(:label_cancel)%>" onclick="closeFaceBox();" style="font-size:11px;" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

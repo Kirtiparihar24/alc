@@ -1,0 +1,71 @@
+<%priority_hash=Hash[UserTask::PRIORITIES.map {|x| [x[1], x[0]]}]%>
+<div style="height: 25px;" class="box_gray_new">
+  <div class="fl"> <strong><%=t(:text_outstanding_tasks)%></strong> </div>
+  <div style="padding-right: 10px;" class="fr mt5"><span onclick="jQuery('#outstanding_task_filter').toggle();"><img src="/images/filter-new.png"/></span> </div>
+</div>
+<div id="outstanding_loader"></div>
+<div id="outstanding_task_filter" style="background: none repeat scroll 0% 0% rgb(255, 255, 255); margin: 8px 0pt;display: none;">
+  <% form_remote_tag :url => view_within_date_range_path, :loading => "append_loader('#outstanding_loader');" do %>
+    <table width="70%" cellspacing="0" cellpadding="1">
+      <tbody>
+        <tr>
+          <%= hidden_field_tag "option", "outstanding_task_details" %>
+          <td width="10%" align="left">Due Till</td>
+          <td width="22%" align="left"><%= text_field_tag "to_date", params[:to_date], :id=>"outstanding_to_date",:maxlength=>10, :class=>"date_picker"%></td>
+          <td width="10%" align="left"><%= submit_tag "Go", :id=>"go", :onclick=>"return validate_filters_dates('outstanding');" %></td>
+          <td align="left"><input type="button" value="Reset" id="reset" onclick="reset_partial('outstanding');"/></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+<table width="100%" cellpadding="0" cellspacing="0" class="completed_action">
+  <tr>
+    <th width="27%" align="left"><%= "Task Name" %></th>
+    <th width="13%" align="left"><%= "Start At" %></th>
+    <th width="13%" align="left"><%= "Due At" %></th>
+    <th width="15%" align="left"><%= "Priority" %></th>
+    <%unless current_user.employee%><th width="15%" align="left"><%= "Share With Client" %></th><%end%>
+    <th width="7%" align="center"><%= "Actions" %></th>
+  </tr>
+</table>
+<div class="scrollY100">
+  <table width="100%" cellpadding="1" cellspacing="1">
+    <% unless @outstanding_tasks.blank? %>
+      <% @outstanding_tasks.each do |task| %>
+        <tr class="<%= cycle('bg1', 'bg2') %>">
+          <td width="27%">
+            <%=raw(truncate_withscroll(task.name,50)) %>
+            <span class="livia_dashboardroller" style="display:none;"><%= task.name %></span>
+            <%notify = notification_count(task)%>
+            <%unless notify.blank?%>
+              <a id="task_<%=task.id%>_notify_link" class="spch-bub-inside notify_link" href="#"  onclick="upload_notifications(this,'<%=notify[0]%>','<%=task.id%>');return false;">
+                <span class="point"></span>
+                <em id="task_<%=task.id%>_notify_count"><%=notify[1]%></em>
+              </a>
+            <%end%>
+          </td>
+          <td width="13%"><%= task.start_at.nil? ? '': task.start_at.to_time.strftime('%m/%d/%y %I:%M:%S %p') %></td>
+          <td width="13%"><%= task.due_at.nil? ? '': task.due_at.to_time.strftime('%m/%d/%y %I:%M:%S %p') %></td>
+          <td width="15%" <% if priority_hash[task.priority.to_s].eql?('Urgent')%> style="color:red" <%end%>>
+            <%=priority_hash[task.priority.to_s]%>
+          </td>
+          <%unless current_user.employee%><td width="15%" align="center"><div><%= get_share_with_client(task)%></div></td><%end%>
+          <td width="7%" align="center"><div class="icon_action mt3"><%= raw open_task_action_links(task)%></div></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="3"><div class="warningCont m5"><%= t(:text_no_data) %></div></td></tr>
+    <% end %>
+  </table>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function()
+  {
+<% if params[:action].eql?('view_within_date_range') %>
+      jQuery('#outstanding_task_filter').show();
+<% end %>
+    livia_datepicker();
+  });
+
+</script>

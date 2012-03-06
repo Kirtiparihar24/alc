@@ -1,0 +1,6 @@
+<%if @matters.size > 0%>
+  jQuery('#expense_matters_div_<%=params[:expense_entry_id]%>').html("<%=escape_javascript(render(:partial => 'expense_select_matters', :locals => {:matters => @matters,:saved_entry=>@expense_entry, :matter_id => @matter_id}))%>")
+<%else%>
+  jQuery('#<%=params[:expense_entry_id]%>_matter_ctl').val("No Matters");
+<%end%>
+jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>")

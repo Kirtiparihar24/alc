@@ -1,0 +1,3 @@
+$("#ajax_attach_files_<%= params[:from_fck] %>_1_<%= params[:doc_seq_id] %>").empty();
+$("#ajax_attach_files_<%= params[:from_fck] %>_2_<%= params[:doc_seq_id] %>").empty();
+$("#ajax_attach_files_<%= params[:from_fck] %>_1_<%= params[:doc_seq_id] %>").html('<input name="additional_documents[document_attributes][data][]" type="file"  id="file_first<%= params[:doc_seq_id] %>" value ="" />');

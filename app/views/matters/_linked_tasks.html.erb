@@ -1,0 +1,36 @@
+﻿<div style="text-align:center;margin-top:20px;">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <!--Tabular container div @start here -->
+  <% unless @matter_tasks.empty? %>
+    <% form_for([@matter, @submodel], :url => {:action => :linked_tasks, :id => @matter.id},:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+      <div class="tabular_listing">
+        <%=hidden_field_tag :task_type, @task_type%>
+        <%=hidden_field_tag :matter_research_id, @submodel.id  if @task_type=="matter_research" %>
+        <%=hidden_field_tag :matter_document_id, @submodel.id  if @task_type=="document_home"%>
+        <%=hidden_field_tag :path, @path%>
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>
+            <th width="80%" align="left"><%=t(:label_risk)%></th>
+            <th width="15%" align="left"><%=t(:label_critical)%></th>
+            <th width="5%" align="left">&nbsp;</th>
+          </tr>
+          <% @matter_tasks.each do |mi| %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td align="left"><%= truncate_hover(mi.name, 70) %></td>
+              <td align="left"><%= mi.critical? ? "Yes" : "No" %></td>
+              <td align="left"><%= check_box_tag "#{@task_type}[matter_task_ids][]", mi.id, @matter_taskid.include?(mi.id) %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="3"></td>
+          </tr>
+        </table>
+      </div>
+      <br class="clear"/>
+      <%=f.submit "Link", :id => "linked_tasks_button", :onclick => " return checkloader(); this.value = 'Please wait ...'", :name => "link" %>&nbsp;&nbsp;&nbsp;<%=f.submit "Cancel",:class=>'matters', :onclick => "tb_remove(); return false;"%>
+    <% end %>
+  <% else %>
+    <div class="warningCont m5">No <%=t(:label_Activities)%> found for this matter</div>
+  <% end %>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;58 </div>

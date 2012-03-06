@@ -1,0 +1,37 @@
+<div class="box-head"><h2 class="left"><%=t(:text_portal_usage_report)%></h2></div>
+<div class="actionLinks"><%=link_to("Download Report", portal_usage_report_download_companies_path)%> | <%=link_to("Back", portal_usage_report_form_companies_path)%></div>
+<div class="table">
+  <div style="overflow:auto; height:auto; width:100%;">
+    <table cellspacing="0" cellpadding="0" width="100%">
+      <%array = @records_array.shift%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <th width="10%"><%=array.shift%></th>
+        <th width="10%"><%=array.shift%></th>
+        <th width="10%" align="left"><%=array.shift%></th>
+        <%array.each do|e|%>
+          <th><%=e%></th>
+        <%end%>
+      </tr>
+      <%@records_array.each do|array|%>
+        <tr class="<%=cycle("bg1", "bg2")%>">
+          <th width="10%"><%=array.shift%></th>
+          <th width="10%"><%=array.shift%></th>
+          <th width="10%" align="left"><%=array.shift%></th>
+          <%array.each do|e|%>
+            <td><%=e%></td>
+          <%end%>
+        </tr>
+      <%end%>
+    </table>
+  </div>
+</div>
+<div class="pagging"></div>
+<script type="text/javascript">
+  jQuery(function(){
+    jQuery(".date_picker").datepicker({
+      showOn: 'both',
+      dateFormat: 'mm/dd/yy'
+    });
+  });
+</script>
+

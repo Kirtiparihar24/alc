@@ -1,0 +1,9 @@
+<%unless params[:department_id]%>
+   <% if params[:action] =="edit"  %>
+      <%=collection_select :employee, :parent_id, @emp_list, :id, :first_name_with_designation,{:include_blank=>"None",:selected=>@reporting_to_id},:class=>"field size3" %>
+   <% else %>
+      <%=select_tag :employee_parent_id, "<option>Please Select</option>",:class=>"field size3",:disabled => true%>
+   <% end %>
+<%else%>
+  <%=collection_select :employee, :parent_id, @emp_list, :id, :first_name_with_designation,{:prompt =>'None'},:class=>"field size3"%>
+<%end%>

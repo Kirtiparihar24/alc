@@ -1,0 +1,31 @@
+<table height="100%" align="center" width="100%">
+  <tbody>
+    <tr>
+      <td>        
+        <div id="login-div">
+          <%= render :partial => '/common/common_flash_message' %>
+          <div id="login-div" style="position:relative;"> <div class="contact_number_div">(214) 269-8570 </div>
+            <h1 class="textC"><%= image_tag "livia_logo.png" %></h1>
+            <% form_for resource_name, resource, :url => password_path(resource_name) do |f| -%>
+              <table width="100%" border="0" cellpadding="1" cellspacing="10">
+                <tr>
+                  <td align="center"><%= f.text_field :username, :size => "35",:value=>"Email ID" , :onclick => "changeValue(jQuery(this))", :onblur=> "trackValue(jQuery(this), 'user')", :class=>'textgray'%></td>
+                </tr>
+                <tr>
+                  <%= f.hidden_field :UTC_Time,:value=>"UTC_Time",:id=>'target'%>
+                  <td align="center"><%= f.submit t(:label_reset_password) %>&nbsp;<%= f.submit t(:label_cancel), :name => "cancel",:type => "button",:width => "60", :onclick => "window.location='#{root_path}';"%></td>
+                </tr>
+
+              </table>
+            <% end -%>
+            <br class="clear" />
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;157</div></td>
+    </tr>
+  </tbody>
+</table>
+

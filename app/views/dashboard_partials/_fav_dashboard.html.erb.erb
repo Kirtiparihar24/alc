@@ -1,0 +1,28 @@
+<h2 class="title_main">
+  <div class="fr" style="padding-top:3px;">
+    <ul id="topnav">
+      <li>
+        <a href="#" class="favReports"><%= t(:text_my_favorites) %></a>
+        <div class="sub" style="left:-160px;">
+          <div class="row">
+            <ul style="width: 225px;">
+              <% j = 0 %>
+              <%fav_dashboards.each do |fav_dashboard|%>
+                <% matter = true %>
+                <% if fav_dashboard.dashboard_chart.template_name.include?('task')  %>
+                  <%unless can? :manage, MatterTask %>
+                    <%matter = false%>
+                  <% end %>
+                <% end %>
+                <% if matter == true %>
+                  <li><a id="<%= fav_dashboard.dashboard_chart.template_name%>" href="/dashboards/dashboard_show?chart_name=<%= fav_dashboard.dashboard_chart.template_name%>&fav_id=<%fav_dashboard.id%>&height=500&width=600" class="thickbox" title="<%= fav_dashboard.favorite_title%>"><%=h truncate(fav_dashboard.favorite_title, 30)%></a></li>
+                  <% j += 1 %>
+                <%end%>
+              <%end%>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</h2>

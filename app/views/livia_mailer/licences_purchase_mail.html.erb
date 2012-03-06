@@ -1,0 +1,27 @@
+<%=raw @logo_img%><br/><br/>
+<%=t(:text_hi)%>
+<br/>
+<%=t(:text_following_is_the_list_of_new_licences_purchased)%>
+<br/>
+
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+  <tr>
+    <th  style="width:20%;"><%=t(:text_product_name)%></th>
+    <th  style="width:20%;"><%=t(:text_no_of_licences)%></th>
+    <th  style="width:10%;"><%=t(:text_price)%></th>
+    <th  style="width:15%;"><%=t(:text_licence_start_date)%></th>
+    <th  style="width:15%;"><%=t(:text_licence_end_date)%></th>
+    <th  style="width:20%;"><%=t(:text_licence_type)%></th>
+  </tr>
+  <% @email[:total_licences_array].each do |record| %>
+  <tr>
+    <td  style="width:20%;"><%= record[:product] %></td>
+    <td  style="width:20%;"><%= record[:count] %></td>
+    <td  style="width:10%;"><%= record[:price] %></td>
+    <td  style="width:15%;"><%= record[:start_date] %></td>
+    <td  style="width:15%;"><%= record[:end_date] %></td>
+    <td  style="width:20%;"><%= record[:licence_type].to_i == 0? 'Permanent': 'temperory' %></td>
+  </tr>
+  <%end%>
+
+</table>

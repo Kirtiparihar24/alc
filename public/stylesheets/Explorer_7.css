@@ -1,0 +1,64 @@
+/* 
+    Document   : Explorer_7
+    Created on : Aug 12, 2010, 4:24:49 PM
+    Author     : Ajay.Arsud
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+body {xborder:1px solid red;}
+#header-div{height:73px; background-color:yellow;}
+#header-div h1{margin-top:10px;}
+.form_table td{line-height:26px; xborder:1px solid red;}
+.tabular_listing table td{line-height:22px; padding-top:4px; padding-bottom:0px;}
+ul.tabs-nav{padding:0; xborder:1px solid red; margin:9px 0 6px 9px; }
+ul.tabs-nav li.tabs-selected{padding:2px 0 0px; margin:0 2px 0 2px; xborder:1px solid green;}
+/*{margin-top: 8px;}*/
+#navigation-div{margin:0; padding:0; height:37px;}
+ul.navigation_list{margin-top:12px; display:block;}
+ul.navigation_list li{padding:10px 8px 11px 8px; }
+ul.navigation_list li a{padding:10px 15px;}
+.tabs-container{margin-top:8px;}
+/*body {line-height: 1.5;} */
+/*#navigation-div{margin:8px 0 ; xborder: 1px solid red;}*/
+.search_div{margin-top:2px;margin-right:2px;}
+#breadcrumb{ margin:5px 0 5px 0; padding:0 }
+.openDiv{width:450px;}/*temparay width*/
+ul.listing1 li.seperator_dotted{margin:0px 0 -10px 0;}
+.search_div{margin-top:1px;margin-right:1px;}
+.title_main{line-height:24px;}
+/*ul.navigation_list li a{padding:0 8px;}*/
+.ie7_mt4{margin-top:4px;}
+/* Dated 12Aug2010 by Khushboo */
+.box_gray{line-height:23px;}
+
+
+/*supriya 29-12-2010*/
+#footer .link_gray a{text-decoration:underline;}
+
+/*Supriya 10-01-2011*/
+.opportunityAmt{width:75px;}
+textarea{resize:none;}
+
+/************** Drop down 2-11-2011***********************/
+
+#comm_mat_cont_drop  :hover{background-color: #327796;color: #FFFFFF;}
+ul#comm_mat_cnt_drop li:hover{background-color: #327796;color: #FFFFFF;}
+
+/***********Entries Table***********/
+.entries th{background:#e4e4e4;padding:5px 0;font-weight:bold}
+.entries td.labels{background:#eff7fa;padding:5px 0 5px 10px;border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.data{border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.total{font-size:90.9%;font-weight:bold;background:#eee7d4;padding:5px 0 5px 10px;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

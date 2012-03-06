@@ -1,0 +1,50 @@
+<div id="ajax_sort">
+<div class="message_error_div" id="comment_errors" style="display: none;"></div>
+<div class="message_sucess_div" id="comment_success_div" style="display: none;"></div>
+<div class="p5">
+  <%if @commentable.class.name != 'UserTask' or @commentable.status != 'complete'%>
+    <%= render :partial => "common/new_comment", :locals => { :commentable => @commentable, :commentable_type=> type, :commentable_id => @commentable.id } %>
+    <br class="clear" />
+    <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></div>
+  <%end%>
+  <br class="clear" />
+  <div class="tabular_listing border_gray">
+     <table width="100%" cellpadding="1" cellspacing="1">
+     <tr>
+       <% if @notes.length > 0 %>
+       <%= column_sort_link(t(:text_user),'users.first_name',params[:col], '20%', "left", { :id => params[:id], :class=>"tablesorter",:commentable_type => params[:commentable_type], :path => params[:path], :action => "add_comment_with_grid", :width => params[:width], :random => params[:random], :ajax_sort => true, :height => params[:height]}) %>
+       <%= column_sort_link(t(:text_comment),'comment',params[:col], '20%', "left", { :id => params[:id], :class=>"tablesorter",:commentable_type => params[:commentable_type], :path => params[:path], :width => params[:width], :random => params[:random], :action => "add_comment_with_grid", :ajax_sort => true, :height => params[:height]}) %>
+       <%= column_sort_link(t(:text_created_at),'comments.created_at',params[:col], '20%', "left", { :id => params[:id], :class=>"tablesorter",:commentable_type => params[:commentable_type], :path => params[:path], :width => params[:width], :random => params[:random], :action => "add_comment_with_grid", :ajax_sort => true, :height => params[:height]}) %>
+       <% else %>
+       <th width="20%" align="left"> <%= t(:text_user) %> </th>
+       <th width="20%" align="left"> <%= t(:text_comment) %> </th>
+       <th width="20%" align="left"> <%= t(:text_created_at) %> </th>
+       <% end %>
+      </tr>
+      <% if ['UserTask','Communication'].include?(@commentable.class.name) && !is_secretary_or_team_manager? %>
+        <% @notes.each do |comment| %>
+          <%if comment.share_with_client%>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td align="left"><%= comment.user.nil? ? '' : comment.user.try(:full_name) %></td>
+              <td align="left"><span class="comment"><%=raw(truncate_withscroll(comment.comment,40))%></span></td>
+              <td align="left"><%=livia_date_time(comment.created_at) %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      <%else%>
+        <% @notes.each do |comment| %>
+          <tr class="<%=cycle('bg1', 'bg2')%>">
+            <td align="left"><%= comment.user.nil? ? '' : comment.user.try(:full_name) %></td>
+            <td align="left"><span class="comment"><%=raw(truncate_withscroll(comment.comment,40))%></span></td>
+            <td align="left"><%=livia_date_time(comment.created_at) %></td>
+          </tr>
+        <% end %>
+      <%end%>
+    </table>
+  </div>
+</div>
+<script language="javascript" type="text/javascript">
+  new_tool_tip();
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;20</div>
+</div>

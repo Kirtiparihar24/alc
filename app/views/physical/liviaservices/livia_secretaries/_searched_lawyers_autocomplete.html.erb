@@ -1,0 +1,12 @@
+<%unless @searched_lawyers.empty?%>
+<%@searched_lawyers.each do|assign|%>
+<li class="<%= cycle("bg1", "bg2") -%>">
+  <%= link_to(assign.user.try(:full_name),{:controller=>"/physical/liviaservices/verification",:action=>"index",:id=>assign.id},:id=>"faceboxlw")%>
+</li>
+<%end%>
+<%end%>
+<script type="text/javascript">
+  jQuery('a[id=faceboxlw]').facebox();
+</script>
+
+

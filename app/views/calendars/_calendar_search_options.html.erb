@@ -1,0 +1,120 @@
+<%form_for :search, :url=>{:action => params[:action]},:html =>{:method => :get } do |f| %>
+  <%=hidden_field_tag  'cal_date' ,params[:cal_date] if params[:cal_date] %>
+  <%=hidden_field_tag  'cal_month' ,params[:cal_month] if params[:cal_month] %>
+  <%=hidden_field_tag  'cal_year' ,params[:cal_year] if params[:cal_year] %>
+  <%=hidden_field_tag "opsearch", params[:opsearch] %>
+  <%=hidden_field_tag "opmtr", params[:opmtr] %>
+  <%=hidden_field_tag "oppeople", params[:oppeople] %>
+  <%=hidden_field_tag "mttrsel", params[:mttrsel] %>
+  <%=hidden_field_tag "frm", params[:frm] if params[:frm]%>
+  <%=hidden_field_tag "mattertid", params[:mattertid] if params[:mattertid] %>
+  <% multi = {:multiple => "multiple", :size => "5"} %>
+  <% unless params[:action]=="calendar_by_matter" || params[:action]=="calendar_by_people" %>
+    <div class="yellow_box_div p5" style="width:auto;" id="adv_search_link">
+      <div class="fl" style="line-height:26px;">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td valign="top" class="pt3"><input type="radio" <%= "checked='checked'" if action_name.eql?("calendar_day") %> name="calendar" onClick="update_view('<%=calendar_day_calendars_path(:params => @commonparams)%>')" /></td>
+              <td valign="baseline"><label>Day</label></td>
+              <td>&nbsp;</td>
+              <td valign="top" class="pt3"><input type="radio" name="calendar" <%= "checked='checked'" if action_name.eql?("index") %> onClick='update_view("<%=calendars_path(:params => @commonparams)%>")'/></td>
+              <td><label>Week</label></td>
+              <td>&nbsp;</td>
+              <td  valign="top" class="pt3"><input type="radio" name="calendar" <%= "checked='checked'" if action_name.eql?("calendar_month") %> onClick='update_view("<%=calendar_month_calendars_path(:params => @commonparams)%>")'/></td>
+              <td><label>Month</label></td>
+              <td width="15px">&nbsp;</td>
+              <td class="text_black"><%= link_to "Advance Search Options &raquo;", "#this", :id=>"searchdisplay", :class => "vtip", :title => "Show Search Options", :style=>"#{'display:none' unless params[:opsearch].blank? || !params[:opsearch]}", :onClick=>"set_display_of_searchbox(this); #{'jQuery("#adv_search_link").hide();' if params[:action]=="calendar_by_matter" || params[:action]=="calendar_by_people"}" %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br class="clear" />
+    </div>
+  <% else %>
+    <div class="yellow_box_div p5" style="width:auto; <%= 'display:none' unless (params[:opsearch].blank? || !params[:opsearch]) %>" id="adv_search_link">
+      <div class="fl" style="line-height:26px;">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td width="15px">&nbsp;</td>
+              <td class="text_black"><%= link_to "Advance Search Options &raquo;", "#this", :id=>"searchdisplay", :class => "vtip", :title => "Show Search Options", :onClick=>"set_display_of_searchbox(this); #{'jQuery("#adv_search_link").hide();' if params[:action]=="calendar_by_matter" || params[:action]=="calendar_by_people"}" %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br class="clear" />
+    </div>
+  <% end %>
+  <div class="yellow_box_div p5" style="width:auto; <%= 'display:none' if (params[:opsearch].blank? || !params[:opsearch]) %>" id="search_optionsdiv">
+    <table style="width:100%">
+      <tbody>
+        <tr>
+          <% unless action_name.eql?("calendar_by_people") %>
+            <%if task_available?%>
+              <td width="2%" valign="top">Matters</td>
+              <td valign="top">&nbsp;</td>
+              <td width="20%" valign="top" align="left" id="mattersselect">
+                <% attr = (params[:opmtr] ? {:prompt => "Please Select"} : multi ) %>
+                <%= select_tag("matters[]", options_for_select(@matters.collect{|matter|[matter.name, matter.id]}, @result), (params[:opmtr].present? ? attr : multi)) -%>
+                <%= link_to(image_tag("/images/#{(params[:opmtr] || params[:opmtr].blank?) ? (params[:opmtr] ? 'icon_small_plus.png' : 'icon_small_minus.png') : 'icon_small_minus.png'}", :width => 12, :height => 12, :id=>"mattertoggle"), "#", :onclick => "list_view_change(this);")%>
+              </td>
+              <td width="3%" valign="top" align="left"><input type="button" value="&raquo;" onclick="matter_focus_out()" style="padding: 0pt 2px; margin: 0pt;" /><div id="loading_imagediv" style="display: none; padding: 10px 2px 0px 0px;"><img alt="Loading" src="/images/loading.gif"/> </div></td>
+            <%end%>
+            <td width="2%" valign="top">People</td>
+            <td valign="top">&nbsp;</td>
+            <td width="13%" valign="top" align="left">
+              <span id="matter_people_search">
+                <% p_attr = (params[:oppeople] ? {:prompt => "Please Select"} : multi ) %>
+                <%= select_tag("people[]", options_for_select(@distinct_matter_userid, @people_result), (params[:oppeople] ? p_attr : multi)) -%>
+              </span>
+              <%= link_to(image_tag("/images/#{(params[:oppeople] || params[:oppeople].blank?) ? (params[:oppeople] ? 'icon_small_plus.png' : 'icon_small_minus.png') : 'icon_small_minus.png'}", :width => 12, :height => 12, :id=>"peopletoggle"), "#", :onclick => "list_view_change(this);")%>
+            </td>
+          <% else %>
+            <td width="2%" valign="top">People</td>
+            <td valign="top">&nbsp;</td>
+            <td width="13%" valign="top" align="left" id="peopleselect">
+              <% p_attr = (params[:oppeople] ? {:prompt => "Please Select"} : multi ) %>
+              <%= select_tag("people[]", options_for_select(@distinct_matter_userid, @people_result), (params[:oppeople] ? p_attr : multi)) -%>
+              <%= link_to(image_tag("/images/#{(params[:oppeople] || params[:oppeople].blank?) ? (params[:oppeople] ? 'icon_small_plus.png' : 'icon_small_minus.png') : 'icon_small_minus.png'}", :width => 12, :height => 12, :id=>"peopletoggle"), "#", :onclick => "list_view_change(this);")%>
+            </td>
+            <% if task_available? %>
+              <td width="3%" valign="top" align="left"><input type="button" value="&raquo;" onclick="people_matter_focus_out()" style="padding: 0pt 2px; margin: 0pt;" /><div id="loading_imagediv" style="display: none; padding: 10px 2px 0px 0px;"><img alt="Loading" src="/images/loading.gif"/> </div></td>
+              <td width="2%" valign="top">Matters</td>
+              <td valign="top">&nbsp;</td>
+              <td width="20%" valign="top" align="left">
+                <span id="people_matter_search">
+                  <% attr = (params[:opmtr] ? {:prompt => "Please Select"} : multi ) %>
+                  <%= select_tag("matters[]", options_for_select(@matters.collect{|matter|[matter.name, matter.id]}, @result), (params[:opmtr].present? ? attr : multi)) -%>
+                </span>
+                <%= link_to(image_tag("/images/#{(params[:opmtr] || params[:opmtr].blank?) ? (params[:opmtr] ? 'icon_small_plus.png' : 'icon_small_minus.png') : 'icon_small_minus.png'}", :width => 12, :height => 12, :id=>"mattertoggle"), "#", :onclick => "list_view_change(this);")%>
+              </td>
+            <%end%>
+          <% end %>
+          <td width="2%" valign="top">Status</td>
+          <td valign="top">&nbsp;</td>
+          <td align="left" width="11%" valign="top"><%= select_tag("status", options_for_select(["All", "Open", "Overdue", "Completed"], params[:status])) -%></td>
+          <% if params[:action]=="calendar_by_matter" || params[:action]=="calendar_by_people" %>
+            <td width="5%" valign="top"> Start Date </td>
+            <td width="11%" valign="top"><%= text_field_tag "start_date", params[:start_date], {:class => "date_picker", :size=>11, :onChange => "validate_start_end_date(this)"} %></td>
+            <td width="5%" valign="top">End Date </td>
+            <td width="11%" valign="top"><%= text_field_tag "end_date", params[:end_date], {:class => "date_picker", :size=>11, :onChange => "validate_start_end_date(this)"} %></td>
+          <% end %>
+          <% caldate = params[:cal_date].present? ? "&cal_date=#{params[:cal_date]}" : nil
+          calmonth = params[:cal_month].present? ? "&cal_month=#{params[:cal_month]}" : nil
+          calyear = params[:cal_year].present? ? "&cal_year=#{params[:cal_year]}" : nil
+          oppeople = params[:oppeople] ? "&oppeople=#{params[:oppeople]}" : nil
+          opmtr = params[:opmtr] ? "&opmtr=#{params[:opmtr]}" : nil %>
+          <td width="28%" valign="top" align="left"><%= submit_tag "Apply", :onclick => "check_matterssel('#{params[:action]}');" %>  <input type="button" value="Clear" onClick="window.location.href='<%= "#{params[:action]=="index" ? params[:controller] : params[:action]}?#{opmtr}#{oppeople}#{caldate}#{calmonth}#{calyear}" %>'" />
+            <a href="#this" class="fr vtip" id="searchhide" title="Hide Advance Options" onClick="jQuery('#search_optionsdiv').hide(); jQuery('#searchdisplay').show(); jQuery('#opsearch').val(false); <%= "jQuery('#adv_search_link').show();" if params[:action]=="calendar_by_matter" || params[:action]=="calendar_by_people" %>"><%= image_tag "cancel.png", :height => "10px", :width => "10px" %></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+<script type="text/javascript">
+  jQuery(function(){
+    livia_datepicker();
+  });
+</script>

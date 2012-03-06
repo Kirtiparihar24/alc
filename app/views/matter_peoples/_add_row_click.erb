@@ -1,0 +1,5 @@
+<% if matter_access_periods.present? %>
+  <% unless matter_access_periods.map(&:end_date).include?(nil)%>
+    <div class="add_dates"><span id="add_dates_click" class="link_blue" style="cursor:pointer;" onclick ="add_rows();">Add Access Period</span></div>
+  <%end%>
+<% end %>

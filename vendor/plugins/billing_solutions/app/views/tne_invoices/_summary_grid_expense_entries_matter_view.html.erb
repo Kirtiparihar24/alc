@@ -1,0 +1,20 @@
+<% if @tne_invoice.new_record? || @change_view%>
+<%= hidden_field_tag "not_new", @tne_invoice.id if @change_view%>
+<%= hidden_field_tag "old_tne_invoice_detail_ids" , @tne_invoice.tne_invoice_details.map(&:id).join(',') if @change_view%>
+  <% inv = 0 %>
+  <% for bill_expense in @total_expenses  %>
+    <% f.fields_for :tne_invoice_details, @tne_invoice_details do |tne_invoice_detail| %>
+      <%= render :partial=>"expense_entries", :locals=>{:bill_expense => bill_expense, :tne_invoice_detail => tne_invoice_detail, :inv => inv, :total_time_data => total_time_data, :primary_tax_disable => primary_tax_disable} %>
+      <% inv += 1 %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= hidden_field_tag "not_new", @tne_invoice.id %>
+  <% inv = 0 %>
+  <% for bill_expense in @total_expenses  %>
+    <% f.fields_for :tne_invoice_details, bill_expense[6] do |tne_invoice_detail| %>
+      <%= render :partial=>"expense_entries", :locals=>{:bill_expense => bill_expense, :tne_invoice_detail => tne_invoice_detail, :inv => inv, :total_time_data => total_time_data, :primary_tax_disable => primary_tax_disable} %>
+      <% inv += 1 %>
+    <% end %>
+  <% end %>
+<% end %>

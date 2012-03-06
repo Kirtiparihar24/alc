@@ -1,0 +1,68 @@
+<%= raw javascript_include_tag  'time_and_expense/billing' %>
+<h2 class="title_main">Unbilled(Approved) T & E Entries</h2>
+<div class="fl">
+  <table>
+     <%view=params[:view].present? ? params[:view] : params[:mode_type].eql?('client') ? 'presales' : 'postsales'%>
+    <% if billing_and_retainer_available? %>
+      <% display = "none" %>
+    <% else %>
+      <% display = "" %>
+    <% end %>
+   <% display = view.eql?('presales') ? '' : display%>
+    <tr>
+      <td><input type="radio" name="clientmatterradio" id="client_radio" value="client"  onclick ="show_entries(this.value);" <%= 'checked="checked"' if view.eql?('presales')%>/></td>
+      <td class="mr8"><label>Non-Matter</label></td>
+      <td>&nbsp;</td>
+      <% if billing_and_retainer_available? %>
+      <td><input type="radio" name="clientmatterradio" id="matter_radio" value="matter"  onclick ="show_entries(this.value);" <%= 'checked="checked"' if view.eql?('postsales')%>/></td>
+      <td><label>Matter</label></td>
+      <% end %>
+    </tr>
+  </table>
+</div>
+<div class="p5">
+  <div class="w100 fix_mb">
+    <div class="fr textR">
+      <table border="0" class="link_blue">
+        <tr>
+          <td><%= link_to '<span class="icon_activate fl mr5"></span><span class="fl mr10 icon_name">View Open Invoice</span>', tne_invoices_path,:id=> "open_invoice"%></td>
+          <td><%= link_to image_tag("icon_sticky_invoice.png", :border=>0, :class => " fl mr5")+"<span class='fl mr10 icon_name'>Create New Invoice</span>", params[:mode_type].eql?('client') ? new_tne_invoice_path(:view=>view) : select_manual_or_system_bill_path(:view=>view, :height=>300, :width=>300, :page_reload => "true"), :class=> params[:mode_type].eql?('client') ? ""  : "thickbox fr link_blue",:id=> "open_invoice"%></td>
+          <td><%= link_to '<span class="icon_deactivate fl mr5"></span><span class="fl mr10 icon_name">View Cancelled Invoice</span>', tne_invoices_path(:status=>@cancelstatus.id),:id=> "cancel_invoice"%></td>
+        </tr>
+      </table>
+    </div>
+    <br class="clear" />
+  </div>
+</div>
+
+<!-- CLIENT/CONTACT VIEW -->
+<div class="tabular_listing p5" id="searched_invoices_client" style="display:<%= display %>;">
+    <%= render :partial => 'contact_unbilled_entries', :locals=>{:contact_time_entries=>@contact_time_entries, :contact_expense_entries=>@contact_expense_entries} %>
+</div>
+
+<% if billing_and_retainer_available? %>
+<!-- MATTER VIEW -->
+<div class="tabular_listing p5" id="searched_invoices_matter" style="display:none">
+  <%= render :partial => 'matter_unbilled_entries', :locals=>{:matter_time_entries=>@matter_time_entries, :matter_expense_entries=>@matter_expense_entries} %>
+</div>
+<% end %>
+<div class="mandatory">Amt :- Amount</div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    var radio_value = '<%=params[:mode_type].eql?('client') ? 'client' : 'matter'%>'
+    <%if params[:mode_type].blank?%>
+       radio_value = jQuery("input[type='radio']:checked").val();
+    <%end%>
+    show_entries(radio_value);  
+    jQuery("a#open_invoice").click(function(){
+      var mode_type = jQuery("input[type='radio']:checked").val();
+      new_link =  jQuery(this).attr('href')+"?mode_type="+mode_type;
+      jQuery(this).attr('href',new_link);
+    });
+    jQuery("a#cancel_invoice").click(function(){
+      var mode_type = jQuery("input[type='radio']:checked").val();
+      new_link =  jQuery(this).attr('href')+"&mode_type="+mode_type;
+      jQuery(this).attr('href',new_link);
+    });
+  });
+</script>

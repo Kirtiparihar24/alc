@@ -1,0 +1,148 @@
+<table align="left" class="w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["billing_amount_graph"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["billing_amount_graph"][1]%>);" type="checkbox" <%=@selected_charts["billing_amount_graph"][0]%> name="charts[<%=@selected_charts["billing_amount_graph"][1]%>]" value="<%=@checked_charts["billing_amount_graph"] ? @checked_charts["billing_amount_graph"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=billing_amount_graph&height=530&width=810' class="thickbox preview" title="Time Billed" name="Time Billed" id="/images/charts/time_billed_large.jpg" ><img class="border_gray" src="/images/charts/billing_amount_graph.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="billing_amount_graph" href='/dashboards/dashboard_show?chart_name=billing_amount_graph&height=530&width=810' class="thickbox" title="Time Billed" name="Time Billed">Time Billed&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;</a>
+    </td>
+  </tr>
+</table>
+<%if task_available?%>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["matter_task_chart_graph"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["matter_task_chart_graph"][1]%>);" type="checkbox" <%=@selected_charts["matter_task_chart_graph"][0]%> name="charts[<%=@selected_charts["matter_task_chart_graph"][1]%>]" value="<%=@checked_charts["matter_task_chart_graph"] ? @checked_charts["matter_task_chart_graph"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=matter_task_chart_graph&height=500&width=600' class="thickbox preview" title="Open <%=t(:text_menu_matter)%> Tasks" name="Open <%=t(:text_menu_matter)%> Tasks" id="/images/charts/big_4.jpg" ><img class="border_gray" src="/images/charts/matter_task_chart_graph.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="matter_task_chart_graph" href='/dashboards/dashboard_show?chart_name=matter_task_chart_graph&height=500&width=600' class="thickbox" title="Open <%=t(:text_menu_matter)%> Tasks" name="Open <%=t(:text_menu_matter)%> Tasks">Open <%=t(:text_menu_matter)%> Tasks&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<% end %>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_accounted_week_wise"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_accounted_week_wise"][1]%>);" type="checkbox" <%=@selected_charts["time_accounted_week_wise"][0]%> name="charts[<%=@selected_charts["time_accounted_week_wise"][1]%>]" value="<%=@checked_charts["time_accounted_week_wise"] ? @checked_charts["time_accounted_week_wise"] : ''%>" />
+    </td>
+    <td align="left" valign="top" >
+      <a href='/dashboards/dashboard_show?chart_name=time_accounted_week_wise&height=500&width=600' class="thickbox preview" title="Time Accounted - Per Week" name="Time Accounted - Per Week" id="/images/charts/big_11.jpg" ><img class="border_gray" src="/images/charts/time_accounted_week_wise.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_accounted_week_wise" href='/dashboards/dashboard_show?chart_name=time_accounted_week_wise&height=500&width=600' class="thickbox" title="Time Accounted - Per Week" name="Time Accounted - Per Week">Time Accounted - Per Week&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_accounted_month_wise"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_accounted_month_wise"][1]%>);" type="checkbox" <%=@selected_charts["time_accounted_month_wise"][0]%> name="charts[<%=@selected_charts["time_accounted_month_wise"][1]%>]" value="<%=@checked_charts["time_accounted_month_wise"] ? @checked_charts["time_accounted_month_wise"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=time_accounted_month_wise&height=500&width=600' class="thickbox preview" title="Time Accounted - Per Month" name="Time Accounted - Per Month" id="/images/charts/big_12.jpg" ><img class="border_gray" src="/images/charts/time_accounted_month_wise.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_accounted_month_wise" href='/dashboards/dashboard_show?chart_name=time_accounted_month_wise&height=500&width=600' class="thickbox" title="Time Accounted - Per Month" name="Time Accounted - Per Month">Time Accounted - Per Month&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_billed_week_wise"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_billed_week_wise"][1]%>);" type="checkbox" <%=@selected_charts["time_billed_week_wise"][0]%> name="charts[<%=@selected_charts["time_billed_week_wise"][1]%>]" value="<%=@checked_charts["time_billed_week_wise"] ? @checked_charts["time_billed_week_wise"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a  href='/dashboards/dashboard_show?chart_name=time_billed_week_wise&height=500&width=600' class="thickbox preview" title="Time Billed - Per Week" name="Time Billed - Per Week" id="/images/charts/big_13.jpg" ><img class="border_gray" src="/images/charts/time_billed_week_wise.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_billed_week_wise" href='/dashboards/dashboard_show?chart_name=time_billed_week_wise&height=500&width=600' class="thickbox" title="Time Billed - Per Week" name="Time Billed - Per Week">Time Billed - Per Week&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<br class="clear" />
+<br class="clear" />
+<table align="left" class="w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_billed_month_wise"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_billed_month_wise"][1]%>);" type="checkbox" <%=@selected_charts["time_billed_month_wise"][0]%> name="charts[<%=@selected_charts["time_billed_month_wise"][1]%>]" value="<%=@checked_charts["time_billed_month_wise"] ? @checked_charts["time_billed_month_wise"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=time_billed_month_wise&height=500&width=600' class="thickbox preview" title="Time Billed - Per Month" name="Time Billed - Per Month" id="/images/charts/big_14.jpg"><img class="border_gray" class="border_gray" src="/images/charts/time_billed_month_wise.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_billed_month_wise" href='/dashboards/dashboard_show?chart_name=time_billed_month_wise&height=500&width=600' class="thickbox" title="Time Billed - Per Month" name="Time Billed - Per Month">Time Billed - Per Month&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_accounted_and_creditable_week_wise"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_accounted_and_creditable_week_wise"][1]%>);" type="checkbox" <%=@selected_charts["time_accounted_and_creditable_week_wise"][0]%> name="charts[<%=@selected_charts["time_accounted_and_creditable_week_wise"][1]%>]" value="<%=@checked_charts["time_accounted_and_creditable_week_wise"] ? @checked_charts["time_accounted_and_creditable_week_wise"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=time_accounted_and_creditable_week_wise&height=500&width=600' class="thickbox preview" title="Time Accounted vs. Creditable - Per Week" name="Time Accounted vs. Creditable - Per Week" id="/images/charts/big_17.jpg" ><img class="border_gray" src="/images/charts/time_accounted_and_creditable_week_wise.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_accounted_and_creditable_week_wise" href='/dashboards/dashboard_show?chart_name=time_accounted_and_creditable_week_wise&height=500&width=600' class="thickbox" title="Time Accounted vs. Creditable - Per Week" name="Time Accounted vs. Creditable - Per Week">Time Accounted vs. Creditable - Per Week&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_accounted_and_creditable_month_wise"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_accounted_and_creditable_month_wise"][1]%>);" type="checkbox" <%=@selected_charts["time_accounted_and_creditable_month_wise"][0]%> name="charts[<%=@selected_charts["time_accounted_and_creditable_month_wise"][1]%>]" value="<%=@checked_charts["time_accounted_and_creditable_month_wise"] ? @checked_charts["time_accounted_and_creditable_month_wise"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=time_accounted_and_creditable_month_wise&height=500&width=600' class="thickbox preview" title="Time Accounted vs. Creditable - Per Month" id="/images/charts/big_16.jpg" ><img class="border_gray" src="/images/charts/time_accounted_and_creditable_month_wise.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_accounted_and_creditable_month_wise" href='/dashboards/dashboard_show?chart_name=time_accounted_and_creditable_month_wise&height=500&width=600' class="thickbox" title="Time Accounted vs. Creditable - Per Month" name="Time Accounted vs. Creditable - Per Month">Time Accounted vs. Creditable - Per Month&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+       <input class ="val_check" id="op_val_check<%=@selected_charts["time_billed_discount_provided"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["time_billed_discount_provided"][1]%>);" type="checkbox" <%=@selected_charts["time_billed_discount_provided"][0]%> name="charts[<%=@selected_charts["time_billed_discount_provided"][1]%>]" value="<%=@checked_charts["time_billed_discount_provided"] ? @checked_charts["time_billed_discount_provided"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=time_billed_discount_provided&height=500&width=600' class="thickbox preview" title="Time Billed - Discount Provided - Per Month" id="/images/charts/big_18.jpg"><img class="border_gray" src="/images/charts/time_billed_discount_provided.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="time_billed_discount_provided" href='/dashboards/dashboard_show?chart_name=time_billed_discount_provided&height=500&width=600' class="thickbox" title="Time Billed - Discount Provided - Per Month" name="Time Billed - Discount Provided - Per Month">Time Billed - Discount Provided - Per Month&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,245 @@
+<% tasks = @matter_tasks.blank? ? [] : @matter_tasks.collect{|task| task[:activity]} 
+@matter_tasks = @matter_tasks.paginate(:per_page => params[:per_page], :page => params[:page]) unless @matter_tasks.blank?
+tasks = tasks.paginate(:per_page => params[:per_page], :page => params[:page]) %>
+
+<%= raw all_pagination(tasks, params[:per_page], "willpaginate", matter_matter_tasks_path(@matter, :cat => params[:cat],:mode_type => params[:mode_type]), {:page => params[:page],:mode_type => params[:mode_type], :date_start => params[:date_start], :date_end => params[:date_end],:task_status => params[:task_status], :action=>"index",:letter =>params[:letter],:per_page=>params[:per_page], :cat=> params[:cat]}) %>
+<% is_appointment = params[:cat].eql?("appointment") %>
+<div id="matter_tasks">
+  <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+    <tr>
+      <th width="2%">&nbsp;</th>
+      <%if @matter.is_litigation%>
+        <th width="6%" align="left">
+          <%= t(:text_phase) %>
+        </th>
+      <%end%>
+
+      <%= column_sort_link(t(:text_activity_name), 'matter_tasks.name', params[:col], "30%", "left",{:mode_type => @mode_type, :action => "index",:per_page => params[:per_page], :cat=>params[:cat]}.merge!(@dates))%>
+      <%= column_sort_link(t(:text_responsibility), 'matter_tasks.assigned_to_user_id', params[:col], "13%", "left", {:mode_type => @mode_type,:per_page => params[:per_page], :action => "index", :cat=>params[:cat]}.merge!(@dates)) %>
+      <% unless is_appointment %>
+        <th width="6%" align="left">
+          Priority
+        </th>
+        <% if issue_available? %><th width="6%" align="center"><%= t(:text_issues) %></th><%end%>
+        <% if fact_available? %><th width="6%" align="center"><%= t(:text_facts) %></th><%end%>
+        <% if risk_available? %><th width="6%" align="center"><%= t(:text_risks) %></th><%end%>
+        <% if research_available? %><th width="6%" align="center"><%= t(:text_researches) %></th><%end%>
+      <%end%>
+      <%=column_sort_link("Start Date",'matter_tasks.start_date',params[:col], "11%", "center" ,{:mode_type=>@mode_type,:action=>"index", :cat=>params[:cat],:per_page => params[:per_page]}.merge!(@dates))%>
+      <% if is_appointment %><th width="11%" align="center"><%=t (:label_Start_Time)%></th><% end %>
+      <%= column_sort_link((is_appointment ? "End Date" : t(:text_due_date)), 'matter_tasks.end_date', params[:col], "11%", "center", {:mode_type => @mode_type,:per_page => params[:per_page], :action => "index", :cat=>params[:cat]}.merge!(@dates)) %>
+      <% if is_appointment %><th width="11%" align="center"><%=t (:label_End_Time)%></th><% end %>
+      <% unless is_appointment %><%= column_sort_link(t(:text_completion_date), 'matter_tasks.completed_at', params[:col], "#{is_appointment ? '9%' : '11%'}", "center", {:mode_type => @mode_type,:per_page => params[:per_page], :action => "index", :cat=>params[:cat]}.merge!(@dates)) %><% end %>
+      <% unless is_appointment %><th width="6%" align="left"><%= t(:text_status) %></th><% end %>
+      <th width="5%" align="center"><%= t(:text_actions) %></th>
+    </tr>
+    <% unless @matter_tasks.nil? or @matter_tasks.empty? %>
+      <% @matter_tasks.each_with_index do |matter_activity, indx| %>
+        <% matter_task = matter_activity[:activity] %>
+        <% is_parent = (matter_task.category.eql?("todo") and @parents.include?(matter_task.id)) %>
+        <% can_delete =  ((matter_task.created_by_user_id == get_employee_user_id || matter_task.created_by_user_id == current_user.id) || is_access_matter? || is_lead_lawyer?(@matter))%>
+        <tr class="<%=cycle('bg1', 'bg2')%> parent" id="<%=matter_task.id%>">
+          <td><% if matter_task.critical %> <span class="icon_critical fl vtip mt5" title="Critical"></span><% end %></td>
+          <% if @matter.is_litigation %>
+            <td><%= matter_task.phase.lvalue if matter_task.phase %></td>
+          <% end %>
+          <td>
+            <% if matter_task.ancestors.size > 0 %>
+              <% for i in matter_task.ancestors do %> &nbsp; <% end%>
+
+              <% end %>
+              <% if is_parent %>
+                <%= image_tag("/images/icon_small_plus.png", :width => 12, :height => 12, :id=> "task_plus_img_#{matter_task.id}",:onclick => "show_child_tasks(#{matter_task.id});") %>
+              <%end%>
+              &nbsp;
+              <% edit_link = matter_activity[:activity_is_instance] ? ("thickboxInstance('#{instance_series_calendars_path(:appointment_id => matter_task.id, :height => 120, :width => 250, :matter => matter_activity[:activity_matter], :from => 'matters', :thickbox => "NO",:link => (edit_instance_matter_matter_task_path(matter_activity[:activity_matter], matter_activity[:activity_id], :instance_end_time => matter_activity[:activity_end_date].to_time, :instance_end_date => matter_activity[:activity_instance_end_date],:ex_start_time=> matter_activity[:activity_start_date].to_time, :instance_start_date => matter_activity[:activity_instance_start_date])), :series => ("#{edit_matter_matter_task_path(:matter_id => matter_activity[:activity_matter_id], :id=>matter_activity[:activity_id], :cal_action => params[:action])}"))}')") : '' %>
+              <%= activity_name_hover(matter_task,@matter, edit_link) %>
+              <%if matter_activity[:activity_repeat] %>
+                <% MatterTask::REPEAT_OPTIONS.each do |k,v| %>
+                  <%= "- #{k}" if matter_task.repeat.eql?(v) %>
+                <%end%>
+              <%end%>
+            </td>
+            <td><%= matter_task.assigned_to_name %></td>
+            <% if !is_appointment %>
+              <td><%= MatterTask::PRIORITIES_REVERSE[matter_task.priority] %></td>
+              <% if issue_available? %><td align="center"><%= facebox_link_num(matter_task.matter_issues.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, matter_task,:format_type => "issues")}&height=200&width=500", "Linked Issues") %></td><%end%>
+              <% if fact_available? %><td align="center"><%= facebox_link_num(matter_task.matter_facts.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, matter_task,:format_type => "facts")}&height=200&width=500", "Linked Facts") %></td><%end%>
+              <% if risk_available? %><td align="center"><%= facebox_link_num(matter_task.matter_risks.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, matter_task,:format_type => "risks")}&height=200&width=500", "Linked Risks") %></td><%end%>
+              <% if research_available? %><td align="center"><%= facebox_link_num(matter_task.matter_researches.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, matter_task,:format_type => "researches")}&height=200&width=500", "Linked Research") %></td><%end%>
+            <% end %>
+            <td align="center">
+              <% if is_appointment %>
+                <%=raw livia_date(matter_activity[:activity_instance_start_date])%>
+              <% else %>
+                <%= livia_task_date(matter_task, matter_task.start_date) %>
+              <% end %>
+            </td>
+            <% if is_appointment %>
+              <td align="center"><%=raw livia_time_zone(matter_activity[:activity_start_date])%></td>
+            <% end %>
+            <td align="center">
+              <% if is_appointment %>
+                <%=raw livia_date(matter_activity[:activity_instance_end_date])%>
+              <% else %>
+                <%= livia_task_date(matter_task, matter_task.end_date) %>
+              <% end %>
+            </td>
+            <% if is_appointment %>
+              <td align="center"><%=raw livia_time_zone(matter_activity[:activity_end_date])%></td>
+            <% end %>
+            <% unless is_appointment %><td align="center"><%= livia_date(matter_task.completed_at) if matter_task.completed %></td><% end %>
+            <% unless is_appointment %><td><%= matter_task_completion_status(matter_task) %></td><% end %>
+            <% delete_link = "thickboxInstance('#{instance_series_calendars_path(:appointment_id => matter_activity[:activity_id], :height => 120, :width => 250, :matter => matter_activity[:activity_matter], :from => 'matters', :link_for => 'delete', :link => ({:request_type => "PUT" ,:path => create_instance_matter_matter_task_path(matter_activity[:activity_matter], matter_task, :instance_start_date => matter_activity[:activity_instance_start_date].to_s, :instance_end_date => matter_activity[:activity_instance_end_date].to_s,:ex_start_time=> matter_activity[:activity_start_date].to_time, :ex_start_date => matter_activity[:activity_instance_start_date],:deleted_at => matter_activity[:activity_instance_start_date])}), :series => ({:request_type => "DELETE" ,:path => matter_task_delete_link(matter_task, @matter, get_employee_user_id, 'matters')}))}')" %>
+            <td align="center">
+
+              <div class="icon_action mt3"><a href="#"></a></div>
+              <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                   <% if document_available? %>
+                   <%link = link_to("<span id='matter_tabs'>Document</span>","#",{:class=> "vtip",:multiple=>true, :id => "upload_multi",:from=>"matter", :title=> "Mass Upload File", :name=> "Mass Upload File", :parentid=>@parent_id.to_s,:current_user_id=>current_user.id,:employeeuserid=>get_employee_user_id,:company_id=>get_company_id,:matter_id=>'',:document_home_matter_issue_ids=>'',:document_home_matter_risk_ids=>'',:document_home_matter_research_ids=>'',:document_home_matter_task_ids=>matter_task.id,:path=>"/document_homes/create_multiple?stop=",:return_path=>""})%>
+                  <% else %>
+                   <% link = "NO" %>
+                   <% end %>
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                  <% if matter_activity[:activity_is_instance]
+                    delete_link_d = (link_to "Delete", "#this", :onClick => delete_link )
+                  else
+                    delete_link_d = false
+                  end %>
+                  <%= raw action_pad_top_blue_links({
+                      :edit_path => edit_link.blank? ? edit_matter_matter_task_path(@matter, matter_task) : instance_series_calendars_path(:appointment_id => matter_task.id, :height => 120, :width => 250, :matter => matter_activity[:activity_matter], :from => 'matters', :thickbox => "NO",:link => (edit_instance_matter_matter_task_path(matter_activity[:activity_matter], matter_activity[:activity_id], :instance_end_time => matter_activity[:activity_end_date].to_time, :instance_end_date => matter_activity[:activity_instance_end_date],:ex_start_time=> matter_activity[:activity_start_date].to_time, :instance_start_date => matter_activity[:activity_instance_start_date])), :series => ("#{edit_matter_matter_task_path(:matter_id => matter_activity[:activity_matter_id], :id=>matter_activity[:activity_id], :cal_action => params[:action])}")),
+                      :edit_modal => matter_activity[:activity_is_instance] ? true : false,
+                      :edit_text => "Open Recurring Item",
+                      :deactivate_path => can_delete ? matter_matter_task_path(@matter, matter_task,:path=> request.request_uri) : "NO",
+                      :deactivate_text => is_appointment ? " Appointment?" : " Task?",
+                      :deactivate_link => can_delete ? delete_link_d : false,
+                      :comment_path => add_comment_with_grid_comments_path(:id=>matter_activity[:activity_id],:commentable_type=>'MatterTask',:path=> matter_matter_tasks_path(matter_activity[:matter])),
+                      :document_modal => true,
+                      :document_header => "Add Document",
+                      :document_link => link,
+                      :history_path => "NO"
+                    })%>
+                  <tr>
+                    <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+                    <td style="background: #fff;">
+                      <div class="pt5">
+                        <div class="fl pb5"  style="width:165px;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                            <tr>
+                              <td width="20"><div class="ap_child_action"></div></td>
+                              <td nowrap class="ml5"> <%= link_to "<span>New Time Entry</span>", "#{time_expense_entry_matter_matter_task_path(@matter, matter_task)}?height=320&width=1020", :class => "thickbox", :name => "#{t(:text_new_time_entry)}" %></td>
+                            </tr>
+                          </table>
+                        </div>
+                        <% unless is_appointment %>
+                          <div class="fl pb5"  style="width:165px;">
+                            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                              <tr>
+                                <td width="20"><div class="ap_child_action"></div></td>
+                                <td nowrap class="ml5">
+                                  <%unless matter_task.completed == true%>
+                                    <%= link_to "<span>Mark as Done</span>", mark_as_done_form_matter_matter_task_path(@matter, matter_task, :height=>120, :width=>350), :class => "thickbox", :name => "Mark Completed"%>
+                                  <%else%>
+                                    <span class="action_pad_inactive"><%=t (:label_mark_as_done)%></span>
+                                  <%end%>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                          <% if issue_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"><%=link_to("<span>Link Issues</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,matter_task,:col_type => :matter_issues,:col_type_ids => :matter_issue_ids,:label => 'Issue')}&height=350&width=500", :class => "thickbox", :name => "Link Issues")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if fact_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%=link_to("<span>Link Facts</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,matter_task,:col_type => :matter_facts,:col_type_ids => :matter_fact_ids,:label => 'Fact')}&height=350&width=500", :class => "thickbox", :name => "Link Facts")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if risk_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%=link_to("<span>Link Risks</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,matter_task,:col_type => :matter_risks,:col_type_ids => :matter_risk_ids,:label => 'Risk')}&height=350&width=500", :class => "thickbox", :name => "Link Risks")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                          <% if research_available?  %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="ap_child_action"></div></td>
+                                  <td nowrap class="ml5"> <%=link_to("<span>Link Research</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,matter_task,:col_type => :matter_researches,:col_type_ids => :matter_research_ids,:label => 'Research')}&height=350&width=500", :class => "thickbox", :name => "Link Research")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                          <% end %>
+                        <% end %>
+                        <br class="clear"/>
+                      </div>
+                    </td>
+                    <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                  </tr>
+                  <tr>
+                    <td valign="top" class="ap_bottom_curve_left"></td>
+                    <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                    <td valign="top" class="ap_bottom_curve_right"></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <% if is_parent %>
+            <% child_tasks = matter_task.children %>
+            <% child_tasks.each_with_index do |task, indx| %>
+              <%= render :partial => "child_task", :locals => {:task => task, :parent_id => matter_activity[:activity_id], :indx => indx}  if task.category.eql?('todo') %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <tr> <td colspan="<%=@matter.is_litigation ? 10 : 9%>"> <div class="warningCont m5"> <%=t(:text_no_tasks_found)%><%=matter_info%> </div> </td> </tr>
+      <% end %>
+    </table>
+  </div>
+  <%= raw all_pagination(tasks, params[:per_page], "willpaginate", matter_matter_tasks_path(@matter, :cat => params[:cat],:mode_type => params[:mode_type]), {:page => params[:page],:mode_type => params[:mode_type], :date_start => params[:date_start], :date_end => params[:date_end],:task_status => params[:task_status], :action=>"index",:letter =>params[:letter],:per_page=>params[:per_page], :cat=> params[:cat]}) %>
+  <%= render :partial=>"document_homes/multi_upload" %>
+  <script type="text/javascript">
+    jQuery(document).ready(function() {
+      jQuery('.matter_task_name_hover').hover(
+      function() {
+        jQuery(this).children("span").css({
+          'display':'block'
+        });
+      },
+      function() {
+        jQuery(this).children("span").css({
+          'display':'none'
+        });
+        return false;
+      });
+    });
+
+    // Need to removed to JS File
+    function toggler(matter_id){
+      jQuery('#instance_'+matter_id+'').toggle();
+      a=jQuery('#img_swapper').attr('src');
+      regex=/plus/;
+      if (regex.test(a)){
+        jQuery('#img_swapper').attr('src','/images/icon_small_minus.png');
+      }else{
+        jQuery('#img_swapper').attr('src','/images/icon_small_plus.png');
+      }
+    }
+  </script>

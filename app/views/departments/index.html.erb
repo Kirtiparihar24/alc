@@ -1,0 +1,18 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer">
+      <div class="title fl"><%= current_user.company_full_name  %></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%=collection_select :employee,:company_id,@companies,:id,:name_type,{:include_blank => 'Please select',:selected=> session[:company_id].blank??nil:session[:company_id].to_i},{:onchange=>"fetch_data_based_for_company(this.value, 'emp_div', 'departments/list')" ,:class=>"field size3"}%>
+      </div>
+    </div>
+  <%end%>
+  <%if current_user.role?:lawfirm_admin%>
+    <div id="topheadContainer"><div class="title fl"><%= current_user.company_full_name  %></div></div>
+  <% end %>
+<% end %>
+<div id="emp_div">
+  <% unless params[:company_id] == nil%>
+    <%=render :partial => 'departments'%>
+  <% end %>
+</div>

@@ -1,0 +1,6 @@
+<%unless @search_result.empty?%>  
+  <%@search_result.each do|result_obj|%>
+    <% owner_name = result_obj.get_assigned_to %>
+    <%="" + "#{result_obj.name}" + ((owner_name == "")? "" : (", #{t(:text_owner)}: #{result_obj.get_assigned_to}"))  %>
+  <%end%>
+<%end%>

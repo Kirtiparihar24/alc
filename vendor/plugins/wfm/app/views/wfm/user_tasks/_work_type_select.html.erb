@@ -1,0 +1,5 @@
+<%if @from_edit%>
+  <%=select :work_type, :id, @work_types.collect {|w| [ w.name, w.id ]},  {:prompt=>'Please Select'},{:class=> 'task_edit',:onchange =>"update_work_subtype_select(this.value,'#{@task_index}','#{@note.id}')"}%>
+<%else%>
+  <%=select :work_type, :id, @work_types.collect {|w| [ w.name, w.id ]},  {:prompt=>'Please Select'},{:class=> 'task_edit',:onchange =>"update_work_subtype_select(this.value,'#{@task_index}','#{@note.id}')"}%>
+<%end%>

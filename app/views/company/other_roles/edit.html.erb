@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit_other_role)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<% remote_form_for(:client_role,@other_role, :url => company_other_role_path(@company,@other_role),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f, :modelclass => "other_roles",
+    :select_modal_text => "#{t(:label_other_role)}", :modal_text => "#{t(:label_other_role)}",
+    :all_modal_values => @company.other_roles.collect{|cs|[cs.lvalue]}.uniq } %>
+<%end%>
+<br class="clear"/>

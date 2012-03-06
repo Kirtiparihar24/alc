@@ -1,0 +1,3 @@
+jQuery('#search_results').html("<%=escape_javascript(render(:partial => 'campaigns/searchresults',:locals => {:searchresults => @contacts,:donotcallcontacts => @do_not_call_contacts}))%>");
+jQuery('#campaign_search').val('<%=t(:text_search)%>');
+jQuery('#campaign_search').attr('disabled','');

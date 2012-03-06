@@ -1,0 +1,54 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer"><div class="title fl"><%= @company.name %></div></div>
+  <% end %>
+<% end %>
+<div class="box-head"><h2><%=t(:text_new_client)%></h2></div>
+<%form_for(@user, :url => {:action => "create_client", :company_id => @company.id}) do |f| %>
+  <%if(@user.errors.length > 0)%>
+    <div class='errorCont'><%=f.error_messages %><div class="clear"></div></div>
+  <%end%>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:text_contact)%> <span>*</span></label></td>
+        <td><%=collection_select :contact, :id, @contacts, :id, :full_info, {:include_blank=>"---Select Contact---"},{:onchange=>"showclientdetails(this.value,#{@company.id})" ,:class => "field size3"}%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=f.label :first_name, "First Name"%></label></td>
+        <td><%=f.text_field :first_name,:class=>"field size4" %></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=f.label :last_name, "Last Name"%></label></td>
+        <td><%=f.text_field :last_name,:class=>"field size4" %></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=f.label :email, "Email&nbsp;<span class='text_red'>*</span>"%></label></td>
+        <td><%=f.text_field :email,:class=>"field size4" %></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=f.label :username, "User Name"%> <span>*</span></label></td>
+        <td><%=f.text_field :username,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=f.label :password, "Password"%> <span>*</span></label></td>
+        <td><%=f.password_field :password,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=f.label :password_confirmation, "Confirm Password"%> <span>*</span></label></td>
+        <td><%=f.password_field :password_confirmation,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%=f.submit t(:text_create), :class=>"button"%>
+    <%=link_to t(:label_back), clients_companies_url, :class=>"button"%>
+  </div>
+<%end%>

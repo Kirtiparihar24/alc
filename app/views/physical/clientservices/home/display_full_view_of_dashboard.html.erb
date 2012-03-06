@@ -1,0 +1,13 @@
+<script>
+  function render_chart(dashboard_id,type_of_chart)
+  {
+    var dataurl = "/physical/clientservices/home/render_fusion_chart?dashboard_chart_id="+dashboard_id;
+    var activity = new FusionCharts("/FusionCharts/"+type_of_chart, "activity",500,500);
+    activity.setDataURL(dataurl);
+    activity.render("full_view_chart");
+  }
+        render_chart("<%= @dashboard.dashboard.id %>","<%= @dashboard.dashboard.type_of_chart %>");
+  </script>
+
+
+<div id ="full_view_chart"></div>

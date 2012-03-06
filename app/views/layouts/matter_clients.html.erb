@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%=t(:text_matter_clients)%> <%=controller.action_name.try(:titleize)%></title>
+    <%=raw(javascript_include_tag "jquery/jquery-1.7.1.min.js", "jquery/jquery.tools.min.js")%>
+    <%= raw(javascript_include_tag "jquery/datepicker/ui.core.js", "jquery/datepicker/ui.datepicker.js", 'jquery/jrails.js', "admin/application.js", 'admin/livia_common.js') %>
+    <%=raw (javascript_include_tag "latest/thickbox_matter_clients.js")%>
+    <%=raw(javascript_include_tag "jquery/jquery.autocomplete.js","jquery/jquery.hoverIntent.minified.js", "common.js")%>
+    <%= stylesheet_link_tag "matter_clients/screen.css", "jquery-ui.css", "matter_clients/thickbox.css" %>
+    <script type="text/javascript">
+      jQuery.noConflict();
+      jQuery(document).ready(function(){
+        initLiviaDashBoardView();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="vc-main">
+      <!--Header:begins-->
+      <div id="vc-header">
+        <div id="header">
+          <%=render :partial =>'layouts/client_header'%>
+          <div style="clear: both;"></div>
+          <%=render :partial =>'layouts/client_header_tabs'%>
+        </div>
+      </div>
+      <!--Header:Ends-->
+      <!--Vc Body:begins-->
+      <div id="vc-body">
+        <div class="container_12"><%=render :partial => '/common/common_flash_message'%></div>
+        <div class="mid_content_height"><%= yield %></div>
+        <div style="clear: both"></div>
+      </div>
+      <!--Vc Body:Ends-->
+      <!--Footer:begins-->
+      <div id="vc-footer">
+        <%=render :partial =>'layouts/client_footer'%>
+      </div>
+      <!--Footer:Ends-->
+    </div>
+  </body>
+</html>

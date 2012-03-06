@@ -1,0 +1,61 @@
+<%=raw(javascript_include_tag 'matters_contacts_select_box.js')%>
+<% form_for :com_notes_entries,@com_notes_entries,:url =>communication_path(@com_notes_entries.id),:html =>{:id=>"com_notes_entries_form",:method => :put} do |f| %>
+  <% fields_for :task,@task do |task| %>
+    <%= hidden_field_tag "task[created_by_user_id]", @current_user.id%>
+    <%= hidden_field_tag "task[note_id]", "#{@asset.id if @asset}"%>
+    <%= hidden_field_tag "task[assigned_by_employee_user_id]", "#{@com_notes_entries.assigned_by_employee_user_id}"%>
+    <div class="gridDiv">
+      <div class="titleHead">
+        <div class="fl"><%=t(:text_note)%></div>
+        <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div><br class="clear"/>
+      </div>
+      <div id="notes_errors">
+      </div>
+      <div class="windowForm" style="width:380px;">
+        <div class="">
+          <p>
+            <label><%=t(:label_matters)%></label>
+            <span id="old_mtr_span">
+              <%=f.select "matter_id", @matters.collect{|matter|[matter.clipped_name,matter.id ]},{:include_blank => true },{ :onchange=>"getMattersContacts('#{@com_notes_entries.id}','#old_mtr_span','#old_cnt_span',this.value,'');" , :style=>"width:100px;",:id=>"com_notes_entries_matter_id"}%></span>
+          </p>
+          <br class="clear" />
+          <p>
+            <label ><%=t(:label_contact)%></label>
+            <span id="old_cnt_span"> <%=f.select 'contact_id', @contacts.collect{|contact|[contact.full_name,contact.id ]},{:include_blank => true },{ :onchange=>"getMattersContacts('#{@com_notes_entries.id}','#old_mtr_span','#old_cnt_span','',this.value);" , :style=>"width:100px;",:id=>"com_notes_entries_contact_id"}%></span>
+          </p>
+          <br class="clear" />
+          <p>
+            <label><%=t(:label_notes)%><span class="text_red">*</span></label>
+            <textarea class="textarea" id= "com_notes_entries_textarea" name="com_notes_entries[description]" cols="48" rows="4" style="width:200px"><%= @com_notes_entries.description %></textarea>
+          </p>
+          <br class="clear" />
+          <p class="call">
+            <label><%=t(:label_urgent)%></label>
+            <%= f.check_box :note_priority,:checked =>@com_notes_entries.note_priority.eql?(1) ? false : true,:class=>'fl',:style=>"border:none;" %>
+          </p><br class="clear" />
+          <p class="call">
+            <label><%=t(:label_more_info)%></label>
+            <%= f.check_box :more_action,:class=>'fl',:style=>"border:none; " %>
+
+          </p>
+          <br class="clear" />
+          <p>
+            <label><%=t(:label_task_type)%><span class="text_red">*</span></label>
+            <%= task.collection_select :tasktype,@skill_list,:id,:lvalue, {:include_blank => "-- Select --" }, html_options = {:onchange => "updateEligibleSecretaries(this.value, #{@com_notes_entries.id})"} %>
+          </p><br class="clear" />
+          <p>
+            <label style="text-align:right;" ><%= submit_tag(t(:text_assign_to) ,:class=>'button' ,:style=>"float:right;",:onclick=>"return validate_assigned_to();")%></label>
+            <%= task.select  :assigned_to_user_id, @com_notes_entries.receiver.service_provider_employee_mappings.collect{|pr| [pr.service_provider.sp_full_name ,pr.service_provider.user.id]},{:include_blank => "-- Select --"} %>
+          </p><br class="clear" />
+        </div>
+        <br class="clear"/>
+        <div class="txtC">
+          <%= submit_tag(t(:text_complete_task) ,:class=>'button', :onclick=>"return validateNotes();")%>
+          <%= submit_tag(t(:text_save_n_exit) ,:class=>'button', :onclick => "return validateNotes_on_save_and_exit();")%>
+          <input type="button" class="button" value="<%=t(:label_cancel)%>" onclick="closeFaceBox();" />
+        </div>
+        <br class="clear" />
+      </div>
+    </div>
+  <% end %>
+<% end %>

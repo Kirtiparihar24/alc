@@ -1,0 +1,7 @@
+<%if @from_edit%>
+  <%=select :task, :assigned_to_user_id, options_for_select(@users_select,{:selected=>current_user.id,:disabled=>""}), {:prompt=>"Please Select"},{:class=>"users_select_#{@task_index}"}%>
+<%else%>
+  <% fields_for "tasks[#{@task_index}]", UserTask.new do |f| %>
+    <%=f.select :assigned_to_user_id, options_for_select(@users_select,{:selected=>current_user.id,:disabled=>""}), {:prompt=>"Please Select"},{:class=>"users_select_#{@task_index}"}%>
+  <%end%>
+<%end%>

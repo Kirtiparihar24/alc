@@ -1,0 +1,40 @@
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_edit_employee)%></div>
+  <div class="formMain">
+    <% form_for :manager,@manager,:url=>{:controller=>"manage_secretary",:action=>"update_manager",:id=>@manager.id} do |f|%>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <%if(@manager.errors.length > 0)%>
+              <div class='errorCont'>
+                <%=f.error_messages %>
+                <div class="clear"></div>
+              </div>
+            <%end%>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" align="center">
+            <div style="padding-left:180px;">
+              <table width="70%" border="0" cellspacing="0" cellpadding="0">
+                <%=render :partial =>'emp_fields', :locals=>{:u=>f}%>
+              </table>  
+            </div>
+          </td>
+        </tr>
+        <tr>
+
+        </tr>
+        <tr>
+          <td>
+            <br class="clear" />
+            <div class="txtC">
+              <%=f.submit t(:text_update), :class=>"button"%> &nbsp;<%=link_to t(:label_back), {:controller=>'manage_secretary',:action=>'manager_list'}, :class => "linkbutton"%>
+            </div>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+    <br class="clear" />
+  </div>
+</div>

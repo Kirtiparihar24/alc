@@ -1,0 +1,33 @@
+<% accss_attr = visibility ? "" : 'class="additional_priv" style="display: none;"' %>
+<tr <%= accss_attr %> >
+  <td width="5%"><%=check_box_tag "check_all" ,'check_all',(@matter_people_client.can_view_client_docs? && @matter_people_client.can_view_client_comments? && @matter_people_client.can_control_matter_access? && @matter_people_client.can_enforce_version_control? && @matter_people_client.can_checkin_docs? && @matter_people_client.can_change_status_time_and_expense?),:onchange => "toggle_checked_entries();"%></td>
+  <td align="left"> Select All</td>
+</tr>
+<tr <%= accss_attr %> >
+  <td width="5%"><%=check_box_tag "additional_privs[]", 1, @matter_people_client.can_view_client_docs?,:class=>"entries"%></td>
+  <td align="left"><%=t(:label_view_all_client_docs)%></td>
+</tr>
+<tr <%= accss_attr %> >
+  <td><%=check_box_tag "additional_privs[]", 2, @matter_people_client.can_view_client_comments?,:class=>"entries"%></td>
+  <td align="left"><%=t(:label_view_all_client_comments)%></td>
+</tr>
+<tr <%= accss_attr %> >
+  <td><%=check_box_tag "additional_privs[]", 4, @matter_people_client.can_control_matter_access?,:class=>"entries"%></td>
+  <td align="left"><%=t(:label_provide_restrict_matter_access)%></td>
+</tr>
+<tr <%= accss_attr %> >
+  <td><%=check_box_tag "additional_privs[]", 8, @matter_people_client.can_enforce_version_control?,:class=>"entries"%></td>
+  <td align="left"><%=t(:label_ability_to_enforce_version_control)%></td>
+</tr>
+<tr <%= accss_attr %> >
+  <td><%=check_box_tag "additional_privs[]", 32, @matter_people_client.can_checkin_docs?,:class=>"entries"%></td>
+  <td align="left"><%=t(:label_check_in_documents_checked_out_by_others)%></td>
+</tr>
+<tr <%= accss_attr %> >
+  <td><%=check_box_tag "additional_privs[]", 64, @matter_people_client.can_change_status_time_and_expense?,:class=>"entries" %></td>
+  <td align="left"><%= t(:label_approve_time_and_expense_for_the_matter) %></td>
+</tr>
+
+<tr>
+  <td colspan="2" height="10"></td>
+</tr>

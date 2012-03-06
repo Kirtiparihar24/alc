@@ -1,0 +1,39 @@
+<script type="text/javascript">
+  function disableLink(link) {
+    jQuery(link).hide();
+    jQuery(link).next('span').show();    
+    jQuery(".workspace_links").removeAttr('onclick');
+  }
+  new_tool_tip();
+</script>
+<div id="rssfeed_error" style="display:none;"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div id="show_rss">
+  <div class="tabular_listing">
+    <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+      <tr>
+        <th align="left" width="30%">Title</th>
+        <th align="left" width="20%">Author</th>
+        <th align="left" width="10%">Last Modified</th>
+        <th align="left" width="20%"><%= t(:text_actions) %></th>
+      </tr>
+      <% if @feed 
+         @feed.entries.each do |feed| %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <td><%= truncate_hover(feed.title,50) %></td>
+            <td><%= feed.author %></td>
+            <td><%= feed.last_modified.to_time.strftime("%d/%m/%Y") if feed.last_modified.present? %></td>
+            <td><a href="<%= feed.url%>" target="_blank">View</a>&nbsp;|
+              <a href="javascript:void(0);" class="respository_links" rel="1" onclick='save_to_repository("<%=CGI::escape(feed.title.to_s)%>","<%=CGI::escape(feed.url.to_s)%>","<%=@feed.feed_url%>","<%=@feed.title%>",this)'>Repository</a>
+              <span class="respository" style="display:none">Repository</span>
+              &nbsp;|
+              <a href="javascript:void(0);" class="workspace_links" id="workspace_<%=CGI::escape(feed.title.to_s)%>"  rel="1"
+                 onclick='disableLink(this); save_to_workspace("<%=CGI::escape(feed.title.to_s)%>","<%=CGI::escape(feed.url.to_s)%>","<%=@feed.feed_url%>","<%=@feed.title%>");'> Workspace</a>
+              <span class="workspace" style="display:none">Workspace</span>
+            </td>
+          </tr>
+        <% end 
+      end %>
+    </table>
+  </div>
+</div>

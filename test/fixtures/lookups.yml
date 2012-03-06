@@ -1,0 +1,1463 @@
+--- 
+lookups_171: 
+  lvalue: google_apps
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 171
+  type: Physical::Clientservices::MailAuthType
+lookups_143: 
+  lvalue: Motion Practice
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 143
+  type: MatterPhase
+lookups_115: 
+  lvalue: Witness
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 115
+  type: OtherRoles
+lookups_19: 
+  lvalue: Aborted
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 19
+  type: CampaignStatusType
+lookups_75: 
+  lvalue: Response
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 75
+  type: MatterPhases
+lookups_9: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 9
+  type: ProspectStatusType
+lookups_47: 
+  lvalue: E Mail
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 47
+  type: Physical::Timeandexpenses::ActivityType
+lookups_172: 
+  lvalue: exchange_2000
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 172
+  type: Physical::Clientservices::MailAuthType
+lookups_144: 
+  lvalue: Negotiation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 144
+  type: MatterPhase
+lookups_116: 
+  lvalue: Expert Witness
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 116
+  type: OtherRoles
+lookups_76: 
+  lvalue: Mandatory Disclosure
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 76
+  type: MatterPhases
+lookups_48: 
+  lvalue: Time with Opposing Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 48
+  type: Physical::Timeandexpenses::ActivityType
+lookups_173: 
+  lvalue: exchange_2003
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 173
+  type: Physical::Clientservices::MailAuthType
+lookups_145: 
+  lvalue: Summary Judgement Motion
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 145
+  type: MatterPhase
+lookups_117: 
+  lvalue: Eye-Witness
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 117
+  type: OtherRoles
+lookups_77: 
+  lvalue: Scheduling Order
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 77
+  type: MatterPhases
+lookups_49: 
+  lvalue: Meetings with Judge
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 49
+  type: Physical::Timeandexpenses::ActivityType
+lookups_174: 
+  lvalue: exchange_2007
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 174
+  type: Physical::Clientservices::MailAuthType
+lookups_146: 
+  lvalue: Pre Trial Report
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 146
+  type: MatterPhase
+lookups_118: 
+  lvalue: Character Witness
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 118
+  type: OtherRoles
+lookups_78: 
+  lvalue: Arbitration Mediation Reconciliation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 78
+  type: MatterPhases
+lookups_175: 
+  lvalue: Lead Lawyer
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 175
+  type: TeamRoles
+lookups_147: 
+  lvalue: Trial
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 147
+  type: MatterPhase
+lookups_119: 
+  lvalue: Corporate Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 119
+  type: ClientRepRoles
+lookups_20: 
+  lvalue: Campaign
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 20
+  type: LeadSource
+lookups_79: 
+  lvalue: Pre Trial Discovery
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 79
+  type: MatterPhases
+lookups_176: 
+  lvalue: Matter Client
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 176
+  type: TeamRoles
+lookups_148: 
+  lvalue: Order Judgement
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 148
+  type: MatterPhase
+lookups_21: 
+  lvalue: Conference
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 21
+  type: LeadSource
+lookups_177: 
+  lvalue: Others
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 177
+  type: ContactStatus
+lookups_149: 
+  lvalue: Execution
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 149
+  type: MatterPhase
+lookups_50: 
+  lvalue: Court Appearance
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 50
+  type: Physical::Timeandexpenses::ActivityType
+lookups_22: 
+  lvalue: Cold Call
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 22
+  type: LeadSource
+lookups_178: 
+  lvalue: Cheque
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 178
+  type: PaymentModeType
+lookups_80: 
+  lvalue: Motion Practice
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 80
+  type: MatterPhases
+lookups_51: 
+  lvalue: Drafting Memo
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 51
+  type: Physical::Timeandexpenses::ActivityType
+lookups_23: 
+  lvalue: Online
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 23
+  type: LeadSource
+lookups_179: 
+  lvalue: Paypal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 179
+  type: PaymentModeType
+lookups_120: 
+  lvalue: General Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 120
+  type: ClientRepRoles
+lookups_81: 
+  lvalue: Negotiation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 81
+  type: MatterPhases
+lookups_52: 
+  lvalue: Review Documents
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 52
+  type: Physical::Timeandexpenses::ActivityType
+lookups_24: 
+  lvalue: Self Generated
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 24
+  type: LeadSource
+lookups_121: 
+  lvalue: In-house Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 121
+  type: ClientRepRoles
+lookups_53: 
+  lvalue: Client Interview
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 53
+  type: Physical::Timeandexpenses::ActivityType
+lookups_25: 
+  lvalue: Referral
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 25
+  type: LeadSource
+lookups_150: 
+  lvalue: Appeal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 150
+  type: MatterPhase
+lookups_122: 
+  lvalue: General Manager - Legal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 122
+  type: ClientRepRoles
+lookups_82: 
+  lvalue: Summary Judgement Motion
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 82
+  type: MatterPhases
+lookups_54: 
+  lvalue: Witness Interview
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 54
+  type: Physical::Timeandexpenses::ActivityType
+lookups_26: 
+  lvalue: Web
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 26
+  type: LeadSource
+lookups_151: 
+  lvalue: Atty Work product
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 151
+  type: MatterPrivileges
+lookups_123: 
+  lvalue: Legal Executive
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 123
+  type: ClientRepRoles
+lookups_83: 
+  lvalue: Pre Trial Report
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 83
+  type: MatterPhases
+lookups_55: 
+  lvalue: Providing Legal Advice
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 55
+  type: Physical::Timeandexpenses::ActivityType
+lookups_27: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 27
+  type: LeadSource
+lookups_180: 
+  lvalue: NA
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 180
+  type: PaymentModeType
+lookups_152: 
+  lvalue: Atty-client
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 152
+  type: MatterPrivileges
+lookups_124: 
+  lvalue: Business Head /Manager
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 124
+  type: ClientRepRoles
+lookups_84: 
+  lvalue: Trial
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 84
+  type: MatterPhases
+lookups_56: 
+  lvalue: Negotiations
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 56
+  type: Physical::Timeandexpenses::ActivityType
+lookups_28: 
+  lvalue: Word Of Mouth
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 28
+  type: LeadSource
+lookups_181: 
+  lvalue: Lawyer
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 181
+  type: CompanyDefaultRoles
+lookups_153: 
+  lvalue: Atty-client and Attywork product
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 153
+  type: MatterPrivileges
+lookups_125: 
+  lvalue: Technical Executive
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 125
+  type: ClientRepRoles
+lookups_57: 
+  lvalue: Mediation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 57
+  type: Physical::Timeandexpenses::ActivityType
+lookups_29: 
+  lvalue: Hotel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 29
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_85: 
+  lvalue: Order Judgement
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 85
+  type: MatterPhases
+lookups_154: 
+  lvalue: Not privileged
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 154
+  type: MatterPrivileges
+lookups_126: 
+  lvalue: Technical Assistant
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 126
+  type: ClientRepRoles
+lookups_58: 
+  lvalue: Arbitration
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 58
+  type: Physical::Timeandexpenses::ActivityType
+lookups_86: 
+  lvalue: Execution
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 86
+  type: MatterPhases
+lookups_155: 
+  lvalue: New
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 155
+  type: CampaignMemberStatusType
+lookups_127: 
+  lvalue: Paralegal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 127
+  type: ClientRepRoles
+lookups_59: 
+  lvalue: Presales/ Sales
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 59
+  type: Physical::Timeandexpenses::ActivityType
+lookups_87: 
+  lvalue: Appeal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 87
+  type: MatterPhases
+lookups_156: 
+  lvalue: Contacted
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 156
+  type: CampaignMemberStatusType
+lookups_128: 
+  lvalue: Admin Ruling
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 128
+  type: MatterResearchType
+lookups_88: 
+  lvalue: Undisputed
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 88
+  type: FactMatter
+lookups_157: 
+  lvalue: Responded
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 157
+  type: CampaignMemberStatusType
+lookups_129: 
+  lvalue: Article
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 129
+  type: MatterResearchType
+lookups_30: 
+  lvalue: Car rental/hire
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 30
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_89: 
+  lvalue: Not Sure
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 89
+  type: FactMatter
+lookups_158: 
+  lvalue: Opportunity
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 158
+  type: CampaignMemberStatusType
+lookups_31: 
+  lvalue: Mileage on vehicle
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 31
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_159: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 159
+  type: CampaignMemberStatusType
+lookups_60: 
+  lvalue: Consultation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 60
+  type: Physical::Timeandexpenses::ActivityType
+lookups_32: 
+  lvalue: Food
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 32
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_100: 
+  lvalue: Senior Associate
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 100
+  type: TeamRoles
+lookups_61: 
+  lvalue: Seminars/Conferences
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 61
+  type: Physical::Timeandexpenses::ActivityType
+lookups_33: 
+  lvalue: Copying
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 33
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_101: 
+  lvalue: Paralegal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 101
+  type: TeamRoles
+lookups_90: 
+  lvalue: Prospective
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 90
+  type: FactMatter
+lookups_130: 
+  lvalue: Background Authority
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 130
+  type: MatterResearchType
+lookups_62: 
+  lvalue: Internal Work Hours
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 62
+  type: Physical::Timeandexpenses::ActivityType
+lookups_34: 
+  lvalue: Faxing
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 34
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_102: 
+  lvalue: Executive Assistant
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 102
+  type: TeamRoles
+lookups_91: 
+  lvalue: Disputed By us
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 91
+  type: FactMatter
+lookups_131: 
+  lvalue: Case Law
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 131
+  type: MatterResearchType
+lookups_63: 
+  lvalue: Others
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 63
+  type: Physical::Timeandexpenses::ActivityType
+lookups_35: 
+  lvalue: Scanning
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 35
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_103: 
+  lvalue: External Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 103
+  type: OtherRoles
+lookups_92: 
+  lvalue: Disputed By Opposition
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 92
+  type: FactMatter
+lookups_160: 
+  lvalue: Suspended
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 160
+  type: CampaignMemberStatusType
+lookups_132: 
+  lvalue: Other Authority
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 132
+  type: MatterResearchType
+lookups_36: 
+  lvalue: Shipping and postal fees
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 36
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_104: 
+  lvalue: Consultant & Advisor
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 104
+  type: OtherRoles
+lookups_64: 
+  lvalue: Time Sheet Review
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 64
+  type: Physical::Liviaservices::SkillType
+lookups_161: 
+  lvalue: Invalid Email
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 161
+  type: CampaignMemberStatusType
+lookups_133: 
+  lvalue: Regulation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 133
+  type: MatterResearchType
+lookups_37: 
+  lvalue: Consulting/expert witness expense
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 37
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_105: 
+  lvalue: Beneficiary
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 105
+  type: OtherRoles
+lookups_93: 
+  lvalue: Managing Partner
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 93
+  type: TeamRoles
+lookups_65: 
+  lvalue: Matter Review
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 65
+  type: Physical::Liviaservices::SkillType
+lookups_162: 
+  lvalue: Contact
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 162
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_134: 
+  lvalue: Rule
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 134
+  type: MatterResearchType
+lookups_38: 
+  lvalue: Witness expenses
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 38
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_106: 
+  lvalue: Deponent
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 106
+  type: OtherRoles
+lookups_94: 
+  lvalue: Senior Partner
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 94
+  type: TeamRoles
+lookups_66: 
+  lvalue: Schedule Meeting
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 66
+  type: Physical::Liviaservices::SkillType
+lookups_163: 
+  lvalue: Account
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 163
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_135: 
+  lvalue: Statute
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 135
+  type: MatterResearchType
+lookups_39: 
+  lvalue: Telephone expenses
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 39
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_107: 
+  lvalue: Cross-defendant
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 107
+  type: OtherRoles
+lookups_95: 
+  lvalue: Junior Partner
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 95
+  type: TeamRoles
+lookups_67: 
+  lvalue: Update Calender
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 67
+  type: Physical::Liviaservices::SkillType
+lookups_164: 
+  lvalue: Lead
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 164
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_136: 
+  lvalue: Initiation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 136
+  type: MatterPhase
+lookups_108: 
+  lvalue: Debtor
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 108
+  type: OtherRoles
+lookups_96: 
+  lvalue: Associate Partner
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 96
+  type: TeamRoles
+lookups_68: 
+  lvalue: Summary Report
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 68
+  type: Physical::Liviaservices::SkillType
+lookups_165: 
+  lvalue: Opportunity
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 165
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_137: 
+  lvalue: Complaint
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 137
+  type: MatterPhase
+lookups_109: 
+  lvalue: Creditor
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 109
+  type: OtherRoles
+lookups_97: 
+  lvalue: Senior Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 97
+  type: TeamRoles
+lookups_10: 
+  lvalue: Contacted
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 10
+  type: LeadStatusType
+lookups_69: 
+  lvalue: Note processing
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 69
+  type: Physical::Liviaservices::SkillType
+lookups_166: 
+  lvalue: Matter
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 166
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_138: 
+  lvalue: Response
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 138
+  type: MatterPhase
+lookups_1: 
+  lvalue: Prospecting
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 1
+  type: OpportunityStageType
+lookups_98: 
+  lvalue: Junior Counsel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 98
+  type: TeamRoles
+lookups_11: 
+  lvalue: New
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 11
+  type: LeadStatusType
+lookups_167: 
+  lvalue: Project
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 167
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_139: 
+  lvalue: Mandatory Disclosure
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 139
+  type: MatterPhase
+lookups_40: 
+  lvalue: Parking
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 40
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_99: 
+  lvalue: Associate
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 99
+  type: TeamRoles
+lookups_12: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 12
+  type: LeadStatusType
+lookups_2: 
+  lvalue: Negotiation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 2
+  type: OpportunityStageType
+lookups_168: 
+  lvalue: Generic
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 168
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_41: 
+  lvalue: Toll road fees
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 41
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_13: 
+  lvalue: Client
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 13
+  type: ContactStatus
+lookups_70: 
+  lvalue: Document Review
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 70
+  type: Physical::Liviaservices::SkillType
+lookups_3: 
+  lvalue: Proposal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 3
+  type: OpportunityStageType
+lookups_169: 
+  lvalue: Internal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 169
+  type: Physical::Timeandexpenses::AccountedForType
+lookups_42: 
+  lvalue: Misc
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 42
+  type: Physical::Timeandexpenses::ExpenseType
+lookups_14: 
+  lvalue: Prospect
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 14
+  type: ContactStatus
+lookups_110: 
+  lvalue: Liquidator
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 110
+  type: OtherRoles
+lookups_4: 
+  lvalue: Final Review
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 4
+  type: OpportunityStageType
+lookups_15: 
+  lvalue: Lead
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 15
+  type: ContactStatus
+lookups_111: 
+  lvalue: Trustee
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 111
+  type: OtherRoles
+lookups_71: 
+  lvalue: Weekly Report
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 71
+  type: Physical::Liviaservices::SkillType
+lookups_5: 
+  lvalue: Closed/Lost
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 5
+  type: OpportunityStageType
+lookups_43: 
+  lvalue: Travel
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 43
+  type: Physical::Timeandexpenses::ActivityType
+lookups_140: 
+  lvalue: Scheduling Order
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 140
+  type: MatterPhase
+lookups_16: 
+  lvalue: Planned
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 16
+  type: CampaignStatusType
+lookups_112: 
+  lvalue: Administrator
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 112
+  type: OtherRoles
+lookups_72: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 72
+  type: Physical::Liviaservices::SkillType
+lookups_6: 
+  lvalue: Closed/Won
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 6
+  type: OpportunityStageType
+lookups_44: 
+  lvalue: Mail
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 44
+  type: Physical::Timeandexpenses::ActivityType
+lookups_141: 
+  lvalue: Arbitration Mediation Reconciliation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 141
+  type: MatterPhase
+lookups_17: 
+  lvalue: Inprogress
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 17
+  type: CampaignStatusType
+lookups_113: 
+  lvalue: Legal Clerk
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 113
+  type: OtherRoles
+lookups_73: 
+  lvalue: Initiation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 73
+  type: MatterPhases
+lookups_7: 
+  lvalue: Active
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 7
+  type: ProspectStatusType
+lookups_45: 
+  lvalue: Research
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 45
+  type: Physical::Timeandexpenses::ActivityType
+lookups_170: 
+  lvalue: gmail
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 170
+  type: Physical::Clientservices::MailAuthType
+lookups_142: 
+  lvalue: Pre Trial Discovery
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 142
+  type: MatterPhase
+lookups_18: 
+  lvalue: Completed
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 18
+  type: CampaignStatusType
+lookups_114: 
+  lvalue: Judges Assistant
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 114
+  type: OtherRoles
+lookups_74: 
+  lvalue: Complaint
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 74
+  type: MatterPhases
+lookups_8: 
+  lvalue: Inactive
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 8
+  type: ProspectStatusType
+lookups_46: 
+  lvalue: Phone conversation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 46
+  type: Physical::Timeandexpenses::ActivityType
+
+# == Schema Information
+#
+# Table name: lookups
+#
+#  id                   :integer         not null, primary key
+#  type                 :string(255)
+#  lvalue               :string(255)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  deleted_at           :datetime
+#  permanent_deleted_at :datetime
+#
+

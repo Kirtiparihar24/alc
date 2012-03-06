@@ -1,0 +1,15 @@
+<h2 class="title_main"><%= @opportunity.name %> <%= t(:text_comment) %></h2>
+<div class="p5">
+  <%= render "common/new_comment",:commentable => @opportunity, :commentable_type => 'Contact', :commentable_id => @opportunity.id %>
+  <div class="tabular_listing border_gray">
+    <table width="100%" cellpadding="1" cellspacing="1">
+      <tr>
+        <th width="20%" align="left"><%= t(:text_stage) %></th>
+        <th width="20%" align="left"><%= t(:text_user) %></th>
+        <th width="45%" align="left"><%= t(:text_comment_details) %></th>
+        <th width="15%" align="left"><%= t(:text_created_at) %></th>
+      </tr>
+      <%= render "common/comment", :collection => @notes %>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="sct">
+  <div class="sct_left">
+    <div class="sct_right">
+      <div class="sct_left">
+        <div>
+          <!--[if !IE]>start table_wrapper<![endif]-->
+          <div class="table_wrapper modalTable">
+            <div class="table_wrapper_inner">
+              <table cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                  <tr>
+                    <th><a href="#">Updated Fields</a></th>
+                    <th ><a href="#">Old Value</a></th>
+                    <th><a href="#">New Value</a></th>
+                    <th><a href="#">Updated By User</a></th>
+                    <th><a href="#">Updated Date</a></th>
+                  </tr>
+                  <% if @audits.blank? %>
+                  <td><%= 'Created By User'  %></td>
+                  <td></td>
+                  <td></td>
+                  <td align="left"><%= get_user_name(@task.created_by_user_id)%></td>
+                  <td align="left"><%= wfm_date_format(@task.created_at)%></td>
+                <% else %>
+                  <%@audits.each do |audit|%>
+                    <% if(audit.action == "create") %>
+                      <td><%= 'Created By User'  %></td>
+                      <td></td>
+                      <td></td>
+                      <td align="left"><%=get_user_name(@task.created_by_user_id)%></td>
+                      <td align="left"><%= wfm_date_format(@task.created_at)%></td>
+                    <%else%>
+                      <% audit[:changes].each do |key, value| %>
+                        <% field = @task.task_object_for_histroy(key, value[0]) %>
+                        <% unless field.blank? %>
+                          <tr class="<%cycle('first','second')%>">
+                            <td align="left"><%= field[0]%></td>
+                            <td align="left"><%= field[1]%></td>
+                            <td align="left"><%= @task.task_object_for_histroy(key, value[1])[1]%></td>
+                            <td align="left"><%= audit.user.full_name%></td>
+                            <td align="left"><%= wfm_date_format(audit.created_at)%></td>
+                          </tr>
+                        <%end%>
+                      <%end%>
+                    <%end%>
+                  <%end%>
+                  </tbody>
+                </table>
+              <% end %>
+            </div>
+          </div>
+          <!--[if !IE]>end table_wrapper<![endif]-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

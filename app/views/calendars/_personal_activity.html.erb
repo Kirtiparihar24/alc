@@ -1,0 +1,178 @@
+<script src="/javascripts/jquery/jquery.timeentry.pack.js" type="text/javascript"></script>
+<% remote_form_for(@zimbra_activity, :url =>{:action => action,:id=> id, :controller => controller}, :loading=>"return disableAllSubmitButtons('modal_activity');", :complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+  <% if action=="create_zimbra_instance" %>
+    <%= hidden_field_tag :height, true %>
+    <%=f.hidden_field :exception_start_date, :value=>@zimbra_activity.exception_start_date%>
+    <%=f.hidden_field :start_date, :value=>@zimbra_activity.start_date%>
+    <%=f.hidden_field :end_date, :value =>@zimbra_activity.end_date%>
+    <%=f.hidden_field :zimbra_task_id, :value =>@zimbra_activity.zimbra_task_id%>
+    <%=f.hidden_field :exception_status, :value => true %>
+  <%end%>
+  <% default_start_time, default_end_time = get_default_time_appointment %>
+  <div id="zimbra_activities_errors" class="message_error_div" style="display:none;"> </div>
+  <div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="form_table">
+      <tbody>
+        <tr>
+          <td align="left" width="14%"><label><%= t(:text_activity_name) %><span class="alert_message">*</span></label></td>
+          <td align="left" width="30%"><%= CGI.unescape(f.text_field :name, :size=>"40", :maxlength => 255) %></td>
+          <td colspan="2"></td>
+        </tr>
+        <tr>
+          <td width="14%" align="left"><span id="sub_task_label_calendar">Mark As</span></td>
+          <td align="left"><%= f.select :mark_as, ZimbraActivity::MARK_AS_OPTIONS %></td>
+        </tr>
+        <% disable = !@zimbra_activity.new_record? && !@zimbra_activity.category.nil? %>
+        <% @zimbra_activity.category ||= "todo" %>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td colspan="3" align="left">
+            <table border="0" cellpadding="0" cellspacing="0" width="50%">
+              <tbody>
+                <tr>
+                  <td width="7%"><%= f.radio_button :category, "todo", :id => "matter_task_category_todo_calendar", :disabled => disable, :onclick => "jQuery('#task_personal_todo_div').show();jQuery('#task_personal_appointment_div').hide();" %></td>
+                  <td width="13%"><%= t(:text_to_do_task) %></td>
+                  <td width="7%"><%= f.radio_button :category, "appointment", :id => "matter_task_category_appointment_calendar", :disabled => disable, :onclick => "jQuery('#task_personal_todo_div').hide();jQuery('#task_personal_appointment_div').show(); disable_rightclick_for_time();" %></td>
+                  <td width="73%"><%= t(:text_schedule_task) %></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td colspan="3" align="left">
+            <%categ = @zimbra_activity.category || "todo"%>
+            <div id="task_personal_todo_div" <%if categ.eql?("appointment")%> style="display:none;" <%end%>>
+              <div class="f1 w100">
+                <table class="highlight_bg_1" border="0" cellpadding="0" cellspacing="0" width="91%">
+                  <tbody>
+                    <tr valign="top">
+                      <td width="10%" align="left" valign="top">&nbsp;<%= t(:text_priority)%></td>
+                      <td width="15%" align="left" valign="top"><%= f.select :priority, ZimbraActivity::PRIORITIES,{:selected => @zimbra_activity.priority || "5"} %></td>
+                      <td width="11%" align="left" valign="top">Start Date<span class="alert_message">*</span></td>
+                      <td width="20%" align="left" valign="top"><%= f.text_field :start_date_todo,:value=> @zimbra_activity.start_date ? @zimbra_activity.start_date.to_date : '', :size => "12", :class => "date_picker" %></td>
+                      <td width="11%" align="left" valign="top"><%= t(:text_due_date)%><span class="alert_message">*</span></td>
+                      <td width="20%" align="left" valign="top"><%= f.text_field :end_date_todo,:value=> @zimbra_activity.end_date ? @zimbra_activity.end_date.to_date : '', :class => "date_picker", :size => "12" %></td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div id="task_personal_appointment_div" <%if categ.eql?("todo")%> style="display:none;" <%end%>>
+              <div class="<% params[:load_popup].nil? ? 'f1 w65': 'f1 w100'%>" >
+                <table class="highlight_bg_1" border="0" width="91%" cellpadding="0" cellspacing="0">
+                  <% instance_disable = action_name.eql?("edit_zimbra_instance") ? "disable" : nil %>
+                  <tbody>
+                    <tr valign="top">
+                      <td width="15%">&nbsp;<%#= "#{t(:text_start)} #{t(:text_date)}" %><%= "#{t(:text_start)} #{t(:text_time)}" %><span class="alert_message">*</span></td>
+                      <td colspan="3"><%= f.text_field :start_date_appointment, :value => @zimbra_activity.start_date ? @zimbra_activity.start_date.to_date : Time.zone.now.to_date, :class => "date_picker", :size => "10" %>
+                        <%= f.text_field :start_time, :value => @zimbra_activity.get_start_time || livia_time_zone(default_start_time),:size => "7"%></td>
+                    </tr>
+                    <tr valign="top">
+                      <td>&nbsp;<%= "#{t(:text_end)} #{t(:text_time)}" %><span class="alert_message">*</span></td>
+                      <td colspan="3"><%= f.text_field :end_date_appointment,:value=>@zimbra_activity.end_date ? @zimbra_activity.end_date.to_date : Time.zone.now.to_date, :class=>"date_picker", :size => "10"%>
+                        <%= f.text_field :end_time, :value => @zimbra_activity.get_end_time || livia_time_zone(default_end_time), :size => "7"%></td>
+                    </tr>
+                    <tr>
+                      <%@zimbra_activity.repeat||=nil%>
+                      <td>&nbsp;<%= t(:text_reminder) %></td>
+                      <td><%= f.select :reminder, options_for_select(ZimbraActivity::REMINDER_OPTIONS,@zimbra_activity.reminder),{}, {:style=> "width:94px;"} %></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;<%= t(:text_repeat) %><span class="alert_message"></span></td>
+                      <td><%=f.select :repeat, options_for_select(ZimbraActivity::REPEAT_OPTIONS,@zimbra_activity.repeat),{},:onChange => "show_end_time(this, 'choose_end_time_zimbra')",:disabled => instance_disable %></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr id ="choose_end_time_zimbra" align="left" <%if @zimbra_activity.repeat.nil? or @zimbra_activity.repeat.empty?%>style="display:none"<%end%>>
+                      <td colspan="4">
+                        <table width="100%" cellspacing="1" cellpadding="0">
+                          <td width="1%"><%=f.radio_button :occurrence_type, "count",:disabled => instance_disable, :class=>"fl"%></td>
+                          <td width="12%"><div class="mt3"><%=t(:text_end_after)%></div></td>
+                          <td width="28%"><%=f.text_field :count,:maxlength => "3", :style => "width:30px;",:disabled => instance_disable,:onclick => "jQuery('#zimbra_activity_occurrence_type_count').attr('checked', 'checked');"%>&nbsp;<%=t(:text_occurrence)%> </td>
+                          <td width="1%"><%=f.radio_button :occurrence_type, "until",:disabled => instance_disable, :class=>"fl"%></td>
+                          <td width="14%"><div class="mt3"><%=t(:text_end_by)%> </div></td>
+                          <td width="30%"><%= f.text_field :until, :value => @zimbra_activity.until, :disabled => instance_disable, :class => "date_picker",:size => "10", :onfocus => "jQuery('#zimbra_activity_occurrence_type_until').attr('checked', 'checked');"%> </td>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top">&nbsp;<%= t(:text_attendees) %></td>
+                      <td colspan="3" valign="middle">
+                        <%= f.text_area :attendees_emails, :rows => "3", :cols => 18, :maxlength => 512 %>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <script language="javascript" type="text/javascript">
+                  livia_matter_inception_datepicker_new("#zimbra_activity_start_date_todo");
+                  livia_matter_inception_datepicker_new("#zimbra_activity_end_date_todo");
+                  livia_matter_inception_datepicker_new("#zimbra_activity_start_date_appointment");
+                  livia_matter_inception_datepicker_new("#zimbra_activity_end_date_appointment");
+                  livia_matter_inception_datepicker_new("#zimbra_activity_until");
+                  livia_matter_inception_datepicker_new("#matter_task_start_date_todo_calendar");
+                  livia_matter_inception_datepicker_new("#matter_task_end_date_todo_calendar");
+                  zimbra_activities_attendees_autocomplete();
+                </script>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td align="left" valign="top"><%=t(:text_description)%></td>
+          <td colspan="3" align="left"><%=f.text_area :description, :cols => "93", :rows => "3" %></td>
+        </tr>
+        <tr>
+          <td colspan="4" align="center">
+            <%=f.submit t(:text_save), :name => "save" , :class => "modal_activity", :onClick => "return checkloader(); save_attendees();"%>
+            <%=f.submit t(:text_cancel), :name => "cancel",:type=>"button", :onClick => "tb_remove();" , :class => "modal_activity"%>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<%end%>
+<script type="text/javascript">
+  zimbra_activities_attendees_autocomplete();
+  jQuery(function(){
+    livia_datepicker();
+  });
+
+  function showCompletionTable(){
+    jQuery('#completed_div_hide').toggle();
+  }
+  jQuery("#zimbra_activity_until").addClass("date_picker");
+
+  jQuery(document).ready(function(){
+    jQuery('#zimbra_activity_start_time').timeEntry({
+      ampmPrefix: ' ',
+      spinnerImage: '/images/spinnerDefault.png',
+      show24Hours: false,
+      timeSteps: [1,1,1]
+    });
+
+    jQuery('.timeEntry_control').each(function(i,el){
+      jQuery(el).height(0);
+    });
+
+    jQuery('#zimbra_activity_end_time').timeEntry({
+      ampmPrefix: ' ',
+      spinnerImage: '/images/non-existent-image-spinnerDefault.png',
+      show24Hours: false,
+      timeSteps: [1,1,1]
+    });
+
+    if (jQuery('#zimbra_activity_repeat').val()!=""){
+      jQuery('#mandatory_zimbra').show();
+    }else{
+      jQuery('#mandatory_zimbra').hide();
+    }
+  });
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;117</div>
+<div id="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>

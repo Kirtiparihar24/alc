@@ -1,0 +1,53 @@
+<% selected_employee = get_employee_user_id %>
+<% secretary = current_user.role?(:secretary) %>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+﻿<div style="text-align:center;margin-top:10px;">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="form_table">
+    <tr>
+      <td width="7%" align="left"><%=radio_button_tag(:access_control,:private, true ,:onclick => "check_document_access_rights(false, false, false, '#{t(:text_note_only_you_will_have_access_to_this_document)}','private', '#{selected_employee}', '#{secretary}','edit','#{selected_employee}', '1');",:class=>"radio", :disabled => false) %></td>
+      <td width="13%" align="left"><label><%=t(:text_private)%></label></td>
+      <td width="7%" align="left"><%=radio_button_tag(:access_control,:public, false,:onclick => "check_document_access_rights(false, true, false, '#{t(:text_note_all_members_of_your_law_firm_will_have_access_to_this_document)}','other', '#{selected_employee}', '#{secretary}','edit','#{selected_employee}', '1');",:class=>"radio", :disabled => false) %></td>
+      <td width="16%" align="left"><label><%=t(:text_public)%></label></td>
+      <td width="7%" align="left"><%=radio_button_tag(:access_control,:matter_view, false,:onclick => "check_document_access_rights(false, false, false, '#{t(:text_note_all_matter_team_members_will_have_access_to_this_document)}','other', '#{selected_employee}', '#{secretary}','edit','#{selected_employee}', '1');",:class=>"radio", :disabled => false) %></td>
+      <td width="24%" align="left"><label><%=t(:text_matter_view)%></label></td>
+      <td width="7%" align="left"><%=radio_button_tag(:access_control,:selective, false,:onclick => "check_document_access_rights(true, false, false, '#{t(:text_note_document_will_be_accessible_to_selected_team_members)}','select', '#{selected_employee}', '#{secretary}','edit','#{selected_employee}', '1');",:class=>"radio", :disabled => false) %></td>
+      <td width="19%" align="left"><label><%=t(:text_select_view)%></label></td>
+    </tr>
+    <tr>
+      <td colspan="8" id="help_message" align="left" class="pl5">
+        <%= t(:text_note_only_you_will_have_access_to_this_document) %>
+      </td>
+    </tr>
+    <tr id="selective" style="display:none;">
+      <td colspan="8">
+        <table width="100%" border="0">
+          <% unless @matter_peoples.nil? or @matter_peoples.empty? %>
+            <% @matter_peoples.each do|mi| %>
+              <% if mi.employee_user_id %>
+                <tr>
+                  <% name =  mi.assignee.try(:full_name) %>
+                  <td width="10%" align="left" name="<%= mi.employee_user_id %>"><%= check_box_tag 'document_home[matter_people_ids][]', mi.id, (mi.employee_user_id == selected_employee), {:class => "check", :disabled => (mi.employee_user_id == selected_employee), :checked =>  (mi.employee_user_id == selected_employee), :onClick=>"check_owner(this, '#{mi.employee_user_id}', '#{name}')" ,:class => "selective_document"} %></td>
+                  <td width="90%" align="left"><%= name %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+    <tr id="check_box" style="display:none;">
+      <td> <%=check_box_tag 'document_home[repo_update]', true, false, {:class => "check"}%></td>
+      <td colspan="7" align="left">Show updates in public repository</td>
+    </tr>
+    <tr>
+      <td>Owner</td>
+      <td colspan="7" align="left">&nbsp;<%= select_tag :owner_user_id, options_for_select(@matter_peoples.collect{|p| [p.assignee.try(:full_name), p.employee_user_id] }, selected_employee), {:disabled => false} %></td>
+    </tr>
+    <tr>
+      <td align="center" colspan="8">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" colspan="8"><input type="submit" value="<%= t(:label_save) %>" id ="change_access" class="button"onclick="setButtonPressed(this); changeAccessControl('<%= params[:matter_id] %>'); return checkloader();"/> <input type="button" id="Login2" value="Cancel" onclick="tb_remove()" /></td>
+    </tr>
+  </table>
+</div>

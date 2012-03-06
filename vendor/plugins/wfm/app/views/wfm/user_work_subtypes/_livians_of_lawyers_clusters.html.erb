@@ -1,0 +1,11 @@
+<% form_remote_tag :url => {:controller=> :user_work_subtypes, :action => :get_livians_skills} do  %>
+  
+      <td align="left" valign="top" width="10%">Livians <br />
+      <%= select_tag 'livians', options_for_select(@lawfirm_users_livians.collect{ |lu| [lu.full_name, lu.id] }), :size=>'5', :multiple=>true, :style=>"width:160px;" %>
+      </td>
+      <td align="left" valign="bottom" width="20%">
+        <input type="submit" onclick="return validate_selection('livians');" value="→"/>
+        <!--<span class="button send_form_btn buttons_to_disable" onclick="return validate_selection('livians');"><span><span>Go>>></span></span><input type="submit" name=""/></span>-->
+      </td>
+    
+<% end %>

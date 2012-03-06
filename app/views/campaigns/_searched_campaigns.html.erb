@@ -1,0 +1,176 @@
+<%=raw paginate_for_five_links(@campaigns.total_pages, {:mode_type =>@mode_type,:action=>"index",:camp_status =>@camp_status,:letter=>@letter_selected,:col=>params[:col],:dir=>params[:dir],:per_page=>params[:per_page]},params[:page]) if @campaigns.total_pages > 1 %>
+<% st=params[:camp_status].present? ? {:camp_status =>params[:camp_status]} : {}
+h = {}
+h[:search_item] = true
+if params[:search_items]
+  h[:search_items] = params[:search_items]
+  h[:search] = {}
+  if params[:search]
+    params[:search].keys.each do |key|
+      h[:search][key] = params[:search][key] unless params[:search][key].blank?
+    end
+  end
+end
+%>
+<%= raw all_pagination(@campaigns, params[:per_page], "willpaginate",campaigns_path(st), {:mode_type =>params[:mode_type],:campaign_type =>params[:campaign_type],:camp_status=>params[:camp_status],:action=>"index",:campaign_status =>params[:campaign_status],:letter=>params[:letter],:per_page=>params[:per_page]})  %>
+<%form_for :search,:url=>{:controller => :campaigns,:action => :index},:html =>{:method => :get } do |f| %>
+  <div class="tabular_listing mb8">
+    <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+      <tr>
+        <%=hidden_field_tag  'col' ,params[:col] if params[:col]%>
+        <%=hidden_field_tag  'dir' ,params[:dir] if params[:dir]%>
+        <%=hidden_field_tag  'mode_type' ,@mode_type if @mode_type%>
+        <%=hidden_field_tag  'camp_status' ,@camp_statuse if @camp_status%>
+        <%=hidden_field_tag  'per_page' ,params[:per_page] if params[:per_page]%>
+        <%=hidden_field_tag  'search_items' ,true%>
+
+        <%= column_sort_link(t(:text_campaign),'campaigns.name',params[:col], '20%', "left",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"tablesorter"}.merge(h))%>
+        <%= column_sort_link(t(:text_owner),'username',params[:col], '10%', "left",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"tablesorter"}.merge(h))%>
+        <%= column_sort_link(t(:text_status),'campaign_status',params[:col], '5%', "left",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"tablesorter"}.merge(h.merge(:search_item => false)))%>
+        <%= column_sort_link(t(:text_created_date),'campaigns.created_at',params[:col], '20%', "center",{:mode_type =>params[:mode_type],:letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"tablesorter"}.merge(h))%>
+        <%= column_sort_link(t(:text_start_date),'campaigns.starts_on',params[:col], '5%', "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"tablesorter"}.merge(h))%>
+        <%= column_sort_link(t(:label_end_date),'campaigns.ends_on',params[:col], '5%', "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"tablesorter"}.merge(h))%>
+
+        <%= column_sort_link(t(:text_1st_mailed_date),'first_mailed_date',params[:col], "8%", "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>""}.merge(h.merge(:search_item => false)))%>
+        <%= column_sort_link(t(:text_contacts),'member_count',params[:col], 15, "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>""}.merge(h.merge(:search_item => false)))%>
+        <%= column_sort_link(t(:text_total_b_responses),'responded_date',params[:col], 15, "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>""}.merge(h.merge(:search_item => false)))%>
+        <%= column_sort_link(t(:text_unattended_b_responses),'campaign_member_status_type_id',params[:col], 15, "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :per_page => params[:per_page], :action => "index",:class=>""}.merge(h.merge(:search_item => false)))%>
+        <%= column_sort_link(t(:text_opportunities),'opportunity',params[:col], 15, "center",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :per_page => params[:per_page], :action => "index",:class=>""}.merge(h.merge(:search_item => false)))%>
+        <%= column_sort_link(t(:text_value_d),'opportunity_amount',params[:col], '5%', "right",{:mode_type =>@mode_type, :letter=>params[:letter],:camp_status=>@camp_status, :action => "index", :per_page => params[:per_page],:class=>"txtR"}.merge(h.merge(:search_item => false)))%>
+        <th align="center" width="5%">
+          <%= t(:text_actions) %>
+          <div class="action_column" style="position: relative">
+            <div style="position: absolute; bottom: 0">
+              <%= f.submit "Go" ,{:style=>(params[:search_items] ? "" : "display:none;")}%>
+            </div>
+          </div>
+        </th>
+      </tr>
+      <% unless @campaigns.blank? %>
+        <% if @campaigns.length>0 %>
+          <%  @campaigns.each do |campaign| %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td>
+                <% if params[:camp_status] != "deactivated" %>
+                  <%= raw(truncate_hover_link_with_created_at(campaign.name.try(:capitalize),livia_date(campaign.created_at), 35, "#{edit_campaign_path(campaign,extra_parameters(params))}#fragment-6")) %>
+                <% else%>
+                  <%= truncate(campaign.name.try(:titleize), :length => 35) %>
+                <% end %>
+              </td>
+              <td>
+                <% if campaign.owner_employee_user_id %>
+                  <%= campaign.get_assigned_to %><span style="display:none;" class="<%= campaign.owner_employee_user_id %>"></span>
+                <% else %>
+                  <%= campaign.get_assigned_to %>
+                <% end %>
+              </td>
+              <td><%= campaign.campaign_status if campaign.campaign_status %></td>
+              <td align="center"><%= time_ago_in_words(campaign.created_at) %> <%= t(:text_ago) %></td>
+              <td align="center"><%= campaign.starts_on.to_time.strftime('%m/%d/%y') if campaign.starts_on %></td>
+              <td align="center"><%= raw livia_date_effect(campaign.ends_on)%></td>
+              <td align="center"><%= campaign.first_mailed_date.to_time.strftime('%m/%d/%y') if campaign.first_mailed_date %></td>
+              <td align="center"><%=campaign.members.length%></td>
+              <td align="center"><%= campaign.get_response_details(campaign.member_count,campaign.responded_date) %></td>
+              <% if params[:camp_status] != "deactivated" %>
+                <td align="center"><%= link_to(campaign.get_unattended_response_count, "#{edit_campaign_path(campaign,extra_parameters(params))}#fragment-3") %></td>
+                <td align="center"><%= raw link_to(campaign.get_opportunity_details(campaign.member_count,campaign.opportunity), "#{edit_campaign_path(campaign,extra_parameters(params))}#fragment-5") %></td>
+              <% else %>
+                <td align="center"><%= campaign.get_unattended_response_count %></td>
+                <td align="center"><%= raw campaign.get_opportunity_details(campaign.member_count,campaign.opportunities_count) %></td>
+              <% end %>
+              <td align="right"><%= raw number_with_lformat(campaign.opportunity_amount) %></td>
+              <td align="center">
+                <div class="icon_action mt3"><a href="#"></a></div>
+                <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                  <!--Icon table strt here -->
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <% if params[:camp_status] != "deactivated" %>
+                      <%=raw action_pad_top_blue_links({:edit_path=>"#{edit_campaign_path(campaign,extra_parameters(params))}#fragment-6",
+                          :deactivate_path=>campaign_path(campaign,extra_parameters(params)),
+                          :deactivate_text => "Campaign",
+                          :comment_path=>"/campaigns/comments/#{campaign.id}?height=300&width=800",
+                          :comment_title => campaign.name,
+                          :document_path=>"#{upload_document_document_homes_path(:params=>extra_parameters(params),:mappable_id => campaign.id, :from=>'campaigns')}",
+                          :history_path=>"#{history_comments_path(:id=>campaign.id,:commentable_type=>'Campaign' ,:height=>200,:width=>600)}",
+                          :history_title => "#{t(:text_campaign)} History #{campaign.name}"}) %>
+                      <tr>
+                        <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                        <td style="background: #fff;">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                            <tr>
+
+                              <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                              <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Change Status</span>", "#", :onclick=>"tb_show('#{t(:text_change_status_for_campaign)} #{campaign.name}', '/campaigns/change_status/#{campaign.id}?height=150&width=500', '' ); return false") %> </td>
+                              <td width="10%" align="center" valign="middle"><div class="ap_child_action"></div> </td>
+                              <td width="40%" align="left" valign="middle"><a href='<%= "#{edit_campaign_path(campaign)}#fragment-1" %>'>Add <%= t(:text_campaign) %> Members</a> </td>
+                            </tr>
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                            <tr>
+                              <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                              <td width="40%" align="left" valign="middle"><a href="#" onclick="tb_show('<%= campaign.name%> : Unattended Responses','<%= unattented_list_campaign_path(campaign.id) %>?height=350&width=750','')"><%=t(:label_View_Unattended_Responses)%></a> </td>
+                              <td width="10%" align="center" valign="middle"><div class="ap_child_action"></div> </td>
+                              <td width="40%" align="left" valign="middle"><a href="#" onclick="tb_show('<%= campaign.name%> : Suspended List','<%= suspended_list_campaign_path(campaign.id,extra_parameters(params)) %>&height=350&width=850','')"><%=t(:label_View_Suspended_List)%></a> </td>
+                            </tr>
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                      </tr>
+                    <% else %>
+                      <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                          :deactivate_path=> "NO",
+                          :deactivate_text => "NO",
+                          :comment_path=>"NO",
+                          :comment_title => "NO",
+                          :document_path=>"NO",
+                          :history_path=>"#{history_comments_path(:id=>campaign.id,:commentable_type=>'Campaign' ,:height=>200,:width=>600)}",
+                          :history_title => "#{t(:text_campaign)} History #{campaign.name}"}) %>
+                      <tr>
+                        <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+                        <td style="background: #fff;">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                            <tr>
+                              <td width="10%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                              <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Activate</span>", {:controller=>'campaigns',:action=>'activate_camp',:id=>campaign.id}, :confirm => "Are you sure you want to activate this #{t(:text_campaign)}?")%> </td>
+                              <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                              <td width="40%" align="left" valign="middle"><%=link_to "Delete", campaign_path(campaign,extra_parameters(params),:camp_status=>"deactivated"), :onClick => "return confirm_for_module_record_delete(this, '#{campaign.name}', 'Campaign','#{session[:_csrf_token]}','')", :method => :delete%></td>
+                            </tr>
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                      </tr>
+                    <% end %>
+                    <tr>
+                      <td valign="top" class="ap_bottom_curve_left"></td>
+                      <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                      <td valign="top" class="ap_bottom_curve_right"></td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan ='14'><%= render :partial =>"common/empty" %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<%end%>
+<%= raw all_pagination(@campaigns, params[:per_page], "bottom-pagination", campaigns_path(st), {:mode_type =>params[:mode_type],:campaign_type =>params[:campaign_type],:camp_status=>params[:camp_status],:action=>"index",:campaign_status =>params[:campaign_status],:letter=>params[:letter],:per_page=>params[:per_page]}) %>
+<div class="mandatory mt12">End Date:- <span id="red" class="red_text">Overdue</span>, <span style="color: #F88158" class="blink">Today</span>, <span>Upcoming</span>, <span class="weekend">Weekend</span></div>

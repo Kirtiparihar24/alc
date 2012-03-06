@@ -1,0 +1,91 @@
+<% @widths_hash = {"Rating" => "7%" , "Created" => "9%" , "Owner" => "10%","Status" => "10%" , "Source" => "11%" , "Email" => "18%" ,"Phone" => "12%" ,"#{t(:label_Account)}" => "11%" ,"Stage" => "11%" ,"Contact" => "12%"} %>
+<div class="w100">
+  <%unless @total_data.blank? %>
+    <div class="title_blue fl"><%= t(:text_total_records) %> = <%= @conditions[:col_length] %> </div>
+  <% end %>
+  <% if @format != "pdf" %>
+    <div class="fr textR pt5">
+      <%=raw(generate_send_email_rpt_link("contact_account_rpt")) unless params[:load_popup]%>
+      <%=raw(generate_rpt_fav_link("Contact")) unless params[:load_popup]%>
+      <%=raw(generate_reports_links("current_contact_rpt"))%>
+    </div>
+  <% end %>
+  <br class="clear" />
+</div>
+<%unless @total_data.blank?
+  @total_data.each do |label,data|
+    if data.class == Array %>
+      <div class="mt5">
+        <div class="w100">
+          <div class="title_blue  fl" ><%= ((label == "" or !label) ? "None" : label) %><span> (<%= pluralize_record(data.length , 'Record',0)%>)</span></div>
+          <div class="fr textR"> <%# links %> </div>
+          <br class="clear" />
+        </div>
+        <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => data} %>
+      </div>
+      <% reset_cycle %>
+    <%else%>
+      <%
+      (label == "" or !label) ? label = "None" : ""
+    %>
+      <div class="title_blue  fl" >
+        <%=label%> : Contacts (<%=@conditions[label]%> Records)
+      </div>
+      <br class="clear" />
+      <%data.each do |account,col|%>
+        <div class="mt5">
+          <div class="w100">
+            <div class="title_blue  fl" >
+              <%= account %> <span>(<%= pluralize_record(col.length , 'Record',1)%>)</span>
+            </div>
+            <div class="fr  textR">
+        <%# no links%>
+            </div>
+            <br class="clear" />
+          </div>
+          <!--Tabular container div @start here -->
+          <div class="tabular_listing">
+            <table width="100%" cellpadding="1" cellspacing="1">
+              <thead>
+                <tr>
+                  <% index = @table_headers.index("Rating")
+                  created = @table_headers.index("Created")
+                  @table_headers.each do |header| %>
+                    <th width="<%=@widths_hash[header]%>" align="left"><%=header%></th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <% col.each do |contact| %>
+                  <tr class="<%= cycle('bg1', 'bg2') %>">
+                    <% contact.each_with_index do |e,i| %>
+                      <% if i == index %>
+                        <td>
+                          <% e.times do %>
+                            <span class="icon_star_full fl mt4 mr5"></span>
+                          <% end %>
+                          <% (3-e).times do %>
+                            <span class="icon_star_empty fl mt4 mr5"></span>
+                          <% end %>
+                        </td>
+                      <% else %>
+                        <td<%= " align='center'" if i==created %>><%= e %></td>
+                      <% end %>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <% reset_cycle %>
+          </div>
+          <!--Tabular container div #ends here -->
+        </div>
+      <% end %>
+    <%end%>
+    <br class="clear" />
+  <%end%>
+  <div class="title_blue fl"><%= pluralize_record(@conditions[:col_length] , 'Record', 1) %></div>
+<% else %>
+  <div class="title_blue fl"><%= pluralize_record(0 , 'Record', 1) %></div>
+<% end %>
+<br class="clear" />

@@ -1,0 +1,31 @@
+<div class="calenderDiv_tabular">
+  <% if activity=="tasks" %>
+    <table width="100%" cellpadding="1" cellspacing="0">
+      <tr>
+        <% unless matter_or_people %><th width="27%" align="left">Matter Name </th><% end %>
+        <th width="35%" align="left">Task Name</th>
+        <% if matter_or_people %><th width="27%" align="left">Assign To</th><% end %>
+        <th width="8%" align="left">Start Date</th>
+        <th width="8%" align="left">Due Date</th>
+        <th width="8%" align="left">Complete Date</th>
+        <th width="9%" align="left">Status</th>
+        <th width="5%" align="center"> </th>
+      </tr>
+      <tr><td colspan="7" class="bg7">No Data Found </td></tr>
+    </table>
+  <% else %>
+    <table width="100%" cellpadding="1" cellspacing="0">
+      <tr>
+        <% unless matter_or_people %><th width="27%" align="left">Matter Name </th><% end %>
+        <th width="35%" align="left">Task Name</th>
+        <% if matter_or_people %><th width="27%" align="left">Assign To</th><% end %>
+        <th width="8%" align="left">Start Date</th>
+        <th width="8%" align="left">End Date</th>
+        <th width="8%" align="left">Start Time</th>
+        <th width="9%" align="left">End  Time</th>
+        <th width="5%" align="center"> </th>
+      </tr>
+      <tr><td colspan="7" class="bg7">No Data Found </td></tr>
+    </table>
+  <% end %>
+</div>

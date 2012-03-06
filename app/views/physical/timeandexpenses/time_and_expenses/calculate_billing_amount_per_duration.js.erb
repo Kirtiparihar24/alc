@@ -1,0 +1,25 @@
+jQuery('#bill_amount').html("<%=number_with_lformat(@billed_amount)%>");
+jQuery('#final_billed_amount').html("<%=number_with_lformat(@final_billed_amount)%>");
+obj=jQuery('#physical_timeandexpenses_time_entry_actual_duration');
+rateObj = jQuery('#physical_timeandexpenses_time_entry_actual_activity_rate');
+if(obj.length > 0 && obj.val() !=""){
+  try{
+    var actualDuration = parseFloat(obj.val());
+      if(isNaN(actualDuration)){
+    }else{
+      obj.val(actualDuration.toFixed(2));
+    }
+  }catch(e){
+    alert(e);
+  }
+}
+if(rateObj.length > 0 && rateObj.val() !=""){
+  try{
+    var rate = parseFloat(rateObj.val());
+      if(isNaN(rate)){
+    }else{
+      rateObj.val(rate.toFixed(2));
+    }
+  }catch(e){
+  }
+}

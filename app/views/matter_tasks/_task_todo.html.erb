@@ -1,0 +1,27 @@
+<% is_popup = (!params[:from].blank? and (params[:from] == 'calendars' || 'notes')) ? true : false %>
+<% tstart_date_id = (is_popup ? 'matter_task_start_date_todo_calendar' : 'matter_task_start_date_todo_activity') %>
+<% tend_date_id = (is_popup ? 'matter_task_end_date_todo_calendar' : 'matter_task_end_date_todo_activity') %>
+<div class="<% params[:load_popup].nil? ? '': 'f1 w100'%>">
+  <table width="91%" cellspacing="0" cellpadding="0" border="0" class="highlight_bg_1">
+    <tbody>
+      <tr valign="top">
+        <td width="7%" valign="middle" align="left">&nbsp;<%= t(:text_priority)%></td>
+        <td width="10%" valign="top" align="left">
+          <%= f.select :priority, MatterTask::PRIORITIES,{:selected => @matter_task.priority || "5"} %>
+        </td>        
+        <td width="8%" valign="middle" nowrap="nowrap" align="left">Start Date<span class="alert_message">*</span></td>
+        <td width="8%" valign="top" align="left"><%= f.text_field :start_date_todo,:value=> @matter_task.start_date ? @matter_task.start_date.to_date : '', :size => "12", :class => "date_picker",:start_date => true, :id => tstart_date_id %></td>
+        <td width="9%" valign="middle" nowrap="nowrap" align="left"><%= t(:text_due_date)%><span class="alert_message">*</span></td>
+        <td width="12%" valign="top" align="left"><%= f.text_field :end_date_todo,:value=> @matter_task.end_date ? @matter_task.end_date.to_date : '', :size => "12" , :class => "date_picker",:end_date => true, :id => tend_date_id %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#matter_task_start_date_todo_calendar");
+    livia_matter_inception_datepicker_new("#matter_task_end_date_todo_calendar");
+    livia_matter_inception_datepicker_new("#matter_task_start_date_todo_activity");
+    livia_matter_inception_datepicker_new("#matter_task_end_date_todo_activity");
+  });
+</script>

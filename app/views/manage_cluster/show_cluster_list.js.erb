@@ -1,0 +1,5 @@
+<%if @user.service_provider%>
+  jQuery('#service_provider_cluster_list').html("<%=escape_javascript(render(:partial => "show_cluster_list"))%>");
+<%else%>
+  jQuery('#lawfirm_user_cluster_list').html("<%=escape_javascript(render(:partial => "show_cluster_list"))%>");
+<%end%>

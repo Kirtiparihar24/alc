@@ -1,0 +1,32 @@
+<% subproducts_blank = @subproducts.blank? %>
+<div class="box-head"><h2><%=t(:text_modules_listing)%></h2></div>
+<div class="actionLinks"><%= link_to t(:label_new_module), new_subproduct_path %></div>
+<%unless subproducts_blank%>
+  <div class="watermark right"><%=raw custom_page_entries_info @subproducts %></div>
+<%end%>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="42%" align="left"><%=t(:text_module_name)%></th>
+      <th width="39%" align="left"><%=t(:text_parent_product)%></th>
+      <th width="19%" align="left"><%=t(:text_action)%></th>
+    </tr>
+    <%if subproducts_blank %>
+      <tr><td width="42%" align="left"><%=t(:text_no_records_found_for_subproduct)%></td></tr>
+    <% else %>
+      <% @subproducts.each do |subproduct| %>
+        <tr>
+          <td width="42%" align="left"> <%= subproduct.name%></td>
+          <td width="39%" align="left"><%= subproduct.product_subproducts.first.product.name rescue "-" %></td>
+          <td width="19%" align="left"><a href="#"><%= link_to "Edit", edit_subproduct_path(:id=>subproduct.id) %></a></td>
+        </tr>
+      <%end%>
+    <%end%>
+  </table>
+</div>
+<div class="pagging">
+  <%unless subproducts_blank%>
+    <div class="left"><%=raw custom_page_entries_info @subproducts %></div>
+    <div class="right"><%=will_paginate @subproducts, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%></div>
+  <%end%>
+</div>

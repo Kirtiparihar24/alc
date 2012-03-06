@@ -1,0 +1,472 @@
+<% currentuser = params[:from].present? ? @current_employee_user.full_name : "" %>
+<div class="column_main01 mb8">
+  <!--Title main starts-->
+  <h2 id="toggle_busi_cont_detail_toggle" class="title_main">
+    <div class="fl"><%= t(:label_search) %></div>
+    <div class="fr pt7"><%= image_tag("/images/icon_small_plus.png", :width => 12, :height => 12, :id => "plusminusicon", :title => "Display Search", :name => "Display Search", :onclick => "var search = 'false'; search_toggle( search );") %></div>
+  </h2>
+  <div id="toggle_busi_cont_detail_div">
+    <div class='message_error_div' id="notice" style="display: none;">
+      <%= t(:flash_mandatory_fields) %>
+    </div>
+    <div id="search" class="w100 pt5 pb5" >
+      <div align="center">
+        <span class="heading"><%= t(:label_search)%> <span class="alert_message">*</span></span>
+        <span>
+          <%= text_field_tag :text_search, "#{@company.name}", :size => "40", :class => 'textgray' %>
+          <%= hidden_field_tag 'mapable', params[:selected_node] %>
+        </span>
+        <span>
+          <%= link_to(image_tag('../../images/zoom_icon.png', {:alt =>"Search", :id => "contextual_search", :title => "Search", :style => "margin-bottom:-6px;", :onClick => "document_managers_search( this, '' );", :border => 0, :hspace => "0"}), '#') %>
+        </span>
+        <div class="advance_search_link pl10" style="display:inline"><a href="#" onclick="toggle_advance_search( false ); changeValue(jQuery(this))" onBlur="trackValue(jQuery(this), 'Search in <%= params[:mapable_type] %>')" value="Search in <%= params[:mapable_type] %>"><%= t(:label_advance_search) %></a></div>
+      </div>
+    </div>
+    <!--Title main starts-->
+    <div id="advance_search" class="p5 w99" style="overflow:auto; display:none;">
+      <!--w100 class starts-->
+      <div class="w100 ptb10 ">
+        <h5>Common</h5>
+        <!--Left col-->
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_document_name)%> <span class="alert_message">*</span></td>
+              <td width="70%"><input id="document_name_adv" type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_document_extension) %></td>
+              <td width="70%"><input id="document_extension"type="text" value="" size="8"/></td>
+            </tr>
+            <tr>
+              <td width="30%" valign="top"><%=t(:text_document_description)%></td>
+              <td width="70%"><textarea id="document_description"name="" cols="38" rows="5"></textarea></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:text_uploaded_by) %></td>
+              <td width="70%"><input id="uploaded_by"type="text" value="<%= currentuser %>" size="35"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_owner) %></td>
+              <td width="70%"><input id="owner"type="text" value="<%= currentuser %>" size="35"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_search_within_module) %></td>
+              <td width="70%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <% if can? :manage, :workspace %>
+                      <td>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Workspace', false %>
+                          <label for="option1"><%= @current_employee_user.full_name %></label>
+                        </div>
+                      </td>
+                    <% end %>
+                    <% if can? :manage, :repository %>
+                      <td>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Repository', false %>
+                          <label for="option1"><%= t(:text_menu_repository) %></label>
+                        </div>
+                      </td>
+                    <% end %>
+                    <td>
+                      <% if can? :manage, Contact %>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Contact',false,{:onclick=>"jQuery('#contact_div').toggle();"} %>
+                          <label for="option1"><%= t(:text_menu_contacts) %></label>
+                        </div>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <% if can? :manage, Account %>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Account',false,{:onclick=>"jQuery('#account_div').toggle();"} %>
+                          <label for="option1"><%= t(:text_menu_accounts) %></label>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if can? :manage, Opportunity %>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Opportunity', false, {:onclick => "jQuery('#opportunity_div').toggle();"} %>
+                          <label for="option1"><%= t(:text_menu_opportunity) %></label>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if can? :manage, Matter %>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Matter', false, {:onclick => "jQuery('#matter_div').toggle();"} %>
+                          <label for="option1"><%= t(:text_menu_matter) %></label>
+                        </div>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <% if can? :manage, :time_and_expense %>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Physical::Timeandexpenses::TimeEntry', false, {:onclick => "jQuery('#tne_div').toggle();"} %>
+                          <label for="option1"><%= t(:text_menu_tne) %></label>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if can? :manage, Campaign %>
+                        <div class="radio-check">
+                          <%= check_box_tag 'mapable_type[]', 'Campaign', false, {:onclick => "jQuery('#campaign_div').toggle();"} %>
+                          <label for="option1"><%= t(:text_menu_campaign) %></label>
+                        </div>
+                      <% end %>
+                    </td>
+                    <td>
+                      <div class="radio-check"></div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="30%">&nbsp;</td>
+              <td width="70%">&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+        <!--Left col ends-->
+        <!--Right col-->
+        <div class="w48 fr">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= "#{t(:label_document)} #{t(:label_tag)}"%></td>
+              <td width="70%"><input id="document_tag"type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td align="left"><label><%= t(:label_type) %></label></td>
+              <td align="left"><%= select_tag("search_document_type", '<option value="All">All</option>' + options_for_select(@categories.collect{|stage|[stage.alvalue, stage.id]}, params[:category].to_i)) %></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_Creation_Date) %></td>
+              <td width="70%">
+                <table width="100%" border="0">
+                  <tr>
+                    <td><input type="radio" id="radio" name="search_date" CHECKED onClick="disable_date();" /></td>
+                    <td><%= t(:text_dont_remember)%></td>
+                  </tr>
+                  <tr>
+                    <td><input type="radio" id="radio2" name="search_date" value="2" onClick="disable_date();" /></td>
+                    <td><%= t(:text_within_the_last_week) %></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td><input type="radio" id="radio3" name="search_date" value="3" onClick="disable_date();" /></td>
+                    <td><%= t(:text_past_month) %></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td width="4%"><input type="radio" id="radio4" name="search_date" value="4" onClick="disable_date();" /></td>
+                    <td width="40%"><%= t(:text_within_the_past_year) %></td>
+                    <td width="6%">&nbsp;</td>
+                    <td width="23%">&nbsp;</td>
+                    <td width="4%">&nbsp;</td>
+                    <td width="23%">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td width="4%"><input type="radio" id="search_date" name="search_date" value="5" onClick="enable_date();"/></td>
+                    <td colspan="5"><%= t(:text_specify_date)%>&nbsp;<select class="option_left" id="search_date_type" name="select2">
+                        <option><%= t(:text_modified_date) %></option>
+                        <option><%= t(:text_created_date) %></option>
+                      </select></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td width="4%"></td>
+                    <td colspan="5">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                          <td width="10%"><%= t(:text_from) %></td>
+                          <td width="40%"><input type="text" id="search_from_date" value='' readOnly="true" class="date_picker" size="10"  /></td>
+                          <td width="6%"><%= t(:text_to) %></td>
+                          <td width="40%"><input type="text" id="search_to_date" value="" readOnly="true" class="date_picker" size="10"  /></td>
+                          <!--td width="30%"></td-->
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="30%">&nbsp;</td>
+              <td width="70%">&nbsp;</td>
+            </tr>
+          </table>
+        </div>
+        <!--Right col ends-->
+      </div>
+      <!--w100 class ends-->
+      <!--w100 class starts-->
+      <div id="contact_div" style="display: none;" class="w100 border_top_gray pt15p pb15 fl">
+        <h5><%= t(:text_menu_contacts) %></h5>
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_contacts)%> <%= t(:text_name)%></td>
+              <td width="70%"><input id="contact_name" type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="account_div" style="display: none;" class="w100 border_top_gray pt15p pb15 fl">
+        <h5><%= t(:text_menu_accounts) %></h5>
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_accounts) %> <%= t(:text_name)%></td>
+              <td width="70%"><input id="account_name" type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+        <div class="w48 fr">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:label_primary_contact) %></td>
+              <td width="70%"><input id="accounts_primary_contact"type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="opportunity_div" style="display: none;" class="w100 border_top_gray pt15p pb15 fl">
+        <h5><%=  t(:text_menu_opportunity) %></h5>
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:label_opportunities)%> <%= t(:text_name)%></td>
+              <td width="70%"><input id="opportunity_name" type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+        <div class="w48 fr">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_contacts)%> <%= t(:text_name)%></td>
+              <td width="70%"><input id="opportunity_contact"type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div id="matter_div" style="display: none;" class="w100 border_top_gray pt15p pb15 fl">
+        <% matter_name, lead_lawyer, matter_contact, matter_account = "", "", "", ""%>
+        <% if @matter %>
+          <% matter_name = @matter.name %>
+          <% lead_lawyer = @matter.get_lawyer_name %>
+          <% matter_contact =@matter.contact.try(:full_name) %>
+          <% matter_account =@matter.account_name %>
+        <% end %>
+        <h5><%= t(:text_menu_matter) %></h5>
+        <!--Left col-->
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_matter_name) %></td>
+              <td width="70%"><input id="matter_name"type="text" value="<%= matter_name %>" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_lead_lawyer) %></td>
+              <td width="70%"><input id="matter_lead_lawyer"type="text" value="<%= lead_lawyer %>" size="40" /></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:text_contact) %></td>
+              <td width="70%"><input id="matter_contact"type="text" value="<%= matter_contact %>" size="40" /></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:text_account) %></td>
+              <td width="70%"><input id="matter_account"type="text" value="<%= matter_account %>" size="40" />
+              </td>
+            </tr>
+            <tr>
+              <td align="left"><%= t(:text_access_rights) %></td>
+              <td align="left">
+                <table width="100%" border="0">
+                  <tbody>
+                    <tr>
+                      <td><input type="checkbox" class="check search_ckb_privilege" id="disable_private" value="1" /></td>
+                      <td><%= t(:text_private) %></td>
+                      <td><input type="checkbox"  class="check search_ckb_privilege" value="4" /></td>
+                      <td><%= t(:text_select_view) %></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" value="3" class="check search_ckb_privilege" /></td>
+                      <td><%= t(:text_matter_view) %></td>
+                      <td><input type="checkbox" class="check search_ckb_privilege" value="2" /></td>
+                      <td><%= t(:text_public) %></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_include) %> <%= t(:label_matter) %></td>
+              <td width="70%">
+                <input type="checkbox" class="check" id="matter_sub_matter" value="1" />
+              </td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:label_privilege) %></td>              
+              <td width="70%"><%= select_tag("privilege", '<option value="All">All</option>' + options_for_select(@company.matter_privileges.collect{|privilage| [privilage.alvalue, privilage.id]}, '')) %></td>
+            </tr>
+            <tr>
+              <td width="30%"><%= t(:text_clients_documents) %></td>
+              <td width="70%"><%= check_box_tag 'client_docs', '', false %></td>
+            </tr>
+          </table>
+        </div>
+        <!--Left col ends-->
+        <!--Right col-->
+        <!-- Do Not Remove this commented code : Pratik Jadhav-->
+        <!-- <div class="w48 fr">        
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">T of E</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Activities</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Issues</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Risk</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Facts</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Research</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Billing</label>
+                </div></td>
+              <td width="70%"><input type="text" value="" size="40"/></td>
+            </tr>
+            <tr>
+              <td width="30%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Include SubMatter</label>
+                </div></td>
+              <td width="70%"><div class="radio-check">
+                  <input id="option1" type="checkbox" name="opt"/>
+                  <label for="option1">Include documents</label>
+                </div></td>
+            </tr>
+          </table>
+        </div> -->
+        <!--Right col ends-->
+      </div>
+      <!--w100 class ends-->
+      <div id="tne_div" style="display: none;" class="w100 border_top_gray pt15p pb15 fl">
+        <h5><%= t(:text_menu_tne) %></h5>
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_employee) %> <%= t(:text_name) %></td>
+              <td width="70%"><input id="tne_employee_name" type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+        <!--<div class="w48 fr">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%">Activity</td>
+              <td width="70%"><input id="tne_activity"type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>-->
+      </div>
+      <div id="campaign_div" style="display: none;" class="w100 border_top_gray pt15p pb15 fl">
+        <h5><%= t(:text_menu_campaign) %></h5>
+        <div class="w48 fl">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_campaigns) %> <%= t(:text_name) %></td>
+              <td width="70%"><input id="campaigns_name" type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+        <div class="w48 fr">
+          <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+            <tr>
+              <td width="30%"><%= t(:text_select_a_campaign) %></td>
+              <td width="70%"><input id="parent_campaign"type="text" value="" size="40"/></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!--w100 class starts-->
+      <div class="w100 fl">
+        <div class="buttonSub_div border_top_gray">
+          <input type="submit" class="button" value="Search" name="save" id="submit_search" onclick="document_managers_search( this, '' );"/>
+          <input type="button" class="button" value="<%= t(:label_reset) %>" onclick="reset_advance_search_form();" />
+        </div>
+        <div class="advance_search_link pl10" style="display:inline"><a href="#" onclick="toggle_advance_search(true);">Contextual Search</a></div>
+      </div>
+    </div>
+    <div class="mandatory"><span class="alert_message">*</span><%=t (:label_Required_field)%></div>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery('#document_name_adv').val("<%= params[:contextual] %>");
+    jQuery('.ui-datepicker-trigger').attr('disabled', true);
+    search_date_enable_disable()
+    search_toggle("Open");
+    var textval,selectedval
+    jQuery("#text_search").click(function(){
+      selectedval = jQuery.trim(jQuery(".jstree-clicked").text());
+      textval =jQuery.trim(this.value);
+      if ( textval == selectedval ){
+        this.value = "";
+      }
+      jQuery(this).removeClass('textgray');
+    }).blur(function(){
+      if( this.value == "" ){
+        jQuery(this).addClass('textgray');
+        this.value = jQuery.trim(jQuery(".jstree-clicked").text());
+      }
+    });
+  });
+</script>

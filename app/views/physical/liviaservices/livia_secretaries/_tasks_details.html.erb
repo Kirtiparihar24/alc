@@ -1,0 +1,59 @@
+<div class="col2 mt5">
+  <div class="gridDiv">
+    <div class="titleHead" id="tasksToggle">
+      <div class="fl"><%=t(:text_task)%>&nbsp;&nbsp;(<%=@tasks.blank? ? 0:@tasks.size%>)</div>
+      <div class="fr ptr5">
+        <%if @dont_hide_task.nil?%>
+          <%=image_tag "/images/cgc_images/icon_max.gif",:alt =>"Maximize",:class =>"toggle_tasks icon_show" %>
+          <%=image_tag "/images/cgc_images/icon_min.gif",:alt =>"Minimize",:class =>"toggle_tasks icon_hide" %>
+        <%else%>
+          <%=image_tag "/images/cgc_images/icon_max.gif",:alt =>"Maximize",:class =>"toggle_tasks icon_hide" %>
+          <%=image_tag "/images/cgc_images/icon_min.gif",:alt =>"Minimize",:class =>"toggle_tasks icon_show" %>
+        <%end%>
+      </div>
+      <br class="clear"/>
+    </div>
+    <div class="gryBox" id="task_div" style="<%=@dont_hide_task.nil? ? 'display:none;' : ''%>">
+      <div class="tabularDiv">
+        <div class="heading">
+          <div class="fl pl5 txtL w1"><%=image_tag "/images/cgc_images/icon_!.gif",:alt=>"Alert",:title=>"Alert"%></div>
+          <div class="fl pl5 w20 txtL"><%=t(:text_name)%></div>
+          <div class="fl pl5 w37 txtL"><%=t(:text_task)%></div>
+          <div class="fl pl5 w19 txtL"><%=t(:text_notes_created_time)%></div>
+          <div class="fr pl5 w18 txtL"><%=t(:text_task_created_time)%></div>
+          <br class="clear" />
+        </div>        
+        <% unless  @tasks.blank? %>
+          <% for task in @tasks %>
+            <div class="<%=cycle("bg2 textNormal", "bg1 textNormal")-%>" >
+              <%if task.communication.note_priority.eql?(2) %>
+                <div class="fl pl5 w1"><%=image_tag "/images/cgc_images/icon_!.gif",{:alt=>"Alert",:title=>"Alert"}%></div>
+              <%else%>
+                <div class="fl pl5 w1">&nbsp;</div>
+              <%end%>
+              <div class="fl pl5 w20"><%=  task.first_name.blank? || task.last_name.blank? ? task.username : (task.first_name + ' ' +task.last_name) %></div>
+              <div class="fl pl5 w37">
+                <ul class="bultList livia_notestask">
+                  <% if task.name.length > 45 %>
+                    <li><%=link_to(truncate(task.name, 45, "..."),{:controller=>'/communications',:action =>'edit_task',:id=>"#{task.id.to_s}"} ,:class=>"faceboxtasksdet")%></li>
+                    <span class="livia_notestask_view" style="display:none;"><%=task.name%></span>
+                  <%else%>
+                    <li><%=link_to(task.name,{:controller=>'/communications',:action =>'edit_task',:id=>"#{task.id.to_s}"} ,:class=>"faceboxtasksdet")%></li>
+                  <%end%>
+                </ul>
+              </div>
+              <div class="fl pl5 w19"><%=time_ago_in_words(task.communication.created_at)%></div>
+              <div class="fr pl5 w18"><%=time_ago_in_words(task.created_at)%></div>
+              <br clear="all" />
+            </div>
+          <%end%>
+        <%else%>
+          <div class="warningCont m5"><%=t(:text_no_task_created)%></div>
+        <%end%>
+        <%=link_to(t(:text_get_next), physical_liviaservices_get_next_task_path,:class=>"fr linkbutton")%>
+        <br class="clear"/>
+      </div>
+    </div>
+  </div>
+  <br class="clear" />
+</div>

@@ -1,0 +1,132 @@
+<td><div class="<%= bill.automate_entry? ? "icon_system" : "icon_manual" %> vtip" name="<%= bill.automate_entry? ? t(:text_system) : t(:text_manual) %>" title="<%= bill.automate_entry? ? t(:text_system) : t(:text_manual) %>"></div></td>
+<td><%= bill.bill_no %></td>
+<td align="center"><%= livia_date(bill.bill_pay_date.to_time) %></td>
+<td><%= bill.user.try(:current_lawyer).try(:full_name) %></td>
+<td align="right"><%= livia_amount(bill.try(:bill_amount)) %></td>
+<td align="right"><%= livia_amount(bill.try(:computed_bill_amount_paid)) %></td>
+<td align="center"><%= livia_date(bill.try(:bill_due_date)) %></td>
+<td align="right"><%= livia_amount(bill.try(:computed_bill_amount_due)) %></td>
+<td><%= bill.matter_billing_status.try(:alvalue) %></td>
+<td align="center">
+  <div class="icon_action mt3"><a href="#"></a></div>
+  <div id="liquid-roundAP" class="tooltip" style="display:none;">
+    <!--Icon table strt here -->
+    <table width="100%" border="1" cellspacing="0" cellpadding="0">
+      <% cancelledbill = bill.matter_billing_status.try(:lvalue)=="Cancelled" %>
+      <% if cancelledbill %>
+        <%cancelled_tne_invoice=bill.cancelled_system_bill%>
+        <%= raw action_pad_top_blue_links({ :edit_path => "NO",
+            :edit_text => "NO",
+            :deactivate_path => "NO",
+            :comment_path => "NO",
+            :document_path => "NO",
+            :history_path => (bill.automate_entry? && !cancelled_tne_invoice.blank?) ? history_comments_path(:id=>cancelled_tne_invoice.id,:commentable_type=>'TneInvoice',:height=>150,:width=>600) : billing_history_matter_matter_billing_retainer_path(@matter,bill, :width => 600, :height=>300),
+            :history_title => "Invoice History"
+          }) %>
+      <% else %>
+        <%= raw action_pad_top_blue_links({ :edit_path => bill.automate_entry? ? edit_tne_invoice_path(bill.tne_invoice_id,:flag=>"matters") : edit_bill_matter_matter_billing_retainer_path(@matter, bill, :height => 250, :width => 500, :title => t(:label_record_receipt),:flag=>"matter_billing"),
+            :edit_modal => bill.automate_entry? ? false : true,
+            :edit_text => "Edit Invoice <span class='title_value'>#{bill.bill_no}</span>",
+            :deactivate_path => "NO",
+            :comment_path => "NO",
+            :document_path => "NO",
+            :history_path => (bill.automate_entry? && !bill.tne_invoice.blank?) ? history_comments_path(:id=>bill.tne_invoice.id,:commentable_type=>'TneInvoice',:height=>150,:width=>600) : billing_history_matter_matter_billing_retainer_path(@matter,bill, :width => 600, :height=>300),
+            :history_title => "Invoice History"
+          }) %>
+      <% end %>
+      <tr>
+        <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+        <td style="background: #fff;">
+          <% billinvoice_doc = (bill.tne_invoice.comments.first.document_homes.last if (bill.tne_invoice.comments && bill.tne_invoice.comments.first.document_homes.last)) if bill.automate_entry? && bill.tne_invoice %>
+          <%if (bill.automate_entry? && bill.tne_invoice && !bill.tne_invoice.comments.blank? && billinvoice_doc.nil?)
+            billinvoice_doc = (bill.tne_invoice.comments.collect{|c| c.document_homes.last if !c.nil? && c.document_homes  }).compact.first
+          end%>
+          <% bill_doc =  bill.automate_entry? ? billinvoice_doc : bill.get_document %>
+          <% bill_doc_xls = (bill.tne_invoice.comments.first.document_homes.first if (bill.tne_invoice.comments && bill.tne_invoice.comments.first.document_homes.first)) if bill.automate_entry? && bill.tne_invoice%>
+          <%if (bill.automate_entry? && bill.tne_invoice && !bill.tne_invoice.comments.blank? && bill_doc_xls.nil?)
+            bill_doc_xls = (bill.tne_invoice.comments.collect{|c| c.document_homes.first if !c.nil? && c.document_homes  }).compact.first
+          end%>
+          <div class="fl pb5"  style="width:165px;">
+            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+              <tr>
+                <td width="7%" align="left" valign="middle"><img src="/images/icon_child_action.png" width="15" height="14" /></td>
+                <% automate = bill.automate_entry && bill.tne_invoice.present? %>
+                <% tneinvoice = automate ? bill.tne_invoice : bill %>
+                <td align="left" valign="middle" width="40%"> <%= cancelledbill ? "<span class='action_pad_inactive'>Change Status</span>" : (link_to "Change Status", change_status_tne_invoice_path(tneinvoice, :height => 200, :width=>350, :automate => automate,:from_matter_billing => true), :class=>"thickbox", :name => "Change Status") %> </td>
+              </tr>
+            </table>
+          </div>
+          <div class="fl pb5"  style="width:165px;">
+            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+              <tr>
+                <% if automate %>
+                  <td align="left" valign="middle" width="7%"><div class="ap_child_action"></div></td>
+                  <td align="left" valign="middle" width="40%"><%= cancelledbill ? "<span class='action_pad_inactive'>Regenerate Invoice</span>" : (link_to "Regenerate Invoice", regenerate_tne_invoice_path(bill.tne_invoice_id,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:q=>params[:q],:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status]),:confirm=>"This will discard all changes you have made to individual T&E entries while generating bill. Are you sure to proceed?") %></td>
+                <% else %>
+                  <td width="7%" align="left" valign="middle"><img src="/images/icon_child_action.png" width="15" height="14" /></td>
+                  <td align="left" valign="middle" width="40%"><span class='action_pad_inactive'>Regenerate Invoice</span></td>
+                <% end %>
+              </tr>
+            </table>
+          </div>
+          <div class="fl pb5"  style="width:165px;">
+            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+              <tr>
+                <td width="7%" align="left" valign="middle"><img src="/images/icon_child_action.png" width="15" height="14" /></td>
+                <td width="40%" align="left" valign="middle" nowrap>
+                  <%= cancelledbill ? "<span class='action_pad_inactive'>#{t(:label_record_receipt)}</span>" : link_to("<span>#{t(:label_record_receipt)}</span>",  edit_bill_payment_details_matter_matter_billing_retainer_path(@matter, bill, :width => 500, :height => 350, :page_reload => "true",:flag=>"matters"), :class => "thickbox", :name => t(:label_record_receipt))%>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <%unless bill_doc.blank?%>
+            <div class="fl pb5"  style="width:165px;">
+              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                <tr>
+                  <td width="26"><div class="ap_child_action"></div></td>
+                  <td nowrap class="ml5">
+                    <%if bill.automate_entry?%>
+                      <span class="fl mr5">Download </span>
+                      <%= link_to "<span class='icon_pdf fl mr5'></span>", document_home_path(bill_doc.latest_doc.id),{:class=> "vtip",:title=>"PDF"}%>
+                      <%= link_to "<span class='icon_xls fl mr5'></span>", document_home_path(bill_doc_xls.latest_doc.id),{:class=> "vtip",:title=>"XLS"}%>
+                    <%else%>
+                      <%=link_to("Download Invoice", document_home_path(bill_doc.latest_doc.id))%>
+                    <%end%>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          <%end%>
+          <% if !bill.automate_entry?  && !bill.get_document.nil? %>
+            <div class="fl pb5"  style="width:165px;">
+              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                <tr>
+                  <td width="26"><div class="icon_supercede_document fl"></div></td>
+                  <td nowrap class="ml5"><%= link_to("<span>#{t(:label_superseed)}</span>", "#{supercede_or_replace_document_document_home_path(bill.get_document)}?height=235&width=600&matter_id=#{params[:matter_id]}&display=from_matter_bill&bill_id=#{bill.id}", :class => "thickbox", :name => "#{t(:label_superseed)}")%></td>
+                </tr>
+              </table>
+            </div>
+          <%end%>
+          <% automate = bill.automate_entry && bill.tne_invoice.present? %>
+          <% tneinvoice = automate ? bill.tne_invoice : bill %>
+          <div class="fl pb5"  style="width:165px;">
+            <table width="100%" border="0" cellpadding="2" cellspacing="2">
+              <tr>
+                <%= matter_billing_cancel_links(cancelledbill, matter_matter_billing_retainer_path(@matter, bill), 'left') %>
+              </tr>          
+            <tr>
+              <td colspan="4"><div class="ap_pixel10"></div></td>
+            </tr>
+          </table>
+          </div>
+        </td>
+        <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+      </tr>
+      <tr>
+        <td valign="top" class="ap_bottom_curve_left"></td>
+        <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+        <td valign="top" class="ap_bottom_curve_right"></td>
+      </tr>
+    </table>
+  </div>
+</td>

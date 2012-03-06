@@ -1,0 +1,291 @@
+<div id="container-1">
+  <%= render :partial => "matters/matter_tabs" %>
+  <div class="tabs-container-tabs xtabs-hide tabular_listing tabs-container" id="fragment-9" style="min-width: 0px;">
+    <% form_for(@matter,:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+      <%=hidden_field_tag :button_pressed%>
+      <%=hidden_field_tag 'is_parent_complete' , (@matter.parent_id.nil? ? false : @matter.parent.completed? ) %>
+      <%=hidden_field_tag 'initial_parent_id' , @matter.parent_id %>
+      <% status_arr = current_company.matter_statuses 
+      complete_status = status_arr.select{|status| status.lvalue == 'Completed'} %>
+      <%= hidden_field_tag 'complete_status_id', complete_status[0].id %>
+      <%= hidden_field_tag 'is_complete', @matter.completed? %>
+      <%= f.hidden_field :sequence_no_used,:id=>'sequence_no_used_id' %>
+      <%= hidden_field_tag 'matter_status',params[:matter_status] if params[:matter_status] %>
+      <%= hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller]) %>
+
+      <div class="form_table p5">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td width="76%" style="padding:0">
+                <%=render :partial => "matter_contact_account" %>
+              </td>
+            </tr>
+          </tbody></table>
+        <div class="seperator_dotted_hori"></div>
+        <% if(@matter.errors.length > 0) %>
+          <div class="message_error_div"><%= f.error_messages %></div>
+        <% end %>
+        <table cellspacing="3" cellpadding="3" width="100%">
+          <tbody>
+            <tr>
+              <td width="15%"><label><%= t(:label_matter_id) %></label> <span class="alert_message">*</span></td>
+              <td width="44%"><%= f.text_field :matter_no,:id=>'matter_id', :size => 20, :maxlength => 255 %></td>
+              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;&nbsp;<%= t(:label_status) %></td>
+              <td colspan="2"><%= f.collection_select :status_id,status_arr,:id,:alvalue%></td>
+              <td rowspan="11">&nbsp;</td>
+            </tr>
+            <tr>
+              <td rowspan="2"><%= t(:label_matter_name) %> <span class="alert_message">*</span></td>
+              <td rowspan="2"><%=f.text_area :name, :rows => '2', :cols => "35",  :class => "w350p", :style => "height:30px;" %></td>
+              <td width="3%">&nbsp;</td>
+              <%disable = @matter.fact_or_risk_associated?%>
+              <td align="left" width="2%"><%= f.radio_button(:matter_category, "non-litigation",:disabled=> disable) %></td>
+              <td align="left" width="12%"><%= t(:label_non_litigation) %></td>
+              <td width="2%"><%= f.radio_button(:matter_category, "litigation",:disabled=> disable) %></td>
+              <td width="22%"> <%= t(:text_litigation) %></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td colspan="2">&nbsp;&nbsp;<%= t(:label_matter_type) %></td>
+              <td colspan="2"><div id="matter_type_liti" <%unless @matter.is_litigation%> style="display: none;"<%end%>>
+                  <%= f.collection_select(:matter_type_liti, current_company.liti_types, :id, :alvalue, {:selected => @matter.matter_type_id}, {:style=>"width:150px"}) %>
+                </div>
+                <div id="matter_type_nonliti" <%if @matter.is_litigation%> style="display: none;" <%end%>>
+                  <%=  f.collection_select(:matter_type_nonliti, current_company.nonliti_types,:id,:alvalue,{:selected => @matter.matter_type_id}, {:style=>"width:150px"})%>                  </div></td>
+            </tr>
+            <tr>
+              <td><%= t(:label_is_it_internal_to_law_firm) %></td>
+              <td>
+                <table border="0" width="100%">
+                  <tbody><tr>
+                      <td width="8%"><%= f.check_box :is_internal %></td>
+                      <td align="right" width="45%"><%=t(:label_matter_date)%> </td>
+                      <td width="47%"><%=f.text_field :matter_date, :value => livia_date((@matter.matter_date || @matter.created_at.to_date).to_time), :size =>10, :class => "date_picker"%></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td>&nbsp;</td>
+              <td id="modal_litigation"  <%unless @matter.is_litigation%> style="display: none;"<%end%> colspan="4" rowspan="5" valign="top" class="box_bg_bdr_1 bdr_bot_1">
+                <div ><% f.fields_for :matter_litigations do |lf| %><table width="98%" align="right" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td width="60%"  align="left">&nbsp;</td>
+                        <td width="35%" align="left"><table border="0" align="left" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td align="left">
+                                <%= lf.hidden_field :company_id, :value => current_company.id %>
+                                <p><%= lf.radio_button :plaintiff, true, :checked => true %></p></td>
+                              <td align="left"><label><%= t(:label_plaintiff) %></label></td>
+                              <td align="left">&nbsp;</td>
+                              <td align="left"><%= lf.radio_button :plaintiff, false %>  </td>
+                              <td align="left"><%= t(:label_defendant) %></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="60%"  align="left"><%= t(:label_case_no) %></td>
+                        <td width="35%"  align="left" style="padding-left:8px;"><%=lf.text_field :case_number, :id => 'case_number_ID', :class => "textgray", :maxlength => 40 %></td>
+                      </tr>
+                      <tr>
+                        <td width="60%" align="left"><%= t(:label_court_arbitration_panel_forum) %></td>
+                        <td width="35%"  align="left"style="padding-left:8px;"><%= lf.text_field :forum, :id => 'court_arbitration_panel_forum', :class => "textgray" %></td>
+                      </tr>
+                      <tr>
+                        <td width="60%"  align="left" valign="top"><%= t(:label_mediator_arbitrator_judges) %></td>
+                        <td width="35%"  align="left" valign="top"style="padding-left:8px;"><%= lf.text_field :hearing_before, :id => 'mediator_arbitrator_judges', :class => "textgray" %></td>
+                      </tr>
+                      <tr>
+                        <td width="60%"  align="left"><%= t(:label_phase) %></td>
+                        <td width="35%"  align="left"style="padding-left:8px;"><%= collection_select(:matter, :phase_id, current_company.phases, :id, :alvalue, {:include_blank => "----------Select----------"}) %>                            </td>
+                      </tr>
+                    </table>
+                  <%end%>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><%= t(:label_primary_matter_proceeding) %></td>
+              <td><%= f.collection_select  :parent_id, @all_matters, :id, :clipped_name, { :include_blank => "----------Select----------" }, {:class => "w350p"} %></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><%=t(:label_primary_matter_contact)%></td>
+              <td>
+                <% other_count = @other_contacts.nil? ? 0 : @other_contacts.compact.count  %>
+                <% if other_count > 0 %>
+                  <% prm = @matter.contact_id %>
+                  <% pr = nil %>
+                  <% @other_contacts.collect{|cnt| pr = cnt.contact_id if cnt.contact_id==prm } %>
+                  <% showthis = prm==pr ? "no" : "yes" %>
+                  <%= f.collection_select :contact_id, @other_contacts, :contact_id, :get_name,{},{:onchange=>"check_for_share_with_client('#{@matter.id}', '#{showthis}', '#{prm}', this);"} %>
+                <% else %>
+                  <%= hidden_field_tag "matter[contact_id]", @matter.contact.id %>
+                  <%= text_field_tag "nonameneeded", @matter.contact.try(:full_name), :readonly => true, :disabled => true %>
+                <% end %>
+                &nbsp;
+                <%=@matter.account_name%>
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><%= t(:label_lead_lawyer) %></td>
+              <td>
+                <%= f.collection_select :employee_user_id, @employees, :id, :full_name,  {}, {:disabled=>(!@matter.employee_user_id.blank?)} %>
+                <%if(@matter.employee_user_id == get_employee_user_id || is_access_matter?)%>
+                  <%if @matter.matter_peoples.lawteam_members.count > 1%>
+                    <%=link_to(t(:label_change_lead_lawyer), new_lead_lawyer_matter_path(@matter))%>
+                  <%else%>
+                    <%=link_to(t(:label_change_lead_lawyer), "#", :onclick => "alert('No lawteam members added.'); return false;")%>
+                  <%end%>
+                <%end%>
+                <%if !@law_team_member_ids.include?(get_employee_user_id)%>
+                  <%=t(:label_specify_your_role)%>&nbsp;
+                  <%=hidden_field_tag "role_given"%>
+                  <%=collection_select("lawyer","role", current_company.client_roles.except_lead_lawyer_matter_client_for_matter,:id,:alvalue, :include_blank => "No Role")%>
+                <%end%>
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><%= t(:label_ref_id) %></td>
+              <td><%= f.text_field :ref_no, :size => 10 %></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td><%= t(:label_matter_description) %></td>
+              <td><%= f.text_area :description, :rows=>'4', :cols=>"30",  :class=>"w350p" %></td>
+              <td>&nbsp;</td>
+              <td valign="top" >&nbsp;</td>
+              <td valign="top" >&nbsp;</td>
+              <td valign="top" >&nbsp;</td>
+              <td valign="top" >&nbsp;</td>
+            </tr>
+            <tr>
+              <td><%= t(:label_share_with_client) %></td>
+              <td>
+                <%primary_matter=@matter.primary_matter_contact%>
+                <%= check_box_tag "matter[client_access]", true,primary_matter.nil? ? false : primary_matter.can_access_matter ,:onclick=>"show_email_validation(this);" %>
+                <span id="update_my_email_id"><%=hidden_field_tag "contact[email]",@matter.contact.email %></span>
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td> <%= t(:label_has_conflict_check_been_completed) %></td>
+              <td><%= f.check_box :conflict_checked %></td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </tbody></table>
+      </div>
+      <div class="buttonSub_div">
+        <%= f.submit t(:text_save), :name => "save",:class=>'matters',:onclick=>"return on_submit_validate(this);" %>
+        <% javasctipt_action = (params[:from_matters] && !is_access_matter?) ? "return validate_user_role(this,#{get_employee_user_id},false,false);return on_submit_validate(this);" : " setButtonPressed(this)" %>
+        <%= f.submit t(:text_save_n_exit),:class=>'matters', :name => "save_exit",:onclick=> javasctipt_action%>
+        <%= f.submit t(:text_cancel),:class=>'matters', :name => "cancel", :onclick => "window.location='#{remember_past_path}';return false;" %>
+      </div>
+      <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%>, T/E:- Time &amp; Expense</div>
+    <%end%>
+    <%comments = @matter.comments%>
+    <div class="p5">
+      <div class="box_gray_new">
+        <a href="#comment_toggle" id="comment_toggle">
+          <div class="icon_orange_arrow_up mr5 mt3 fl toggle_comment"></div>
+          <div class="icon_orange_arrow_down mr5 mt3 fl toggle_comment" style="display:none"></div>
+        </a>
+        <div class="fl"> <strong><%=t(:label_comments)%></strong> <span id="comment_count">[<%=comments.size%>]</span> </div>
+        <div class="fr mt5 mr5">
+          <a title="Add Comment" class="thickbox fr link_blue vtip" name="Add Comment" href="#TB_inline?height=160&width=380&inlineId=modal_matter_comment"><span class="icon_add fl"></span></a>
+        </div>
+        <br class="clear" />
+      </div>
+      <div class="tabular_listing" id="comment_div">
+        <table cellpadding="1" cellspacing="1" width="100%" class="mt5 border_gray">
+          <tbody>
+            <tr id="matter_comments">
+              <th align="left" width="63%"><a href="#"><%=t(:label_comment)%> / <%=t(:label_details)%></a></th>
+              <th align="left" width="13%"><a href="#"><%=t(:label_user)%></a></th>
+              <th align="left" width="13%"><a href="#"><%=t(:label_type)%></a></th>
+              <th align="center" width="11%"><a href="#"><%=t(:label_Created_At)%></a></th>
+            </tr>
+            <%unless comments.empty?%>
+              <%comments.each do|e|%>
+                <tr class="<%=cycle('bg1', 'bg2')%>">
+                  <td><%=truncate_hover(e.comment, 110)%></td>
+                  <td><%=e.user.try(:full_name)%></td>
+                  <td><%=e.get_title%></td>
+                  <td align="center"><%=livia_date_time(e.created_at)%></td>
+                </tr>
+              <%end%>
+            <%else%>
+              <tr id="no_comments_found"><td colspan="4">No comments found.</td></tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%=render :partial => "matters/matter_new_comment", :locals => {:commentable_type => "Matter", :commentable_id => @matter.id}%>
+<script type="text/javascript">
+  // Need to removed to JS File
+  function litigationDetailsAdded(save) {
+    if (save) {
+      tb_remove();
+    } else {
+      jQuery('#matter_type_liti').hide();
+      jQuery('#matter_type_nonliti').show();
+      jQuery("#matter_matter_category_nonlitigation").attr("checked", true);
+      tb_remove();
+    }
+  }
+
+  // function radio_button_validation() : shifted to livia_common.js
+  
+  livia_matter_inception_datepicker_new("#matter_matter_date");
+  
+  // function check_client_contact(e) : shifted to livia_common.js
+  // function on_submit_validate(e) : shifted to livia_common.js
+  toggle_doc_comments();
+  jQuery('#matter_id').focus();
+
+  jQuery('#matter_matter_category_nonlitigation').click(function(){
+    jQuery("#modal_litigation, #matter_type_liti").hide();
+    jQuery('#case_number_ID, #court_arbitration_panel_forum, #mediator_arbitrator_judges, #matter_phase_id, #forum_ID, #hearing_before_ID').val("");
+    jQuery('#matter_type_nonliti').show();
+    formatSequenceOnChange();
+  });
+  
+  jQuery('#matter_matter_category_litigation').click(function(){
+    jQuery('#matter_type_nonliti').hide();
+    jQuery('#case_number_ID, #court_arbitration_panel_forum, #mediator_arbitrator_judges, #matter_phase_id, #forum_ID, #hearing_before_ID').val("");
+    jQuery('#matter_type_liti, #modal_litigation').show();
+    formatSequenceOnChange();
+  });  
+</script>

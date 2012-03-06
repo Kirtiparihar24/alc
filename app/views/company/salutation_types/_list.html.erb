@@ -1,0 +1,30 @@
+<div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+  <%= link_to(t(:text_new),new_company_salutation_type_path(@company),:rel=>"facebox") %>
+</div>
+<div class="p5 gridTable">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+    <tr>
+      <th width="25%">Salutation</th>
+      <th width="25%">Custome Salutation</th>
+      <th width="25%">Actions</th>
+    </tr>
+    <%@company.salutation_types.each do |salute|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <span class="textBlue11Height20">
+            <%= salute.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">
+            <%= salute.alvalue %>
+          </span>
+        </td>
+        <td>
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_salutation_type_path(@company,salute),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

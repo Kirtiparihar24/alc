@@ -1,0 +1,81 @@
+<script type="text/javascript">
+  // livia_datepicker();
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#date_start");
+    livia_matter_inception_datepicker_new("#date_end");
+  });
+</script>
+<div id="container-1">
+  <%form_for :report, :url=>{:action => :active_account_rpt},:html =>{:onsubmit => 'return validate_report_date()', :method => :get } do |f| %>
+    <%= hidden_field_tag :run_report, true %>
+    <%= render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+    <div id="fragment-1" class="tabs-container">
+      <%unless params[:load_popup]%>
+        <h2 class="title_main"><%= t(:text_active_accounts) %> <%= render :partial =>  "layouts/left_report_sidebar" %></h2>
+      <%else%>
+        <%=raw(generate_spinner_my_favorite_link)%>
+      <%end%>
+      <%unless params[:load_popup]%>
+        <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+        </div>
+        <div class="p5">
+          <% opts = rpt_selection_helper(params[:get_records]) %>
+          <%= raw(radios_for_rpt(opts,t(:label_accounts))) %>
+          <br class="clear" />
+          <div class="box_gray">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+              <tbody>
+                <tr>
+                  <td align="left" valign="middle"><%= t(:text_duration) %></td>
+                  <td align="left" valign="middle"><%= select("report","duration",[["Last 1 Month","1"],["Last 3 Months","2"],["Last 6 Months","3"],["Last 1 Year","4"],["Date Range","range"]],{:selected => params[:report][:duration]},{:onChange=>"date_change();"}) %></td>
+                  <% style = params[:report][:duration] == "range" ? "" : "display:none;" %>
+                  <td id="date_div" width="60%" style=<%=style%>>
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+                      <tr>
+                        <td width="5%"><div style="display:none;"><input type="checkbox" name="date_selected" id="date_selected" value="1" <%=params[:date_selected].blank? ? "" : "checked"%>/> </div></td>
+                        <td width="12%" align="left"><%=t(:label_Start_Date)%></td>
+                        <td width="21%" align="left"><input type="text" id="date_start" name="date_start"  readonly="true" class="date_picker"  onclick="livia_datepicker(this);" size="10" value="<%=params[:date_start]%>" /></td>
+                        <td width="12%" align="left"><%=t(:label_End_Date)%></td>
+                        <td width="20%" align="left"> <input type="text" id="date_end" name="date_end"  readonly="true" class="date_picker" onclick="livia_datepicker(this);" size="10" value="<%=params[:date_end]%>" /></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="10%" valign="middle"><input type="submit" name="commit" value="Run Report" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <%
+        end
+        if params[:run_report] %>
+          <%= render "rpt_partials/report_info" %>
+          <div class="w100">
+            <% unless @data.blank? %>
+              <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record',1)%> </div>
+            <% end %>
+            <div class="fr  textR pt5">
+              <%=raw(generate_send_email_rpt_link("active_account_rpt")) unless params[:load_popup]%>
+              <%=raw(generate_rpt_fav_link("#{t(:label_Account)}")) unless params[:load_popup]%>
+              <%=raw(generate_reports_links("active_account_rpt")) %>
+            </div>
+            <br class="clear" />
+          </div>
+          <% unless @data.blank? %>
+            <div class="mt5">
+              <div class="w100">
+                <div class="title_blue fl" > <%= @conditions[:table_name] %> </div>
+                <div class="fr textR"> <%# links %> </div>
+                <br class="clear" />
+              </div>
+              <%= render :partial => 'rpt_partials/list_col_array_with_index', :locals => {:col => @data} %>
+            </div>
+            <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record',1)%></div>
+          <% else %>
+            <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record',1)%></div>
+          <% end %>
+        <% end %>
+        <br class="clear" />
+      </div>
+    </div>
+  <% end %>
+</div>

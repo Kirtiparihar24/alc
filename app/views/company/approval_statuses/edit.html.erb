@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">Edit Approval Status</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%  remote_form_for(:approval_status,@approval_status_type, :url => company_approval_status_path(@company,@approval_status_type),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+   <%= render :partial=>"company/form", :locals => {:f => f, :modelclass => "approval_statuses",
+    :select_modal_text => "Approval Status", :modal_text => "Approval Status",
+    :all_modal_values => @company.approval_statuses.collect{|as|[as.lvalue]}.uniq } %>
+<%end%>
+<br class="clear"/>

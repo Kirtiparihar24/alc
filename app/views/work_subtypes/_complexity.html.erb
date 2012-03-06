@@ -1,0 +1,22 @@
+<table id= "<%= complexity.id %>" class="complex">
+  <tr>
+    <td><%= label_tag :stt %><span style= "color:#FF0000">*</span></td>
+    <td><%= label_tag :tat %><span style= "color:#FF0000">*</span></td>
+    <td><%= label_tag :complexity_level %><span style= "color:#FF0000">*</span></td>
+  </tr>
+  <tr>
+    <% fields_for_work_subtype_complexity(complexity) do |comp| %>
+      <td><%= comp.text_field :stt, :size => 15, :class => "check" %></td>
+      <td><%= comp.text_field :tat, :size => 15, :class => "check" %></td>
+      <td><%= comp.text_field :complexity_level, :size => 8, :class => "check" %></td>
+      <% if from=="add" %>
+        <% if complexity.id.blank?%>
+          <td><%= link_to "Remove complexity", "#", :onclick=> "jQuery(this).parents('.complex').remove(); return false; " %></td>
+        <%elsif complexity_counter > 0%>
+          <td><%= link_to "Remove complexity", "#", :onclick=> "check_task_on_work_complexity(this,'WorkSubtypeComplexity',#{complexity.id}); return false;" %></td>
+        <%end%>
+      <% end  %>
+
+    <%end%>
+  </tr>
+</table>

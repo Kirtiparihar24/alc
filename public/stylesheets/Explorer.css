@@ -1,0 +1,46 @@
+span.icon_search{margin:3px 5px 0px 0px;}
+.SlideTab {margin-top:1px; margin:0; padding:0; background:#fff; border:1px solid #aaccee; min-height:485px;}
+.SlideTab{margin:1px 0 0 0}
+.fix_mb_ie{margin-bottom:3px;}
+.breadcrumbDiv{padding-top:5px; padding-bottom:6px;}
+ul.navigation_list{padding:0;}
+.fix_mr{margin-right:3px; margin-top:3px;}
+.form_table td{padding:3px 0;}
+.search_div span.icon_search{right:1px;}
+.tabular_listing table td{line-height:22px; padding-bottom:1px;}
+select{padding-right:1px;}
+.w_common_47{width:55%;}
+ul.listing1 li a{padding:3px 0 3px 18px; border-bottom:1px solid #f0f0f0; line-height:22px;}
+input.expense_date_picker {padding:3px;}
+.tabular_listing table td{line-height:22px; padding-bottom:1px;}
+.mr10{margin-right:10px;}
+.column_left{margin-right:11px;}
+.pb1, .box_gray_new, select{padding-bottom:1px;}
+select:focus {border-color:#cccccc;}
+select{border:1px solid #d9d9d9;}
+span.icon_search{margin:3px 5px 0px 0px;}
+.pb1, .box_gray_new, select{padding-bottom:1px;}
+select{padding-top:1px;}
+input[type=text], input[type=password], input.text, input.title, textarea, select{border:1px solid #d9d9d9;}
+select{padding-bottom:1px;}
+.pb1, .box_gray_new, select{padding-bottom:1px;}
+.pt1, .box_gray_new, input[type=submit],input[type=button]{padding-top:1px;}
+.w99, .box_gray_new{width:99.3%}
+#navigation-div{height:38px;}
+
+.box_gray{/*line-height:25px;*/}
+.header_link{margin-top:6px;}
+ul.navigation_list li{padding:10px 8px 11px 8px;}
+/***********Entries Table***********/
+.entries th{background:#e4e4e4;padding:5px 0;font-weight:bold}
+.entries td.labels{background:#eff7fa;padding:5px 0 5px 10px;border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.data{border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.total{font-size:90.9%;font-weight:bold;background:#eee7d4;padding:5px 0 5px 10px;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

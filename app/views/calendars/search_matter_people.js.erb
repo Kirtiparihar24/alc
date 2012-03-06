@@ -1,0 +1,5 @@
+<% if params[:mode_type]=="matter" %>
+  jQuery('#matter_people_search').html("<%=raw(escape_javascript(select_tag("people[]", options_for_select(@distinct_matter_userid, @people_result),{:multiple => true, :size => "5"})))%>")
+<% else %>
+  jQuery('#people_matter_search').html("<%=raw(escape_javascript(select_tag("matters[]", options_for_select(@matters.collect{|matter|[matter.name, matter.id]}, @result),{:multiple => true, :style=>"width:90%"})))%>")
+<% end %>

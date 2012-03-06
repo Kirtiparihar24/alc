@@ -1,0 +1,56 @@
+<div id="container-1">
+  <%= render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+  <div id="fragment-1" class="tabs-container">
+    <%unless params[:load_popup]%>
+      <h2 class="title_main"><%= t(:text_current_accounts) %></h2>
+    <%else%>
+      <%=raw(generate_spinner_my_favorite_link)%>
+    <%end%>
+    <%# form_for "report", :url => {:action => :current_account_rpt,:format => 'html',:run_report => true}  ,:html => {:onsubmit => 'return validate_date()'} do |f| %>
+      <%form_for :report, :url=>{:action => :current_account_rpt},:html =>{:onsubmit => 'return validate_date()', :method => :get } do |f| %>
+      <%= hidden_field_tag :run_report, true %>
+      <div class="p5">
+        <%unless params[:load_popup]%>
+         <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+         </div>
+          <% opts = rpt_selection_helper(params[:get_records]) %>
+          <%= raw(radios_for_rpt(opts,t(:label_accounts))) %>
+          <br class="clear" />
+          <div class="box_gray">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+              <tbody>
+                <tr>
+                  <%= render :partial => 'rpt_partials/date_picker', :locals => {:opt_style => opts[:style], :checked => opts[:checked]} %>
+                  <td valign="middle"><input type="submit" name="commit" value="Run Report" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <% end
+        if params[:run_report]%>
+          <%= render "rpt_partials/report_info" %>
+         
+          <div class="w100">            
+            <% unless @data.blank? %>
+              <div class="title_blue fl"><%= pluralize_record(@data.length,'Record', 1) %></div>
+            <% end %>            
+            <div class="fr textR pt5">
+              <%=raw(generate_send_email_rpt_link("current_account_rpt")) unless params[:load_popup]%>
+              <%= raw(generate_rpt_fav_link(t(:label_Account))) unless params[:load_popup]%>
+              <%= raw(generate_reports_links("current_account_rpt")) %>
+            </div>
+            <br class="clear" />
+          </div>
+          <% unless @data.blank? %>
+          <%= render :partial => 'rpt_partials/list_col_array_with_index', :locals => {:col => @data}%>
+          <div class="title_blue fl"><%= pluralize_record(@data.length,'Record', 1) %> </div>
+          <%else%>
+          <div class="title_blue fl"><%= pluralize_record(@data.length,'Record', 1) %></div>
+          <%end%>
+        <%end%>
+          <br class="clear" />  
+      </div>
+    <% end %>
+  </div>
+</div>
+ 

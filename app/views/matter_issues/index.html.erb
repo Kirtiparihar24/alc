@@ -1,0 +1,26 @@
+<div>
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <!--Issue Starts-->
+    <div id="fragment-4" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container p5">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+          <tr>
+            <td width="76%">
+              <%=render :partial => "matters/matter_contact_account"%>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <%= raw all_pagination(@matter_issues, params[:per_page], "willpaginate",matter_matter_issues_path(@matter), {:per_page=>params[:per_page]},false ) %>
+      <div class="seperator_dotted_hori"></div>
+      <div class="fr w40 mtbrl5 link_blue">
+        <%= link_to "<span class='icon_add_task fl mr5'></span><span class='fl icon_name mr10'>Create Issue</span>", "#{new_matter_matter_issue_path(@matter)}", :class => "fr " %>
+        <br class="clear" />
+      </div>
+      <br class="clear" />
+      <%= render :partial => "litigation_index" %>
+      <%= raw all_pagination(@matter_issues, params[:per_page], "bottom-pagination", matter_matter_issues_path(@matter), {:per_page=>params[:per_page]},false)  %>
+    </div>
+  </div>
+</div>

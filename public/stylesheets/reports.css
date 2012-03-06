@@ -1,0 +1,106 @@
+.formMain2 form {background:#f2f5f7; border:1px solid #dddddd;margin:0; padding:0; height:100%;}
+.reports{ background:#FFFFFF; width:780px; margin: 5px auto; border:1px solid #d5d5d7; }
+
+.reports .divIcon {margin:0; padding:0 5px; font-size:11px; font-weight:bold; width:120px;}
+.divIcon .currentContact{ background:url(../images/livia_portal/icon_current_contacts.gif) no-repeat left; width:75px; height:75px;margin:auto; padding:0;text-align:center;}
+.divIcon a { text-decoration:none; color:#000000;}
+.divIcon a.current { text-decoration:none;  color:#3174a1;}
+.divIcon a:hover { text-decoration:underline; color:#3174a1;}
+
+.divIcon .addContact{ background:url(../images/livia_portal/icon_recent_added_contacts.gif) no-repeat left; width:75px; height:75px;margin:auto; padding:0;text-align:center;}
+
+.divIcon .linkContact{ background:url(../images/livia_portal/icon_contact_link_accounts.gif) no-repeat left; width:75px; height:75px;margin:auto; padding:0;text-align:center;}
+
+.divIcon .oppPipeline{ background:url(../images/livia_portal/icon_opp_pipeline.gif) no-repeat left; width:75px; height:75px;margin:auto; padding:0;text-align:center;}
+
+.divIcon .oppSources{ background:url(../images/livia_portal/icon_opp_sources.gif) no-repeat left; width:75px; height:75px;margin:auto; padding:0;text-align:center;}
+
+.divIcon .openOpp{ background:url(../images/livia_portal/icon_open_opp.gif) no-repeat left; width:75px; height:75px;margin:auto; padding:0;text-align:center;}
+
+.dateTextBox{padding:0; text-align:left;font-size: 100%; margin:0; width:70px; }
+.pl10{ padding:0 0 0 10px;}
+/*.buttonReport{border:1px solid #aed0eb; height:100%;  background:#c4dff1; color:#00416a; padding:0; font-size:100%; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0; padding:0 3px 0 3px;}*/
+
+.borderRight{ border-right:1px dotted #000000;}
+.selectBox{padding:0; text-align:left;font-size:100%;margin:0; }
+.grayBox{ border:1px solid #e5e5e5; background:#f4f4f4; padding:3px;}
+
+
+/*****ACCORDIAN MENU****/
+.urbangreymenu{
+/*border:1px solid #dddddd;*/ /*width of menu*/
+}
+
+.urbangreymenu a.headerbar, .urbangreymenu a.headerbar:visited{
+background-color:#edf5fa;
+margin: 0 0 0px 0;
+font: bold 11px Verdana;
+color: #3d80b3;
+/*bottom spacing between header and rest of content*/
+padding: 7px 0 7px 12px;
+border-style:solid;
+border-color:#dddddd;
+border-width:0 1px 1px 1px;
+ /*31px is left indentation of header text*/
+}
+
+.urbangreymenu .headerbar a{
+text-decoration: none;
+color: #3d80b3;
+display: block;
+}
+
+.urbangreymenu ul{
+list-style-type: none;
+margin: 0;
+padding: 0;xmargin:0 3px 0 3px;
+margin-bottom: 0; /*bottom spacing between each UL and rest of content*/
+}
+
+.urbangreymenu ul li{
+/*padding-bottom: 2px;*/
+ /*bottom spacing between menu items*/
+}
+
+.urbangreymenu ul li a{
+font: normal 11px Arial;
+color: #0f0f0f;
+background: #fafafa;
+display: block;
+padding: 3px 0 ;
+line-height: 15px;
+padding-left: 19px; /*link text is indented 8px*/
+text-decoration: none;
+}
+.urbangreymenu ul li a.selected{
+text-decoration: none; font-weight:bold;
+}
+
+.urbangreymenu ul li a:visited{
+color: #0f0f0f;
+}
+
+.urbangreymenu ul li a:hover{ /*hover state CSS*/
+color: #0f0f0f;
+background: #FFFFFF;
+}
+
+/***************************************----------------------Khushboo 22Jan2010------------------------------------------------------*******************************************************/
+.ui-datepicker-trigger{margin:-1px 5px 4px 5px;}
+
+
+.scroller1 { overflow:scroll; height:192px;}
+.scroller2 { overflow:scroll; height:221px;}
+/* ror-supriya-5apr2010 */
+.urbangreymenu ul li ul li span a{display:inline; }
+#left_sidebar li.next{margin:3px 0 0 0}
+#left_sidebar li ul{
+    border-top:none;
+    border-right:1px solid #dddddd;
+    border-bottom:1px solid #dddddd;
+    border-left:1px solid #dddddd;}
+    
+.urbangreymenu ul li ul li {padding-bottom: 2px;}
+/**************added by supriya k 12-04-2011*************/
+.pagiText{color: #a8a8a8}
+    

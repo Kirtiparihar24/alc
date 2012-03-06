@@ -1,0 +1,403 @@
+<% @doc_count=[] %>
+<div id="search_results_DIV">
+  <%= render :partial => "document_homes/matter_document_pagination" %>
+  <table cellspacing="1" cellpadding="1" width="100%" >
+    <tbody>
+      <tr>
+        <th align="center"><%= t(:text_check_out) %></th>
+        <th align="center">&nbsp;</th>
+        <th align="center">&nbsp;</th>
+        <%= column_sort_link(t(:text_name),'name',params[:col],"22%","left",{:action => :index,:per_page => params[:per_page], :parent_id => params[:parent_id]}) %>
+        <th align="left" width="6%"><%= t(:text_source) %></th>  
+        <%= column_sort_link(t(:text_size),'data_file_size',params[:col],"","left",{:action => :index,:per_page => params[:per_page], :parent_id => params[:parent_id]}) %>
+        <%= column_sort_link(t(:text_creation_date),'created_at',params[:col],"10%","center",{:action => :index,:per_page => params[:per_page], :parent_id => params[:parent_id]}) %>
+        <% if task_available? %><th align="center" width="5%"><%= t(:text_activities) %></th><%end%>
+        <% if issue_available? %><th align="center" width="6%"><%= t(:text_issues) %></th><%end%>
+        <% if fact_available? %><th align="center" width="6%"><%= t(:text_facts) %></th><%end%>
+        <% if risk_available? %><th align="center" width="6%"><%= t(:text_risks) %></th><%end%>
+        <% if research_available? %><th align="center" width="9%"><%= t(:text_researches) %></th><%end%>
+        <th width="8%" align="left">Access</th>
+         <%= column_sort_link(t(:text_owner),'owner',params[:col],"10%","center",{:action => :index,:per_page => params[:per_page], :parent_id => params[:parent_id]}) %>
+        <th align="center" width="5%"><%= t(:text_actions) %></th>
+      </tr>
+      <% if @folders.size > 0 %>
+        <% @folders.each do|folder|%>
+          <tr class="<%= cycle('bg1', 'bg2')%>">
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center"></td>
+            <td align="left" width="22%">
+              <% count=folder.children.count %>
+              <% if count > 0 %>
+                <% class_name = "icon_expand_folder mr5 mt3 fl" %>
+              <% else %>
+                <%class_name = "icon_folder_01 mr5 mt3 fl"%>
+              <% end %>
+              <div class="mr5 mt3 fl">
+                <a href="#" rel="<%=folder.id%>/" onclick="GetFoldersListMatter('<%=folder.id%>',true,this,'<%=@matter.id%>');return false;" style="width:auto"><span class="<%=class_name%>"></span><%= truncate_hover(folder.name, 30) %></a>
+              </div>
+            </td>
+            <td align="left" width="6%"></td>
+            <td align="left"></td>
+            <td align="center" width="10%"><%= folder.created_at.to_time.strftime('%m/%d/%y') %></td>
+            <td align="center" width="5%"></td>
+            <td align="center" width="6%"></td>
+            <td align="center" width="6%"></td>
+            <td align="center" widtd="6%"></td>
+            <td align="center" width="9%"></td>
+            <td align="left" width="8%"></td>
+            <td align="left" width="12%"></td>
+            <td align="center" width="5%">
+              <div class="icon_action mt3"><a href="#"></a></div>
+              <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                <!--Icon table strt here -->
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                  <%= raw action_pad_top_blue_links({:edit_path=>'NO',
+                      :deactivate_path=> "NO" ,
+                      :deactivate_text => "NO",
+                      :comment_path=>"NO",
+                      :comment_title => "NO",
+                      :document_path=>"NO",
+                      :history_path=>"NO",
+                      :history_title => "NO",:edit_modal => true}) %>
+                  <tr>
+                    <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                    <td style="background: #fff;">
+                      <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                        <tr>
+                          <td colspan="4"><div class="ap_pixel10"></div></td>
+                        </tr>
+                        <tr>
+                          <td width="7%" align="center" valign="middle"><div class="icon_renameFolder fl ml13 mr5"></div></td>
+                          <td width="40%" align="left" valign="middle"><%= link_to("<span>Rename Folder</span>", "#", {:onclick=>"tb_show('Rename Folder', '#{edit_folder_document_managers_path(:format=>folder.id,:from=>"matters",:height=>100,:width=>300,:matter_id=>@matter.id)}', '')"}) %></td>
+                          <td width="7%" align="center" valign="middle"><%= link_to('<span>Move</span>',"#{move_folder_repository_path(folder.id,:from=>"matters",:height=>300,:width=>500,:matter_id=>@matter.id,:update_list => 'false',:doc_type => 'document')}",{:class=> "thickbox vtip", :title=> "Move Folder"})%></td>
+                          <td width="40%" align="left" valign="middle" nowrap></td>
+                          <td colspan="4"><div class="ap_pixel10"></div></td>
+                        </tr>
+                        <tr>
+                        </tr>
+                        <tr>
+                          <td colspan="4"><div class="ap_pixel10"></div></td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                  </tr>
+                  <tr>
+                    <td valign="top" class="ap_bottom_curve_left"></td>
+                    <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                    <td valign="top" class="ap_bottom_curve_right"></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+      <% if @document_homes.size > 0 %>
+        <% @document_homes.each do |matter_document| %>
+          <% matter_doc=matter_document.latest_doc
+          check_level= doc_checked_access(matter_document,@emp_user_id) %>
+          <% if matter_document.access_rights %>
+            <% if document_accesible?(matter_document, @emp_user_id,@company.id,@matter) %>
+              <tr class="<%= cycle('bg1', 'bg2') %>">
+                <!-- FIXME: Seems like we are not likely to get wip_doc here,
+                they are already filtered out in query written in index action. -->
+                <% wip_doc,matter_document, parent_doc=get_final_matter_doc(matter_document) %>
+                <!-- if current user has rights to document -->
+                <% matter_doc=matter_document.latest_doc
+                check_level= doc_checked_access(matter_document,@emp_user_id) %>
+                <td align="center" width="5%">
+                  <%= show_check_uncheck_option(matter_document, check_level) %>
+                </td>
+                <td width="3%"><%= raw(check_client_instance(matter_document)) %></td>
+                <td width="3%"><%= raw(get_privilege(matter_doc.privilege)) %></td>
+                <td>
+                  <% if(matter_document.extension == 'png' || matter_document.extension == 'jpg' || matter_document.extension == 'gif' || matter_document.extension == 'jpeg') %>
+                    <div class="icon_image_file fl mr10"></div>
+                  <% elsif (matter_document.extension == 'pdf') %>
+                    <div class="icon_pdf fl mr10"></div>
+                  <% elsif (matter_document.extension == 'xls' || matter_document.extension == 'xlsx') %>
+                    <div class="icon_xls fl mr10"></div>
+                  <% elsif (matter_document.extension == 'ppt') %>
+                    <div class="icon_ppt fl mr10"></div>
+                  <% elsif (matter_document.extension == 'docx') %>
+                    <div class="icon_doc fl mr10"></div>
+                  <% else %>
+                    <div class="icon_file fl mr10"> &nbsp;</div>
+                  <% end %>
+                  <%= link_to("#{matter_doc.name.try(:titleize)}", "#{document_home_path(matter_doc)}")%>
+                </td>
+                <td><%= h matter_doc.doc_source.try(:alvalue) %></td>
+                <td><%= h number_to_human_size(matter_doc.data_file_size,:separator=>".",:precision=>2) %></td>
+                <td align="center" ><%= h livia_date(parent_doc.created_at) %></td>
+                <% if task_available? %><td align="center" ><%= facebox_link_num(parent_doc.matter_tasks.count, "#{show_doc_tasks_matter_document_home_path(@matter,parent_doc)}?height=300&width=500", "Linked Activities") %></td><%end%>
+                <% if issue_available? %><td align="center"><%= facebox_link_num(parent_doc.matter_issues.count, "#{show_doc_issues_matter_document_home_path(@matter,parent_doc)}?height=300&width=500", "Linked Issues") %></td><%end%>
+                <% if fact_available? %><td align="center"><%= facebox_link_num(parent_doc.matter_facts.count, "#{show_doc_facts_matter_document_home_path(@matter,parent_doc)}?height=300&width=500", "Linked Facts") %></td><%end%>
+                <% if risk_available? %><td align="center"><%= facebox_link_num(parent_doc.matter_risks.count, "#{show_doc_risks_matter_document_home_path(@matter,parent_doc)}?height=300&width=500", "Linked Risks") %></td><%end%>
+                <% if research_available? %><td align="center"><%= facebox_link_num(parent_doc.matter_researches.count, "#{show_doc_researches_matter_document_home_path(@matter,parent_doc)}?height=300&width=500", "Linked Research") %></td><%end%>
+                <td><%= DocumentHome::ACCESS_RIGHT[parent_doc.access_rights.to_i]%></td>
+                <td><%= raw truncate_hover(matter_document.owner.try(:full_name), 18) rescue "-" %></td>
+                <td align="center">
+                  <div class="icon_action"><a href="#"></a></div>
+                  <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                    <!--Icon table strt here -->
+                    <%unless wip_doc%>
+                      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                        <% if matter_document.owner_user_id == @emp_user_id
+                          if matter_document.user.present? && matter_document.user.role?("client")
+                            delete_link = link_to "Delete", matter_document_home_path(@matter, matter_document), :onClick=>"return confirm_for_delete_client_document(this, '', '', '', '#{session[:_csrf_token]}', 'lawyer')", :method => :delete, :class=> "doc_delete"
+                          else
+                            delete_link = link_to "Delete", matter_document_home_path(@matter, matter_document), :onClick=>"return confirm_for_delete_document(this, '', '', '', '#{session[:_csrf_token]}', 'lawyer')", :method => :delete, :class=> "doc_delete"
+                          end
+                        else
+                        end %>
+                        <% if check_level != '2' %>
+                          <%= raw action_pad_top_blue_links({
+                              :edit_path => "#{edit_matter_document_home_path(@matter,matter_document)}",
+                              :edit_title => "Edit Document",
+                              :deactivate_path => "NO",
+                              :deactivate_link => delete_link,
+                              :comment_path => "NO",
+                              :document_path => "NO",
+                              :history_path => "#{get_doc_history_matter_document_home_path(@matter,matter_document)}?height=300&width=800",
+                              :history_title => "Versions Of Document:"
+                            })%>
+                        <% else %>
+                          <%= raw action_pad_top_blue_links({
+                              :edit_path => "NO",
+                              :deactivate_path => "NO",
+                              :comment_path => "NO",
+                              :document_path => "NO",
+                              :history_path => "#{get_doc_history_matter_document_home_path(@matter,matter_document)}?height=300&width=800",
+                              :history_title => "Versions Of Document:"
+                            })%>
+                        <% end %>
+                        <tr>
+                          <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                          <td style="background: #fff;">
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="icon_download fl"></div></td>
+                                  <td nowrap class="ml5"><%= link_to("<span>Download</span>", "#{document_home_path(matter_doc)}")%></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <% if check_level != '2' %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="icon_supercede_document fl"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>#{t(:label_superseed)}</span>", "#{supercede_or_replace_document_document_home_path(matter_document,:matter_id => params[:matter_id], :height => 235, :width =>600, :parent_id => params[:parent_id], :from => "matter_documents")}", :class => "thickbox", :name => "#{t(:label_superseed)}")%></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="icon_move fl mr5" style="height:15px"></div></td>
+                                  <td nowrap class="ml5"><%= link_to('<span>Move</span>', "#", {:class=> "vtip", :title=> "Move File",:onclick => "tb_show('Move File', '#{move_doc_document_home_path(matter_document)}?height=400&width=500&update_list=false&matter_id=#{@matter.id}', '')"})%></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <div class="fl pb5"  style="width:165px;">
+                              <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                <tr>
+                                  <td width="20"><div class="icon_email fl mr5"></div></td>
+                                  <td nowrap class="ml5"><%= raw(generate_send_email_doc_link(matter_doc.id,matter_doc.name)) %></td>
+                                </tr>
+                              </table>
+                            </div>
+                            <% if check_level =='1' %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="ap_child_action"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Upload Interim Doc</span>", "#{upload_interim_matter_document_home_path(@matter,matter_document)}?height=300&width=350", :class => "thickbox", :name => "Upload Interim Document") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <%if (@matter.employee_user_id== @emp_user_id or @emp_user_id==matter_document.owner_user_id) and check_level != '2'  %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="icon_access_control fl"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Access Control</span>", document_access_control_matter_document_home_path(@matter, matter_document, :interim=>false,:height=>140,:width=>400), :class => "thickbox", :name => "Access Control") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="icon_client_access fl"></div></td>
+                                    <td nowrap class="ml5"><%= @matter.primary_matter_contact.can_access_matter == true ?  link_to("<span>Client Access</span>", "#{change_client_access_matter_document_home_path(@matter, matter_document)}?height=110&width=300", :class => "thickbox", :name => "Change Client Access") : "<span class='action_pad_inactive'>Client Access</span>"%></td>
+                                  </tr>
+                                </table>
+                              </div>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="icon_privilege fl"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Privilege</span>", "#{change_privilege_matter_document_home_path(@matter,matter_document)}?height=100&width=320", :class => "thickbox", :name => "Privilege") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <% if task_available? %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="ap_child_action"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Link Activities</span>", "#{get_tasks_issues_risks_facts_researches_matter_document_home_path(@matter,matter_document,:col_type => :matter_tasks,:col_type_ids => :matter_task_ids, :label => 'Activities', :parent_id => params[:parent_id])}&height=480&width=500", :class => "thickbox", :name => "Link Activities") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <% if issue_available? %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="ap_child_action"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Link Issues</span>", "#{get_tasks_issues_risks_facts_researches_matter_document_home_path(@matter,matter_document,:col_type => :matter_issues,:col_type_ids => :matter_issue_ids,:label => 'Issue', :parent_id => params[:parent_id])}&height=480&width=500", :class => "thickbox", :name => "Link Issues") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <% if fact_available? %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="ap_child_action"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Link Facts</span>", "#{get_tasks_issues_risks_facts_researches_matter_document_home_path(@matter,matter_document,:col_type => :matter_facts,:col_type_ids => :matter_fact_ids,:label => 'Fact', :parent_id => params[:parent_id])}&height=480&width=500", :class => "thickbox", :name => "Link Facts") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <% if risk_available? %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="ap_child_action"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Link Risks</span>", "#{get_tasks_issues_risks_facts_researches_matter_document_home_path(@matter,matter_document,:col_type => :matter_risks,:col_type_ids => :matter_risk_ids,:label => 'Risk', :parent_id => params[:parent_id])}&height=480&width=500", :class => "thickbox", :name => "Link Risks") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                            <% if research_available? %>
+                              <div class="fl pb5"  style="width:165px;">
+                                <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                                  <tr>
+                                    <td width="20"><div class="ap_child_action"></div></td>
+                                    <td nowrap class="ml5"><%= link_to("<span>Link Research</span>", "#{get_tasks_issues_risks_facts_researches_matter_document_home_path(@matter,matter_document,:col_type => :matter_researches,:col_type_ids => :matter_research_ids,:label => 'Research', :parent_id => params[:parent_id])}&height=480&width=500", :class => "thickbox", :name => "Link Research") %></td>
+                                  </tr>
+                                </table>
+                              </div>
+                            <% end %>
+                          </td>
+                          <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                        </tr>
+                        <tr>
+                          <td valign="top" class="ap_bottom_curve_left"></td>
+                          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                          <td valign="top" class="ap_bottom_curve_right"></td>
+                        </tr>
+                      </table>
+                    <% else %>
+                      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                        <%= raw action_pad_top_blue_links({
+                            :edit_path => "NO",
+                            :deactivate_path => "NO",
+                            :comment_path => "NO",
+                            :document_path => "NO",
+                            :history_path => "#{get_doc_history_matter_document_home_path(@matter,matter_document)}?height=300&width=700",
+                            :history_title => "Versions Of Document:"
+                          }) %>
+                        <tr>
+                          <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                          <td style="background: #fff;">
+                            <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel15"></div></td>
+                              </tr>
+                              <tr>
+                                <td width="10%" align="left" valign="middle"><div class="icon_download fl"></div></td>
+                                <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Download</span>", "#{document_home_path(matter_doc.id)}") %></td>
+                                <% if wip_doc %>
+                                  <td align="left" valign="middle" width="10%"><div class="icon_rep_interim_doc"></div></td>
+                                  <td align="left" valign="middle" nowrap width="50%"><%= link_to("<span>Replace Interim Doc</span>", "#{upload_interim_matter_document_home_path(@matter,matter_document)}?height=250&width=400", :class => "thickbox", :name => "Replace Interim Document")%> </td>
+                                <% else %>
+                                  <% if check_level =='1' %>
+                                    <td align="left" valign="middle" width="10%"><div class="ap_child_action"></div></td>
+                                    <td align="left" valign="middle" nowrap width="50%"><%= link_to("<span>Upload Interim Doc</span>", "#", :onclick => "tb_show('Upload Interim Document','#{upload_interim_matter_document_home_path(@matter,matter_document)}&height=200&width=500,''); return false")%> </td>
+                                  <% end %>
+                                <% end %>
+                              </tr>
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <% if wip_doc && check_level =='1' %>
+                                <tr>
+                                  <td align="left" valign="middle" width="10%"><div class="icon_access_int_doc"></div></td>
+                                  <td align="left" valign="middle" nowrap width="50%"><%= link_to("<span>Access for Interim Doc</span>",  document_access_control_matter_document_home_path(@matter, matter_document, :interim=>true,:height=>180,:width=>400), :class => "thickbox", :name => "Access Control for Interim Document") %> </td>
+                                </tr>
+                              <% end %>
+                            </table>
+                          </td>
+                          <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                        </tr>
+                        <tr>
+                          <td valign="top" class="ap_bottom_curve_left"></td>
+                          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                          <td valign="top" class="ap_bottom_curve_right"></td>
+                        </tr>
+                      </table>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% elsif matter_document.access_rights!=1 %>
+              <tr class="<%= cycle('bg1', 'bg2')%>">
+                <td align="center" width="5%">
+                  <% mtrresearches = matter_document.matter_researches.count
+                  mtrissues = matter_document.matter_issues.count
+                  mtractivities = matter_document.matter_tasks.count
+                %>
+                </td>
+                <td width="3%"><%= raw(check_client_instance(matter_document)) %></td>
+                <td width="3%"><%= raw(get_privilege(matter_doc.privilege))%><% @doc_count << matter_doc %></td>
+                <td><%= raw link_to(truncate_hover(matter_doc.name.try(:titleize),25),'#', :onclick=>"alert('Access Denied.')") %> </td>
+                <td><%= h matter_doc.source %></td>
+                <td><%= h number_to_human_size(matter_doc.data_file_size,:separator=>".",:precision=>2) %></td>
+                <td align="center"><%=h livia_date(matter_doc.created_at) %></td>
+                <% if task_available? %><td align="center"><%= mtractivities > 0 ? link_to(mtractivities, "#",:onclick=>"alert('Access Denied.')", :class => "vtip", :title => "Linked Activities") : 0%></td><% end %>
+                <% if issue_available? %><td align="center"><%= mtrissues > 0 ? link_to(mtrissues, "#",:onclick=>"alert('Access Denied.')", :class => "vtip", :title => "Linked Issues") : 0%></td><% end %>
+                <% if fact_available? %>
+                  <td align="center">
+                    <% mtrfacts = matter_document.matter_facts.count %>
+                    <%= mtrfacts>0 ? link_to(mtrfacts, "#",:onclick=>"alert('Access Denied.')", :class => "vtip", :title => "Linked Facts") : 0 %>
+                  </td>
+                <% end %>
+                <% if risk_available? %>
+                  <td align="center">
+                    <% mtrrisks = matter_document.matter_risks.count %>
+                    <%= mtrrisks>0 ? link_to(mtrrisks, "#",:onclick=>"alert('Access Denied.')", :class => "vtip", :title => "Linked Risks") : 0 %>
+                  </td>
+                <% end %>
+                <% if research_available? %><td align="center"><%= mtrresearches>0 ? link_to(mtrresearches, "#",:onclick=>"alert('Access Denied.')", :class => "vtip", :title => "Linked Research") : 0 %></td><% end %>
+                <td><%= DocumentHome::ACCESS_RIGHT[matter_document.access_rights.to_i] %></td>
+                <td><%= raw truncate_hover(matter_document.owner.try(:full_name), 18) rescue "-" %></td>
+                <td></td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <tr><td colspan="12"><div class="warningCont m5"><%= t(:text_no_document_found)%><%= matter_info %></div></td></tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= render :partial => "document_homes/matter_document_pagination" %>
+</div>

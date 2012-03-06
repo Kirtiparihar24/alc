@@ -1,0 +1,43 @@
+<% fields_for(@user) do |u|%>
+  <%if(@user.errors.length > 0)%>
+    <div class='errorCont'>
+      <%=u.error_messages %>
+      <div class="clear"></div>
+    </div>
+  <%end%>
+  <div class="bdrbox" id="userformfield">
+    <table cellspacing="0" cellpadding="0" width="100%">
+      <tbody>
+        <% @user.new_record?? display='': display='none' %>
+        <% if @user.errors.length > 0
+          display =''
+        end %>
+        <tr>
+          <td width="25%" class="textBlack11Height10L"><label><%= t(:label_user_name) %> <span>*</span></label></td>
+          <td ><div ><%=u.text_field :username,:class=>"field size4"%></div></td>
+        </tr>
+        <tr style="display: <%=display%>"><td colspan="2">&nbsp;</td></tr>
+        <tr style="display: <%=display%>">
+          <td class="textBlack11Height10L"><label><%=t(:label_password)%> <span>*</span></label></td>
+          <td><div ><%=u.password_field :password,:class=>"field size4"%></div></td>
+        </tr>
+        <tr style="display: <%=display%>"><td colspan="2">&nbsp;</td></tr>
+        <tr style="display: <%=display%>">
+          <td class="textBlack11Height10L"><label><%=t(:label_confirm_password)%> <span>*</span></label></td>
+          <td><div><%=u.password_field :password_confirmation,:class=>"field size4"%></div></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+          <td class="textBlack11Height10L"><%=t(:label_alternate_email)%></td>
+          <td><%=u.text_field :alt_email,:class=>"field size4"%></td>
+        </tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+      </tbody>
+    </table>
+  </div>
+<%end%>
+<script>
+  $(document).ready(function(){   
+    $('#is_user').attr('checked','checked')
+  });
+</script>

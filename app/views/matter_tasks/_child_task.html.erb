@@ -1,0 +1,139 @@
+<% is_parent = (@parents.include?(task.id)) %>
+<% can_delete =  (task.created_by_user_id == get_employee_user_id)%>
+<% is_appointment = params[:cat].eql?("appointment") %>
+<tr style="display:none" class='bg2 <%= parent_id %>' id='<%=task.id%>'>
+  <td><% if task.critical %> <span class="icon_critical fl vtip mt5" title="Critical"></span><% end %></td>
+  <% if @matter.is_litigation %>
+    <td><%= task.phase.lvalue if task.phase %></td>
+  <% end %>
+  <td>
+    <% if task.ancestors.size > 0 %>
+      <% for i in task.ancestors do %> &nbsp; <% end%>
+      <% end %>
+      <% if is_parent %>
+        <%= image_tag("/images/icon_small_plus.png", :width => 12, :height => 12, :id => "task_plus_img_#{task.id}",:onclick => "show_child_tasks(#{task.id});") %>
+      <%end%>
+      &nbsp;
+      <%=activity_name_hover(task,@matter)%>
+    </td>
+    <td><%= task.assigned_to_name %></td>
+    <td><%= MatterTask::PRIORITIES_REVERSE[task.priority] %></td>
+    <% if issue_available? %><td align="center"><%= facebox_link_num(task.matter_issues.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, task,:format_type => "issues")}&height=200&width=500", "Linked Issues") %></td><%end%>
+    <% if fact_available? %><td align="center"><%= facebox_link_num(task.matter_facts.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, task,:format_type => "facts")}&height=200&width=500", "Linked Facts") %></td><%end%>
+    <% if risk_available? %><td align="center"><%= facebox_link_num(task.matter_risks.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, task,:format_type => "risks")}&height=200&width=500", "Linked Risks") %></td><%end%>
+    <% if research_available? %><td align="center"><%= facebox_link_num(task.matter_researches.length, "#{show_task_matter_issues_matter_matter_task_path(@matter, task,:format_type => "researches")}&height=200&width=500", "Linked Research") %></td><%end%>
+    <td align="center">
+      <%=livia_date(task.start_date)%>
+    </td>
+    <td align="center">
+      <%=livia_date(task.end_date)%>
+    </td>
+    <td align="center"><%= livia_date(task.completed_at) if task.completed %></td>
+    <td><%= matter_task_completion_status(task) %></td>
+    <td align="center">
+      <div class="icon_action mt3"><a href="#"></a></div>
+      <div id="liquid-roundAP" class="tooltip" style="display:none;">        
+        <% if document_available? %>
+           <% link = new_document_matter_document_homes_path(@matter, :task_id=>task.id, :height => "490", :width => "630", :title => "Add Document") %>
+        <% else %>
+           <% link = "NO" %>
+        <% end %>
+        <table width="100%" border="1" cellspacing="0" cellpadding="0">
+          <%= raw action_pad_top_blue_links({
+              :edit_path => edit_matter_matter_task_path(@matter, task),
+              :deactivate_path => can_delete ? matter_task_delete_link(task, @matter, get_employee_user_id, 'matters') : "NO",
+              :deactivate_text => " Task?",
+              :comment_path => add_comment_with_grid_comments_path(:id=>task.id,:commentable_type=>'MatterTask',:path=> matter_matter_tasks_path(task.matter)),
+              :document_modal => true,
+              :document_header => "Add Document",
+              :document_path => link,
+              :history_path => "NO"
+            })%>
+          <tr>
+            <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+            <td style="background: #fff;">
+              <div class="pt5">
+                <div class="fl pb5"  style="width:165px;">
+                  <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                    <tr>
+                      <td width="20"><div class="ap_child_action"></div></td>
+                      <td nowrap class="ml5"><%= link_to "<span>New Time Entry</span>", "#{time_expense_entry_matter_matter_task_path(@matter, task)}?height=320&width=1020", :class => "thickbox", :name => "#{t(:text_new_time_entry)}" %></td>
+                    </tr>
+                  </table>
+                </div>
+                <% unless is_appointment %>
+                  <div class="fl pb5"  style="width:165px;">
+                    <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                      <tr>
+                        <td width="20"><div class="ap_child_action"></div></td>
+                        <td nowrap class="ml5">
+                          <%unless task.completed == true%>
+                            <%= link_to "<span>Mark as Done</span>", mark_as_done_form_matter_matter_task_path(@matter, task, :height=>120, :width=>350), :class => "thickbox", :name => "Mark Completed"%>
+                          <%else%>
+                            <span class="action_pad_inactive"><%=t (:label_mark_as_done)%></span>
+                          <%end%>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <% if issue_available?  %>
+                    <div class="fl pb5"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%=link_to("<span>Link Issues</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,task,:col_type => :matter_issues,:col_type_ids => :matter_issue_ids,:label => 'Issue')}&height=165&width=500", :class => "thickbox", :name => "Link Issues")%></td>
+                        </tr>
+                      </table>
+                    </div>
+                  <% end %>
+                  <% if fact_available?  %>
+                    <div class="fl pb5"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"> <%=link_to("<span>Link Facts</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,task,:col_type => :matter_facts,:col_type_ids => :matter_fact_ids,:label => 'Fact')}&height=165&width=500", :class => "thickbox", :name => "Link Facts")%></td>
+                        </tr>
+                      </table>
+                    </div>
+                  <% end %>
+                  <% if risk_available?  %>
+                    <div class="fl pb5"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"> <%=link_to("<span>Link Risks</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,task,:col_type => :matter_risks,:col_type_ids => :matter_risk_ids,:label => 'Risk')}&height=165&width=500", :class => "thickbox", :name => "Link Risks")%></td>
+                        </tr>
+                      </table>
+                    </div>
+                  <% end %>
+                  <% if research_available?  %>
+                    <div class="fl pb5"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"> <%=link_to("<span>Link Research</span>", "#{get_issues_facts_risks_researches_matter_matter_task_path(@matter,task,:col_type => :matter_researches,:col_type_ids => :matter_research_ids,:label => 'Research')}&height=165&width=500", :class => "thickbox", :name => "Link Research")%></td>
+                        </tr>
+                      </table>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+              <br class="clear"/>              
+            </td>
+            <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+          </tr>
+          <tr>
+            <td valign="top" class="ap_bottom_curve_left"></td>
+            <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+            <td valign="top" class="ap_bottom_curve_right"></td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <% if is_parent %>
+    <% child_tasks = task.children %>
+    <% child_tasks.each_with_index do |ctask, indx| %>
+      <%= render :partial => "child_task", :locals => {:task => ctask, :parent_id => task.id, :indx => indx} if ctask.category.eql?('todo') %>
+    <% end %>
+  <% end %>

@@ -1,0 +1,42 @@
+<div id="container-1">
+  <%form_remote_tag :url=>{:action => :opportunity_pipe_rpt},:condition => "validate_report_date()" do |f| %>
+    <%=render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+    <div id="fragment-1" class="tabs-container">
+      <%unless params[:load_popup]%>
+        <h2 class="title_main"><%=t(:text_opportunity_pipeline)%> <%= render :partial =>  "layouts/left_report_sidebar" %></h2>
+      <%else%>
+        <%=raw(generate_spinner_my_favorite_link)%>
+      <%end%>
+      <div class="p5">
+        <%unless params[:load_popup]%>
+          <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+          </div>
+          <% opts = rpt_selection_helper(params[:get_records]) %>
+          <%= raw(radios_for_rpt(opts,"#{t(:label_Opportunity)}")) %>
+          <br class="clear" />
+          <div class="box_org p5">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+              <tbody>
+                <tr>
+                  <td align="left" valign="middle"><%= t(:text_summarize_by) %></td>
+                  <td align="left" valign="middle"><%= select("report","summarize_by",[["Stage","stage"],["Owner","owner"],["#{t(:label_contact)}","contact"],["#{t(:label_Account)}","account"],["Source","source"]],{:selected => params[:report][:summarize_by] || @reports_summarize_by}) %></td>
+                  <td align="left" valign="middle"><%= t(:text_opportunity_status) %></td>
+                  <td align="left" valign="middle">
+                    <%= select("report","status",[["All","All"]] + current_company.opportunity_stage_types.collect{|os|[os.alvalue,os.id]},{:selected => params[:report][:status] == "All" ? "All" : @reports_status.to_i || params[:report][:status].to_i}) %>
+                  </td>
+                  <td align="left" valign="middle"><%= t(:text_probability) %></td>
+                  <td align="left" valign="middle"><%= select("report","probability",[["All","1"],[">10%",">:-:10"],[">20%",">:-:20"],[">30%",">:-:30"],[">40%",">:-:40"],[">50%",">:-:50"],[">60%",">:-:60"],[">70%",">:-:70"],[">80%",">:-:80"],[">90%",">:-:90"],["<10%","<:-:10"],["<20%","<:-:20"],["<30%","<:-:30"],["<40%","<:-:40"],["<50%","<:-:50"],["<60%","<:-:60"],["<70%","<:-:70"],["<80%","<:-:80"],["<90%","<:-:90"]],{:selected => params[:report][:probability] || @reports_probability}) %></td>
+                  <%= render :partial => 'rpt_partials/date_picker', :locals => {:opt_style => opts[:style], :checked => opts[:checked]} %>
+                  <td valign="middle"><input type="submit" name="commit" value="Run Report" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <% end%>
+      <% end%>
+      <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+      <div id="report-info"></div>
+      <div id="report-content"></div>
+    </div>
+  </div>
+</div>

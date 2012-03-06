@@ -1,0 +1,11 @@
+<div class="forms">
+  <div class="row" style="width:700px">
+    "<%= @task.name %>" is a recurring task. Would you like to open only this instance or the parent task?
+  </div>
+  <div class="row">
+    <%= radio_button_tag 'open_task', 'this_task',false, :onclick=>"window.location='#{edit_wfm_user_task_path(@task)}'" %> Open this instance
+  </div>
+  <div class="row">
+    <%= radio_button_tag 'open_task', 'parent_task',false, :onclick=>"window.location='#{edit_wfm_user_task_path(@task.parent_task)}'" %> Open this series
+  </div>
+</div>

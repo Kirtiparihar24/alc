@@ -1,0 +1,7 @@
+<%if @duration_setting.errors.present?%>
+  show_msg('nameerror',"<%=@duration_setting.errors.full_messages.to_s%>")
+<%  else%>
+  jQuery("#duration_setting").html("<%=escape_javascript(render(:partial=>"duration_settings/list",:locals=>{:duration_setting=>@duration_setting}))%>")
+  parent.tb_remove();
+  tb_init('a.thickbox');
+<%  end%>

@@ -1,0 +1,48 @@
+<div id="fragment-5" class="tabs-container-tabs tabs-hide tabular_listing ">
+  <table width="100%">
+
+  <tr>
+      <td colspan="2" height="10">&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td width="76%"><strong><%= t(:text_campaigns) %> - </strong><%= truncate_hover(@campaign.name.try(:titleize),35) %></td>
+      <td width="24%"><strong><%= t(:text_start_date) %> - </strong><%= @campaign.starts_on.to_time.strftime('%m/%d/%y') if @campaign.starts_on %></td>
+    </tr>
+    <tr>
+      <td><strong><%= t(:text_owner) %> - </strong><%= @campaign.get_assigned_to %></td>
+      <td><strong><%= t(:text_end_date) %> - </strong><%= @campaign.ends_on.to_time.strftime('%m/%d/%y') if @campaign.ends_on %></td>
+    </tr>
+  </table>
+
+  <div class="seperator_dotted_hori"></div>
+<div  class="p5">
+  <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+    <tr>
+      <th align="left" width="35%"><%=t(:text_name)%></th>
+      <th align="center" width="10%"><%=t(:text_date)%></th>
+      <th align="left" width="35%"><%=t(:text_contact)%></th>
+      <th align="left" width="10%"><%=t(:text_status)%></th>
+      <th align="right" width="10%"><%=t(:text_value_d)%></th>
+    </tr>
+    <% if @campaign_opportunities.length >0 %>
+      <%@campaign_opportunities.each do |opportunity|%>
+        <tr class="<%=cycle('bg1', 'bg2')%>">
+          <td><%=opportunity.name%></td>
+          <td align="center"><%=livia_date(opportunity.created_at)%></td>
+          <td><%=opportunity.contact.try(:full_name)%></td>
+          <td><%=current_company.opportunity_stage_types.find_by_id(opportunity.stage).lvalue.try(:titleize) rescue '-'%></td>
+          <td  align="right"><%= livia_amount(opportunity.amount) if (opportunity.amount)   %></td>
+        </tr>
+      <%end%>
+      <tr class="<%=cycle('bg1', 'bg2')%>">
+        <td colspan="3"></td>
+        <td><strong><%=t(:text_total)%></strong> </td>
+        <td align="right"><%=livia_amount(@campaign.get_total_revenue)%> </td>
+      </tr>
+    <%else%>
+      <tr><td colspan="5"><div class="warningCont"><%=t(:text_no_opportunities_created_yet)%></div></td></tr>
+    <%end%>
+  </table>
+</div>
+</div>

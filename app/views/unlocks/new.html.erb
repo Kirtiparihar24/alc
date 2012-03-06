@@ -1,0 +1,24 @@
+<div id="login-div" style="margin-top:5%;" >
+  <div style="width:100%; text-align:center; margin:0 auto;">
+    <div id="middleBody-div"  style=" margin:0 auto 0 auto; ">
+      <h2 class="title_main">Resend Unlock Instructions</h2>
+      <div style="width:75%; margin:0 auto; text-align:center;">
+        <br class="clear"/>
+        <% form_for resource_name, resource, :url => unlock_path(resource_name) do |f| %>
+          <div class='message_error_div' style="text-align:left">
+              <%= "Your token has been expired." %>
+            <div class="clear"></div>
+          </div>
+          <br class="clear"/> <br class="clear"/>
+          <div class="form_table" style="margin:auto; text-align:center;">
+            <table width="100%" align="center">
+              <tr>
+                <td valign="top" align="center" colspan="2"><%= render :partial => "common/devise_links" %></td>
+              </tr>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

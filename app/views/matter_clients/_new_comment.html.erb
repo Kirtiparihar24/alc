@@ -1,0 +1,16 @@
+<% form_for :comment,@comment, :url=>{:controller=>:comments,:action=>:create},:method=>:post ,:html=> {:multipart=> true, :id=>'new_comment'} do |f| %>
+  <%= hidden_field_tag "comment[created_by_user_id]", @current_user.id%>
+  <%= hidden_field_tag "comment[commentable_id]", @task.id%>
+  <%= hidden_field_tag "comment[title]", 'MatterTask Client'%>
+  <%= hidden_field_tag "comment[commentable_type]", "MatterTask"%>
+  <%return_path = @return_path.eql?("index") ? matter_clients_path : @return_path%>
+  <p>
+    <label><%=t(:text_message)%> <span>*</span></label>
+    <%= f.text_area :comment, :cols=>90, :rows =>7, :id=>"comment_comment", :class=> "input-short" %>
+  </p>
+  <fieldset>
+    <%=f.submit "Add Message", :disable_with=>'Please wait...', :class=>"submit-green" %>
+    <input type="submit" id="cancel" value="<%= t(:label_back) %>" onclick="javascript: history.go(-1);return false;" class="submit-gray"/>
+  </fieldset>
+<%end%>
+<div style="clear:both;"></div>

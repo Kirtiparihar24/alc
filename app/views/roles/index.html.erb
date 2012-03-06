@@ -1,0 +1,33 @@
+<% roles_blank = @roles.blank? %>
+<div class="box-head"><h2 class="left"><%=t(:label_Roles)%></h2></div>
+<div class="actionLinks"><%=link_to('Add New Role', new_role_path)%></div>
+<%unless roles_blank%>
+  <div class="watermark"><%=will_paginate @roles, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @roles %></div>
+<%end%>
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+      <tr>
+        <th width=15%"><%=t(:label_name)%></th>
+        <th width="25%"><%=t(:label_For_WFM)%></th>
+        <th width="20%" colspan="3"><%=t(:text_action)%></th>
+      </tr>
+      <%if roles_blank %>
+        <tr><td colspan="3"><div class="warningCont m5"><%=t(:text_no_records)%></div></td></tr>
+      <% else %>
+        <%@roles.each do |role|%>
+          <tr class="bg1">
+            <td><%=role.name %></td>
+            <td><%=role.for_wfm%></td>
+            <td><%= link_to t(:label_edit), edit_role_path(role) %>    </td>
+          </tr>
+        <%end%>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<%unless roles_blank%>
+  <div class="pagging">
+    <div class="left"><%=will_paginate @roles, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info @roles %></div>
+  </div>
+<%end%>

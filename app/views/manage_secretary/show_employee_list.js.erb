@@ -1,0 +1,2 @@
+jQuery('#show_employee_list').html("<%=escape_javascript(render(:partial => "show_employee_list",
+    :locals => {:secretary_id => @secretary_id, :employees => @employees}))%>");

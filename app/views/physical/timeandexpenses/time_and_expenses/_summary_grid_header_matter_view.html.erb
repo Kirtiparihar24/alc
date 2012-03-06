@@ -1,0 +1,14 @@
+<script type="text/javascript">intitoggleit();</script>
+<div class="titleHead" id="sumamrygridToggle">
+   <% if controller.action_name == 'matter_view' %>
+      <div class="fl"><%=t(:text_time_and_expense_entries_for_matter)%><%= (@matter ? @matter.clipped_name : '' )%>"</div>
+    <% elsif controller.action_name == 'contact_view' %>
+      <div class="fl"><%=t(:text_time_and_expense_entries_for_contact)%><%= (@contact ? @contact.full_name : '' )%>"</div>
+    <% elsif controller.action_name == 'internal'  %>
+      <div class="fl"><%=t(:text_time_and_expense_entries_for_internal_work)%></div>
+    <% end %>
+   <div class="fr ptr5">    
+      <span style="float:right;padding:3px;"> <%=image_tag "/images/livia_portal/icon_max.gif",:alt =>"Maximize",:class =>"toggle_saved_entries icon_hide" %>
+       <%=image_tag "/images/livia_portal/icon_min.gif",:alt =>"Minimize",:class =>"toggle_saved_entries icon_show" %></span>
+  </div>
+</div>

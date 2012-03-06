@@ -1,0 +1,16 @@
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('#container-1').tabs(1);
+  });
+</script>
+<div>
+  <div id="container-1">
+    <%= render :partial  => 'all_tabs'%>
+    <%= render :partial => 'campaign_contact_list'%>
+    <%= render :partial => 'mass_email'%>
+    <%= render :partial => 'campaign_responses'%>
+    <%= render :partial => 'campaign_suspended', :locals => {:popup => false}%>
+    <%= render :partial => 'campaign_opportunities'%>
+    <%= render :partial => 'edit_campaign'%>
+  </div>
+</div>

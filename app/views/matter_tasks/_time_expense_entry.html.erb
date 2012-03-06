@@ -1,0 +1,157 @@
+<%=raw javascript_include_tag  "time_and_expense/new_time_entry" %>
+<%=raw javascript_include_tag  "time_and_expense/expense_entry_for_time_entry" %>
+<%=raw(javascript_include_tag "jquery/jquery.timeentry.pack.js")%>
+<%=raw(javascript_include_tag "livia_common.js")%>
+<%=raw(javascript_include_tag "application.js")%>
+<div class="message_error_div" id="errors_div_for_tne_facebox" style="display:none;"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div class="p5">
+  <% form_for :physical_timeandexpenses_time_entry, @time_entry, :url =>{:action => 'create', :controller => 'physical/timeandexpenses/time_and_expenses'}, :html=> {:multipart=> true, :id => :new_physical_timeandexpenses_time_entry, :onsubmit => "return validateFieldsForTnEFaceboxForm('tne_entry_button');return disableAllSubmitButtons('matters')"} do |time_entry| %>
+    <% from_calendar =  params[:from].eql?('calendars') %>
+    <%=hidden_field_tag :matter_task_edit_url, edit_matter_matter_task_path(@matter, @matter_task) unless from_calendar %>
+    <%=hidden_field_tag :from, 'calendars' if from_calendar %>
+    <%=time_entry.hidden_field :is_internal, :value=>'false'%>
+    <%=time_entry.hidden_field :matter_task_id, :value => @matter_task.id%>
+    <%=time_entry.hidden_field :matter_id, :value => @matter.id%>
+    <%=time_entry.hidden_field :contact_id, :value => @matter.contact_id%>
+    <% has_matter = !params[:matter_id].blank? and !params[:height].blank? %>
+    <div class="form_table">
+      <div class=" fl" style="width:50%;">
+        <table width="100%" class="form_table" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="13%" align="left" valign="top" style="height:20px;"><%=t(:label_date)%><span class="alert_message">*</span></td>
+            <td width="15%" align="left" valign="top"><%= time_entry.text_field 'time_entry_date', { :id=> ('datepicker_time_entry'),:class=>"datepicker date_picker", :size => "15" ,:value=> (@entry_date || @time_entry.time_entry_date || Time.zone.now.to_date) } %></td>
+            <td width="15%" align="left" valign="top">&nbsp;</td>
+            <td width="15%" align="left" valign="top">&nbsp;</td>
+            <td width="15%" align="left" valign="top">&nbsp;</td>
+            <td width="15%" align="left" valign="top">&nbsp;</td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label>Employee</label></td>
+            <td width="35%" valign="top">
+              <% javascript_action_for_check_matter = @matter ? "" : "update_matter_contact_select(this.value,'datepicker_time_entry');get_activity_rate();"%>
+              <%=time_entry.select 'employee_user_id', @lawyers.collect{|lawyer|[ lawyer.full_name,lawyer.id ]},{:selected =>get_employee_user_id},:onchange =>javascript_action_for_check_matter  ,:disabled=> (@matter && !is_access_matter?)  ? true : false%></td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top" ><label><%=t(:label_matters)%> </label></td>
+            <td width="85%" valign="top">
+              <span id="matters_div" class="search_div"></span>
+              <span id="001_matterSearch" class="search_div" style="width:164px;">
+                <% matter_id = !@matter.id.nil? ? @matter.id : '' %>
+                <% mat_name = !@matter.id.nil? ? @matter.clipped_name : '' %>
+                <%= raw new_time_entry_matter_search_box('physical_timeandexpenses_time_entry[matter_id]','physical_timeandexpenses_time_entry_matter_id',"_matter_ctl",'001',mat_name,matter_id,'disabled="disabled"') %>              </span>
+              <%= image_tag("/images/download.png",:alt=>"Lists",:border=>"0")  %>
+            </td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_contact)%></label></td>
+            <td width="85%" valign="top">
+              <span id="contact_span" class="search_div"></span>
+              <span id="001_contactSearch" class="search_div" style="width:164px;">
+                <% contact_id = !@matter.contact_id.nil? ? @matter.contact_id : nil %>
+                <% cont_name = !@matter.contact_id.nil? ? @matter.contact.name : nil %>
+                <%= raw new_time_entry_contact_search_box('physical_timeandexpenses_time_entry[contact_id]','physical_timeandexpenses_time_entry_contact_id','_contact_ctl','001',cont_name,contact_id,'disabled="disabled"') %>              </span>
+              <%= image_tag("/images/download.png",:alt=>"Lists",:class=>"drop_down",:border=>"0")  %>
+            </td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_internal)%> </label></td>
+            <td width="85%" valign="top" ><%= time_entry.check_box 'is_internal' ,{:class=>"radio",:checked => (has_matter ? false : @time_entry.is_internal), :disabled=>has_matter, :onclick =>"alert_for_matter_and_contact('physical_timeandexpenses_time_entry_is_internal');"}%></td>
+          </tr>
+          <tr>
+            <td width="13%" align="left" valign="top"><%=t(:label_activity_type)%></td>
+            <td colspan="5" align="left" valign="top">
+              <%=time_entry.select 'activity_type', current_company.company_activity_types.collect{|activity|[ activity.alvalue,activity.id ]},{},{:class => "", :onchange=>"get_activity_rate();" }%>
+            </td>
+          </tr>
+          <tr>
+            <td width="13%"align="left" valign="top"><%=t(:label_description)%><span class="alert_message">*</span></td>
+            <td colspan="5" align="left" valign="top">
+              <%=time_entry.text_area 'description' ,:rows =>5,:cols=> 50  , :class =>"textarea"%></td>
+          </tr>
+        </table>
+      </div>
+      <div class="fr" style="width:50%;">
+        <table width="100%" class="form_table" cellpadding="0" cellspacing="0" border="1">
+
+          <tr>
+            <td align="left" valign="top" width="14%"><%=t(:label_start_time)%></td>
+            <td width="19%" valign="top" align="left"><%= time_entry.text_field 'start_time' ,:value =>!@t_start_time.nil? ? @t_start_time : '00:00 PM',:onchange=>"timeDifference(#{@dur_setng_is_one100th});",:style=>"color:#333333;float:left;font-size:100%;width:65px;" %></td>
+            <td width="12%" valign="top" align="left"><%=t(:label_end_time)%></td>
+            <td width="19%" valign="top" align="left"><%=time_entry.text_field :end_time, :value =>!@t_end_time.nil? ? @t_end_time : '00:00 PM',:onchange=>"timeDifference(#{@dur_setng_is_one100th});",:style=>"color:#333333;float:left;font-size:100%;width:65px;"%></td>
+            <td width="18%" valign="top" align="left"><%=t(:label_duration_hrs)%><span class="alert_message">*</span></td>
+            <td width="12%" valign="top" align="left"><%= time_entry.text_field 'actual_duration',:size =>8 ,:class => "w35p amount", :onchange=>"check_duration(this);" , :style => "text-align:right"%></td>
+          </tr>
+          <tr>
+            <td width="14%" align="left" valign="top"><%=t(:label_rate_hr)%><span class="alert_message">*</span></td>
+            <td colspan="5" align="left" valign="top"><%=time_entry.text_field 'actual_activity_rate', :size=>15,:class => 'txtbox textR amount',:onchange => "check_rate(this);" %></td>
+            <%= hidden_field_tag("physical_timeandexpenses_time_entry[activity_rate]", @time_entry.activity_rate ) %>
+          </tr>
+          <tr>
+            <td width ="14%"align="left" valign="top"><%=t(:label_billable)%></td>
+            <td colspan="5">
+              <div class="highlight_bg_1 border_gray fl p5" style="width:53%">
+                <%= time_entry.check_box 'is_billable', {:checked=> @time_entry.is_billable , :onclick =>"enable_disable_time_entry_billing(this);", :class=>"radio"}%><br />                
+                <table id="adjustment_table"width="100%" border="0" align="left">
+                  <tbody>
+                    <tr>
+                      <td width="82%" align="left" ><%=t(:label_Final_Amount)%></td>
+                      <td width="18%" align="right" style="padding-right:7px;"><span  id="bill_amount"><%= @time_entry.calculate_billed_amount %></span></td>
+                    </tr>
+                    <tr>
+                      <td width="82%" align="left" >
+                        <%disabled = !@time_entry.is_billable ? true : false%>
+                        <%=dynamic_select("physical_timeandexpenses_time_entry","billing_method_type",'time_entries',{:selected=>@time_entry.billing_method_type},{:style=>'width:110px;',:class=>"w95 IE_8_time_entries",:disabled=>disabled})%>
+                      </td>
+                      <td width="18%" align="rleft">
+                        <%name,adjustment,final_amount= time_entry_adjustments(@time_entry) %>
+                        <%disabled =  @time_entry.billing_method_type ==1 ? true : false%>
+                        <% adjustment =  "" if @time_entry.billing_method_type ==1%>
+                        <%= text_field_tag "show_full_amount", '',:size => 8 ,:value=>adjustment,:maxlength=>5,:id=>"show_amount",:name=>name, :onblur =>"newEntryBillAmount(this,'physical_timeandexpenses_time_entry_')",:style=>"text-align: right;",:disabled=>disabled%>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="82%" align="left"><b><%=t(:label_Final_Amount)%>(<%=t(:label_doller)%>):</b></td>
+                      <td width="18%" align="right" style="padding-right:7px;"><span id="final_billed_amount"><%= number_with_lformat(final_amount)%></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td width="14%" align="left" valign="top"><%=t(:label_attachment)%></td>
+            <td colspan="7" align="left" valign="top"><label>
+                <%= time_entry.file_field 'file', { :value=>get_time_entry_document(@time_entry.id).blank? ? 'NA' : get_time_entry_document(@time_entry.id).data_file_name, :size =>"30"} %>
+              </label></td>
+          </tr>
+        </table> 
+      </div>
+
+    </div>
+    <br class="clear" />
+    <div class="buttonSub_div" >
+      <%= time_entry.submit t(:text_save),:class=>'matters' ,:name => "save2", :id => 'tne_entry_button' , :onclick=> " return checkloader();"%>
+      <%=time_entry.submit t(:text_cancel),:class=>'matters', :name => "save_exit", :onclick => "parent.tb_remove(); return false;"%>
+    </div>
+  <%end%>
+  <div class="mandatory" ><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+
+  <div align="right" class="pagiText fr" width="100%"><%=t(:label_page)%>&nbsp;50 </div>
+</div>
+<script>
+  jQuery(document).ready(function() {
+    startEndTimeFormat("physical_timeandexpenses_time_entry_start_time");
+    startEndTimeFormat("physical_timeandexpenses_time_entry_end_time");
+    
+    jQuery('#physical_timeandexpenses_time_entry_actual_duration').live('keypress',function(e){
+      if(e.charCode != 46 && e.charCode !=0 && (e.charCode < 48 || e.charCode > 57)){
+        e.preventDefault();
+      }
+    }) ;
+  });
+  get_activity_rate();// Function to get display the default selected rate
+  livia_datepicker_new("#physical_timeandexpenses_time_entry_time_entry_date");
+</script>
+
+

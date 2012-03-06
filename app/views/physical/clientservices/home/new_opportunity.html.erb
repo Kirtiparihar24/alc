@@ -1,0 +1,125 @@
+<script src="/javascripts/jquery/jquery.timeentry.pack.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function(){
+    validate_contact_presence();
+    jQuery('#opportunity_follow_up_time').timeEntry({
+      ampmPrefix: ' ',
+      initialField: 0,
+      show24Hours: false,
+      timeSteps: [1,1,1]
+    });
+    if (jQuery('#datepicker_opportunity_follow_up').val()!="")
+    {jQuery('.opportunity_follow_up_time').show();}
+    livia_matter_inception_datepicker_new("#datepicker_opportunity_new");
+    livia_matter_inception_datepicker_new("#datepicker_opportunity_follow_up");
+  });
+  create_contact_url = 'create_contact'
+  function creating_contact(){
+    create_contact_thickbox('Create Contact',create_contact_url,f);
+  }
+  function set_val(){
+    jQuery("#val").val("contact")    
+    return true;
+  }  
+</script>
+<div class="p8">
+  <div id="message_error_div" class="message_error_div" style="display : none"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <% remote_form_for(@opportunity,:url => {:action => 'create_opportunity'}) do |f| %>
+    <%=hidden_field_tag "val","" %>
+    <div id ="sub_form">
+      <%=hidden_field_tag "commit","" %>
+      <div class="" align="center" id="loader1" style="display:none;"><img src='/images/loading.gif' /></div>
+      <table cellpadding="0" cellspacing="0" border="0" class="form_table">
+        <tr>
+          <td width="15%"><label><%= t(:text_opportunity) %> <span class="alert_message">*</span></label></td>
+          <td width="30%"><%= f.text_field :name %></td>
+          <td width="20">&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="15%"><label><%= "#{t(:text_closure)} #{t(:text_date)}" %></label></td>
+          <td width="30%"><input type="text" id="datepicker_opportunity_new" name="opportunity[closes_on]" readonly="true" size="9" class="date_picker" onclick="livia_datepicker(this)" <%= "value=#{f.object.closes_on.to_time.strftime('%m/%d/%Y')}" if f.object.closes_on %> /></td>
+        </tr>
+        <tr>
+          <td width="15%"><label><%= "#{t(:text_followup)} #{t(:text_date)}"%></label></td>
+          <td width="30%"><input type="text" id="datepicker_opportunity_follow_up" name="opportunity[follow_up]" readonly="true" size="9" class="date_picker" onchange="jQuery('.opportunity_follow_up_time').show();" onclick="livia_datepicker(this);" <%= "value=#{f.object.follow_up.to_time.strftime('%m/%d/%Y')}" if f.object.follow_up %> /></td>
+          <td width="20">&nbsp;</td>
+          <td><label class="opportunity_follow_up_time" style="display:none"><%= "#{t(:text_followup)} #{t(:text_time)}"%></label></td>
+          <td width="10%"><%= f.text_field :follow_up_time,:value=>'12:00 PM',:class=>"opportunity_follow_up_time",:size => "7",:style=>"display:none"%> </td>
+        </tr>
+        <tr>
+          <td width="15%"><label><%= t(:text_probability) %></label></td>
+          <td width="30%">
+            <div style="width: 141px; position: relative; z-index: 10000;" id="selectBox0" class="selectBox">
+              <%= f.text_field :probability, :class=>"selectBoxInput", :maxlength =>4,  :size=>'15',:value=>floatIfNil(@opportunity.probability)%>
+              <img src="/images/select_arrow_down.gif" class="selectBoxArrow" id="arrowSelectBox0"></img>
+              <div id="selectBoxOptions0" class="selectBoxOptionContainer" style="width: 141px; display: none;">
+                <% current_company.opportunity_stage_types.each do |op_stage| %>
+                  <%if !op_stage.percentage.nil?%>
+                    <div  class="selectBoxAnOption" style="width: 141px;" id="op_prob_<%=op_stage.id%>"><%=floatIfNil(op_stage.percentage)%></div>
+                  <%end%>
+                <%end%>
+              </div>
+            </div>
+          </td>
+          <td width="4%">&nbsp;</td>
+          <td width="15%"><label><%= t(:text_stage) %></label></td>
+          <td width="30%"><%= f.collection_select :stage,current_company.opportunity_stage_types,:id,:alvalue,:selected=>'Proposal',:class=>"textBoxwidth"%></td>
+        </tr>
+        <tr>
+          <td width="15%"><label><%=t(:text_amt)%></label></td>
+          <td width="30%"><%= f.text_field :amount, :maxlength => 10, :size => 30 %></td>
+          <td width="4%">&nbsp;</td>
+          <td width="15%"><label><%= t(:text_estimated_hours) %></label></td>
+          <td width="30%"><%= f.text_field :estimated_hours, :maxlength => 10, :size => 30 %></td>
+        </tr>
+        <tr>
+          <td width="15%"><label><%= t(:text_assigned_to) %></label></td>
+          <td width="30%"><%= f.collection_select  :assigned_to_employee_user_id, @employees, :id, :full_name, { :include_blank => "--None--" } %></td>
+        </tr>
+        <tr>
+          <td width="15%"><label><%= t(:text_source) %></label></td>
+          <td width="30%">
+            <%= f.collection_select :source, current_company.company_sources,:id,:lvalue,
+              {:include_blank => '--None--'},
+              {:selected => nil, :class => "textBoxwidth",
+              :onchange=>"show_campaign_combo()",:id=>"source_combo" }%>
+          </td>
+          <td width="4%">&nbsp;</td>
+          <td colspan="2">
+            <div id="campaign_combo" style="display:none" >
+              <p><label><%= t(:text_campaign_name) %>&nbsp;</label><% if @campaigns.present? %><%= f.collection_select :campaign_id, @campaigns, :id,:name,{:include_blank=>"External #{t(:text_campaign)}"} %> <% else %> <%= select "campaign",1,"",{:include_blank=>"No #{t(:text_campaigns)}"} %><% end %></p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td width="15%"><label>Contact <span class="alert_message">*</span></label></td>
+          <td width="30%" colspan="4">
+            <%= raw contact_search_box('contact[id]', controller.controller_name, "", "") %>
+            <strong class="text12 mlr8">or</strong>
+            <label>
+              <label>
+                <%=link_to_remote("New Contact", :url =>physical_clientservices_create_contact_path(:opportunity=> params[:opportunity]), :submit => 'sub_form', :method=>:post)%>
+              </label>
+            </label>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="buttonSub_div">
+      <%= f.submit t(:text_save_n_exit), :name=>"save_exit",:id=>'save_opp',:onclick=>"return checkloader(); this.value ='Please wait...';this.disabled = false;" %>
+      <input type="button" id="Login2" value="Cancel" onclick="tb_remove();"/>
+      <%= hidden_field_tag :commit,'',:id=>"updateme" %>
+    </div>
+    <div class="mandatory"><span class="alert_message">*</span><%= t(:text_required_field) %><!--, <span class="alert_message">#</span> <%#= t(:text_either_email_or_phone_should_be_given) %>--></div>
+  <%end%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;16</div>
+<style type="text/css">
+  .selectBoxArrow{margin-top:1px; float:left; position:absolute; right:1px;}
+  .selectBoxInput{ border:0px; padding-left:1px; height:16px; position:absolute; top:0px; left:0px;}
+  .selectBox{ border:1px solid #7f9db9; height:20px;}
+  .selectBoxOptionContainer{position:absolute; border:1px solid #7f9db9; height:100px; background-color:#FFF; left:-1px; top:20px; overflow:auto;}
+  .selectBoxIframe{ position:absolute; background-color:#FFF; border:0px;}
+  .selectBoxAnOption{ font-family:arial; font-size:12px; cursor:default; margin:1px; overflow:hidden; white-space:nowrap;}
+</style>

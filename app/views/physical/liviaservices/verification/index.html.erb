@@ -1,0 +1,40 @@
+  <div class="gridDiv">
+    <div class="titleHead">
+      <div class="fl"><%=t(:text_verifying_data_for)%>&nbsp;&nbsp;"<%= @assignment.receiver_name%>"</div>
+      <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div>
+      <br class="clear"/>
+    </div>
+    </div>
+  <div class="windowForm">
+    <div class="pt10">
+      <p>
+        <label><%=t(:label_name)%></label>
+        <span class="labeltext"><%=@assignment.receiver_name %></span>
+        <br class="clear" />
+      </p>
+      <p>
+        <label><%=t(:label_birthdate)%></label>
+        <span class="labeltext"><%= @receiver.birthdate %></span>
+        <br class="clear" />
+      </p>
+    
+      <p>
+        <label><%=t(:label_designation)%></label>
+        <span class="labeltext"><%=  @receiver.designation_id.nil? ? ' ': CompanyLookup.find(@receiver.designation_id).lvalue%><%#= @receiver.designation_id %></span>
+        <br class="clear" />
+      </p>
+      <p>
+        <label><%=t(:label_billing_rate)%></label>
+        <span class="labeltext"><%= @receiver.billing_rate %></span>
+        <br class="clear" />
+      </p>
+    </div>
+    <div class="txtC">&nbsp;
+        <%=link_to t(:label_lawyer_verified), "/physical/liviaservices/verification/#{@id}/verify",  :id=> @id,:class=>"linkbutton" %>       
+        <%=link_to t(:label_lawyer_not_verified), "/physical/liviaservices/livia_secretaries/", :class=>"linkbutton"%>      
+        <a href="#" class="linkbutton" onclick="closeFaceBox();"><%=t(:text_cancel)%></a>
+    </div>
+    <br class="clear" />
+  </div>
+  
+

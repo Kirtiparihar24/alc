@@ -1,0 +1,7 @@
+<% assets = controller.controller_name
+asset = assets.singularize %>
+<div id="empty">  
+    <div class="warningCont m5">
+      <%= t(:text_no_records_found_for) %> <%= asset.try(:capitalize).humanize %>.
+    </div>  
+</div>

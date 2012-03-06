@@ -1,0 +1,3 @@
+jQuery("#loader").hide();
+jQuery("#report-info").html("<%= escape_javascript(render :partial=>'rpt_partials/report_info') %>")
+jQuery("#report-content").html("<%= escape_javascript(render :partial=>'rpt_campaigns/campaign_revenue_rpt') %>")

@@ -1,0 +1,73 @@
+<% product_blank = @product.blank? %>
+<div>    
+  <div class="titleHead" id="dashboard_toggle">
+    <div class="fl"><%= t(:text_product_licences) %></div>
+    <div class="fr"><%= link_to t(:label_new_product_licenecing), new_product_licence_path %></div>
+    <br class="clear" />
+  </div>
+  <div id="product_licence">
+    <div id="products_licence_list" class="contactsDIV">
+      <div class="gridTable">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <% unless product_blank %>
+            <tr><td colspan="4" align="right" class="pr5"><%=will_paginate  @product, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info  @product %></td></tr>
+            <tr><td colspan="4"><br/></td></tr>
+          <% end %>
+          <tr>
+            <%= column_sort_link('Company','product_licence.company.name', 15, "left")%>
+            <th align="left"  ><div class="fr" style="width:50px;"></div></th>
+            <%= column_sort_link('Start Date','product_licence.start_at', 15, "left")%>
+            <th align="left"  ><div class="fr" style="width:50px;"></div></th>
+            <%= column_sort_link('End Date','product_licence.end_at', 15, "left")%>
+            <th align="left"  ><div class="fr" style="width:50px;"></div></th>
+            <%= column_sort_link('Status','product_licence.status', 15, "left")%>
+            <th align="left"  ><div class="fr" style="width:150px;"><%=t(:text_actions)%></div></th>
+          </tr>
+          <%if product_blank %>
+            <tr>
+              <td colspan="3">
+                <div class="warningCont m5">
+                  <%=t(:text_no_records_found_for_product_licences)%>
+                </div>
+              </td>
+            </tr>
+          <% else 
+             @products.each do |licence| %>
+              <tr class="<%=cycle("bg1", "bg2")%>">
+                <td>
+                  <%if licence.name %>
+                    <%= link_to(licence.name, licence)%>
+                  <%end%>
+                </td>
+                <td><div style="width:80px;"></div></td>
+                <td><%= licence.product_licences.count %></td>
+                <td align="left">
+                  <div class="fr" style="width:150px;">
+                    <%=raw product_licence_action_links(licence)%>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+            <tr><td colspan="4"><br/></td></tr>
+            <tr><td colspan="4" align="right" class="pr5"><%=will_paginate  @product%><%=raw page_entries_info  @product %></td></tr>
+            <tr><td colspan="4"><br/></td></tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<h1><%=t(:text_listing_product_licences)%></h1>
+<table>
+  <tr>
+  </tr>
+  <% @product_licences.each do |product_licence| %>
+    <tr>
+      <td><%= link_to t(:label_show), product_licence %></td>
+      <td><%= link_to t(:label_edit), edit_product_licence_path(product_licence) %></td>
+      <td><%= link_to t(:label_destroy), product_licence, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= link_to t(:label_new_product_licence), new_product_licence_path %> 

@@ -1,0 +1,4 @@
+jQuery('#div_company_licence').html("<%=raw escape_javascript(render(:partial => 'get_company_licence'))%>");
+jQuery("#div_company_licence").css('display','block')
+jQuery("#buy_licence").css('display','block');
+jQuery('#cmp_name').html("<%=@company.name%>");

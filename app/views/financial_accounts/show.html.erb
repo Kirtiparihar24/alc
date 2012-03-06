@@ -1,0 +1,137 @@
+<%= render :partial => 'additional_header' %>
+<!-- column_right @start -->
+<!--div class="mb8">
+  <div class="column_main"-->
+    <h2 id="toggle_busi_cont_detail_toggle" class="title_main">
+      <div class="fl"><%= t(:text_financial_account_detail_page) %></div>
+    </h2>
+    <div style="display: block;" id="toggle_busi_cont_detail_div" class="p5 bg_white">
+      <% form_remote_tag :url => advanced_filter_financial_account_path(@financial_account) do %>
+        <table width="100%">
+          <tbody><tr>
+              <td width="76%">
+                <!--<strong>Contact Matter</strong> - <strong>Client</strong> David B - <strong>Account:</strong> TestCampaigns - Copy Of Launch Of LIP Service-->
+                <!-- Created this partial for common matter info on all matter tabs, to be able to fix once and display everywhere. -->
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tbody><tr>
+                      <td width="70%">
+                        <strong><%=t(:text_financial_account)%>:</strong>&nbsp;<%= @financial_account.name.camelize %> -
+                        <strong><%=t(:text_financial_account_bank_name)%>:</strong> <%= @financial_account.bank_name.camelize %> -
+                        <strong><%=t(:text_financial_account_ac)%></strong> <%= @financial_account.account_no %>
+                      </td>
+                    </tr>
+                  </tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+        <div class="seperator_dotted_hori"></div>
+        <div class="w100 fl bg_white">
+          <div class="w48 fl p5 bg_white">
+            <table width="79%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+              <tr>
+                <td width="25%"><label><strong><%= t(:text_summary) %></strong></label></td>
+              </tr>
+              <tr>
+                <td width="25%"><label><%= t(:text_total_in) %></label></td>
+                <td align="right"><%= @financial_account.financial_transactions.empty? ? 0.00 : h(livia_amount(@financial_account.financial_transactions.sum(:amount, :conditions=>"transaction_type=true")))  %></td>
+              </tr>
+              <tr>
+                <td width="25%"><label><%= t(:text_total_out) %></label></td>
+                <td align="right"><%= @financial_account.financial_transactions.empty? ? 0.00 : h(livia_amount(@financial_account.financial_transactions.sum(:amount, :conditions=>"matter_id is not null"))) %></td>
+              </tr>
+              <tr>
+                <td width="25%"></td>
+                <td align="right"><div class="seperator_dotted_hori" style="width:80px;"></div></td>
+              </tr>
+              <tr>
+                <td width="25%"><label><%= t(:text_financial_account_balance) %></label></td>
+                <td align="right"><%= @financial_account.financial_transactions.empty? ? 0.00 : h(livia_amount(@financial_account.financial_transactions.first.balance)) %></td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td width="25%">
+                  <%= link_to(t(:text_financial_account_record_transaction), new_financial_account_financial_transaction_path(@financial_account)) %>
+                </td>
+                <td align="right"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="w48 fr p5 bg_white">
+            <table width="100%" border="0" cellspacing="3" cellpadding="3" class="form_table">
+              <tr>                
+                <td><label><strong><%= t(:text_filter_options) %></strong></label></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td width="24%"><label><%= t(:text_from) %></label></td>
+                <td width="24%"><%= text_field_tag :from_date, "", :class => 'date_picker' %></td>
+              </tr>
+              <tr>
+                <td><label><%= t(:text_to) %></label></td>
+                <td><%= text_field_tag :to_date, "", :class => 'date_picker' %></td>
+              </tr>
+
+              <tr>
+                <td width="15%"><%= t(:text_financial_account_contact_or_client) %></td>
+                <td><%= select "account", "account_id", '<option>All</option>' + options_for_select(FinancialTransaction.all_clients(current_company.id).map {|x| [x.name, x.id]}) %></td>
+              </tr>
+              <!--<tr>
+                <td><%#= t(:text_financial_account_bank_status) %></td>
+                <td><%#= select "transaction_status", "transaction_status_id", '<option>All</option>' + options_for_select(current_company.transaction_statuses.map {|x| [x.alvalue, x.id]}) %></td>
+              </tr>-->
+              <tr>
+                <td><%= t(:text_financial_account_matter) %></td>
+                <td><%= select "matter", "matter_id", '<option>All</option>' + options_for_select(current_company.matters.map {|x| [truncate(h(x.name),:length => 45), x.id]}) %></td>
+              </tr>
+              <!--<tr>
+                <td><%#= t(:text_financial_account_approval_status) %></td>
+                <td><%#= select "approval_status", "approval_status_id", '<option>All</option>' + options_for_select(current_company.approval_statuses.map {|x| [x.alvalue, x.id]}) %></td>
+              </tr>-->
+            </table>
+          </div>
+        </div>
+        <div style="clear: both;height:25px;"></div>
+        <div id="advanced_filter"></div>
+        <div align="center"> <%= submit_tag "Search" %><a href="<%=financial_accounts_path%>" style="text-decoration: none;"><input type="button" value="<%=  t(:text_financial_account_back)%>" style="margin-left:5px;"></input></a></div>
+      <% end %>
+
+      <div class="clear"></div>
+
+      <div class="mt5">
+        <!--Tabular container div @start here -->
+        <div class="tabular_listing table" id="account_DIV">
+          <div style="clear:both;height:20px;"></div>
+          <% cache("financial_transactions_#{@financial_account.financial_transactions.id}", :expires_in => 1.day) do %>
+            <div class="border_gray">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1">
+                <tr>
+                  <th width="8%" align="center"><%= t(:label_date) %></th>
+                  <th width="18%" align="left"><%= t(:text_details) %></th>
+                  <th width="8%" align="right">Inflow($)</th>
+                  <th width="8%" align="right">Outflow($)</th>                  
+                  <th width="8%" align="right"><%= t(:text_financial_account_balance) %></th>
+                  <th width="10%" align="left"><%= t(:text_financial_account_contact_or_client) %></th>
+                  <th width="20%" align="left"><%= t(:text_financial_account_matter) %></th>
+                  <!--<th width="10%" align="left"><%#= t(:text_financial_account_bank_status) %></th>
+                  <th width="10%" align="left"><%#= t(:text_financial_account_approval_status) %></th>-->
+                  <th width="8%" align="center">Edit</th>
+                </tr>
+              </table>
+              <table id="financial_transactions" width="100%" border="0" cellspacing="1" cellpadding="1">
+                <%= render :partial =>"financial_transactions", :collection => @financial_account.financial_transactions, :as => :transaction, :locals => {:view_type => ''} %>
+              </table>
+            </div>
+          <%end%>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <!--Tabular container div #ends here -->
+    </div>
+
+  <!--/div>
+</div>
+< column_right #end -->
+
+

@@ -1,0 +1,27 @@
+<!--CONTENT STARTS-->
+<div>
+  <div id="child-tabs">
+    <ul>
+      <li><a href="#notes_tasks_summary_tab"><span class="ui-ctabs"><%=t(:text_notes_tasks_summary)%></span></a></li>
+      <li><a href="#sec_skills_assign"><span class="ui-ctabs"><%=t(:text_skill_asignment)%></span></a></li>
+    </ul> <!-- This div will come in Tab -->
+    <div id="notes_tasks_summary_tab">
+      <div class="gridDiv">
+        <%=render :partial=>'secratarys_details'%>
+      </div>
+    </div>
+    <div id="sec_skills_assign" class="ui-tabs-panel ui-widget-content ui-corner-bottom"><%=render :partial => 'assign_skill', :locals=>{:sp_list=>@sp_list, :sp_id=>nil, :unassigned_skills=>nil,:assigned_skills=>nil}%></div>
+ </div>
+</div>
+<!--CONTENT STARTS-->
+<script type="text/javascript">
+  jQuery.noConflict();
+  try{
+    jQuery('#tabs').tabs();
+    $tabs = jQuery('#child-tabs').tabs();
+    <%unless @tab_index.nil?%>
+      $tabs.tabs('select', <%=@tab_index%>);
+    <%end%>
+  }catch(e){alert(e.message)}
+
+</script>

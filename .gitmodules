@@ -1,0 +1,3 @@
+[submodule "vendor/plugins/strip_attributes"]
+	path = vendor/plugins/strip_attributes
+	url = git://github.com/rmm5t/strip_attributes.git

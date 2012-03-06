@@ -1,0 +1,8 @@
+<div class="box">
+  <div class="box-head"><h2 class="title_main"><%= t(:text_financial_account) %></h2></div>
+    <div class="box_gray"></div>
+    <br class="clear" />
+    <% form_for :financial_account, @financial_account, :url => financial_accounts_path do |f| %>
+      <%= render :partial => "form", :locals => { :f => f } %>
+    <% end %>
+</div>

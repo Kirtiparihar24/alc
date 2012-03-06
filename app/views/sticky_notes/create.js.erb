@@ -1,0 +1,12 @@
+time_to_append="<br/><p style='font-size:xx-small'><%=@sticky_note.created_at.strftime('%H:%M')%></p>";
+jQuery(time_to_append).appendTo(jQuery("#time_stamp_<%=params[:tmp_note_id]%>"));
+jQuery("#text_area_<%=params[:tmp_note_id]%>").attr('onChange',"setBlurActions(false,'<%=@sticky_note.id%>',this)");
+jQuery("#text_area_<%=params[:tmp_note_id]%>").removeAttr("readonly");
+jQuery("#td_action_<%=params[:tmp_note_id]%>").html("<%=escape_javascript(render(:partial => 'sticky_links',:locals=>{:note_id=>@sticky_note.id}))%>");
+jQuery("#td_action_<%=params[:tmp_note_id]%>").attr("id","td_action_<%=@sticky_note.id%>");
+jQuery("#td_action_<%=@sticky_note.id%>").show();
+jQuery("#text_area_<%=params[:tmp_note_id]%>").attr("id","text_area_<%=@sticky_note.id%>");
+jQuery("#sticky_table_<%=params[:tmp_note_id]%>").attr("id","sticky_table_<%=@sticky_note.id%>");
+jQuery("#styling_div_<%=params[:tmp_note_id]%>").attr("id","styling_div_<%=@sticky_note.id%>");
+jQuery("#time_stamp_<%=params[:tmp_note_id]%>").attr("id","time_stamp_<%=@sticky_note.id%>");
+stickyInit();

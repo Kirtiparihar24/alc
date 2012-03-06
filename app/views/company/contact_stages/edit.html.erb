@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit_contact_stage)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<% remote_form_for(:contact_stage, @contact_stage, :url => company_contact_stage_path(@company,@contact_stage),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Stage", :modal_text => "#{t(:label_stage_name)}",
+    :all_modal_values => @company.contact_stages.collect{|cs|[cs.lvalue]}.uniq ,:modelclass=>'contact_stages'} %>
+<%end%>
+<br class="clear"/>

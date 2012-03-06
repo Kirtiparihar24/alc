@@ -1,0 +1,91 @@
+
+<div class="mt5">
+  <div class="gridDiv">
+    <div id="dashboard_toggle" class="titleHead">
+      <div class="fl">All Employee List</div>
+      <br class="clear"/>
+    </div>
+    <!--Dash board DATA STARTS-->
+    <div>
+      <div class="gryBox">
+        
+          <div class="p5 gridTable">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+              <tbody>
+                <tr style="<%= params[:search].nil? ? "display:none;" : "" %>">
+                  <td>
+                   <!-- <a  onclick="window.location='/physical/liviaservices/livia_secretaries/show_lawyer_list';" class="fontbold fl ml15" id="remove_filters">Remove Filter</a>-->
+                    <%=link_to "Remove Filter", physical_liviaservices_show_lawyer_list_url, :id=>"remove_filters", :class=>"fontbold fl ml15"%>
+                  </td>
+                </tr>
+                <%unless @employees.blank?%>
+                  <tr><td colspan="5" align="right" class="pr5"><%=will_paginate @employees, :params=>{:search => params[:search]}%><%=raw page_entries_info @employees %></td></tr>
+                  <tr><td colspan="5" align="right" class="pr5">
+                        <a hef="" class="fontbold fl ml15" id="add_filters" onclick="jQuery('#search_form').show();" style=<%= params[:search].nil? ? "" : "display:none;" %> >Apply Filter</a>
+                       </td>
+                  </tr>
+                <%end%>
+                <tr style="<%= params[:search].nil? ? "display:none;" : "" %>" id="search_form">
+                  <%form_for :search, :url=>physical_liviaservices_show_lawyer_list_path(:service_provider_id=>params[:service_provider_id]) do |f| %>
+                    <td>
+                      <%=f.text_field :name, :value =>params[:search].nil? ? "" : params[:search][:name] %>
+                    </td>
+                    <td><%=f.text_field :email, :value =>params[:search].nil? ? "" : params[:search][:email] %></td>
+                    <td><%=f.text_field :birthdate, :value =>params[:search].nil? ? "" : params[:search][:birthdate] %></td>
+                    <td><%=f.text_field :phone,:maxlength=>"15", :value =>params[:search].nil? ? "" : params[:search][:phone]%></td>
+                    <td><%#=f.collection_select :designation, (Designation.find :all),:id,:alvalue,{ :selected => ""}%> </td>
+                    <td><%= f.submit "Go" ,{:style=>""}%></td>
+                  <%end%>
+                </tr>
+              <tr>
+                <th align="center">Name</th>
+                <th align="center">Email</th>
+                <th align="center">Date Of Birth</th>
+                <th align="center">Phone</th>
+                <!--<th align="center">Designation</th>-->
+              </tr>
+              <%unless @employees.blank? %>
+                <%@employees.each do |emp|%>
+                  <tr class="<%= cycle('bg1', 'bg2') %>">
+                    <td>
+                      <%sp_id= emp.user.nil? ? "" : emp.user.service_provider_employee_mappings.blank? ? "" : emp.user.service_provider_employee_mappings.first.service_provider_id%>
+                      <%= link_to(emp.full_name,physical_liviaservices_assign_lawyer_url(emp.id,:service_provider_id=>sp_id))%>
+                    </td>
+                    <td><%= emp.email%></td>
+                    <td><%= emp.birthdate%></td>
+                    <td><%= emp.phone%></td>
+                    <td><%#=emp.designation.lvalue rescue '-'%></td>
+                  </tr>
+                <%end%>
+              <%else%>
+                <tr class="bg2"><td>No Lawyers Found</td></tr>
+              <%end%>
+              <%unless @employees.blank?%>
+                <tr><td colspan="5"><br/></td></tr>
+                <tr><td colspan="5" align="right" class="pr5">
+                    <%=will_paginate @employees, :params=>{:search => params[:search]}%><%=raw page_entries_info @employees %></td></tr>
+                <tr><td colspan="5"><br/></td></tr>
+              <%end%>
+              </tbody>
+            </table>
+          </div>
+          <br class="clear"/>
+      </div>
+    </div>
+      <!--Dash board DATA ENDS-->
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

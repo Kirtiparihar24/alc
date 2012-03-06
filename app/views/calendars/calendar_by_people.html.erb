@@ -1,0 +1,72 @@
+<% generate_calendar_task_grid("bypeople") %>
+<div class="mt10 calenderDiv">
+  <div class="activities_div">
+    <table cellpadding="0" cellspacing="0">
+      <td width="2%" valign="middle" class="bg6" style="padding:0 10px;"><%= image_tag "calendar/task_text.png" %></td>
+      <td width="98%"align="left" valign="top">
+        <div class="scrollY250">
+          <table cellpadding="0" cellspacing="0" class="bg_white" width="100%">
+            <tr>
+              <td align="left" valign="top">
+                <div>                  
+                  <% if @total_data %>
+                    <% @total_data.each do |totaldata| %>
+                      <div>
+                        <% if !totaldata[1].blank? && totaldata[1].size > 0 %>
+                          <% name = totaldata[1][0][:activity_user_name] %>
+                        <% else %>
+                          <% employee = Employee.find_by_user_id(totaldata[0]) %>
+                          <% name = "#{employee.first_name} #{employee.last_name}" %>
+                        <% end %>
+                        <div class="title_blue text_orange pl5"><%= name %></div>
+                        <%= render :partial => "matter_tasks", :locals => {:col => totaldata[1], :matter_or_people => false} %>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <%= render "blank_activities", {:activity => "tasks", :matter_or_people => false} %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </table>
+    <br class="clear" />
+  </div>
+
+  <div class="mt5 activities_div">
+    <table cellpadding="0" cellspacing="0">
+      <td width="2%" valign="middle" class="bg6" style="padding:0 8px;"><%= image_tag "calendar/appointment_text.png" %></td>
+      <td width="98%"align="left" valign="top">
+        <div class="scrollY250">
+          <table cellpadding="0" cellspacing="0" class="bg_white" width="100%">
+            <tr>
+              <td align="left" valign="top">
+                <div>
+                  <% if @total_app %>
+                    <% @total_app.each do |totaldata| %>
+                      <div>
+                        <% if !totaldata[1].blank? && totaldata[1].size > 0 %>
+                          <% name = totaldata[1][0][:activity_user_name] %>
+                        <% else %>
+                          <% employee = Employee.find_by_user_id(totaldata[0]) %>
+                          <% name = "#{employee.first_name} #{employee.last_name}" %>
+                        <% end %>
+                        <div class="title_blue text_orange pl5"><%= name %></div>
+                        <%= render :partial => "matter_appointments", :locals => {:col => totaldata[1], :matter_or_people => false} %>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <%= render "blank_activities", {:activity => "appointment", :matter_or_people => false} %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </table>
+    <br class="clear" />
+  </div>
+</div>

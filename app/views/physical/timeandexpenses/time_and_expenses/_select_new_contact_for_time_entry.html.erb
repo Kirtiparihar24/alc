@@ -1,0 +1,1 @@
+<%=select_tag "#time_entry_contact_id",  options_for_select(@contact.collect{|contact|[contact.full_name,contact.contact_id]}),{:style=>"width:127px;",:onchange=>"get_matters_contact_for_time_entry();",:id=>"_time_entry_contact_id"}%>

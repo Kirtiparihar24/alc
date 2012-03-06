@@ -1,0 +1,20 @@
+<div class="box-head"><h2 class="left"> Listing Default Security Questions </h2></div>
+<div class="watermark">Displaying all 2 Question</div>
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+      <tr>
+        <th width="379" align="left"><%="Question"%></th>
+        <th width="457" align="left"><%="Answer"%></th>
+        <th width="162" align="left"><%=t(:text_action)%></th>
+      </tr>
+      <%for security_question in @default_questions%>
+        <tr class="bg1">
+          <td><%=security_question.lvalue %></td>
+          <td><%=security_question.alvalue%></td>
+          <td><%=link_to "Edit",edit_security_question_path(security_question)%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>

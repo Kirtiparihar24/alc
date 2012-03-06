@@ -1,0 +1,90 @@
+<div style="margin-top:10px;">
+  <% if params[:automate] %>
+    <% form_for @tne_invoice, :html=>{:onsubmit=>"return validate_blank('tne_invoice_status_reason','Please specify the reason'); disableAllSubmitButtons('statuses');"} do |f| %>
+      <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+      <%=hidden_field_tag "from_matter_billing", params[:from_matter_billing]  if params[:from_matter_billing]%>
+     <div id="one_field_error_div"> </div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+        <tr>
+          <td colspan="4" align="center">
+            <div class="" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Current Status</label></td>
+          <td><strong><%= @tne_invoice.tne_invoice_status.alvalue if @tne_invoice.tne_invoice_status %></strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><label> <%= t(:label_change_to) %></label></td>
+          <td><%= f.select :tne_invoice_status_id, @tne_invoice_statuses.collect{|status| [status.alvalue, status.id]}, {:selected =>@tne_invoice.tne_invoice_status_id} %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><label><%= t(:label_reason) %> <span class="alert_message">*</span></label></td>
+          <td><%= f.text_field :status_reason, :value => "" %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="4" height="10"></td>
+        </tr>
+        <tr>
+          
+          <td colspan="4" align="center">
+            <%= f.submit t(:text_update),:class=>'statuses',:id=>'update_status' %>
+            <input type="button" class="statuses" id="Login2" value="Cancel" onclick="parent.tb_remove();disableAllSubmitButtons('statuses');return false" />
+          </td>
+        </tr>
+      </table>
+    <% end %>
+  <% else %>
+    <%form_for([@matter, @bill], :url => {:controller => "matter_billing_retainers", :action => "update_bill", :matter_id => @matter.id, :from_invoice => true}, :html=>{:target=>"upload_frame",:onsubmit=>"return validate_blank('matter_billing_remarks','Please specify the reason');disableAllSubmitButtons('statuses');"}) do |f|%>
+      <%= hidden_field_tag :flag , params[:from_matter_billing]  if params[:from_matter_billing] %>
+     <div id="one_field_error_div"> </div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+       <tr>
+          <td colspan="4" align="center">
+            <div class="" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Change Status <span class="alert_message">*</span></label></td>
+          <td><strong><%= @bill.matter_billing_status.alvalue if @bill.matter_billing_status %></strong></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><label> <%= t(:label_change_to) %></label></td>
+          <td><%= f.select :matter_billing_status_id, @tne_invoice_statuses.collect{|status| [status.alvalue, status.id]}, {:selected =>@bill.matter_billing_status_id} %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><label><%= t(:label_reason) %> <span class="alert_message">*</span></label></td>
+          <td><%= f.text_field :remarks, :value => "" %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td> </td>
+          <td colspan="3">
+            <%= f.submit t(:text_update),:class=>'statuses',:id=>'update_status' %>
+            <input type="button" class="statuses" id="Login2" value="Cancel" onclick="parent.tb_remove();disableAllSubmitButtons('statuses');return false" />
+          </td>
+        </tr>
+      </table>
+    <% end %>
+  <% end %>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+</div>
+<iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+<div align="right"class="pagiText"><%=t(:label_page)%>&nbsp;160</div>

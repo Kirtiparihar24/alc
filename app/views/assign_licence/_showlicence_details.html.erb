@@ -1,0 +1,54 @@
+<div class="mid-box-head"><h2><%=t(:text_product_assigned_details)%></h2></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="47%" align="left" valign="top"><strong><%=t(:text_name)%></strong></th>
+      <th width="26%" align="center" valign="top"><strong><%=t(:text_no_of_licences)%></strong><br />
+        <strong><%=t(:text_permanent_temporary)%></strong></th>
+      <th width="27%" align="center" valign="top"><strong><%=t(:text_consumed_licences)%></strong><br />
+        <strong><%=t(:text_permanent_temporary)%></strong></th>
+    </tr>
+    <% licences.each do |lic|
+      if lic[1] > 0 %>
+        <tr class="tog">
+          <td align="left"><%= link_to image_tag('admin/plus.png',:alt=>"Plus",:title=>"Click to view details", :border => 0, :hspace => "0") , '#', :onclick => "licencedetail_toggle(#{lic[0].id}); return false;"%>
+            <%= lic[1] > 0 ? link_to( lic[0].name, '#', :onclick => "licencedetail_toggle(#{lic[0].id}); return false;") : lic[0].name %></td>
+          <td align="center"><%= "#{lic[2]} / #{lic[3]}" %></td>
+          <td align="center"><%= lic[4] %> / <%= lic[5] %></td>
+        </tr>
+        <tr id='<%= "product_licence_#{lic[0].id}" %>' style="display:none;padding-left:10px">
+          <td colspan="3">
+            <div id="products_licence_list">
+              <table width="80%" border="1" align="left" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+                <tr>
+                  <th width="3%"><%=t(:text_s_no)%></th>
+                  <th width="10%"><%=t(:text_licence_type)%></th>
+                  <th width="10%"><%=t(:text_user)%></th>
+                  <th width="10%"><%=t(:text_licence_start_date)%></th>
+                  <th width="10%"><%=t(:text_licence_expiry_date)%></th>
+                  <th width="10%"><%=t(:text_price)%></th>
+                </tr>
+                <% product_licences = lic[6]
+                if product_licences.blank? %>
+                  <tr><td colspan="3"><div class="warningCont m5"><%=t(:text_no_product_licences_found)%></div></td></tr>
+                <% else %>
+                  <% i=0 %>
+                  <% product_licences.each do |licence| %>
+                    <tr>
+                      <td><%= i=i+1 %></td>
+                      <td><%= ProductLicence::LICENCE_TYPE[licence.licence_type][0] rescue "-" %></td>
+                      <td><%= licence.product_licence_details.first.user.name rescue "-"%> <%#= licence.subproduct_assignments.first.user.name rescue "-" %></td>
+                      <td><%= licence.start_at.to_time.strftime("%d-%b-%y") rescue "-" %></td>
+                      <td><%= licence.end_at.to_time.strftime("%d-%b-%y") rescue "-" %></td>
+                      <td><%= licence.licence_cost %></td>
+                    </tr>
+                  <%end%>
+                <%end%>
+              </table>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+    <%end%>
+  </table>
+</div>

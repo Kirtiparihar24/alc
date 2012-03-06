@@ -1,0 +1,58 @@
+<div class="row">
+  <label>Work Type</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" id="task_<%=index%>_work_types">
+      <%=select :work_type, :id, @work_types.collect {|w| [ w.name, w.id ]}, {:prompt=>'Please Select'},:onchange =>"update_work_subtype_select(this.value,'#{index}',#{@note.id})"%>
+    </span>
+  </div>
+</div>
+<div class="row">
+  <label>Work Type Skills</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" id="task_<%=index%>_work_subtypes">
+      <%=f.select :work_subtype_id, @work_subtypes.collect{|ws| [ws.name,ws.id]}, {:prompt=>'Please Select'}, :onchange=>"update_user_select('#{index}','#{@note.assigned_by_employee_user_id}')"%>
+    </span>
+  </div>
+</div>
+<% if current_user.service_provider.has_back_office_access? %>
+  <div class="row" id="task_<%=index%>_complexity">
+    <label>Complexity</label>
+    <div class="inputs">
+      <span class="input_wrapper blank" id="task_<%=index%>_complexity_select">
+        <%=f.select :work_subtype_complexity_id,@complexities.collect {|c| [ c.complexity_level, c.id ]}, {},:onchange =>"display_stt_tat(this.value,'#{index}')"%>
+        <%first_complexity = @complexities.shift%>
+        <%unless first_complexity.nil?%>
+          <br/>
+          <span id="complexity_<%=first_complexity.id%>_stt_tat_<%=@task_index%>" >
+            <%=first_complexity.complexity_level%> - stt: <%=first_complexity.stt%> tat: <%=first_complexity.tat%>
+          </span>
+        <% end %>
+      </span>
+    </div>
+  </div>
+<%end%>
+<div class="row">
+  <label>Priority</label>
+  <div class="inputs">
+    <span class="input_wrapper blank">
+      <%=f.select :priority, options_for_select(UserTask::PRIORITIES,{:selected=>@note.note_priority.to_s,:disabled=>""})%>
+    </span>
+  </div>
+</div>
+<span id="task_<%=index%>_user_select_option">
+  <div class="row" style="width:150%">
+    <div class="fl ml8 w20"><input class="radio common_queue_radio_<%=index%>" name="task_<%=index%>_radio_2" value="CommonPool" type="radio" onclick="update_user_select('<%=index%>','<%=@note.assigned_by_employee_user_id%>','CommonPool')"/><span class="font_bld"><span id="backoffice_<%=index%>" <%if @back_office_user == false%> style="display:none;"<%end%>>BO </span>Common Queue</span></div>
+    <div class="fl w20"><input class="radio cluster_users_radio_<%=index%>" name="task_<%=index%>_radio_2" value="ClusterUsers" type="radio" <%="checked" unless @common_pool_user %> onclick="update_user_select('<%=index%>','<%=@note.assigned_by_employee_user_id%>','ClusterUsers')"/><span class="font_bld" id="cluster_users_<%=index%>"><%if @back_office_user%>BO Agents<%else%>Cluster Users<%end%></span></div>
+    <div id="common_pool_agent_div_<%=index%>" <%if @back_office_user%>style="display:none;"<%end%>><div class="fl ml8 w20" id="task_<%=index%>_CommonPoolAgentRadio"><input class="radio common_pool_radio_<%=index%>" name="task_<%=index%>_radio_2" value="CommonPoolAgent" type="radio" <%="checked" if @common_pool_user %> onclick="update_user_select('<%=index%>','<%=@note.assigned_by_employee_user_id%>','CommonPoolAgent')"/><span class="font_bld">Common Pool Agent</span></div></div>
+    <br class="clear" />
+  </div>
+  <div class="row" id="task_<%=index%>_user_select">
+    <label>User</label>
+    <div class="inputs">
+      <span class="input_wrapper blank" id="task_<%=index%>_users">
+        <%=f.select :assigned_to_user_id, options_for_select(@users_select,{:selected=>current_user.id,:disabled=>""}), {:prompt=>'Please Select'}, {:class=>"users_select_#{index}"}%>
+      </span>
+    </div>
+  </div>
+</span>
+<div class="fr mr10"><span class="button grey_btn ml10"><span><span>Remove</span></span><%= button_to_function 'Remove', "jQuery('#task_#{index}_form').remove();"  %></span></div>

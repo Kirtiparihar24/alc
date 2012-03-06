@@ -1,0 +1,59 @@
+<% form_for :task, @task, :url => {:action => 'update_tasks'},:html =>{:method => :post } do |f| -%>
+  <div class="titleHead">
+    <%if @user_name.blank?%><%=t(:text_unassigned)%><%else%><%=@user_name.username.try(:capitalize)%><%end%><%=t(:text_s)%>&nbsp;&nbsp;<%= @tasks.size>1? 'Tasks':'Task' %>&nbsp;(<%=@tasks.size%>)
+  </div>
+  <div class="gryBox ">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="formTable">
+      <tr>
+        <th ><%=t(:text_select)%></th>
+        <th ><%=t(:text_lawyers_name)%></th>
+        <th ><%=t(:text_created)%></th>
+        <th ><%=t(:text_task_type)%></th>
+        <th ><%=t(:text_note_details)%></th>
+        <th ><%=t(:text_urgent)%></th>
+        <th ><%=t(:text_assign_to)%></th>
+      </tr>
+      <% if @tasks.blank?%>
+        <tr><td colspan="7"><div class="warningCont"><%=t(:text_no_task_created)%></div></td></tr>
+      <%else%>
+        <% @tasks.each do |task| %>
+          <% fields_for "task[]", task do |f| %>
+            <% @com_notes_entries = task.communication %>
+            <tr class="<%= cycle("bgW", "bg1") -%>">
+              <td><%= check_box_tag 'selected_records[]', task.id, false,options = {:onclick=>"insertToDo(this,'assigned_#{task.id}_DIV');"}%></td>
+              <td><%=task.communication.receiver.try(:full_name).try(:capitalize) %></td>
+              <td><%=time_ago_in_words(task.communication.created_at) %></td>
+              <td>
+                <%= f.collection_select :tasktype,@skills_types,:id,:lvalue, {:include_blank => "-- Select --" }, html_options = {:class => 'txtbox'} %>
+              </td>
+              <td><%= h truncate(task.name,:omission => ".. ", :length => 25) %></td>
+              <td>
+                <% fields_for "com_notes_entries[]" do |com_notes_entries| %>
+                  <%= com_notes_entries.check_box :note_priority,{:checked =>@com_notes_entries.note_priority.eql?(1) ? false : true}%>
+                <%end%>
+              </td>
+              <td>
+                <div id='assigned_<%= task.id %>_DIV'style="display:none">
+                  <%= f.select :assigned_to_user_id, @com_notes_entries.receiver.service_provider_employee_mappings.collect{|pr| [pr.service_provider.sp_full_name ,pr.service_provider.user.id]},{:include_blank => "-- Select --" }, html_options = {:class => 'txtbox'} %>
+                </div>
+              </td>
+            </tr>
+          <%end%>
+        <%end%>
+      <%end%>
+      <tr>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >
+          <div id="assign_button" >
+            <%= submit_tag(t(:text_assign) ,:class=>'linknormal')if @tasks.size>0%>
+          </div>
+        </td>
+      </tr>      
+    </table>
+  </div>
+<%end%>

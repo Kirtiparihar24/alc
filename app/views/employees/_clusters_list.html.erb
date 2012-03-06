@@ -1,0 +1,29 @@
+<td align="left" valign="top" style="vertical-align:middle;" ><label>Cluster</label></td>
+<td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="17%" align="left">Assigned Cluster</td>
+      <td width="5%" align="center">&nbsp;</td>
+      <td width="30%" align="left">Unassigned Cluster</td>
+      <td width="48%" align="left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="17%" align="left">&nbsp;</td>
+      <td width="5%" align="center">&nbsp;</td>
+      <td width="30%" align="left">&nbsp;</td>
+      <td width="48%" align="left">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="17%" align="left">
+        <%= select_tag 'assing_clusters',options_from_collection_for_select(@assign_clusters,"id","name"), :style=>"width:140px;", :size=>'6', :multiple=>true, :style=>"width:160px;"%>
+      </td>
+      <td width="5%" align="center">
+        <input type="button" onclick="update_cluster_user('unassign',<%=@user.id%>);" value="→"/><br/>
+        <input type="button" onclick="update_cluster_user('assign',<%=@user.id%>);" value="←"/>
+      </td>
+      <td width="30%" align="left">
+        <%= select_tag 'unassign_clusters',options_from_collection_for_select(@unassign_clusters,"id","name"), :style=>"width:140px;", :size=>'6', :multiple=>true, :style=>"width:160px;"%>
+      </td>
+      <td width="48%" align="left">&nbsp;</td>
+    </tr>
+  </table>
+</td>

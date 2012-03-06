@@ -1,0 +1,6 @@
+<%if !@secretary.nil? and (@secretary.user.cluster_id ==  params[:cluster_id].to_i)%>
+  jQuery('#employee_list_of_cluster').html("<%=escape_javascript(render(:partial => "service_providers/employee_list",:locals => {:secretary => @secretary,:priority_types=>@priority_types}))%>");
+<%else%>
+  jQuery('#employee_list_of_cluster').html("<%=escape_javascript(render(:partial => "show_employee_list_of_cluster",
+    :locals => {:users => @users}))%>");
+<%end%>

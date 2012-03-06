@@ -1,0 +1,3 @@
+  use_helpdesk: false
+  helpdesk_url: "http://localhost:3000"
+  livia_portal_key: "UrvK5xeL3g6X579sb4xii5IhX7zfJzlVIXst1D9EQ5W4bg19u9zJtLDBs14vF2Ljjq6AbWNBjUhcHeSBfKrfWXs8el"

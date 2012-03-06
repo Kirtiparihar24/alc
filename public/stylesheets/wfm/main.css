@@ -1,0 +1,284 @@
+﻿.message_box1 {
+    font-family: Arial,Helvetica,sans-serif;
+    color: #555;
+    font-size: .9em;
+    overflow-x : hidden;
+    margin:0px;
+    padding:0px;
+}
+
+
+a {
+    text-decoration: none;
+    color: #555;
+    color: #336699;
+}
+a:visited {
+    color: #336699;
+}
+a:hover {
+    color: #6699FF;
+    text-decoration: none;
+}
+a:active {
+    color: #336699;
+}
+
+
+/* LOGIN INFO   
+----------------------------------------------------------*/
+#login-info {
+    width: 260px;
+    float: left;
+    padding: 0px 10px 5px 0px;
+    color: #000;
+    text-align: left;
+    height: 35px;
+    margin-top: 0px;
+    font-size: .9em;
+}
+#login-info a {
+    font-weight: bold;
+}
+#login-info img#profile {
+    float: left;
+    margin-right: 15px;
+}
+#login-info span#message-count {
+    background-color: #CC3300;
+    padding: 2px 5px;
+    color: #fff;
+    /*text-shadow: 0px 1px 16px #333; */
+    -webkit-box-shadow: 1px 1px 1px #fff;
+    -moz-border-radius: 4px; /* FF1+ */;
+    -webkit-border-radius: 4px; /* Saf3-4 */;
+    border-radius: 4px; /* Opera 10.5, IE 9, Saf5, Chrome */
+}
+#login-info p#top {
+    margin: 2px 0 0 0;
+    padding: 0;
+    line-height: 1.2em;
+}
+span#name {
+    /* text-shadow: 1px 1px 1px #fff; */
+    font-size: 1.2em;
+    color: #555;
+    font-weight: bold;
+}
+#login-info a#power {
+    /*background: url('../images/icons/power.png') no-repeat; */
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    width: 25px;
+    height: 25px;
+    text-indent: 999px;
+    overflow: hidden;
+    opacity: 0.3;
+}
+#login-info a#power:hover {
+    opacity: .7;
+}
+#login-info a#power:active {
+    opacity: 1;
+}
+span#links {
+    /* text-shadow: 1px 1px 1px #fff; */
+    font-size: .9em;
+    color: #777;
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+span#links a:hover {
+    color: #333;
+}
+/* MESSAGES MODAL BOX   
+----------------------------------------------------------*/
+
+/*div#messages-box-container {
+	position: relative;
+	 top: 33px; 
+	top:10px;
+
+}*/
+div#messages-box {
+    background-color: #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    display: none;
+    width: 180px;
+    margin-top: 20px;
+    padding-top: 20px;
+    -moz-box-shadow: 0px 4px 4px #888; /* FF3.5+ */;
+    -webkit-box-shadow: 0px 4px 4px #888; /* Saf3.0+, Chrome */;
+    box-shadow: 0px 4px 4px #888; /* Opera 10.5, IE 9.0 */; /* FF3.6 */;
+    background-color: #f5f5f5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#f5f5f5')";
+    background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#FFFFFF), to(#F5F5F5));
+    border-top-style: none;
+    border-top-color: inherit;
+    border-top-width: medium;
+    position: relative;
+    z-index: 99999;
+    top:-20px;
+    left:48px;
+    overflow:auto;
+    max-height: 300px;
+}
+ul#messages {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 1.2em;
+    font-size: .8em;
+    /* text-shadow: 1px 1px 0px #fff; */
+}
+ul#messages a#all-messages {
+    text-align: center;
+    display: block;
+    padding: 1px 0;
+    font-size: 1em;
+}
+ul#messages span#unreaded {
+    display: block;
+    color: #999;
+    font-weight: normal;
+}
+div#new-message-dialog {
+    font-size: .8em;
+}
+div#messages-box h4 {
+    margin-left: 10px;
+    font-size: 1em;
+    color: #888;
+    font-weight: bold;
+    padding: 5px 30px 0px 50px;
+    /* text-shadow: 1px 1px 0px #fff; */
+    outline: 0;
+
+}
+div#messages-box h5 {
+    padding: 2px 0;
+    font-size: .8em;
+    color: #888;
+    position: absolute;
+    top: 9px;
+    right: 62px;
+}
+ul#messages li#last {
+    background-color: #EFF3F8;
+    font-weight: bold;
+    font-size: .9em;
+}
+ul#messages li#last:hover {
+    background-color: #eee;
+}
+ul#messages li {
+    -moz-transition: all 0.3s ease-out; /* FF3.7+ */;
+    -o-transition: all 0.3s ease-out; /* Opera 10.5 */;
+    -webkit-transition: all 0.3s ease-out; /* Saf3.2+, Chrome */;
+    padding: 5px 6px;
+    border-top: 1px #ddd solid;
+}
+ul#messages li.new {
+    background-color: #b1cfd9;
+}
+ul#messages li:hover {
+    background-color: #eee;
+}
+ul#messages img {
+    float: left;
+    margin-right: 10px;
+    padding-top: 6px;
+}
+ul#messages span {
+    display: block;
+}
+ul#messages span.sender {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+ul#messages span.description {
+    font-size: .9em;
+    color: #555;
+    font-weight: normal;
+}
+ul#messages span.date {
+    font-size: .8em;
+    color: #aaa;
+    font-weight: normal;
+}
+
+.closable {
+    position: relative;
+}
+.closable .closelink {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    width: 16px;
+    height: 16px;
+    background:  no-repeat 0 0;
+    margin-top: -4px;
+    cursor: pointer;
+    opacity: 0.3;
+}
+.closelink:hover {
+    opacity: 1;
+}
+
+/* Container */
+#simplemodal-container {
+    height:300px;
+    width: 600px;
+    color: #bbb;
+    border: 4px solid #444;
+    padding: 12px;
+    background-color: #EEE;
+    color: #333;
+    border: 1px solid white;
+    padding: 12px 0;
+    -moz-border-radius: 8px; /* FF1+ */;
+    -webkit-border-radius: 8px; /* Saf3-4 */;
+    border-radius: 8px; /* Opera 10.5, IE 9, Saf5, Chrome */;
+    -moz-box-shadow: 0px 0px 24px #888; /* FF3.5+ */;
+    -webkit-box-shadow: 0px 0px 24px #888; /* Saf3.0+, Chrome */;
+    box-shadow: 0px 0px 24px #888; /* Opera 10.5, IE 9.0 */
+}
+div.CloseImg { width: 100%; background: #fff; height: 15px; padding:2px; }
+a.CloseImg {
+    display: inline;
+    z-index: 3200;
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background: url(../images/close.png) no-repeat -5px;
+    cursor: pointer;
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
+#simplemodal-container modalCloseImg a, #image-container modalCloseImg a, #messages-box-container  modalCloseImg a{
+    display: inline;
+    z-index: 3200;
+    cursor: pointer;
+    position: absolute;
+    top: 28px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background: url(../images/close.png) no-repeat -5px;
+    cursor: pointer;
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+}
+#simplemodal-container a.modalCloseImg:hover, #image-container a.modalCloseImg:hover,#messages-box-container  a.modalCloseImg:hover {
+    opacity: 1;
+    -moz-opacity: 1;
+}
+#simplemodal-container #basic-modal-content {
+    padding: 8px;
+}

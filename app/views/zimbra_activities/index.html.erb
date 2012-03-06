@@ -1,0 +1,59 @@
+<h1>Listing zimbra_activities</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Category</th>
+    <th>Zimbra folder location</th>
+    <th>Assigned to user</th>
+    <th>Zimbra</th>
+    <th>Zimbra status</th>
+    <th>Reminder</th>
+    <th>Location</th>
+    <th>Attendees email</th>
+    <th>Response</th>
+    <th>Notify</th>
+    <th>Show as</th>
+    <th>Mark as</th>
+    <th>Start date</th>
+    <th>End date</th>
+    <th>All day</th>
+    <th>Exception status</th>
+    <th>Exception parent</th>
+    <th>Exception start date</th>
+  </tr>
+
+<% @zimbra_activities.each do |zimbra_activity| %>
+  <tr>
+    <td><%=h zimbra_activity.name %></td>
+    <td><%=h zimbra_activity.description %></td>
+    <td><%=h zimbra_activity.category %></td>
+    <td><%=h zimbra_activity.zimbra_folder_location %></td>
+    <td><%=h zimbra_activity.assigned_to_user_id %></td>
+    <td><%=h zimbra_activity.zimbra_id %></td>
+    <td><%=h zimbra_activity.zimbra_status %></td>
+    <td><%=h zimbra_activity.reminder %></td>
+    <td><%=h zimbra_activity.location %></td>
+    <td><%=h zimbra_activity.attendees_email %></td>
+    <td><%=h zimbra_activity.response %></td>
+    <td><%=h zimbra_activity.notify %></td>
+    <td><%=h zimbra_activity.show_as %></td>
+    <td><%=h zimbra_activity.mark_as %></td>
+    <td><%=h zimbra_activity.start_date %></td>
+    <td><%=h zimbra_activity.end_date %></td>
+    <td><%=h zimbra_activity.all_day %></td>
+    <td><%=h zimbra_activity.exception_status %></td>
+    <td><%=h zimbra_activity.exception_parent_id %></td>
+    <td><%=h zimbra_activity.exception_start_date %></td>
+    <td><%= link_to 'Show', zimbra_activity %></td>
+    <td><%= link_to 'Edit', edit_zimbra_activity_path(zimbra_activity) %></td>
+    <td><%= link_to 'Destroy', zimbra_activity, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New zimbra_activity', new_zimbra_activity_path %>
+<%# Need to check this view if in use %>

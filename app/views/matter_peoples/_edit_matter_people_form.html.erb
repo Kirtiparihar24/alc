@@ -1,0 +1,142 @@
+<% remote_form_for([@matter,@matter_people], :url => {:action => :edit_matter_people},:loading=>"jQuery('#edit_matter_people_button').val('Please wait...');jQuery('#edit_matter_people_button').attr('disabled','disabled');",:complete=>'return enableAllSubmitButtons("matters")' ) do |f| %>
+  <div id="matter_people_errors" class="" style="display: none;"></div>
+  <div id="same_contact_errors" class="" style="display: none; text-align: left"></div>
+  <%=f.hidden_field :updated_by_user_id, :value => current_user.id%>
+  <input type="hidden" id="account" name="account" value="false"/>
+  <div style="text-align:center;">
+    <h3 class="title_gray" align="left"><%=t(:label_Personal_Information)%></h3>
+    <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+      <tbody>
+        <tr>
+          <td width="23%" align="left"><label><%= t(:label_salutation) %></label></td>
+          <td width="25%" align="left"><%= f.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+          <td width="2%">&nbsp;</td>
+          <td width="23%" align="left">&nbsp;</td>
+          <td width="28%" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+          <td align="left"><%=f.text_field :name,:maxlength=>"64",:size=>"30"%></td>
+          <td>&nbsp;</td>
+
+          <td align="left"><label><%= t(:label_middle_name) %>&nbsp;</label></td>
+          <td align="left"><%=f.text_field :middle_name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+          <td align="left"><%=f.text_field :last_name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label>Primary&nbsp;<%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+          <td align="left"><%=f.text_field :phone,:maxlength=>"15" %></td>
+          <td>&nbsp;</td>
+
+          <td align="left"><label>Primary&nbsp;<%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+          <td align="left"><%=f.text_field :email,:maxlength=>"64",:size=>"30" %></td>
+        </tr>
+        <tr>
+          <td align="left" valign="top"><label><%=t(:label_matter_role)%></label></td>
+          <td align="left" valign="top">
+            <%if @matter_people.people_type.eql?("opposites")%>
+              <%= f.collection_select(:matter_team_role_id, current_company.team_roles, :id, :lvalue) %>
+            <%else%>
+              <%=f.text_field :role_text%>
+            <%end%>
+          </td>
+          <td valign="top">&nbsp;</td>
+
+          <td align="left" valign="top"><label><%=t(:label_notes)%></label></td>
+          <td align="left" valign="top"><%=f.text_field :notes%></td>
+        </tr>
+        <%if @matter_people.people_type.eql?("others")%>
+          <tr>
+            <td align="left">Allow Time & Expense Entry</td>
+            <td align="left" valign="top"><%=f.check_box :allow_time_entry%></td>
+            <td align="left">&nbsp;</td>
+            <td align="left">&nbsp;</td>
+            <td align="left">&nbsp;</td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+    <h3 class="title_gray" align="left"><%=t(:text_address)%></h3>
+    <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+      <tr>
+        <td width="23%" align="left"><label><%=t(:label_street)%></label></td>
+
+        <td width="25%" align="left"><%=f.text_field :address%></td>
+        <td width="1%" align="left">&nbsp;</td>
+        <td width="23%" align="left"><%=t(:label_city)%></td>
+        <td width="28%" align="left"><%=f.text_field :city%></td>
+      </tr>
+      <tr>
+        <td width="23%" align="left"><%=t(:label_state)%></td>
+        <td width="25%" align="left"><%=f.text_field :state%></td>
+
+        <td width="1%" align="left">&nbsp;</td>
+        <td width="23%" align="left"><%=t(:label_zip_code)%></td>
+        <td width="28%" align="left"><%=f.text_field :zip,:maxlength => 10%></td>
+      </tr>
+      <tr>
+        <td width="23%" align="left"><%=t(:label_country)%></td>
+        <td width="25%" align="left"><%=f.text_field :country%></td>
+        <td width="1%" align="left">&nbsp;</td>
+
+        <td width="23%" align="left"><%=t(:label_alternate_email)%></td>
+        <td width="28%" align="left"><%=f.text_field :alternate_email,:maxlength=>"64",:size=>"30"%></td>
+      </tr>
+      <tr>
+        <td align="left"><%=t(:label_mobile)%></td>
+        <td align="left"><%=f.text_field :mobile%></td>
+        <td align="left">&nbsp;</td>
+        <td align="left"><%=t(:label_fax)%></td>
+
+        <td align="left"><%=f.text_field :fax%></td>
+      </tr>
+      <tr id="contactstage" style="<%=@matter_people.contact.nil? ? 'display:none': '' %> ">
+        <td align="left"><label><%= t(:label_stage) %></label></td>
+        <td align="left">
+          <%= collection_select :matter_people, :contact_stage_id, current_company.contact_stages,:id,:alvalue, {:selected=>(@matter_people.contact.contact_stage_id unless @matter_people.contact.nil?)},{:class=>"textBoxwidth disundis"} %>
+        </td>
+        <td>&nbsp;</td>
+        <td align="left"></td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left"><%=t(:label_add_to_business_contacts)%></td>
+        <%value=  params[:added_to_business_contacts].present? ? true : @matter_people.added_to_contact%>
+        <% checked = @matter_people.contact_id.present? %>
+        <td align="left" valign="top"><%=check_box_tag "added_to_contact", checked,false,:onclick=>"jQuery('#contactstage').toggle();", :disabled => checked, :checked => checked%></td>
+      <input type="hidden" id="hidden_added_to_contact" name="hidden_added_to_contact" value='<%= checked %>'/>
+      <td align="left">&nbsp;</td>
+      <td align="left">&nbsp;</td>
+      <td align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="5" align="center">
+          <%=f.submit "Save",:class=>'matters' ,:id => "edit_matter_people_button", :onclick => "return verify_email('#{@matter_people.email}', 'matter_people_email', '#{@matter_people.can_access_matter}');" %>
+          <input type="button" class='matters' id="Login4" value="Cancel" onclick="tb_remove(); disableAllSubmitButtons('matters');" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5" align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="5" align="left"><div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%>, <span class="alert_message">#</span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></div></td>
+      </tr>
+    </table>
+  </div>
+<%end%>
+<div class="pagiText"><%=t(:label_page)%>&nbsp;177 </div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    if(jQuery('#matter_people_added_to_contact').is(':checked'))
+      jQuery('#contactstage').removeAttr('style');
+    else
+      jQuery('#contactstage').css('display','none');
+  });
+  jQuery('#added_to_contact').click(function() {
+    jQuery('#hidden_added_to_contact').val(jQuery('#added_to_contact').attr('checked'))
+  });
+</script>

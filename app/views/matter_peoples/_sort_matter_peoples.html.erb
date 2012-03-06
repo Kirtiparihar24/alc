@@ -1,0 +1,63 @@
+<% m_peoples = @matter_peoples.blank? %>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th width="20%"><a onclick="sort_table('',<%=@matter.id%>,'<%=params[:dir]%>','<%=params[:people_type]%>','sort_rows','name','<%=params[:update_div]%>','<%=m_peoples%>','<%=params[:index]%>')"><%=t(:text_contact)%></a>
+      <% if params[:sort_by] == 'name'%>
+        <img title="sort" alt="sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+    <th width="24%"><%=t(:text_email)%></th>
+    <th width="10%"><%=t(:text_phone)%></th>
+    <th width="<%=params[:people_type] == "client" ? "15%" : "35%"%>"><a onclick="sort_table('',<%=@matter.id%>,'<%=params[:dir]%>','<%=params[:people_type]%>','sort_rows','role','<%=params[:update_div]%>','<%=m_peoples%>','<%=params[:index]%>')"><%=t(:text_role)%></a>
+      <%if params[:sort_by] == 'role'%>
+        <img title="sort" alt="sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+    <%if params[:people_type] == "client"%>
+      <th width="20%"><%=t(:text_member_from_to)%></th>
+    <%end%>
+    <th width="8%"><a onClick="sort_table('matter_peoples.created_at',<%=@matter.id%>,'<%=params[:dir]%>','<%=params[:people_type]%>','order_rows','created','<%=params[:update_div]%>','<%=m_peoples%>','<%=params[:index]%>')"><%=t(:text_created)%></a>
+      <%if params[:sort_by] == 'created'%>
+        <img title="sort" alt="sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+    <th width="8%"><div class="actionW60"><%=t(:text_actions)%></div></th>
+  </tr>
+  <%unless m_peoples%>
+    <% @matter_peoples.each do |obj|
+      mem = obj.pop %>
+      <tr class="<%=cycle("bg2", "bg1")%>" <%if mem.end_date && mem.end_date < Time.zone.now.to_date%> style="color:gray;" <%end%>>
+        <td><%=obj[0]%></td>
+        <td><%=obj[1]%></td>
+        <td><%=obj[2]%></td>
+        <td><%=obj[3]%></td>
+        <%if params[:people_type] == "client"%>
+          <td><%=livia_date(mem.start_date)%> - <%=livia_date(mem.end_date)%></td>
+        <%end%>
+        <td><%=livia_date(mem.created_at)%></td>
+        <td>
+          <div>
+            <%if get_employee_user_id == @matter.employee_user_id%>
+              <%= link_to image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "2"}), edit_matter_matter_people_path(@matter, mem, :people_type => params[:people_type]) %>
+              <%unless mem.employee_user_id == get_employee_user_id%>
+                <span id="access_check_<%=mem.id%>">
+                  <%url = access_update_matter_matter_people_path(@matter, mem, :people_type => params[:people_type], :format => "js")%>
+                  <input type="checkbox" class="radio" <%if mem.end_date.nil?%> checked="checked" <%end%> onclick="matterPeopleAccessCheckbox('<%=url%>', this.checked, <%=mem.id%>)" />
+                </span>
+              <%end%>
+            <%end%>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+    <tr  id="<%="loader" + params[:index]%>" style="display:none;"><td></td><td></td> <td ><img src='/images/loading.gif' /></td><td></td></tr>
+  <%else%>
+    <tr>
+      <td colspan="7">
+        <div class="warningCont m5">
+          <%=message%>&nbsp;<%=matter_info%>
+        </div>
+      </td>
+    </tr>
+  <%end%>
+</table>

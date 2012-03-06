@@ -1,0 +1,5 @@
+<%unless @matching_matters.empty?%>
+    <%@matching_matters.each do|result_obj|%>
+      <%=raw ("" + "<span style=display:none>" + result_obj.id.to_s + "</span>" + ( "#{result_obj.name}"))  %>
+    <%end%>
+<%end%>

@@ -1,0 +1,56 @@
+<h1><%=t(:text_new_document)%></h1>
+<% form.fields_for doc, :html => { :multipart => true } do |f| %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :phase %><br />
+    <%= f.text_field :phase %>
+  </p>
+  <p>
+    <%= f.label :key %><br />
+    <%= f.check_box :key %>
+  </p>
+  <p>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :author %><br />
+    <%= f.text_area :author %>
+  </p>
+  <p>
+    <%= f.label :recipient %><br />
+    <%= f.text_field :recipient %>
+  </p>
+  <p>
+    <%= f.label :brief %><br />
+    <%= f.text_field :brief %>
+  </p>
+  <p>
+    <%= f.label :doc_source_id %><br />
+    <%= f.text_field :doc_source_id %>
+  </p>
+  <p>
+    <%= f.label :linked_issue_id %><br />
+    <%= f.text_field :linked_issue_id %>
+  </p>
+  <p>
+    <%= f.label :linked_facts_id %><br />
+    <%= f.text_field :linked_facts_id %>
+  </p>
+  <p>
+    <%= f.label :privilege %><br />
+    <%= f.text_field :privilege %>
+  </p>
+  <p>
+    <%= f.label :document_rights %><br />
+    <%= f.text_field :document_rights %>
+  </p>
+  <%=render :partial => 'documents/upload_document'%>
+<% end %>

@@ -1,0 +1,70 @@
+<script type="text/javascript">
+  //livia_datepicker();
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#date_start");
+    livia_matter_inception_datepicker_new("#date_end");
+    jQuery("#report_task_status").bind("change",function() {
+      if (jQuery(this).find("option:selected").val() == "Completed") {
+        jQuery("#report_duration").find("option").filter("option[value!=6]").filter("option[value!=range]").attr("disabled",true);
+      }
+      else {
+        jQuery("#report_duration").find("option:disabled").attr("disabled",false);
+      }
+    });
+<% if @report_duration == "range" %>
+      matter_date_change();
+<%end %>
+  });
+</script>
+<div id="container-1">
+  <%= render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+  <div id="fragment-1" class="tabs-container">
+    <%unless params[:load_popup]%>
+      <h2 class="title_main"><%=t(:text_matter_task_status)%> <%= render :partial =>  "layouts/left_report_sidebar" %></h2>
+    <%else%>
+      <%=raw(generate_spinner_my_favorite_link)%>
+    <%end%>
+    <%form_remote_tag  :url=>{:action => :matter_task_status_rpt},:condition => "validate_report_date()" do |f| %>
+      <div class="p5">
+        <%unless params[:load_popup]%>
+          <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;display: none;">
+          </div>
+          <% opts = rpt_selection_helper(params[:get_records]) %>
+          <%= raw(radios_for_rpt(opts,"#{t(:label_matters)}")) %>
+          <br class="clear" />
+          <div class="xbox_gray" style="background-color:#f1e3c4;  line-height:20px; padding:2px 0 2px 0;">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="pl3" >
+              <tbody>
+                <tr>
+                  <td align="left" valign="top" width="80"><%=t(:text_summarize_by)%></td>
+                  <td width="90" align="left" valign="top"><%=select("report","summarize_by",[["Lead lawyer","lead_lawyer"],["Client","client"],["#{t(:label_Account)}","account"],["Matter Type","matter_type"]],{:selected => params[:report][:summarize_by] || @report_summarize_by},{:style => "width:80px"})%>            </td>
+                  <td align="left" valign="top" width="30">Type<%#=t(:text_task_type)%></td>
+                  <td width="85" align="left" valign="top"><%=select("report","task_type",[["All Activities","All"],["Client Activity","Client"]],{:selected => params[:report][:task_type] || @report_task_type},{:style => "width:80px"})%> </td>
+                  <td align="left" valign="top" width="35">Status<%#=t(:text_task_status)%></td>
+                  <td width="60" align="left" valign="top"><%=select("report","task_status",[["All","All"],["Open","Open"],["Closed","Completed"]],{:selected => params[:report][:task_status] || @report_task_status},{:style => "width:50px"})%> </td>
+                  <td align="left" valign="top" width="50">Deadline<%#=t(:text_task_deadline_date)%></td>
+                  <td width="50" align="left" valign="top"><%=select("report","duration",[["All","6"],["Overdue","1"],["Todays Activities","2"],["Next 1 week","3"],["Next 2 weeks","4"],["Next 1 month","5"],["Date Range","range"]],{:selected => params[:report][:duration] || @report_duration},{:style => "width:80px",:onChange=>"matter_date_change();"})%></td>
+                  <td align="left" valign="top" id="date_div" style="<%=params[:report][:duration] == "range" ? "" : "display:none;"%>">
+                    <table width="100%" align="left" style="font-size:100%" >
+                      <tr>
+                        <td width="1%" align="left" valign="top"><div style="display:none;"><input type="checkbox" name="date_selected" id="date_selected" value="1" <%=params[:date_selected].blank? ? "" : "checked"%> /></div> </td>
+                        <td width="50" align="left" valign="top"><%=t(:label_Start_Date)%></td>
+                        <td width="80" align="left" valign="top"><input type="text" id="date_start" name="date_start"  readonly="true" class="date_picker"  size="8" value="<%=params[:date_start]%>" /></td>
+                        <td width="50" align="left" valign="top"><%=t(:label_End_Date)%></td>
+                        <td width="80" align="left"> <input type="text" id="date_end" name="date_end"  readonly="true" class="date_picker"  size="8" value="<%=params[:date_end]%>" /></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="left" valign="top" width="30"><input type="submit" name="commit" value="Run Report" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <%end%>
+      <% end %>
+      <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+      <div id="report-info"></div>
+      <div id="report-content"></div>
+    </div>
+  </div>
+</div>

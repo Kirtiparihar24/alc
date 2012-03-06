@@ -1,0 +1,7 @@
+<% if lawfirms.present? %>
+  <% lawfirms.each do |lawfirm| %>
+    <%=raw ("" + "<span style=display:none id='#{lawfirm.id.to_s}'>" + lawfirm.id.to_s + "</span>" + "#{lawfirm.name}") %>
+  <% end %>
+<% else %>
+  <%=raw ( "No LawFirm Found") %>
+<% end %>

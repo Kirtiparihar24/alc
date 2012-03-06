@@ -1,0 +1,60 @@
+<script type="text/javascript">
+  //jQuery('input#fav_type_val').attr('value', jQuery('#TB_ajaxWindowTitle').text())
+  if(jQuery('#TB_ajaxWindowTitle').text()=="Add to RSS")
+  {
+    jQuery('input#fav_type_val').attr('value', 'RSS')
+    jQuery('input#fav_type').attr('value', 'RSSFeed')
+  }
+  else
+  {
+    jQuery('input#fav_type_val').attr('value', 'My Links')
+    jQuery('input#fav_type').attr('value', 'External')
+  }
+</script>
+<div>
+  <div class="mt20">
+    <div id="nameerror" style="display:none;"></div>
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <% form_remote_tag :url => {:action => :create_favourite} ,:method=>:post,:html=>{:onsubmit=>"jQuery('#save').attr('disabled',true)
+    jQuery('#save').val('Please wait...')"} do  -%>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+        <tr>
+          <td>&nbsp;</td>
+          <td>Type:</td>
+          <td><%= text_field_tag :fav_type_val,'',:readonly=>true %></td>
+          <td><%= hidden_field_tag :fav_type %></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><label>Name: <span class="alert_message">*</span></label></td>
+          <td><%=text_field_tag :name,""%></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><label>URL: <span class="alert_message">*</span></label></td>
+          <td><%=text_field_tag :url,""%></td>
+          <td>&nbsp;</td>
+        </tr>
+	<tr>
+		<td colspan="4"></td>
+	</tr>
+        <tr>
+          <td colspan="4" align="center">
+            <%=submit_tag 'Save' ,:id=>'save',:onclick=>"return checkloader(); return validate_favourite_url();"%>
+            <input type="submit" value="Cancel" onclick="parent.tb_remove();return false"/>
+          </td>
+        </tr>
+      </table>
+    <%end%>
+  </div>
+  <div class="mandatory"><span class="alert_message">*</span><%=t (:label_Required_fields)%></div>
+  <div id="fav_loader_container"></div>
+</div>
+<script type="javascript/text">
+  jQuery(document).ready(function(){
+    jQuery('#name').val('');
+    tb_init('a.thickbox, area.thickbox, input.thickbox');//pass where to apply thickbox
+  });
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;17</div>

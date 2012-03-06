@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">Edit Appointment Type</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<% remote_form_for(:appointment_type,@appointment_type, :url => company_appointment_type_path(@company,@appointment_type),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f, :modelclass => "appointment_types",
+    :select_modal_text => "Appointment Type", :modal_text => "Appointment Type",
+    :all_modal_values => @company.appointment_types.collect{|appt|[appt.lvalue]}.uniq} %>
+<%end%>
+<br class="clear"/>

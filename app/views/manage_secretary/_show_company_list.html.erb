@@ -1,0 +1,86 @@
+<%=render :partial => '/common/common_flash_message'%>
+<br class="clear" />
+<table width="100%" border-right-style="solid">
+  <tr>
+    <td width="60%" style=" vertical-align: top">
+      <div class="mt5">
+        <div class="gridDiv">
+          <div id="dashboard_toggle" class="titleHead">
+            <div class="fl"><%= t(:text_unassign_livian) %></div>
+            <br class="clear"/>
+          </div>
+          <div class="gryBox">
+            <div class="p5 gridTable">
+              <table width="100%" border="1" cellpadding="0" cellspacing="0">
+                <tr>
+                  <th width="30%"  style="text-align: center" ><%= t(:text_company) %></th>
+                  <th width="30%"  style="text-align: center" ><%= t(:text_lawyer) %></th>
+                  <th width="20%"  style="text-align: center" >Priority</th>
+                  <th width="20%"  style="text-align: center" ><%= t(:text_action) %></th>
+                </tr>
+                <% if @secretary.service_provider_employee_mappings.blank? %>
+                  <tr><td colspan="3"><div class="warningCont m5"><%= secretary.sp_full_name + " "%><%=t(:text_is_not_serving_to_any_lawyer)%></div></td></tr>
+                <% else %>
+                  <%@secretary.service_provider_employee_mappings.each do |sa|%>
+                    <tr>
+                      <td class="textBlack11Height10L" ><%= sa.user.company.name %></td>
+                      <td class="textBlack11Height10L" ><%= sa.user.try(:full_name) %></td>
+                      <td>
+                        <div class="txtR" style="width:140px">
+                          <%pt=(@priority_types.select {|pt| pt.lvalue == sa.priority.to_s})%>
+                          <span id="sa_<%= sa.id%>" style="float:left;"><%= pt.blank? ? "Null" : pt.first.alvalue %></span>
+                        </div>
+                        <span id='priority_<%= sa.id%>' style="display:none">
+                          <%  form_for(sa,:url => {:controller => "",:action=>'',:id=>sa.id},:html=>{:onsubmit=>"change_priority(#{@secretary.id},#{sa.id});return false;"}) do |f| %>
+                            <%selected = pt.blank? ? "" : pt.first.lvalue.to_s %>
+                            <%=f.collection_select :priority, @priority_types,:lvalue, :alvalue,{:include_blank => 'Null', :selected=>selected},{:class=>"dropbox",:style=>"width:121px;",:id => "setpriority_#{sa.id}"}%>
+                            <%= f.submit t(:text_save),:class=>"button"%>
+                            <%= link_to t(:label_cancel), "#", :class=>"linkbutton", :onclick => "$('#priority_#{sa.id}').hide();$('#sa_#{sa.id}').show();"  %>
+                          <%end%>
+                        </span>
+                      </td>
+                      <td class="textBlack11Height10L" >
+                        <%= link_to 'Edit', "#", :onclick=> "$('#priority_#{sa.id}').show();$('#sa_#{sa.id}').hide();" %>
+                        <%=link_to(t(:label_unassign),"#",{:onclick=>"unassign_sec_to_emp(#{@secretary.id},#{sa.user.id});return false;", :title=>'Click to unassign'} ,{})%>
+                      </td>
+                    </tr>
+                  <%end
+                end%>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </td>
+    <td width="40%" style="text-align: center; vertical-align: top">
+      <div class="mt5">
+        <div class="gridDiv">
+          <div id="dashboard_toggle" class="titleHead">
+            <div class="fl"><%=t(:text_assign_livian)%></div>
+            <br class="clear"/>
+          </div>
+          <div class="gryBox">
+            <div class="p5 gridTable">
+              <div >
+                <div class="textNormal" >                
+                  <span style="">Cluster : </span><span style=""><%= @cluster.name unless @cluster.nil? %></span>
+                </div>
+                <div class="textNormal" >
+                  <%=t(:text_select_lawyer)%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= collection_select(:employee, :id, @employees, :id, :full_employee_name, {:include_blank => 'Please select'},{:class=>'dropbox',:style=>"width:120px; font-size:100%"})%>
+                </div>
+                <br class="clear" />
+                <div class="textBlue9em">
+                  <%=link_to(t(:label_assign),"#",{:onclick=>"assign_sec_to_emp(#{@secretary.id});return false;",:id=>"assign_sec_to_emp"},{:title=>'Click to assign'})%>
+                </div>
+              </div>
+              <div width="100%">
+                <div id="show_employee_list"></div>
+              </div>
+              <br class="clear" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>

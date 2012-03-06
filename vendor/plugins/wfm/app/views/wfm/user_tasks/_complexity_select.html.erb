@@ -1,0 +1,14 @@
+<% if(@task_index.blank?) %>
+  <%=select :task, :work_subtype_complexity_id,@complexities.collect {|c| [ c.complexity_level, c.id ]}, {:prompt=>"Please Select"},{:onchange =>"reassign_task_block();display_stt_tat(this.value)"}%>
+<%elsif @from_edit%>
+  <%=select :task, :work_subtype_complexity_id,@complexities.collect {|c| [ c.complexity_level, c.id ]}, {:prompt=>"Please Select"},{:class=> 'task_edit',:onchange =>"display_stt_tat_update_user_select_edit(this.value,#{@task_index})"}%>
+<%else%>
+  <% fields_for "tasks[#{@task_index}]", UserTask.new do |f| %>
+    <%=f.select :work_subtype_complexity_id,@complexities.collect {|c| [ c.complexity_level, c.id ]},{:prompt=>"Please Select"},{:class=> 'task_edit',:onchange =>"display_stt_tat_update_user_select(this.value,#{@task_index})"}%>
+  <%end%>
+<%end%>
+<%@complexities.each do |complexity|%>
+<span style="display:none;" class="sub_text_<%=@task_index%>" id="tasks_<%=@task_index%>_complexity_stt_tat_<%=complexity.id%>">
+   <%="#{complexity.complexity_level} -stt: #{complexity.stt} tat: #{complexity.tat}"%>
+ </span>
+<%end%>

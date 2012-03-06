@@ -1,0 +1,13 @@
+<div class="gryBox">
+  <div class="title_tools">
+    <% if @user == @current_user %>
+      <%= link_to :change_password, password_user_path(@user),  :rel=>"facebox" %> 
+    <% end %>
+      <%= (@user == @current_user ? "My " : "") << "Profile" %>
+      <div id="edit_profile"></div>
+      <div id="upload_avatar"></div>
+      <div id="change_password"></div>
+      <div id="profile"> <%= render "user" %></div>      
+      <iframe id="uploading" name="uploading" width="100px" height="10px" border="5px"></iframe>
+  </div>
+</div>

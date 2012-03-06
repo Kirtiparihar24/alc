@@ -1,0 +1,13 @@
+<div id="container-1">
+  <%= render :partial => "matters/matter_tabs" %>
+  <% @doc_count = [] %>
+  <div style="display: block;" class="tabs-container-tabs tabular_listing tabs-container tabs-hide" id="fragment-7">
+    <div class="column_main mb8"><%=render :partial=>'document_homes/search',:locals =>{:extension=>@file_ext}%></div>
+    <%=render :partial => "matters/matter_contact_account"%>
+    <div class="seperator_dotted_hori"></div>
+    <%=render :partial=> 'matter_document_list'%>
+    <%=render :partial => 'client_documents'%>
+    <%=render :file =>'common/document_extension'%>
+    <%=render :partial=>"multi_upload",:locals => {:linked => @linked}%>
+  </div>
+</div>

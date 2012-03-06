@@ -1,0 +1,21 @@
+<div class="form">
+  <table cellspacing="0" border="0" align="center" width="100%">
+    <tr>
+      <td width="45%"><label><%=t(:label_research_type)%></label><span class="txt_red">*</span></td>
+      <td width="55%">
+        <%= f.text_field :alvalue,:style=>"width:240px;" %>
+      </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr>
+      <td><label><%=t(:label_research_type)%> <span>*</span></label></td>
+      <td><%= f.text_field :alvalue, :class=>"field size4"  %></td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+  </table>  
+</div>
+<div class="buttons">
+  <%=submit_tag t(:label_save), :class=>"button"%>
+  <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="tb_remove();" />
+</div>
+<div id="loading_gif" style="display: none"><%= image_tag"/images/loading.gif" %></div>

@@ -1,0 +1,149 @@
+<h2 class="title_main">
+  Unapproved Time Entries
+</h2>
+
+<!--Tabular container div @start here -->
+<div class="tabular_listing p5  ">
+  <table width="100%" cellspacing="1" cellpadding="1" class="border_gray">
+    <tbody><tr>
+         <th align="left" width="27%">Matter</th>
+         <th align="left" width="18%">Client</th>
+         <th align="right" width="5%"><%=t(:text_hrs)%></th>
+         <th align="right" width="17%">Amount(<%=t(:label_doller)%>)</th>
+         <th align="right" width="15%">Expenses(<%=t(:label_doller)%>)</th>
+         <th align="right" width="17%">Total</th>
+        <th align="center" width="1%"><%= t(:text_actions) %></th>
+      </tr>
+<!-- MATTER VIEW -->
+      <% unless @matter_time_entries.blank? %>
+      <%@matter_time_entries.each do |entry|%>
+      <%if entry.matter.present?%>
+      <%actual_duration = @dur_setng_is_one100th ?  one_hundredth_timediffernce(entry.actual_duration) : one_tenth_timediffernce(entry.actual_duration)%>
+      <tr class="<%=cycle('bg2','bg1')-%>" id="time_<%=entry.matter_id%>">
+        <td><%=raw(truncate_withscroll(entry.matter.name,30))%></td>
+        <td><%=entry.matter.contact.name%></td>
+        <td align="right"><%=actual_duration%></td>
+        <td align="right"><%=time_entry_amt = entry.final_billed_amount.to_f%></td>
+        <td align="right"><%=expense_entry_amt = entry.matter.expense_entries.unapproved_entries.sum(:final_expense_amount).to_f%></td>
+        <td align="right"><%= time_entry_amt+expense_entry_amt%></td>
+
+        <td align="center" width="1%">
+          <div class="icon_action  mt3"><a href="#"></a></div>
+          <div id="liquid-roundAP" class="tooltip" style="display:none;">
+            <!--Icon table strt here -->
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+              <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                  :deactivate_path=> "NO",
+                  :deactivate_text => "Time Entry",
+                  :comment_path=> "NO",
+                  :comment_title => "NO",
+                  :document_path=>"NO",
+                  :history_path=>"NO",
+                  :history_title => "Time Entry History"}) %>
+              <tr>
+                <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                <td style="background: #fff;">
+                  <div class="w100">
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>View Entries</span>", {:controller=>'time_and_expenses', :action=>'matter_view', :matter_id=>entry.matter_id, :status => "Open"},:title=>'View Entries') %> </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>Approve</span>",{:controller=>'time_and_expenses', :action=>'approve_entries', :matter_id=>entry.matter_id}, :method => :post, :title=>"Approve" )%></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <br class="clear"/>
+                  </div>
+                </td>
+                <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+              </tr>
+              <tr>
+                <td valign="top" class="ap_bottom_curve_left"></td>
+                <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                <td valign="top" class="ap_bottom_curve_right"></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+
+      </tr>
+      <%end%>
+      <%end%>
+      <% end %>
+<!-- CONTACT VIEW -->
+
+      <%@time_entries.each do |time_entry|%>
+      <%if time_entry.contact.present?%>
+      <%actual_duration = @dur_setng_is_one100th ?  one_hundredth_timediffernce(time_entry.actual_duration) : one_tenth_timediffernce(time_entry.actual_duration)%>
+      <tr class="<%=cycle('bg2','bg1')-%>" id="time_<%=time_entry.contact_id%>">
+        <td>&nbsp;</td>
+        <td><%=time_entry.contact.name rescue '-'%></td>
+        <td align="right"><%=actual_duration%></td>
+        <td align="right"><%=time_entry_amt = time_entry.final_billed_amount.to_f%></td>
+        <td align="right"><%=expense_entry_amt = time_entry.contact.expense_entries.unapproved_entries.without_matter.sum(:final_expense_amount).to_f rescue ""%></td>
+        <td align="right"><%= time_entry_amt+expense_entry_amt rescue time_entry_amt%></td>
+
+        <td align="center" width="1%">
+          <div class="icon_action  mt3"><a href="#"></a></div>
+          <div id="liquid-roundAP" class="tooltip" style="display:none;">
+            <!--Icon table strt here -->
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+              <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                  :deactivate_path=> "NO",
+                  :deactivate_text => "Time Entry",
+                  :comment_path=> "NO",
+                  :comment_title => "NO",
+                  :document_path=>"NO",
+                  :history_path=>"NO",
+                  :history_title => "Time Entry History"}) %>
+              <tr>
+                <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                <td style="background: #fff;">
+                  <div class="w100">
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>View Entries</span>", {:controller=>'time_and_expenses', :action=>'contact_view', :contact_id=>time_entry.contact_id, :status => "Open"},:title=>'View Entries') %> </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>Approve</span>",{:controller=>'time_and_expenses', :action=>'approve_entries', :contact_id=>time_entry.contact_id}, :method => :post, :title=>"Approve" )%></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <br class="clear"/>
+                  </div>
+                </td>
+                <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+              </tr>
+              <tr>
+                <td valign="top" class="ap_bottom_curve_left"></td>
+                <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                <td valign="top" class="ap_bottom_curve_right"></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+
+      </tr>
+      <%end%>
+      <%end%>
+
+    </tbody>
+  </table>
+</div>
+<!--Tabular container div #ends here -->
+

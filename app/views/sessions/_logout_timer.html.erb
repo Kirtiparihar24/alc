@@ -1,0 +1,27 @@
+<script type="text/javascript">
+  var zimbra =  <%=  controller_name.eql?("zimbra_mail")? true : false %>
+  if(zimbra){
+     setInterval(function(){
+     jQuery.ajax({
+              url: '/physical/clientservices/check_logout',
+              type: "GET",
+              dataType: "script"
+     });
+    }, 3530 * 1000)
+   // 3540 = 59 minutes (devise time out)
+   // This will ensure that a user never appear Time Out Problem In case if he or she is working inside zimbra tab
+   // "Warning" if the zimbra accidentally tab is open it will the user hence forth will never be timeout unless zimbra tab is closed
+   }
+  else
+     {
+      setInterval(function(){
+      jQuery.ajax({
+              url: '/physical/clientservices/check_logout',
+              type: "GET",
+              dataType: "script"
+      });
+     }, 3545 * 1000)
+   }  
+
+  // 3545(59 minutes 5 seconds)is used to timeout the user to the login page after the devise timeout happen after 59 minute(Devise Session TimeOut Time) for non zimbra related pages (this is written beause of that ajax popip display logout pages on the popup once devise session is timeout)
+ </script>

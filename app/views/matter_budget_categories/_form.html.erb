@@ -1,0 +1,73 @@
+<div class="gridDiv">
+  <div class="titleHead" align="left"><%= params[:id] ? t(:text_edit_category) : t(:text_new_category) %>
+    <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div>
+  </div>
+  <div class="gryBox">
+    <div class="adminForm">
+      <% form_for (@budget_category),:onsubmit => "return disableAllSubmitButtons('button')" do  |f| %>
+        <table width="100%" cellspacing="0" cellpadding="0" border="0" >
+          <tbody>
+
+            <% if params[:id] %>
+
+              <tr>
+                <td width="30%" align="right"><%=t(:text_category)%><span class="text_red">*</span></td>
+                <td width="70%">
+                  <% if @budget_category.lvalue!='Others'  %>
+                    <%=f.text_field :lvalue ,:id=>'lvalue'%>
+                  <%else%>
+                    <%=f.text_field :lvalue ,:readonly=>true%>
+                  <%end%>
+                </td>
+              </tr>
+              <tr>
+                <td width="10%" align="right"><%=t(:text_estimated_budget)%><span class="text_red">* </span></td>
+                <td width="14%">
+                  <% fields_for  @budget_category_amt do |f| %>
+                    <%=f.text_field :estimated_amt,:id=>'estimated_amt'%>
+                  <%end%>
+                </td>
+              </tr>
+            <%else%>
+              <tr>
+                <td width="30%" align="right"><%=t(:text_category)%><span class="text_red">*</span></td>
+                <td width="70%"><%=f.text_field :lvalue%></td>
+              </tr>
+              <tr>
+                <td width="30%" align="right"><%=t(:text_password)%><span class="text_red">*</span></td>
+                <td width="30%"><%= password_field_tag :current_password, nil%></td>
+              </tr>
+            <%end%>
+            <tr>
+              <td align="center" colspan="8">
+                <%= f.submit t(:text_save),:class=>"button" ,:onClick=>"return check_estimate();"%>
+                <%= link_to t(:text_cancel),'#category_#{@budget_category.id}',:onclick=>"jQuery.facebox.close();" %>
+                <span class="txtC Pb8" id="loading_gif" style="float:center;display:none;">
+                  <%= image_tag"/images/loading.gif" %>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+      <br class="clear" />
+    </div>
+    <!--TABULAR DATA ENDS-->
+  </div>
+</div>
+
+<script language="javascript">
+  $(document).ready(function() {
+    // Need to removed to JS File
+    $("#estimated_amt").keydown(function(e) {
+      if ( e.keyCode == 46 || e.keyCode == 8 ||e.keyCode == 9 ) {
+      }else {
+        // Ensure that it is a number and stop the keypress
+        if ((e.keyCode < 48 || e.keyCode > 57 ) && (e.keyCode < 95 || e.keyCode > 106)) {
+          e.preventDefault();
+        }
+      }
+    });
+  });
+</script>
+<%# Need to check this view if in use %>

@@ -1,0 +1,109 @@
+
+<%if lawfirm_users.empty? && livians.empty?%>
+  <p>No Users assigned to this cluster!</p>
+<%else%>
+  <%form_tag 'update_priorities',{:class=>'search_form general_form'} do -%>
+    <div style="overflow:auto; height:auto;width:100%;">
+      <div class="table_wrapper">
+        <div class="table_wrapper_inner">
+          <table width="100%" cellspacing="3px" cellpadding="0" border="0" align="left">
+            <tbody>
+              <%=hidden_field_tag "cluster_id",cluster.id%>
+            <th style="text-align:center; background: #AED0EB; vertical-align: middle">Lawyers</th>
+            <th colspan="<%= livians.count %>" style="text-align:center; background: #AED0EB;">Livians</th>
+
+            <tr>
+              <th></th>
+              <%unless livians.empty?%>
+                <%livians.each do |livian|%>
+                  <% cluster_id = cluster.id %>
+                  <% livian_user_id =  livian.user.id%>
+                  <% cluster_user = get_cluster_user(cluster_id,livian_user_id) %>
+                  <th class="hoverIntent" style="position:relative;">
+                    <%= livian.user.full_name %>
+                    <% if is_manager(livian_user_id) %><img src="/stylesheets/wfm/layout/site/icon/icon_manager.png" alt="Team Manager" title="Team Manager"></img><%end%>
+                    <% if is_temp_livian(cluster_id,livian_user_id) %>
+                    <img src="/stylesheets/wfm/layout/site/icon/icon_temp_livian.png" alt="Temporary Livian"></img>
+                      <div class="temp_livian_details_div" id="livian_<%=livian_user_id%>" style="display:none; font-weight: normal;">
+                        <b><%=livian.user.full_name.capitalize%></b> <i>is temporarily assigned to this cluster</i>
+                        <br/>
+                        <b>From:</b> <%= cluster_user.from_date.to_date.strftime("%m/%d/%Y") %>
+                        <br/>
+                        <b>To:</b> <%= cluster_user.to_date.to_date.strftime("%m/%d/%Y") %>
+                      </div>
+                    <% end %>
+                  </th>
+                <%end%>
+              <%end%>
+            </tr>
+            <%unless lawfirm_users.empty?%>
+              <%lawfirm_users.each do |user|%>
+                <tr class="<%=cycle("first", "second")%>">
+                  <th width="15%">
+                    <%= user.full_name %><br />
+                    <span style="font-size:11px; font-weight:normal"> <i><%= user.company.name %> </i></span>
+                  </th>
+                  <%livians.each do |livian|%>
+                    <td align="center"><%= select_tag 'priority_types[]',options_for_select(@priority_types.collect{|priority_type| [priority_type.alvalue, livian.id.to_s + "-" + user.id.to_s+"-"+priority_type.lvalue.to_s]},@priorities),{:class=>"dropbox"} %></td>
+                  <%end%>
+                <%end%>
+              <%end%>
+            </tr><br/>
+            </tbody>
+          </table>
+            <!--<div <%if lawfirm_users.empty? || livians.empty?%>style="display:none"<%end%>>
+              <span colspan="<%=lawfirm_users.count+1%>" align="center">
+          <%=submit_tag 'Update Priorities', :class=>''%>
+              </span>
+            </div>-->
+          <div align="center">
+            <span class="button_div" <%if lawfirm_users.empty? || livians.empty?%>style="display:none"<%end%> align="center">
+              <span class="button send_form_btn" align="center">
+                <span><span>Update</span></span><input type="submit" name=""/>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  <%end -%>
+  <br/>
+  <table cellspacing="5px" width="100%" border="1">
+    <tr><th width="50%">Assign Livian To Cluster</th><th width="50%">UnAssign Livian From Cluster</th></tr>
+    <td valign="top">
+      <%= check_box_tag 'assign_livian',"",false, :onclick =>"jQuery('#div_assign_livian').toggle();" %>
+      <span>Assign Livian</span>
+      <%= render :partial => 'cluster_assignment' %>
+    </td>
+    <td valign="top">
+      <%= check_box_tag 'unassign_livian',"",false, :onclick =>"jQuery('#div_unassign_livian').toggle();" %>
+      <span>UnAssign Livians</span><br /><br />
+      <%= render :partial => 'cluster_unassignment' %>
+    </td>
+  </table>
+<%end%>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    $(function() {
+      $('#from_date').datepicker();
+      $('#to_date').datepicker();
+    });
+    jQuery('.hoverIntent').hoverIntent({
+      sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
+      interval: 350,   // number = milliseconds of polling interval
+      over: showNav,  // function = onMouseOver callback (required)
+      timeout: 100,   // number = milliseconds delay before onMouseOut function call
+      out: hideNav    // function = onMouseOut callback (required)
+    });
+  });
+
+  function showNav()
+  {
+    jQuery(this).find('div.temp_livian_details_div').fadeIn();
+  }
+  function hideNav()
+  {
+    jQuery(this).find('div.temp_livian_details_div').fadeOut('fast');
+  }
+</script>

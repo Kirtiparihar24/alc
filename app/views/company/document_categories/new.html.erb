@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit)%> <%=t(:text_doc_category)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:doc_category,@doc_category, :url => company_document_categories_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "#{t(:label_doc_category)}", :modal_text => "#{t(:label_doc_category)}",
+    :all_modal_values => @company.document_categories.collect{|dc|[dc.lvalue]}.uniq ,:modelclass=>'document_categories'} %>
+<%end%>
+<br class="clear"/>

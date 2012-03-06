@@ -1,0 +1,13 @@
+<h1><%=t(:text_listing_comments)%></h1>
+<table>
+  <tr></tr>
+  <% for comment in @comments %>
+    <tr>
+      <td><%= link_to t(:label_show), comment %></td>
+      <td><%= link_to t(:label_edit), edit_comment_path(comment) %></td>
+      <td><%= link_to t(:label_destroy), comment, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= link_to t(:label_new_comment), new_comment_path %>

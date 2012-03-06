@@ -1,0 +1,18 @@
+<% @flashmsg= flash[:warning] || flash[:notice] || flash[:error] %>
+<% if @flashmsg.present? %>
+  <%if flash[:warning]%>
+    <div id="notice" class= "message_warning_div"><%span_class = "icon_message_warning fl mlr8 mt5"%>
+  <%elsif flash[:notice]%>
+    <div id="notice" class= "message_sucess_div"><%span_class = "icon_message_sucess fl mlr8 mt5"%>
+  <%else%>
+    <div id="notice" class= "message_error_div"> <%span_class = "icon_message_error fl mlr8 mt5"%>
+  <%end%>
+      <span class="<%=span_class%>"></span>
+      <ul class="mt5 mb5 ml40">
+        <% @flashmsg.each do |fmsg| %>
+          <li style="text-align:left;"><%= fmsg %></li>
+        <%end%>
+      </ul>
+    </div>
+ <%end%>
+<% flash.discard %>

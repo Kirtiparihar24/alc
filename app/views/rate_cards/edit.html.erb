@@ -1,0 +1,34 @@
+<div style="text-align: center"><%= @company.name if current_user.role?:livia_admin %> </div>
+<div class="box-head"><h2><%=t(:text_edit_employee_rate)%></h2></div>
+<% form_for @employee,:url => {:action => 'update', :id => @employee.id} do |f| %>
+  <div class="form">
+    <%if(@employee.errors.length > 0)%>
+      <div class='errorCont'>
+        <%=f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_employee)%> <span>*</span></label></td>
+        <td width="75%"><%= @employee.full_name %> </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_billing_rate)%><span>*</span></label></td>
+        <td><%=f.text_field :billing_rate,:maxlength=>11,:onblur => "check_rate(this);",:class=>"field size4"%></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= submit_tag t(:label_update), :class=>"button"%>
+    <%= link_to t(:label_cancel), rate_cards_url, :class=>"button" %>
+  </div>
+<% end %>

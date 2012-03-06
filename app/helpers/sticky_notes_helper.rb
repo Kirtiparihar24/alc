@@ -1,0 +1,2 @@
+module StickyNotesHelper
+end

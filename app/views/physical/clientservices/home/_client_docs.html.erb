@@ -1,0 +1,44 @@
+<% if client_docs.size > 0 %>
+  <script type="text/javascript">
+    new_tool_tip();
+    vtip();
+  </script>
+  <div style="margin-top:10px;">
+    <div class="tabular_listing border_gray">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+        <tr>
+          <th align="left"><%= t(:text_document_name) %></th>
+          <th align="left"><%= t(:text_matter_name) %></th>
+          <th align="center"><%= t(:text_creation_date) %></th>
+          <th align="left"></th>
+        </tr>
+        <% doc_count = 0 %>
+        <% client_docs.each do |matter_document| %>
+          <% matter_doc = matter_document.latest_doc %>
+          <% matter = matter_document.mapable %>
+          <tr class="<%= cycle('bg1','bg2') %>">
+            <% if document_accesible?(matter_document,get_employee_user_id,@current_company.id, matter) %>
+              <% doc_count += 1 %>
+              <td align="left"><%= raw truncate_hover_link(matter_doc.name.try(:titleize), 25, edit_matter_document_home_path(matter,matter_document.id)) %></td>
+              <td align="left"><%= conditional_edit(matter) %></td>
+              <td align="center"><%= matter_doc.created_at.to_time.strftime('%m/%d/%y %H :%M') %></td>
+              <td align="center" style="padding-top:3px;"><%=raw link_to("<span class='icon_download fl'></span>", document_home_path(matter_doc.id),:class=>'vtip', :title=> 'Download') %></td>
+            <% else %>
+              <% doc_count += 1 %>
+              <td align="left"><%= link_to(truncate(matter_doc.name.try(:titleize), 25),'#', :onclick=>"alert('Access Denied.')", :class=>'vtip', :title=> 'Download') %></td>
+              <td align="left"><%= conditional_edit(matter) %></td>
+              <td align="center"><%=h matter_doc.created_at.to_time.strftime('%m/%d/%y %H :%M') %></td>
+              <td align="center" style="padding-top:3px;"><%=link_to("<span class='icon_download fl'></span>",'#', :onclick=>"alert('Access Denied.')", :class=>'vtip', :title=> 'Download') %></td>
+            <% end  %>
+            <%if doc_count==0%>
+              <td colspan="5"><div  class="warningCont m5"><%=t(:text_no_client_document_found)%></div></td>
+            <%end%>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+<%else%>
+  <div class="warningCont m5"><%= t(:text_no_client_document_found) %></div>
+<%end%>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;118</div>

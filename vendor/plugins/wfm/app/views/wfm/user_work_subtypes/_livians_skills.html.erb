@@ -1,0 +1,24 @@
+<table>
+  <tbody>
+    <tr>
+      <td align="left" valign="top" width="22%"><b>Livian's Skills</b></td>
+        <td>UnAssigned Skills<br />
+          <%= select_tag 'unassigned_skills', options_for_select(@unassigned_skills.collect{ |lu| [lu.name, lu.id] }), :size=>'5', :multiple=>true, :style=>"width:160px;" %>
+        </td>
+      <td valign="middle" width="51" align="center">
+        <br/>
+        <input type="button" onclick="update_skills('assign');" value="→"/><br/>
+        <input type="button" onclick="update_skills('unassign');" value="←"/>
+      </td>
+      <td>Assigned Skills<br />
+        <%= select_tag 'livian_skills', options_for_select(@livians_skills.collect{ |lu| [lu.name, lu.id] }), :size=>'5', :multiple=>true, :style=>"width:160px;" %>
+      </td>
+    </tr>    
+    <tr>
+      <td colspan="4">&nbsp;</td>
+    </tr>
+    <!--<tr>
+      <td colspan="2" align="center"><%#= submit_tag 'Update Skills', :onclick => 'update_skills();' %></td>
+    </tr>-->
+  </tbody>
+</table>

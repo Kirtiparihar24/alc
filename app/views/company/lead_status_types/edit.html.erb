@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit)%> <%=t(:label_lead_status_type)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<% remote_form_for(:lead_status_type,@lead_status, :url => company_lead_status_type_path(@company,@lead_status),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Status", :modal_text => "#{t(:label_status_name)}",
+    :all_modal_values => @company.lead_status_types.collect{|cs|[cs.lvalue]}.uniq ,:modelclass=>'lead_status_types'} %>
+<%end%>
+<br class="clear"/>

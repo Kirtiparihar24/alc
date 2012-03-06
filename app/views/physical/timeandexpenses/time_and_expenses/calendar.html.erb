@@ -1,0 +1,22 @@
+<div id="container-1">
+  <div id="report-info">
+    <table cellspacing="0" cellpadding="0" width="100%">
+      <tr>
+        <td width="74%">
+          <ul class="tabs-nav">
+            <li class="tabs-selected"><a href=""><span><%=t(:label_Calendar_view)%></span></a></li>
+            <li><a href="<%=physical_timeandexpenses_matter_view_path%>"><span><%=t(:label_Approve_T_E_Entry)%></span></a></li>
+            <li><a href="<%=physical_timeandexpenses_approval_awaiting_entry_path%>"><span>Entries Awaiting Approval</span></a></li>
+          </ul>
+        </td>
+        <td width="12%" align="center" class="link_blue"><a href="<%= physical_timeandexpenses_add_expense_entry_home_path %>?height=355&width=1210" class="thickbox" name="<%= t(:text_new_expense_entry) %>"> <%= t(:text_new_expense_entry) %></a></td>
+        <td align="center"><a href="<%= physical_timeandexpenses_add_expense_entry_home_path(:height=>"325",:width=>"1210") %>" class="thickbox vtip fl mt5" title="<%= t(:text_new_expense_entry) %>" name="<%= t(:text_new_expense_entry) %>"><%=image_tag("icon-expenseentry.png") %></a></td>
+        <td width="2%"></td>
+        <td width="10%" align="center" class="link_blue"><a href="<%= physical_timeandexpenses_new_time_entry_path %>?height=325&width=1020" class="thickbox" name="<%=t(:text_new_time_entry)%>"><%=t(:text_new_time_entry)%></a></td>
+        <td align="center"><a href="<%= physical_timeandexpenses_new_time_entry_path(:height=> "355", :width=> "1000") %>" class="thickbox vtip" title="<%=t(:text_new_time_entry)%>" name="<%=t(:text_new_time_entry)%>"><span class="icon_task_maketime_entry fl mt3"></span></a></td>
+      </tr>
+    </table>
+    <div id="fragment-1" class="tabs-container"><div id="content"><%=render :partial=>"content"%></div></div>
+  </div>
+  <div id="report-content"></div>
+</div>

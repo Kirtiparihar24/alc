@@ -1,0 +1,10 @@
+<tr>
+  <td align="left">Use Trust Account for Settlement </td>
+  <td align="left"><%= check_box_tag :use_financial_account %></td>
+</tr>
+<% fields_for :financial_transaction do |tr| %>
+<tr class="display_false" style="display: none;">
+    <td align="left">Select Trust Account:</td>
+    <td align="left"><%= tr.select :financial_account_id, options_for_select(current_company.financial_accounts.collect{|x|["#{x.name}   :Balance => #{x.amount}", x.id]}) %></td>
+  </tr>
+<%end%>

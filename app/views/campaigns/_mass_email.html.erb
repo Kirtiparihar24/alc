@@ -1,0 +1,215 @@
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    // This Code is calling CK editor for both the Text Editors
+    CKEDITOR.replace( 'campaign_first_email' ,
+    {
+      toolbar : 'CampaignMail',
+      height  : '200px',
+      width   : '570'
+    });
+    CKEDITOR.replace( 'campaign_second_email',
+    {
+      toolbar : 'CampaignMail',
+      height  : '200px',
+      width   : '570'
+    });
+    // end
+
+    jQuery('#test_mail').attr('disabled',false);
+    jQuery(".toggle_button").click(function(){
+      jQuery(".cmpgn_custm").toggle();
+    });
+  });
+</script>
+<div id="fragment-2" class="tabs-container-tabs tabs-hide tabular_listing">
+  <%= raw(javascript_include_tag 'ckeditor/ckeditor.js') %>
+  <div id="modal_new_document_error" style="display:none"></div>
+  <%form_tag "/campaigns/campaign_email",{:multipart=> true, :target => "campaign_upload_frame"} do-%>
+    <%= hidden_field_tag :button_pressed %>
+    <%= hidden_field_tag 'campaign_id', @campaign.id %>
+    <table width="100%" class="mt20">
+      <tr>
+        <td width="76%"><strong><%= t(:text_campaigns) %> - </strong><%= truncate_hover(@campaign.name.try(:titleize),35) %></td>
+        <td width="24%"><strong><%= t(:text_start_date) %> -</strong><%= @campaign.starts_on.to_time.strftime('%m/%d/%y') if @campaign.starts_on %></td>
+      </tr>
+      <tr>
+        <td><strong><%= t(:text_owner) %> - </strong><%= @campaign.get_assigned_to %></td>
+        <td><strong><%= t(:text_end_date) %> - </strong><%= @campaign.ends_on.to_time.strftime('%m/%d/%y') if @campaign.ends_on %></td>
+      </tr>
+    </table>
+    <table width="100%">
+      <tr>
+        <td width="20%"><label><%= t(:text_signature_on_mail) %></label></td>
+        <td width="80%">
+          <div style="float:left;"><%=text_area_tag 'email[signature]', @campaign_first_email.signature, :rows => 3, :cols => 30 %></div></td>
+      </tr>
+      <tr>
+        <td><label><%= t(:text_email) %> <span class="alert_message">*</span> </label></td>
+        <td>
+          <div style="float:left;">
+            <%= text_field_tag 'email[owners_email]',default_email_id %>
+            <%= submit_tag t(:text_send_test_email), :disabled=>@campaign_first_email.id.nil?, :id => "test_mail",:class => "send_test_mail",:name => "send_test_email", :style=>"#{@campaign_first_email.id.nil? ? 'color:gray' : 'color:'}", :onclick => 'return validatefields();'%>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td><label><%= t(:text_from) %> </label></td>
+        <td>
+          <%=custom_select_tag "email[from_user_id]", options_for_select(@from_emailids, params[:email_from_user_id]) ,{:prompt => ENV["HOST_NAME"].include?('liviaservices') ? "campaigns@liviaservices.com" : "campaigns.test@liviatech.com",:style=>"width:150px"} unless @from_emailids.blank? %>
+        </td>
+      </tr>
+      <tr>
+        <td width="20%"><label><%= t(:text_subject) %> <span class="alert_message">*</span> </label></td>
+        <td width="80%"><label><%= text_field_tag 'email[subject]', @campaign_first_email.subject %></label></td>
+      </tr>
+      <tr>
+        <td>
+          <div style="clear:both;height:30px;"></div>
+          <label><%= t(:text_first_email_draft) %></label>
+        </td>
+        <td>
+          <div style="clear:both;height:30px;"></div>
+          <%if @ipad_req%>
+            <%= text_area 'campaign_first_email', 'content',:size => "80x20"%>
+          <%else%>           
+              <div id="" style ="max-width: 646px;"class="fl">
+              <%= text_area_tag :campaign_first_email ,@campaign_first_email.content %>
+            </div>
+            <div class="fl" style="margin-left: 10px;">
+              <%= render :partial => 'liquid_tags' %>
+            </div>
+          <%end%>
+        </td>
+      </tr>
+      <tr>
+        <td><label><%=t(:label_Attachment)%></label></td>
+        <td><table>
+            <% 2.times do |i| %>
+              <% fields_for 'additional_documents[document_attributes]' do |d|%>
+                <tr>
+                  <% if (!@document_home_first.blank? and !@document_home_first[i].blank?)   %>
+                    <%  doc = @document_home_first[i].latest_doc %>
+                    <td valign="top" id="ajax_attach_files_first_1_<%= i%>">
+                      <%= link_to("<span>#{doc.name}</span>", document_home_path(doc.id), :class => "link_blue" )%>&nbsp;&nbsp;&nbsp;
+                    </td>
+                    <td valign="top" id="ajax_attach_files_first_2_<%= i%>">
+                      <%=raw link_to_remote "<span class='icon_delete fl'></span>",:url => {:controller => "campaigns",:action => "delete_attachment",:id =>@campaign.id,:doc_id => doc.id ,:doc_seq_id => i,:from_fck => 'first' },:html => {:class=>'vtip',:title=>'Delete Document'},:confirm => "are you sure ?" %>
+                    </td>
+                  <% else %>
+                    <td valign="top" id="doc_upload_input"><input name="additional_documents[document_attributes][data][]" type="file"  id="file_first<%= i%>" value ="" /></td>
+                    <td valign="top"></td>
+                  <% end %>
+                </tr>
+                <tr>
+                  <td colspan="2" valign="top" height="6"></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <%= submit_tag t(:label_save_first_email), :name => "save_first_email", :onclick => 'return validatefields();' %>
+
+          <%= submit_tag t(:text_send_first_email), :name => "send_first_email", :disabled=>@campaign_first_email.id.nil?, :style=>"#{@campaign_first_email.id.nil? ? 'color:gray' : 'color:'}",:onclick => 'return validatefields();', :class => 'Send-First-E-Mail' %>
+          <input type="button" value="<%=t(:label_cancel)%>" onclick="window.location.href='<%=edit_campaign_path(@campaign)%>';"/>
+        </td>
+      </tr>
+
+      <tr style="height: 40px;"></tr>
+      <tr>
+        <td><%= t(:text_reminder_email_draft) %></td>
+        <td>
+            <%if @ipad_req%>
+              <%= text_area 'campaign_second_email', 'content',:size => "80x20"%>
+            <%else%>
+             <div id="" style ="max-width: 646px;"class="fl">
+                <%= text_area_tag :campaign_second_email ,@campaign_second_email.content %>
+              </div>
+            <%end%>
+            <div class="fl pt5" style="margin-left: 10px;">
+              <%= render :partial => 'liquid_tags' %>
+            </div>
+          </td>
+      </tr>
+      <tr>
+        <td><label>Attachment </label></td>
+        <td><table>
+            <% 2.times do |i| %>
+              <% fields_for 'additional_documents_second[document_attributes]' do |d|%>
+                <tr>
+                  <% if (!@document_home_second.blank? and !@document_home_second[i].blank?)   %>
+                    <%  doc = @document_home_second[i].latest_doc %>
+                    <td valign="top" id="ajax_attach_files_reminder_1_<%= i%>">
+                      <%= link_to("<span>#{doc.name}</span>", document_home_path(doc.id), :class => "link_blue" )%>&nbsp;&nbsp;&nbsp;
+                    </td>
+                    <td valign="top" id="ajax_attach_files_reminder_2_<%= i%>">
+                      <%=raw link_to_remote "<span class='icon_delete fl'></span>",:url => {:controller => "campaigns",:action => "delete_attachment",:id =>@campaign.id,:doc_id => doc.id, :doc_seq_id => i,:from_fck => 'reminder' },:html => {:class=>'vtip',:title=>'Delete Document'},:confirm => "are you sure ?" %>
+                    </td>
+                  <% else %>
+                    <td valign="top"><input name="additional_documents_second[document_attributes][data][]" type="file" id="file_second<%= i%>" value ="" /></td>
+                    <td valign="top"></td>
+                  <% end %>
+                </tr>
+                <tr>
+                  <td colspan="2" valign="top" height="6"></td>
+                </tr>
+              <% end %>
+            <% end %></table>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <%=submit_tag t(:label_save_reminder_email), :name => "save_reminder_email", :onclick => 'return validatefields();'%>
+          <%=submit_tag t(:send_remainder_email), :name => "send_reminder_email", :disabled=>@campaign_second_email.id.nil?, :style=>"#{@campaign_second_email.id.nil? ? 'color:gray' : 'color:'}",:onclick => 'return validatefields();'%>
+          <input type="button" value="<%=t(:label_cancel)%>" onclick="window.location.href='<%=edit_campaign_path(@campaign)%>';"/>
+        </td>
+      </tr>
+    </table>
+    <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+    <div class="mandatory mt12">
+      <pre>Note : Limit on file size is 50 MB.</pre>
+    </div>
+  <%end%>
+  <iframe id="campaign_upload_frame" name="campaign_upload_frame" style="display: none"></iframe>
+</div>
+<script>
+  jQuery(document).ready(function(){
+    jQuery('#file_first0').bind('change', function() {
+      check_file_size('#file_first0');
+    });
+
+    jQuery('#file_first1').bind('change', function() {
+      check_file_size('#file_first1');
+    });
+
+    jQuery('#file_second0').bind('change', function() {
+      check_file_size('#file_second0');
+    });
+
+    jQuery('#file_second1').bind('change', function() {
+      check_file_size('#file_second1');
+    });
+  });
+
+
+  function check_file_size(id){
+    if ($.browser.msie ) { } else {
+      //this[0].files[0].fileSize gets the size of your file.
+      var file_size = jQuery(id)[0].files[0].fileSize;
+      var max_size = 52428800;
+
+      if(file_size <= 1 || file_size > max_size){
+        jQuery('#modal_new_document_error').html('Upload File size should be between is 1KB-50MB.');
+        jQuery('#modal_new_document_error').addClass("message_error_div");
+        jQuery('#modal_new_document_error').show();
+        jQuery(id).val('');
+      } else{
+        jQuery('#modal_new_document_error').hide();
+      }
+    }
+  }
+</script>

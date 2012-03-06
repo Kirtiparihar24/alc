@@ -1,0 +1,64 @@
+<tr>
+  <td width="2%" valign="middle" class="bg6" style="padding:0 10px;"><%= image_tag "calendar/task_text.png" %></td>
+  <td width="98%"align="left" valign="top">
+    <div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="calenderDiv_tabular">
+        <tr>
+          <th width="2%" align="center"><div class="icon_overdue mt5"></div></th>
+          <th width="17%">People Name </th>
+          <th width="20%">Matter Name</th>
+          <th width="20%">Task Name</th>
+          <th width="8%">Start Date</th>
+          <th width="8%">Due Date</th>
+          <th width="20%">Description</th>
+          <th width="5%"><!--<input type="checkbox" />--></th>
+        </tr>
+      </table>
+      <div class="scrollY200">
+        <table width="100%" border="0" cellpadding="0" cellspacing="1" class="calenderDiv_tabular">
+          <% if @task_todos && @task_todos.size > 0 %>
+            <% @task_todos.sort_by{|t| t.start_date.to_i}.each do |matter_task| %>
+              <%matterid = matter_task.attribute_present?("matter_id")%>
+              <%if matterid%>
+                <%mattername = matter_task.matter.name%>
+                <%assignedto = matter_task.lawyer_name.blank? ? matter_task.assigned_to_name : matter_task.lawyer_name%>
+              <%else%>
+                <%mattername = ""%>
+                <%assignedto = matter_task.user_name %>
+              <%end%>
+              <% has_access = action_pad_and_link_blocking(matter_task)%>
+              <tr class="<%= cycle('bg7', 'bg8') %>">
+                <td width="2%" align="center"><% if matter_task.end_date.to_date < @cal_date %><div class="icon_overdue mt5 vtip" title="Overdue"></div ><% else %><%= image_tag "calendar/spacer.gif" %> <% end %> </td>
+                <td width="17%"><%= assignedto %> </td>
+                <td width="20%"><%= mattername %> </td>
+                <td width="20%"><%= CGI.unescape(activity_description(matter_task, 1, "newtooltip", false, false, false)) %> </td>
+                <td width="8%" align="center"><%= livia_task_date(matter_task, matter_task.start_date) %> </td>
+                <td width="8%" align="center"><%= livia_task_date(matter_task, matter_task.end_date) %> </td>
+                <% if has_access[0] %>
+                  <td width="20%"><%= raw(truncate_with_scroll(h(matter_task.description), 35)) if has_access[1] %> </td>
+                  <td width="5%" align="center"><%= task_action_pad(matter_task, matterid) if has_access[2]  %></td>
+                <% else %>
+                  <td width="20%"></td>
+                  <td width="5%" align="center"></td>
+                <% end %>
+              </tr>
+            <% end %>
+          <%else%>
+            <% 10.times do |i| %>
+              <tr class="<%= cycle('bg7', 'bg8') %>">
+                <td width="2%" align="center">&nbsp; </td>
+                <td width="17%"> </td>
+                <td width="20%"> </td>
+                <td width="20%"> </td>
+                <td width="8%"> </td>
+                <td width="8%"> </td>
+                <td width="20%"> </td>
+                <td width="5%" align="center"> </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </td>
+</tr>

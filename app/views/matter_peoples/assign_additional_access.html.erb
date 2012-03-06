@@ -1,0 +1,29 @@
+<div id="matter_lawteam_errors" class="" style="display: none; text-align: left"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+﻿<div>
+  <% remote_form_for([@matter, @matter_people_client], :url => {:action => :edit_lawteam_member, :id => @matter_people_client.id},:loading=>"return disableAllSubmitButtons('matters');",:complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+    <%=f.hidden_field :people_type, :value => "client"%>
+    <%=f.hidden_field :company_id, :value => @matter.company_id%>
+    <%=f.hidden_field :matter_id, :value => @matter.id%>
+    <%unless @from_matter_task.blank?%>
+      <%=hidden_field_tag :from_matter_task, "true"%>
+    <%end%>
+    <%if @matter_people_client.new_record?%>
+      <%=f.hidden_field :created_by_user_id, :value => current_user.id%>
+    <%else%>
+      <%=f.hidden_field :updated_by_user_id, :value => current_user.id%>
+    <%end%>
+    <%=f.hidden_field :is_active, :value => true%>
+
+    <table border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+      <%= render :partial => "delegate_access", :locals => {:visibility => true} %>
+      <tr>
+        <td align="center" colspan="2">
+          <%= f.submit t(:text_save),:class=>'matters', :id => "add_lawteam_button", :onclick=>"return checkloader();"%>
+          <input type="button" class="matters" id="Login2" value="<%=t(:text_cancel)%>" onclick="tb_remove(); disableAllSubmitButtons('matters');" />
+        </td>
+      </tr>
+    </table>
+  <%end%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;48 </div>

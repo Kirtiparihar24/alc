@@ -1,0 +1,69 @@
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('#container-1').tabs(1);
+  });
+</script>
+<%= stylesheet_link_tag "notification.css" %>
+
+<div class="column_main mt12">
+  <h2 class="title_main"><%= t(:text_instructions_to_the_livian) %></h2>
+  <div class="p5">
+    <%= hidden_field_tag :task_summary_toggle_count, 1 %>
+    <!--Tabular container div @start here -->
+    <div id="container-1">
+      <ul class="tabs-nav">
+        <li class="tabs-selected"><a href="#fragment-1"><%= "Open Instructions" %></a></li><li class=""><a href="#fragment-2" class="for_ajax_req"><%= "Outstanding Tasks" %></a></li><li class=""><a href="#fragment-3" class="for_ajax_req" id="ddd"><%= "Completed Tasks" %></a></li>
+      </ul>
+      <div style="float: right; position:relative; ">
+        <span id="links" style="cursor:pointer;position: relative; right: 60px; top: -25px; font-size: 11px; z-index: 9999999;" onclick ="jQuery('#messages-box').slideToggle();">
+          Notifications
+          <% if(@unread_notification.to_i > 0)%>
+            :<span style="color: #FF0000;font-size: 11px;left: 75px;position: absolute;top: 0; z-index: 9999999" id="message-count"><%=@unread_notification%></span>
+          <%end%>
+        </span>
+        <div id="notification_div">
+          <div id="messages-box" style="size:200px">
+            <a class="CloseImg" title="Close" onclick ="jQuery('#messages-box').slideToggle();"></a>
+            <ul id="messages">
+
+              <% if @notifications.size > 0%>
+                <% @notifications.each do |notify| %>
+                  <%message = notify.notification_type == "Communication" ? notify.notification.description : notify.notification.name rescue ''%>
+                  <li id ="notification_<%=notify.id%>" class="new notify" style="cursor:pointer;background-color:<%= notify.is_read == true ? '#F5F5F5' : ''%>">
+                    <a href="#" onclick="upload_notifications(this,'<%=notify.id%>','');return false;">
+                      <span class="sender"><%=notify.title%></span>
+                      <span class="description"><%=truncate(h(message) ,:length => 20)%></span> <span class="date"><%=time_ago_in_words(notify.created_at,Time.now)%></span>
+                    </a>
+                  </li>
+                <%end%>
+                <li id="last"><a id="all-messages" href="#" onclick ="find_more_notifications('<%=@notifications.size + 3%>');return false; ">View More <span id="unreaded"></span> </a></li>
+              <%else%>
+                <li class="new" style="cursor:pointer;">
+                  <span class="sender">No Notification</span>
+                </li>
+              <%end%>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- fragment-1 @start -->
+      <div id="fragment-1" class="tabs-container tabular_listing">
+        <%= render :partial => 'open_instructions_details'  %>
+        <br class="clear" />
+      </div>
+      <!-- fragment-1 #end -->
+      <!-- fragment-2 @start -->
+      <div id="fragment-2" class="tabs-container tabular_listing" style="min-height:127px;">
+        <div class="txtC Pb8" id="fragment-2-1"></div>
+      </div>
+      <!-- fragment-2 #end -->
+      <!-- fragment-3 @start -->
+      <div id="fragment-3" class="tabs-container  tabular_listing" style="min-height:127px;">
+        <div class="txtC Pb8" id="fragment-3-1"></div>
+      </div>
+      <!-- fragment-3 #end -->
+    </div>
+
+    <!--Tabular container div #ends here -->
+  </div>
+</div>

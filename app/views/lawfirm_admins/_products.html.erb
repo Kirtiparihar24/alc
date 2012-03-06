@@ -1,0 +1,99 @@
+<%form_remote_for :role_assign ,@role_assign,:url=>{:controller =>'lawfirm_admins',:action=>'roleassign'},:loading=>"loader.prependTo('#empdiv')",:html=>{:method=>:post}do |f| %>
+  <%=hidden_field_tag 'employee_id',params[:id] %>
+  <%=hidden_field_tag 'comp_id',params[:comp_id]%>
+  <div class="errorCont" style="display:none"></div>
+  <div>
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+      <tr  class="bg1">
+        <td colspan="3" width="85%" align="left" valign="top" class="textNormal pl5">&nbsp;</td>
+      </tr>
+      <tr class="bg1">
+        <td colspan="3" width="85%" align="left" valign="top" class="textNormal pl5">
+          <span style="padding-left:150px;"><strong><%=t(:text_lawyer_name)%>&nbsp;</strong><%= "#{@user.first_name} #{@user.last_name}" %></span>
+          <span style="padding-left:150px;"><strong><%=t(:text_designation)%>&nbsp;</strong><%= @user.role.name %></span>
+          <span style="padding-left:150px;"><strong><%=t(:text_email)%>&nbsp;</strong><%= @user.email %></span>
+        </td>
+      </tr>
+      <tr  class="bg1">
+        <td colspan="3" width="85%" align="left" valign="top" class="textNormal pl5">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="3">&nbsp;</td>
+      </tr>
+
+      <div class="mt5">
+        <div class="gridDiv">
+          <div id="dashboard_toggle" class="titleHead">
+            <div class="fl"><%=t(:text_assigned_product_licences)%></div>
+            <br class="clear"/>
+          </div>
+          <tr>
+            <td colspan="5">
+              <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+                <tr class="bg2">
+                  <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_current_products)%></strong></td>
+                  <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_licence_key)%></strong></td>
+                  <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_start_date)%></strong></td>
+                  <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_expiry_date)%></strong></td>
+                  <td align="center" valign="top" class="textNormal pl5"><strong><%=t(:text_action)%></strong></td>
+                </tr>
+                <%if !@productlicence.empty?%>
+                  <%@productlicence.each do |prd_lic| %>
+                    <%if find_licences_for_lawyer(current_user.company_id, params[:id]) %>
+                      <tr class="<%= cycle("bg1", "bg2") %>">
+                        <td class="textNormal pl5" align="center"><%= prd_lic.product.name %></td>
+                        <td class="textNormal pl5" align="center"><%= prd_lic.licence_key %></td>
+                        <td class="textNormal pl5" align="center"><%= livia_date(prd_lic.start_at) %></td>
+                        <td class="textNormal pl5" align="center"><%= livia_date(prd_lic.end_at.to_time) %></td>
+                        <td class="textNormal pl5" align="center"><%= link_to "Deactivate", {:controller => "lawfirm_admins", :action => 'delete', :id => prd_lic.id, :type => 'd'} %> | <%= link_to "Un-Assign", {:controller => "lawfirm_admins", :action => 'delete', :id => prd_lic.id, :type => 'u'} %></td>
+                      </tr>
+                    <%end%>
+                  <%end%>
+                </table>
+              </td>
+            </tr>
+          </div>
+        </div>
+    </div>
+  <%else%>
+    <td><%=t(:text_no_licences)%></td>
+  <%end%>
+
+  <div class="mt5">
+    <div class="gridDiv">
+      <div id="dashboard_toggle" class="titleHead">
+        <div class="fl"><%=t(:text_assign_new_licence)%></div>
+        <br class="clear"/>
+      </div>
+    </div>
+  </div>
+  <tr>
+    <td colspan="3" align="center">
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+        <tr>
+          <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td align="center" valign="top" class="textNormal pl5"><%=t(:text_select_product)%></td>
+          <td><%= company_products_law(current_user.company_id) %></td>
+        </tr>
+        <tr>
+          <td width="30%">&nbsp;</td>
+          <td align="center" valign="top" class="textNormal pl5"><%=t(:text_select_licence)%></td>
+          <td>
+            <span id="div_product_licences"><%= render :partial => 'show_licences' %></span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="3" align="center" valign="top" class="pl5">
+            <%=submit_tag :Assign,{:id=>'assign',:class=>'button',:onclick=>'return checkinput();'}%>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<%end%>

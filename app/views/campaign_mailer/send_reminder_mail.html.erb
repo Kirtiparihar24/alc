@@ -1,0 +1,8 @@
+<%=raw  @logo_img%><br/><br/>
+
+<%=raw @email %>
+
+<br/><br/>
+<%=t(:text_click)%>&nbsp;<a href="<%=@response_link%>"><%=t(:text_here)%></a><%=t(:text_to_respond_or_copy_this_to_your_address_bar)%>&nbsp;<%=@response_link%>
+<br/><br/>
+<%=raw @email_signature.gsub(/\n/, '<br />') %>

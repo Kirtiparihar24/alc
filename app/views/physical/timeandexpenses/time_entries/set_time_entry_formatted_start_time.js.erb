@@ -1,0 +1,55 @@
+<%unless @error%>
+  <%  @dur_setng_is_one100th ? actual_duration = one_hundredth_timediffernce(@time_entry.actual_duration) : actual_duration = one_tenth_timediffernce(@time_entry.actual_duration) %>
+  jQuery('#formatted_start_time_'+<%=params[:id]%>).children("span").html("<%=@formatedstarttime%>");
+  jQuery('#actual_duration_'+<%=params[:id]%>).children("span").html("<%= number_with_lformat(actual_duration)%>");
+  jQuery('#billed_amount_'+<%=params[:id]%>).children("span").html("<%=@billed_amount%>");
+  jQuery('#final_billed_amount_'+<%=params[:id]%>).children("span").html("<%= number_with_lformat(@final_billed_amount)%>");
+  jQuery('#hidden_billing_adjustment_'+<%=params[:id]%>).val("<%= @time_entry.final_billed_amount%>");
+  jQuery('#hidden_billing_adjustment_'+<%=params[:id]%>).attr('name',"<%= @time_entry.billing_method_type%>");
+  if(jQuery('#'+<%=params[:id]%>+'_saved_entry_billing_method_type').val()==2){
+  jQuery('#'+<%=params[:id]%>+'_show_amount').val("<%= number_with_lformat(@time_entry.billing_percent)%>");
+  }else{
+  jQuery('#'+<%=params[:id]%>+'_show_amount').val("<%= number_with_lformat(@final_billed_amount) %>");
+  }
+  var splitEntryDuration =jQuery('#split_duration_for_entry_pre'+<%=params[:id]%>).children("span");
+  if(splitEntryDuration !=null && splitEntryDuration.length > 0){
+  <%  @dur_setng_is_one100th ? actual_duration = one_hundredth_timediffernce(@time_entry.actual_duration) : actual_duration = one_tenth_timediffernce(@time_entry.actual_duration) %>
+  splitEntryDuration.html("<%= actual_duration%>");
+  }
+  //jQuery('#formatted_end_time_'+<%=params[:id]%>).children("span").html("......");
+  jQuery('#error_notice').show();
+  jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");
+
+  <!-- ---Feature 11298-----  -->
+  <!-- summary view -->
+  var total_open_hrs = jQuery('#total_hr_open');
+  var total_open_amount = jQuery('#total_open_amount');
+  var total_app_amount = jQuery('#total_approved_amount');
+  var total_billed_amount = jQuery('#total_billed_amount');
+  var expense_open = jQuery('#total_expense_open');
+  var grand_total_open = jQuery('#grand_total_open');
+  var grand_total_hours = jQuery('#grand_total_hours');
+  var total_app_hr = jQuery('#total_hr_approved');
+  var total_billed_hr = jQuery('#total_hr_billed');
+  var grand_total_amount =  jQuery('#grand_total_amount');
+  var grand_total_all = jQuery('#grand_total_all');
+  var grand_total_approved = jQuery('#grand_total_approved');
+  var grand_total_billed = jQuery('#grand_total_billed');
+
+  <!-- open hrs, amt, expense, total -->
+  total_open_hrs.html((<%= @total_hours_open %>).toFixed(2));
+  total_open_amount.html(formatCurrency((<%= @total_amount_open%>).toFixed(2)));
+  grand_total_open.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(expense_open.html().replace(/,/g,''))).toFixed(2)));
+  <!-- total hrs-->
+  grand_total_hours.html((parseFloat(total_open_hrs.html()) + parseFloat(total_app_hr.html()) + parseFloat(total_billed_hr.html())).toFixed(2));
+  <!-- total Amt-->
+  grand_total_amount.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(total_app_amount.html().replace(/,/g,'')) + parseFloat(total_billed_amount.html().replace(/,/g,''))).toFixed(2)));
+  <!-- grand total -->
+  grand_total_all.html(formatCurrency((parseFloat(grand_total_open.html().replace(/,/g,'')) + parseFloat(grand_total_approved.html().replace(/,/g,'')) + parseFloat(grand_total_billed.html().replace(/,/g,''))).toFixed(2)));
+<!-- ---Feature 11298-----  -->
+  
+<%else%>
+  jQuery('#error_notice').show();
+  jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");
+  jQuery('#formatted_start_time_'+<%=params[:id]%>).children("span").html("<%=@old_start_time%>");
+<%end%>

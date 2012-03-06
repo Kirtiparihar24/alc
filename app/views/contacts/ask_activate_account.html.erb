@@ -1,0 +1,11 @@
+<div class="mt5">
+  <div>    
+    <div>The Business <%=t(:label_contact)%> you are trying to reactivate is associated to the <%=t(:label_Account)%> <%=h @deleted_acc.name%>".</div>
+    <div class="mt5">
+      <strong> Currently this <%=t(:label_Account)%> is deactivated. Do you want to reactivate this <%=t(:label_Account)%>? </strong>
+      <%= link_to image_tag("/images/livia_portal/icon_tick.gif",:hspace => 0, :border => 0, :title => "Yes", :alt => "Yes"), activate_contact_contact_path(@contact.id,:account_id => @deleted_acc.id,:params => {:mode_type => params[:mode_type]}),:class => "ml8" %>
+      <%= link_to image_tag("/images/livia_portal/icon_cancel.gif",:hspace => 0, :border => 0, :title => "No", :alt => "No"), activate_contact_contact_path(@contact.id,:account_id => 0,:params => {:mode_type => params[:mode_type]}) %>
+    </div>
+  </div>  
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;129</div>

@@ -1,0 +1,62 @@
+<div>
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_payment_details)%></div>
+    <div class="gryBox">
+      <div class="adminForm">
+        <% form_for @payment,:url => {:controller=>'invoices',:action => 'index'} do |f| %>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+            <tr>
+              <td align="right" class="textBlue11"><label for="name"><%=t(:label_payment_mode)%></label></td>
+              <td><%=@payment.payment_mode%></td>
+            </tr>
+            <tr>
+              <td width="48%" class="textBlue11" align="right"><label for="description"><%=t(:label_amount)%></label></td>
+              <td width="52%"><%=@payment.amount%></td>
+            </tr>
+            <tr>
+              <td class="textBlue11" align="right"><label for="sub_product"></label><%=t(:label_payment_date)%></td>
+              <td>
+                <%=@payment.payment_date.to_time.strftime('%m/%d/%y') if @payment.payment_date%></td>
+            </tr>
+            <% if (@payment.payment_mode == "Cheque") %>
+              <tr>
+                <td class="textBlue11" align="right"><%=t(:text_cheque_number)%></td>
+                <td><%=@payment.cheque_no%></td>
+              </tr>
+              <tr>
+                <td class="textBlue11" align="right"><%=t(:text_cheque_date)%></td>
+                <td align="left"><%=@payment.cheque_date.to_time.strftime('%m/%d/%y')  if @payment.cheque_date %></td>
+              </tr>
+
+              <tr>
+                <td class="textBlue11" align="right"><%=t(:text_bank_name)%></td>
+                <td align="left"><%=@payment.bank_name%></td>
+              </tr>
+
+              <tr>
+                <td  class="textBlue11" align="right"><%=t(:text_branch)%></td>
+                <td align="left"><%=@payment.branch_name%></td>
+              </tr>
+            <% elsif @payment.payment_mode == "Paypal" %>
+              <tr>
+                <td class="textBlue11" align="right"><%=t(:text_paypal_account_id)%></td>
+                <td align="left"><%=@payment.paypal_account_id%></td>
+              </tr>
+
+            <% end %>
+            <tr><td><br/></td></tr>
+            <tr>
+              <td colspan="2" align="center">
+                <input type="submit" value="<%=t(:label_back)%>" name="commit" class="button"/>
+              </td>
+            </tr>
+          </table>
+        <% end %>
+
+        <br class="clear" />
+      </div>
+    </div>
+  </div>
+</div>
+
+

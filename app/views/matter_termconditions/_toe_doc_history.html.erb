@@ -1,0 +1,19 @@
+<div>
+  <div class="tabular_listing border_gray" style="margin-top:10px;">
+    <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+      <tr>
+        <th align="left"><%=t(:label_user)%></th>
+        <th align="left"><%=t(:label_file)%></th>
+        <th align="center"><%=t(:label_date)%></th>
+      </tr>
+      <% @toe_doc.documents.each do |e| %>
+        <tr class="<%= cycle('bg1','bg2') %>">
+          <td align="left"><%= @toe_doc.employee.try(:full_name)%></td>
+          <td align="left"><%=link_to(e.data_file_name, document_home_path(e.id)) %></td>
+          <td align="center"><%= livia_date(e.created_at) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;137</div>
+</div>

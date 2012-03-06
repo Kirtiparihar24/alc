@@ -1,0 +1,38 @@
+<%  total_rows=0 %>
+<% time_entry_rows==[0,0,0]?time_entry_rows=0 : time_entry_rows %>
+<% expense_entry_rows==[0,0,0]?expense_entry_rows=0 : expense_entry_rows %>
+<% total_rows= time_entry_rows+expense_entry_rows %>
+<tr><td colspan="11"></td></tr>
+<% form_tag('/tne_invoice_expense_entries/add_new_expense_entry',:class=>'new_invoice_expense_entry') do %>  
+  <tr class="bg2">
+    <td>&nbsp;</td>
+    <td><%= select_tag("activity_type",options_for_select(list_of_expense_activity_type(current_company)),:class=>'expense_act_type', :style=>"width:160px") %></td>
+    <td align="center">&nbsp;</td>
+    <td align="center"></td>
+    <td>&nbsp;</td>
+    <td><%= text_field_tag "description","",:size=>25,:id=>"tne_invoice_tne_invoice_details_attributes_"+total_rows.to_s+"_description" %></td>
+    <td>&nbsp;</td>
+    <% unless primary_tax_disable %>
+      <td align="center"><%= check_box_tag "primary_tax","",false,:disabled=>true,:id=>"tne_invoice_tne_invoice_details_attributes_"+total_rows.to_s+"_primary_tax" %></td>
+      <%if secondary_tax_enable%>
+        <td align="center"><%= check_box_tag "secondary_tax","",false,:disabled=>true,:id=>"tne_invoice_tne_invoice_details_attributes_"+total_rows.to_s+"_secondary_tax" %></td>
+      <%end%>
+    <%end%>
+    <td align="right"><%= text_field_tag "expense_amount","",:size=>5,:class=>'tne_invoice_amount',:maxlength=>12, :id=>"tne_invoice_tne_invoice_details_attributes_"+total_rows.to_s+"_amount" ,:onblur=>"convertTOFloat(this);", :style=>"text-align:right" %></td>
+    <td align=center>
+      <%= hidden_field_tag "expense_invoice_id",invoice_id %>
+      <%= hidden_field_tag "matter_id","",:id=>"matter_id" %>
+      <%= hidden_field_tag "contact_id","",:id=>"contact_id" %>
+      <%= hidden_field_tag "consolidated_by",consolidated_by %>
+      <%= hidden_field_tag "regenerate",regenerate %>
+      <div style='width:32px;'>
+        <a href='#this'  class='vtip new_expense_save' title='Save Expense Entry'  onClick="saveExpense(<%=total_rows%>,<%=invoice_id.blank? ? 0 : invoice_id%>,'<%=consolidated_by%>',<%=regenerate%>);" >
+          <div class='icon_save  mt3' style='width:14px;float:left;'></div></a>
+        <a href='#this' onClick="delete_table_row(this,'#add_exp_row_but');" class='vtip' title='Delete Expense Entry'>
+          <div class='icon_remove mt3' style='width:13px; float:right;'>
+          </div>
+        </a>
+      </div>
+    </td>
+  </tr>
+<% end %>

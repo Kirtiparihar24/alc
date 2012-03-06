@@ -1,0 +1,25 @@
+<div class="box-head"><h2 class="left"><%= t(:label_deactivated_employees) %></h2></div>
+<div class="actionLinks"><%= link_to t(:label_activated_employees), '#', :onclick =>"fetch_data_based_for_company(#{@company.id}, 'empdiv', 'employees')"%></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="25%"><%=t(:text_name)%></th>
+      <th width="15%"><%=t(:text_email)%></th>
+      <th width="15%"><%=t(:text_login)%></th>
+      <th width="15%"><%=t(:text_designation)%></th>
+      <th width="15%"><%=t(:text_deactivated_at)%></th>
+      <th width="15%"><%=t(:text_action)%></th>
+    </tr>
+    <%@employees.each do |employee|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td><%=employee.full_employee_name%></td>
+        <td><%=employee.email%></td>
+        <td><%=employee.username rescue "-"%></td>
+        <td><%=employee.designation rescue "-"%></td>
+        <td><%=livia_date_time(employee.deleted_at)%></td>
+        <td><%=link_to t(:label_activate), '#', :onclick=>"activate_user_employee(#{@company.id}, #{employee.id}, 'employees/activate_employee')"%></td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<div class="pagging"></div>

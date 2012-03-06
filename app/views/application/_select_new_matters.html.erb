@@ -1,0 +1,21 @@
+<% formINDEX = @formINDEX if @formINDEX%>
+<% if spanid == "#popup_mtr_#{formINDEX}_span" %>
+  <%=custom_select_tag "note[matter_id]", options_for_select(@matters.collect{|mt|[mt.clipped_name, mt.id]}, matter_id.to_i) ,{:prompt => "", :style=>"width:263px", :onchange=>"getMattersContacts('#{formINDEX}','#popup_mtr_#{formINDEX}_span','#popup_cnt_#{formINDEX}_span',this.value,'')"}%>
+<% elsif spanid == "#old_mtr_span" %>
+  <%=custom_select_tag "note[matter_id]", options_for_select(@matters.collect{|mt|[mt.clipped_name, mt.id]}, matter_id.to_i) ,{:prompt => "", :style=>"width:100px", :onchange=>"getMattersContacts('#{formINDEX}','#old_mtr_span','#old_cnt_span',this.value,'')"}%>
+<% elsif spanid == "#comm_mtr_#{formINDEX}_span" %>
+  <div id="com_notes_entries1" style="position:absolute;" >
+    <ul class="ac_results" id="notes_lwayers_list" style=" max-height: 180px; overflow: auto;width:50px;">
+      <% if @matters.empty? %>
+        <% result ="No Matter Found" %>
+        <li id="no_result" class="<%=cycle('ac_even','ac_odd')%> search_text" onclick = ""><%= result%></li>
+      <% else %>
+        <%@matters.each do |lawfirm_user|%>
+          <li id="<%=lawfirm_user.id%>" class="<%=cycle('ac_even','ac_odd')%> search_text" onclick = "getCommMattersContacts('<%=  formINDEX %>','#_matter_ctl_<%= formINDEX %>','#_contact_ctl_<%=  formINDEX %>','<%=lawfirm_user.id%>','','<%=lawfirm_user.clipped_name%>');"><%=lawfirm_user.clipped_name %></li>
+        <%end%>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <%=custom_select_tag "note[matter_id]", options_for_select(@matters.collect{|mt|[mt.clipped_name, mt.id]}, matter_id.to_i) ,{:prompt => "", :style=>"width:263px", :onchange=>"getMattersContacts('#{formINDEX}','#home_mtr_#{formINDEX}_span','#home_cnt_#{formINDEX}_span',this.value,'')"}%>
+<% end %>

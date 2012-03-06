@@ -1,0 +1,3 @@
+jQuery('#charts_div').html("<%=escape_javascript(render:partial => 'dashboard_new', :locals => {:chart => @dashboard})%>")
+jQuery('.selected').removeClass('selected')
+jQuery('#<%=params[:chart_name]%>').addClass('selected')

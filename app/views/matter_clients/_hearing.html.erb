@@ -1,0 +1,30 @@
+<%=render :partial=>'task_headers', :locals=>{:type=>'hearing'}%>
+<div id="third">
+  <!--CONTENT STARTS-->
+  <br class="clear" />
+  <div class="gryBox">
+    <div class="gridTable" >
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th width="30%"><%=t(:text_date_time_of_hearing)%></th>
+          <th width="20%"><%=t(:text_venue)%></th>
+          <th width="30%"><%=t(:text_matter_name)%></th>
+          <th width="20%"><%=t(:text_judge_name)%></th>
+        </tr>
+        <%unless @hearings.blank?%>
+          <% @hearings.each do |hearing|%>
+            <tr class="<%=cycle("bg1", "bg2")%>">
+              <td><%=livia_date(hearing.created_at)%></td>
+              <td><%=hearing.matter_client_task_detail.venue%></td>
+              <td> <%=raw hearing.matter.name%></td>
+              <td><%=hearing.matter_client_task_detail.judge_name%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr><td colspan="4"><div class="warningCont m5"><%=t(:text_no_hearing_details_present)%></div></td></tr>
+        <%end%>
+      </table>
+    </div>
+  </div>
+  <!--CONTENT STARTS-->
+</div>

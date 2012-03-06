@@ -1,0 +1,40 @@
+<div style="text-align: center"> </div>
+<div>
+  <div class="gridDiv">    
+    <div class="gryBox">
+      <div id="matter_email_error"></div>
+      <!--TABULAR DATA STARTS--><br/>      
+      <div class="adminForm">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+          <tr>
+            <td align="right" valign="top"></td>
+            <td><%=hidden_field_tag :contact_id, @contact.id%></td>
+          </tr>
+          <tr>
+            <td align="right" >Email<span class='alert_message'>*</span></td>
+            <td><%=text_field_tag :email,@contact.email %></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td colspan="1" align="left">
+              <%=submit_tag 'Save', :class=>"button", :onClick=> "update_contact_email(jQuery('#email').val())"%>
+              <input type="submit" id="cancel" value="Cancel" onclick="tb_remove();jQuery('#matter_client_access').attr('checked', false);"/>
+            </td>
+          </tr>
+        </table>
+        <br class="clear" />
+        <div style="float:left;font-family:Arial, Helvetica, sans-serif;font-size:11px;padding:4px;">
+          <div><span class="alert_message">*</span><%=t(:text_required_field)%>
+            <br/>
+            &nbsp;[ Email required to access client portal ]
+          </div>
+        </div>
+        <br class="clear" />
+      </div>
+      <!--TABULAR DATA ENDS-->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<%=raw @logo_img%><br/><br/>
+<%=t(:text_hi)%><br/>
+<%=t(:text_new_login_has_been_created_for_your_company_employee)%><%= @email[:first_name] %> &nbsp; <%= @email[:last_name] %>
+<br/>
+<%=t(:text_the_user_login_details_are)%>
+<br />
+<%=t(:text_user_id)%><%= @email[:username] %><br/>
+<%=t(:text_password)%><%= @email[:password] %>

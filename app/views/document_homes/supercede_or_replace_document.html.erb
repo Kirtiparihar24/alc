@@ -1,0 +1,74 @@
+<div style="text-align:center;margin-top:20px;">
+  <div id ="one_field_error_div"style="text-align:left"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <% form_for :document_home, @document_home ,:url => {:action => 'supercede',:return_path => true,  :return_controller => params[:controller], :return_id=>params[:id],:mappable_id => params[:mappable_id],:mapable_type => params[:mapable_type], :from => params[:from],:current_tab=>params[:current_tab],:start_date=>params[:start_date],:end_date=>params[:end_date],:status => params[:status],:view=>params[:view],:from_entry=> params[:from_entry],:mappable_id=>params[:mappable_id],:matter_id=>params[:matter_id],:parent_id => params[:parent_id],:from_entry=>params[:from_entry]}, :html=> {:multipart=> true,:target=>"upload_frame", :onsubmit=>"return validate_uploadfile_field('document_home_data', 'Please select a file to continue');"} do |f| %>
+    <table width="440" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+      <%= hidden_field_tag  'matter_id' ,params[:matter_id] if params[:matter_id]%>
+      <%= hidden_field_tag 'render_to', params[:display] if params[:display]%>
+      <%= hidden_field_tag 'bill_id', params[:bill_id] if params[:bill_id]%>
+      <%= hidden_field_tag 'selected_node', params[:selected_node] if params[:from].eql?("document_manager") %>
+      <tr>
+        <td width="115" align="left"><label><%=t(:label_document_name)%> </label></td>
+        <td width="304" align="left"><%=@document.try(:name) %> [ <%=link_to(@document.data_file_name, "#{document_home_path(@document.id)}")%> ]</td>
+      </tr>
+      <% unless params[:display] && (params[:display]=='from_matter_bill' || params[:display]=="from_invoice") %>
+        <tr>
+          <td align="left"><label></label><%=t(:label_owner)%></td>
+          <td align="left"><%= @document.assignee.try(:full_name) %></td>
+        </tr>
+      <%end%>
+      <% unless params[:selected_node] =~ /workspace/ %>
+        <tr>
+          <td align="left"><label></label><%=t(:label_tag)%></td>
+          <td align="left"><%=text_area_tag 'document_home[tag_array]',@doc_home.tag_list , :rows=>2, :cols=>33 %></td>
+        </tr>
+        <tr>
+          <td align="left"><label></label><%=t(:label_description)%></td>
+          <td align="left"><%=text_area_tag 'document_home[description]',@document.description, :rows=>2, :cols=>33 %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td align="left"><label><%=t(:label_new_document)%> <span class="alert_message">*</span></label></td>
+        <td align="left"><%= file_field_tag 'document_home[data]' %></td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="left"><%=radio_button_tag(:replace,false,true, :class=>"radio m0",:onclick => "jQuery('#help_message').text('Note:- A new version will be created for this document.')") %></td>
+              <td>&nbsp;<label><%=t(:label_create_new_version)%></label>&nbsp;&nbsp;</td>
+              <td> <%=radio_button_tag(:replace, true, false, {:disabled=>@doc_home.enforce_version_change?, :class=>"radio m0",:onclick => "jQuery('#help_message').text('Note:- Current version will be replaced with the new document.')"}) %> </td>
+              <td>&nbsp;<label><%=t(:label_replace_existing)%></label></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="left"><label></label></td>
+        <td align="left" id="help_message"><%=t(:text_note_a_new_version_will_be_created_for_this_document)%></td>
+      </tr>
+      <tr>
+        <td align="left"><label>&nbsp;</label></td>
+        <td align="left"></td>
+      </tr>
+      <tr>
+        <td></td><td align="left"><%=submit_tag t(:label_superseed),:id=>"supercede", :name=>"save", :onclick=> "return checkloader();"%>
+          <%=submit_tag t(:label_cancel), :name=>"cancel", :onclick => "tb_remove(); return false;"%></td>
+      </tr>
+      <tr><td align="left"><span class="alert_message">*</span>Required Field</td></tr>
+      <tr><td align="left" class="mandatory mt12" colspan='2'> Note : Limit on file size is 50 MB.</td></tr>
+    </table>
+  <% end %>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+</div>
+
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;26 </div>
+<script>
+  jQuery(document).ready(function(){    
+    jQuery('#supercede').bind('click', function() {
+      jQuery('#one_field_error_div').hide();
+      jQuery('#one_field_error_div').removeClass("message_error_div");
+    });
+  });
+</script>

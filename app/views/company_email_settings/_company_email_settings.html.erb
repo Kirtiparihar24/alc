@@ -1,0 +1,41 @@
+<%if !current_user.role?:lawfirm_admin%>
+  <div class="actionLinks">
+    <% if @company_email_settings.length<2 %>
+      <%= link_to 'New Email Setting',:controller=>"company_email_settings",:action=>"new",:company_id=>@company.id%>
+    <%end%>
+  <%else%>
+    <% if @company_email_settings.length<2 %>
+      <%= link_to 'New Email Setting',:controller=>"company_email_settings",:action=>"new",:company_id=>current_user.company_id%>
+    <%end%>
+  <%end%>
+</div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="13%" align="center"><%=t(:label_type)%></th>
+      <th width="13%" align="left"><%=t(:label_address)%></th>
+      <th align="center"><%=t(:label_Domain)%></th>
+      <th align="center"><%=t(:label_Port)%></th>
+      <th align="left"><%=t(:label_user)%>&nbsp;<%=t(:label_email)%></th>
+      <th align="left"><%=t(:label_Actions)%></th>
+    </tr>
+    <%unless @company_email_settings.nil?%>
+      <% @company_email_settings.each do |company_email_setting| %>
+        <tr>
+          <td width="13%" align="center"><%=company_email_setting.setting_type%></td>
+          <td width="13%" align="left"><%=company_email_setting.address%></td>
+          <td width="13%" align="center"><%=company_email_setting.domain%></td>
+          <td width="20%" align="center"><%=company_email_setting.port%></td>
+          <td width="20%" align="left"><%=company_email_setting.user_name%></td>
+          <td width="20%" align="left">
+            <%= link_to(image_tag('/images/livia_portal/icon_edit.gif', {:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}),  edit_individual_company_email_settings_path(:company_id=>session[:company_id])) %>
+            <%= link_to(image_tag('/images/livia_portal/icon_reject.gif', {:alt =>"Destroy", :title=>"Destroy", :border => 0, :hspace => "0"}), company_email_setting, {:confirm => 'Are you sure?', :method => :delete}) %>
+          </td>
+        </tr>
+      <% end %>
+    <%else%>
+      <td>  <span class="textBlue11Height20">&nbsp;&nbsp;No Email Settings Found</span>  </td>
+    <%end%>
+  </table>
+</div>
+<div class="pagging"></div>

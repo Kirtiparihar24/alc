@@ -1,0 +1,22 @@
+<div id="container-1">
+  <div id="report-info">
+    <%  arr = ['accounts--name','contacts--last_name','accounts--assigned_to_employee_user_id','accounts--phone','accounts--website']%>
+    <%=hidden_field_tag 'mode_type', params[:mode_type]%>
+    <%=hidden_field_tag 'letter', params[:letter]%>
+    <h2 class="title_main"><span class="fl"><%= t(:text_accounts) %></span><%= render :partial =>  "layouts/reports_quick_links" %></h2>
+    <div class="p5">
+      <div class="w100 fix_mb link_blue">
+        <%= raw my_all_radio_button(t(:text_my_accounts), "getaccounts('MY','#{params[:letter]}','#{params[:per_page]}');", t(:text_all_accounts), "getaccounts('ALL', '#{params[:letter]}', '#{params[:account_status]}','#{params[:per_page]}');", params[:mode_type]) %>
+        <div class="fr textR">
+          <a href="#" id="add_filters" onclick="add_filters('<%=arr.join(",")%>', '0')" style="<%=params[:search_items] ? "display:none;" : ""%>"><span class="icon_filter mr5 fl"></span><span class="fl mr10 icon_name"><%=t(:label_Add_Filter)%></span></a>
+          <a href="#" onclick="remove_filters('<%=arr.join(",")%>')" id="remove_filters"  style="<%=params[:search_items] ? "" : "display:none;"%>"><span class="icon_remove_filter mr5 fl"></span><span class="fl mr10 icon_name"><%=t(:label_Remove_Filter)%></span></a>
+          <%= link_to '<span class="icon_create_new fl mr5"></span><span class="fl mr10 icon_name">Create New Account</span>', new_account_path %>
+        </div>
+        <br class="clear" />
+      </div>
+      <%= raw sphinx_search_field("account_sphinx_search") %>
+      <div id="searched_accounts"><%= render :partial => "account", :locals =>{:accounts => @accounts}%></div>
+    </div>
+  </div>
+  <div id="report-content"></div>
+</div>

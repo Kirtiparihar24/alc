@@ -1,0 +1,27 @@
+<div id="container-1">
+  <div id="report-info">
+    <%arr = ['contacts--last_name','accounts--name','contacts--assigned_to_employee_user_id','contacts--contact_stage_id','contacts--phone','contacts--email']%>
+    <%=hidden_field_tag :mode_type,params[:mode_type]%>
+    <%=hidden_field_tag :contact_type, params[:contact_type]%>
+    <%=hidden_field_tag :letter, params[:letter]%>
+    <h2 class="title_main">
+      <span class="fl"><%= t(:label_business_contacts) %></span>
+      <%= render :partial =>  "layouts/reports_quick_links" %>
+    </h2>
+    <div class="p5">
+      <div class="w100 fix_mb">
+        <%= raw my_all_radio_button(t(:text_my_contacts), "getContactsAll('MY' ,'#{params[:letter]}', '#{params[:per_page]}','#{params[:contact_type]}')", t(:text_all_contacts), "getContactsAll('ALL', '#{params[:letter]}', '#{params[:per_page]}','#{params[:contact_type]}')", params[:mode_type]) %>
+        <div class="fr textR link_blue">
+          <a href="#" id="add_filters" onclick="add_filters('<%=arr.join(",")%>', '0')" style="<%=params[:search_items] ? "display:none;" : ""%>" ><span class="icon_filter mr5 fl"></span><span class="fl icon_name mr10 "><%=t(:label_Add_Filter)%></span></a>
+          <a href="#" onclick="remove_filters('<%=arr.join(",")%>')" id="remove_filters"  style="<%=params[:search_items] ? "" : "display:none;"%>"><span class="icon_remove_filter mr5 fl"></span><span class="fl icon_name mr10"><%=t(:label_Remove_Filter)%></span></a>
+          <%= link_to '<span class="icon_create_new mr5 fl "></span><span class="fl mr10 icon_name">Create New Contact</span>', new_contact_path%>
+          <%= link_to '<span class="icon_imports mr5 fl "></span><span class="fl mr10 icon_name">Import Contacts</span>', '/excel_imports?module_type=contact'%>
+        </div>
+        <br class="clear" />
+      </div>
+      <%= raw search_with_stages_select_tag("stages", t(:text_stage_filters), @contact_stages.collect{|stage|[stage.alvalue, stage.id]}, {:selected=>params[:contact_type].to_i}, "filterContact('#{params[:mode_type]}', this.options[this.selectedIndex].value, '#{params[:per_page]}', '#{params[:letter]}')", "contact_sphinx_search", "All") %>
+      <div id="contacts"><%= render :partial => 'contact', :locals => {:contacts => @contacts} %></div>
+    </div>
+  </div>
+  <div id="report-content"></div>
+</div>

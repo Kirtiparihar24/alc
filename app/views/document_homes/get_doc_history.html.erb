@@ -1,0 +1,25 @@
+<div style="margin-top:20px; padding:0;">
+  <div class="tabular_listing border_gray">
+    <table width="100%" cellpadding="1" cellspacing="1">
+      <tr>
+        <th width="25%" align="left"><%= t(:text_document_name) %></th>
+        <th width="15%" align="left"><%= t(:text_file_name) %></th>
+        <th width="15%" align="left"><%= t(:text_uploaded_on) %></th>
+        <th width="15%" align="left"><%= t(:text_uploaded_by) %></th>
+        <th width="15%">Created By</th>
+        <th width="15%">Owner</th>
+      </tr>
+      <% @documents.each do |document| %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <td align="left"><%=raw truncate_hover(document.name,30) %></td>
+            <td align="left"><%=raw truncate_hover_link(document.data_file_name, 30,document_home_path(document.id)) %> <%=get_wip(document)%></td>
+            <td align="left"><%= document.created_at.to_time.strftime('%m/%d/%y %H :%M') %></td>
+            <td align="left"><%= raw get_uploaded_by_details(@document_home, document)  %> </td>
+            <td align="left"><%= @document_home.user.try(:full_name) %></td>
+            <td align="left"><%= @document_home.owner.try(:full_name) %></td>
+          </tr>
+     <% end %>
+    </table>
+  </div>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;64 </div>

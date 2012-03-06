@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%= t(:text_livia_legal) %> - <%= controller_name.titleize %></title>
+    <!--PLEASE DO NOT INCLUDE BASE.CSS AS PER REQUIRMENT WE HAD APPLIED BROWSER CSS.  -->
+    <%= include_stylesheets :application_stylesheet ,:media => 'all'%>
+    <%= include_stylesheets :base_stylesheet ,:media => 'all'%>
+    <%= style_sheet%>
+    <%= stylesheet_link_tag "jquery.countdown.css" %>
+    <%= include_javascripts :application_javascripts %>
+    <%= raw(javascript_include_tag "application.js",'latest/calendars.js',"sticky_note_core.js","latest/livia_keycode.js","jquery.countdown.min.js") %>
+    <%= raw(javascript_include_tag "jquery/jquery.scrollTo-min.js") if params[:action]=="calendar_day" || params[:action]=="index"%>
+
+    <%= yield(:head) %>
+    <script type="text/javascript">
+      jQuery(document).ready(function(){        
+<% unless is_secretary_or_team_manager? %>
+      fetchTimer();
+<% end %>
+<%if devise_controller? %>
+      jQuery('body').removeClass('main_page_body');
+      jQuery('body').addClass('login');
+<%end%>
+  });
+    </script>
+  </head>
+  <body class="body_container main_page_body">
+    <!-- Begin doc div -->
+    <div id="doc" class="body_container">
+      <script type="text/javascript">
+        jQuery.noConflict();
+      </script>
+       <div id="timer-container"></div>
+      <!-- table necessary for property stretching of layout-->
+      <table width="100%">
+        <tbody>
+          <tr>
+            <td>
+              <!--Header div @start here -->
+              <%= render :partial =>'layouts/header' %>
+              <!--Header div #ends here -->
+              <!--Navigation div @start here -->
+              <%= render :partial =>'layouts/header_tabs' %>
+              <!--Navigation  div #ends here -->
+              <!--Body div @start here -->
+              <div id="middleBody-div" >
+                <div class="mtb5">
+                  <!--breadcrumb div @start here -->
+                  <div id="breadcrumb" class="fl"><%= raw render_breadcrumbs :separator => '<div class="arrow_dotted"></div>' %></div>
+                  <!--breadcrumb div #end here -->
+                  <%if request.get?%>
+                    <div class="fr mlr2 ie7_mt4">
+                      <%=link_to "<span class='btn_addPageFav fr'></span>", "#", :onclick=> "tb_show('#{t(:text_add )} #{t(:text_favorite)}','#{physical_clientservices_add_to_fav_path}?height=100&width=300','');return false;", :class => "btn_addPageFav fr vtip", :title => "#{t(:text_add )} #{t(:text_favorite)}"%>
+                    </div>
+                  <%end%>
+                  <br class="clear" />
+                </div>
+                <!--main container div @start here -->
+                <div class="main_containt mt10" >
+                  <%= render :partial => '/common/common_flash_message' %>
+                  <div class="column_main"  >
+                    <h2 class="title_main">
+                      <div class="fl mr10">Calendar</div>
+                      <div class="fr text_black text10">                        
+                        <%= link_to "Create Activity", create_activity_calendars_path(:height =>"430", :width=>"910"), :class=> "thickbox", :name => "Create Activity" , :title => "Create Activity"%>
+                      </div>
+                      <br class="clear" />
+                    </h2>
+                    <div class="p5" >
+                      <!--Yellow bar start here -->
+                      <div class="w100">
+                        <div class="box_gray" id="search_header">
+                          <div class="fl">
+                            <table border="0" cellpadding="0" cellspacing="0">
+                              <tbody>
+                                <tr>
+                                  <td valign="top"><%= (action_name.eql?("calendar_day") || action_name.eql?("index") || action_name.eql?("calendar_month")) ? (image_tag "btn_date_on.gif") : (link_to (image_tag "btn_date.gif"), calendars_path(:params => @commonparams)) %></td>
+                                  <%if task_available?%>
+                                    <td valign="top">
+                                      <%= action_name.eql?("calendar_by_matter") ? (image_tag "btn_matter_on.gif") : (link_to (image_tag "btn_matter.gif"), calendar_by_matter_calendars_path(:params => @commonparams)) %>
+                                    </td>
+                                  <% end %>
+                                  <td valign="top"><%= action_name.eql?("calendar_by_people") ? (image_tag "btn_people_on.gif") : (link_to (image_tag "btn_people.gif"), calendar_by_people_calendars_path(:params => @commonparams)) %></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="fr mr5">
+                            <span class="link_blue" style="font-weight: bold">
+                              <%= link_to "<span class='sync_icon fl mr5 mt3'></span>#{t(:text_sync_appointments)}", synchronize_appointments_calendars_path, :method => 'post' %>
+                            </span>
+                          </div>
+                          <div class="fr arrowLink mr8 mt8">
+<%#= link_to image_tag(!params[:opsearch].blank? ? "calendar/arrow.png" : "calendar/arrow_up.png"), "#", :id=>"searchlink",:title => "Show Search Options" %>
+                          </div>                          
+                          <br class="clear" />
+                        </div>
+                        <%= render "calendar_search_options" %>
+                      </div>
+                      <!--Yellow bar ends here -->
+                      <%= yield %>
+                    </div>
+                  </div>
+                </div>
+                <!--main container div #ends here -->
+              </div>
+              <div class="pagiText"><%=t(:label_page)%>&nbsp;<%=h @pagenumber%></div>
+              <!--Body div #ends here -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <% if @userclass %>
+        <% @userclass.each do |user| %>
+          <% if params[:people].include?(user[0].to_s) %>
+            <span class="app<%= user[1] %>">&nbsp;<%= User.find(user[0]).full_name %>&nbsp;&nbsp;</span>
+          <%end%>
+        <% end %>
+      <% end %>
+    </div>    
+    <%= render :partial =>'layouts/footer' %>
+    <%=hidden_field_tag "user_offset",Time.zone.now.utc_offset%>
+    <%=hidden_field_tag "user_date", Time.zone.now.to_date %>
+    <%=hidden_field_tag "user_of", Time.zone.now.to_time.strftime("%Z")%>
+    <%=hidden_field_tag "user_time", Time.zone.now.to_time.strftime("%H:%M:%S") %>
+  </body>
+</html>

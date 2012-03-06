@@ -1,0 +1,5 @@
+jQuery('#' + <%=params[:expense_entry_id]%> + '_contact_id').val("<%= @contact.id %>");
+jQuery('#' + <%=params[:expense_entry_id]%> + '_contact_ctl').val("<%= @contact.full_name %>");
+<%  can_modify_entry = check_for_lead_lawyer(@expense_entry, @expense_entry.employee_user_id) %>
+
+jQuery('#Te_entry_status_<%=params[:expense_entry_id]%>').html("<%=escape_javascript(render(:partial => 'status', :locals => {:can_modify_entry => can_modify_entry,:time_or_expense_entry => @expense_entry,:entry_type=>"expense_entry"}))%>");

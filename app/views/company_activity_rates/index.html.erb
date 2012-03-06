@@ -1,0 +1,24 @@
+<h1><%=t(:text_listing_company_activity_rates)%></h1>
+
+<table>
+  <tr>
+    <th><%=t(:text_company)%></th>
+    <th><%=t(:text_activity)%></th>
+    <th><%=t(:text_billing_rate)%></th>
+  </tr>
+
+<% @company_activity_rates.each do |company_activity_rate| %>
+  <tr>
+    <td><%= get_company_name company_activity_rate.company_id %></td>
+    <td><%= lookup_lvalue  company_activity_rate.activity_type_id %></td>
+    <td><%= h company_activity_rate.billing_rate %></td>
+    <td><%= link_to t(:label_show), company_activity_rate %></td>
+    <td><%= link_to t(:label_edit), edit_company_activity_rate_path(company_activity_rate) %></td>
+    <td><%= link_to t(:label_destroy), company_activity_rate, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to t(:label_new_company_activity_rate), new_company_activity_rate_path %>

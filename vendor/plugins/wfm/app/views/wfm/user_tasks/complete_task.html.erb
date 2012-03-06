@@ -1,0 +1,90 @@
+<% remote_form_for @task, :url => {:action=>'complete_this_task'}, :html=>{:method=>:put, :class=>"search_form general_form" }, :loading=>"return disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable','Complete');" do |f| %>
+  <div id="modal_new_task_errors" class=""></div>
+  <%= check_box_tag 'complete_task','on', true, :style=>"display:none;" %>
+  <%= hidden_field_tag :modal, 'modal'%>
+  <fieldset>
+    <div class="forms">
+      <div class="row">
+        <label>Client</label>
+        <div class="inputs">
+          <%= @task.receiver.full_name %>
+          <br/>
+          <i><%= @task.receiver.company.name %></i>
+        </div>
+      </div>
+      <div class="row">
+        <label>Matter / Contact</label>
+        <div class="inputs">
+          <%= @task.communication.matter.name rescue '-' %><br/>
+          <i><%= @task.communication.matter.contact.full_name rescue '-' %></i>
+        </div>
+      </div>
+      <div class="row">
+        <label>Category</label>
+        <div class="inputs">
+          <%= @task.category.name rescue 'None'%>
+        </div>
+      </div>
+      <div class="row">
+        <label>Work Type</label>
+        <div class="inputs">
+          <%= @task.work_subtype.work_type.name rescue 'None' %>
+        </div>
+      </div>
+      <div class="row">
+        <label>Assigned To</label>
+        <div class="inputs">
+          <%= get_assigned_to('user',@task.assigned_to_user_id) %>
+        </div>
+      </div>
+      <% if is_team_manager %>
+        <div class="row">
+          <label>Livian's Cluster(s)</label>
+          <div class="inputs">
+            <%= get_assigned_to('clusters',@task.assigned_to_user_id) %>
+          </div>
+        </div>
+      <% end %>
+      <div class="row">
+        <label>Work Sub Type</label>
+        <div class="inputs">
+          <%= @task.work_subtype.name rescue 'None' %>
+        </div>
+      </div>
+      <div class="row">
+        <label>Note</label>
+        <div class="inputs" style="width:76%; background-color: #e7f3f8; border: 1px solid #D7D7D7;">
+          <%= @task.communication.description %><br/><br/>
+        </div>
+      </div>
+      <div class="row">
+        <label>Task</label>
+        <div class="inputs" style="width:76%; background-color: #e7f3f8; border: 1px solid #D7D7D7;">
+          <%= @task.name %><br/><br/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="inputs"> <%=check_box :task, :share_with_client, {:checked => @task.share_with_client,:class=>"ml0"}%> </div>
+        <label>Share With Client</label>
+      </div>
+      <% fields_for @comment do |c| %>
+        <div class="row">
+          <label>Comment <span id="mandatory">*</span> </label>
+          <div class="inputs">
+            <span class="input_wrapper textarea_wrapper">
+              <%= c.text_area :comment, :rows => '8', :cols => "80",  :class => "text"  %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+      <br class="clear" />
+      <div class="button_div">
+        <span class="button buttons_to_disable send_form_btn"><span><span id="button_pressed">Complete</span></span><%= f.submit 'complete', :onclick =>"send_params();"%></span>
+        <span class="button buttons_to_disable send_form_btn ml10"><span><span>Cancel</span></span>
+          <input type="button" name="cancel" onclick="tb_remove();"/></span>
+        <br class="clear" />
+      </div>
+    </div>
+  </fieldset>
+<%end%>
+

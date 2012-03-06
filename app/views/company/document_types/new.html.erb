@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_new)%> <%= t(:text_document)%> <%= t(:text_type) %></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:document_type,@document_type, :url => company_document_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "#{t(:text_document)} #{t(:text_type)}", :modal_text => "#{t(:text_document)} #{t(:text_type)}",
+    :all_modal_values => @company.document_types.collect{|dc|[dc.lvalue]}.uniq ,:modelclass=>'document_types'} %>
+<%end%>
+<br class="clear"/>

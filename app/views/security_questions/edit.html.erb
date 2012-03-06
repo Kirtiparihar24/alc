@@ -1,0 +1,32 @@
+<div class="box-head"><h2> Security Questions </h2></div>
+<%form_for @question, :url=>{:action=>'update'} do |f| %>
+  <div class="form">
+    <%if @question.errors.length > 0%>
+      <div class='errorCont'>
+        <%= f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label>Question<span>*</span></label></td>
+        <td><%=f.text_field :lvalue,:class=>"field size4"%></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label>Answer</label></td>
+        <td><%=f.text_field :alvalue,:class=>"field size4"%></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= f.submit t(:text_update), :class=>"button"%> <%= link_to t(:label_back), {:action => 'index'},:class=>"button" %>
+  </div>
+<%end%>

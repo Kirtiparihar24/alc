@@ -1,0 +1,84 @@
+<h2 class="title_main">
+  <%if @matter%>
+    <%="Time and Expense Entries for matter \"#{@matter.clipped_name}\""%>
+  <%elsif @contact%>
+    <%="Time and Expense Entries for contact \"#{@contact.full_name}\""%>
+  <%end%>
+</h2>
+<% if controller.action_name.eql?('matter_view')
+  matter_view = true
+elsif controller.action_name.eql?('contact_view')
+  contact_view = true
+else
+  internal = true
+end
+%>
+<!--Tabular container div @start here -->
+<div class="tabular_listing p5  ">
+  <table width="100%" cellspacing="1" cellpadding="1" class="border_gray">
+    <tbody><tr>
+        <%  if (@saved_time_entries.present?  || @saved_expense_entries.present?) && params[:status].eql?('Open') %>
+          <th align="center" width="1%">
+            <%=  check_box_tag "check_all" ,"check_all" ,false,:onclick=>"toggle_checked_entries();",:disabled => (@matter && !check_matter_people_access(@matter, get_employee_user_id)) %>            
+          </th>
+        <%elsif params[:status].eql?('Billed') %>
+          <% if matter_view %>
+            <%=  column_sort_link('Invoice No','tne_invoice_id',params[:col], "6%", "left",{:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"matter_view",:width=>'11%', :class=>"txtL"})%>
+          <% elsif contact_view %>
+            <%=  column_sort_link('Invoice No','tne_invoice_id',params[:col], "6%", "left",{:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"contact_view",:width=>'11%', :class=>"txtL"})%>
+          <% elsif controller.action_name == 'internal' %>
+            <%=  column_sort_link('Invoice No','tne_invoice_id',params[:col], "6%", "left", {:action=>"internal",:width=>'11%', :class=>"txtL",:start_date=>params[:start_date],:end_date=>params[:end_date],:current_tab=>@current_stage})%>
+          <% end %>
+        <%end%>
+        <th align="center" width="3%"><%=t(:text_t_e)%></th>
+        <% if matter_view %>
+          <%=  column_sort_link('Date','created_at',params[:col], "5%", "left",{:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"matter_view",:width=>'11%', :class=>"txtL"})%>
+          <%=  column_sort_link('Lawyer Designation/Non-User','employee_user_id',params[:col], "10%", "left",{:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"matter_view",:width=>'11%', :class=>"txtL"})%>
+        <% elsif contact_view %>
+          <%= column_sort_link('Date','created_at',params[:col], "5%", "left",{:contact_id=>(@contact.present? ? @contact.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"contact_view",:width=>'11%', :class=>"txtL"})%>
+          <%= column_sort_link('Lawyer Designation','employee_user_id',params[:col], "10%", "left",{:contact_id=>(@contact.present? ? @contact.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"contact_view",:width=>'11%', :class=>"txtL"})%>
+        <% else %>
+          <%= column_sort_link('Date','created_at',params[:col], "5%", "left",{:action=>"internal",:width=>'11%', :class=>"txtL",:start_date=>params[:start_date],:end_date=>params[:end_date],:current_tab=>@current_stage})%>
+          <%= column_sort_link('Lawyer Designation','employee_user_id',params[:col], "10%", "left", {:action=>"internal",:width=>'11%', :class=>"txtL",:start_date=>params[:start_date],:end_date=>params[:end_date],:current_tab=>@current_stage})%>          
+        <% end %>
+        <th align="center" width="8%"><%=t(:label_time)%> <br />(<%=t(:label_h_m)%>)</th>
+        <th align="right" width="5%"><%=t(:text_dur)%><br/><%=t(:text_hrs)%></th>
+        <th align="right" width="6%"><%=t(:text_rate)%> <br/>(<%=t(:label_doller)%>)</th>
+        <th align="left" width="8%"><%=t(:text_activity)%></th>
+        <th align="left" width="17%"><%=t(:text_description)%></th>
+        <% if matter_view %>
+          <%=  column_sort_link(t(:text_billable),'is_billable',params[:col], "2%", "left", {:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"matter_view",:width=>'11%', :class=>"txtL"})%>
+        <% elsif contact_view %>
+          <%=  column_sort_link(t(:text_billable),'is_billable',params[:col], "2%", "left", {:contact_id=>(@contact.present? ? @contact.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"contact_view",:width=>'11%', :class=>"txtL"})%>
+        <%end%>
+        <% unless internal %>
+          <th  width="16%" align="left"><%=t(:text_billing_adjustments)%></th>
+        <% end %>
+        <th width="11%" align="right" ><%=t(:text_final)%> <%=t(:text_bill_amount)%> <br/>(<%=t(:label_doller)%>)</th>
+
+        <% if matter_view %>
+          <%= column_sort_link(t(:text_status),'status',params[:col], "7%", "left",{:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"matter_view",:width=>'11%', :class=>"txtL"})%>
+        <% elsif contact_view %>
+          <%= column_sort_link(t(:text_status),'status',params[:col], "7%", "left",{:matter_id=>(@matter.present? ? @matter.id : ''),:status=>params[:status],:current_tab=>@current_stage, :action=>"contact_view",:width=>'11%', :class=>"txtL"})%>
+        <% else %>
+          <%= column_sort_link(t(:text_status),'status',params[:col], "7%", "left", {:action=>"internal",:width=>'11%', :class=>"txtL",:start_date=>params[:start_date],:end_date=>params[:end_date],:current_tab=>@current_stage})%>
+        <% end %>
+        <th align="center" width="1%"><%= t(:text_actions) %></th>
+      </tr>
+      <% if @saved_time_entries.present?  || @saved_expense_entries.present? %>
+        <%= render :partial=>"summary_grid_time_entries_matter_view", :saved_time_entries => @saved_time_entries %>
+        <%= render :partial=>"summary_grid_expense_entries_matter_view", :saved_expense_entries => @saved_expense_entries %>
+      <% else %>
+        <tr> <td colspan="17" align="center" ><strong><%=t(:text_no_record_s_found)%></strong></td> </tr>
+      <% end %>
+      <tr>
+        <% if((@matter && is_lead_lawyer?(@matter)) || is_access_t_and_e?) %>
+        <td colspan="14" style="margin:0 0 0 0; padding:2px 0 0 0;" id="tne_button" >
+          <%= submit_tag  'Approve' if params[:status].eql?("Open") %>
+        </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--Tabular container div #ends here -->

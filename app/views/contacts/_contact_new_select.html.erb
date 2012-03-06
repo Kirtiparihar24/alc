@@ -1,0 +1,39 @@
+<div>
+  <%if contact.accounts.size ==0%>
+    <p style="position:relative;">
+      <label ><%=t(:label_account)%></label>
+      <span id="select_existing_div" style="font-size:10px; padding-left:5px;xfloat:left;xposition:absolute;"><%=t(:text_select_existing)%><a href="#" id="create_new_span" class="linkText" ><%=t(:text_create_new)%></a>
+        <%=raw account_search_box('account[id]', controller.controller_name, "", "") %> </span>
+      <span style="font-size:10px; padding-left:5px;xfloat:left;xposition:absolute;" id="create_new_div">
+        <a href="#" id="select_existing_span" class="linkText" ><%=t(:text_select_existing)%></a><%=t(:text_create_new)%>
+        <%=text_field 'account' ,'name',:style=>'font-size:11px; width:40%;', :autocomplete => 'off'%>
+      </span>
+    </p>
+  <%else%>
+    <p style="position:relative;"><label><%=t(:label_account)%></label>
+      <%=text_field_tag "account[name]",contact.get_account.name, :disabled=>true%>
+      <%=hidden_field_tag "account[id]",contact.get_account.id%>
+    </p>
+  <%end%>
+</div>
+<script type="text/javascript" language="javascript">
+  jQuery('#create_new_div').hide();
+  jQuery('#create_new_span').click(function() {
+    jQuery('#_account_ctl').val('');
+    jQuery('#_accountid').val('');
+    jQuery('#_accountid').attr('disabled', true);
+    jQuery('#select_existing_div').hide();
+    jQuery('#account_name').attr('disabled', false);
+    jQuery('#create_new_div').show();
+    initLiviaHint();
+  });
+  jQuery('#select_existing_span').click(function() {
+    jQuery('#account_name').val('');
+    jQuery('#account_name').attr('disabled', true);
+    jQuery('#create_new_div').hide();
+    jQuery('#_accountid').attr('disabled', false);
+    jQuery('#_account_ctl').attr('disabled', false);
+    jQuery('#select_existing_div').show();
+    initLiviaHint();
+  });
+</script>

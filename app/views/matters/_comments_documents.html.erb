@@ -1,0 +1,60 @@
+<div class="gridDiv">
+  <div class="gridTable">
+    <div class="p5">
+      <div class="back1" id="comrelatedtasksToggle" >
+        <div class="fl oppProspects"><strong><%=t(:text_comments)%></strong> [ <%=comments.length%> ]</div>
+        <div class="fr pr5">
+          <span class="textBrwn11"><%= link_to(t(:text_add_comment),comment_path, :rel => "facebox")%></span>
+          <img src="/images/livia_portal/expand_button.gif" alt="" align="absbottom" class="toggle_comrelatedtasks icon_show" />
+          <img src="/images/livia_portal/collapse_button.gif" alt="" align="absbottom" class="toggle_comrelatedtasks icon_hide" />
+        </div>
+        <br class="clear" />
+      </div>
+      <div id="comrelatedtasksToggle_div" style="display:none;">
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="tableBg" align="center" style="font-size:90%;">
+          <tr class ="f1 oppProspects">
+            <th width="10%"><%=t(:text_title)%></th>
+            <th width="15%"><%=t(:text_user)%></th>
+            <th width="45%"><%=t(:text_comment_details)%></th>
+            <th width="15%"><%=t(:text_created_at)%></th>
+          </tr>
+          <tr>
+            <td colspan="5" style="font-family:Arial;">
+              <%if comments.length > 0 %>
+                <%= render :partial => "common/comment", :collection => comments%><br>
+              <%else%>
+                <%= render :partial => "common/empty"%>
+              <%end%>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br class="clear" />
+    <div class="p5">
+      <div class="back1" id="docrelatedtasksToggle">
+        <div class="fl oppProspects"><strong><%=t(:text_documents)%></strong> [ <%=documents.length%> ]</div>
+        <div class="fr pr5">
+          <span class="textBrwn11"><%= link_to(t(:text_add_document),add_document)%></span>
+          <img src="/images/livia_portal/expand_button.gif" alt="" align="absbottom" class="toggle_docrelatedtasks icon_show" /><img src="/images/livia_portal/collapse_button.gif" alt="" align="absbottom" class="toggle_docrelatedtasks icon_hide" />
+        </div>
+        <br class="clear" />
+      </div>
+      <div id="docrelatedtasksToggle_div" style="display:none;" >
+        <table width="100%" border="0" cellpadding="2" cellspacing="0" class="tableBg" align="center" style="font-size:100%;">
+          <tr class ="f1 oppProspects"><th width="60%"><%=t(:text_document_name)%></th><th width="15%"><%=t(:text_size)%></th><th width="15%"><%=t(:text_uploaded_on)%></th><th width="10%"><%=t(:text_actions)%></th></tr>
+          <tr>
+            <td colspan="4" >
+              <%if documents.length > 0 %>
+                <%= render :partial => "common/document", :collection => documents%><br>
+              <%else%>
+                <%= render :partial => "common/empty"%>
+              <%end%>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <br class="clear" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<table width="100%" cellspacing="1" cellpadding="1" class="border_gray">
+  <tr>
+    <th width="14%" align="left">Client</th>
+    <th width="4%">Unbilled<br/>(<%=t(:text_hour)%>)</th>
+    <th width="8%" align="right">Approved Time<br/>Amt($)</th>
+    <th width="8%" align="right">Approved Expense<br/>Amt($)</th>
+    <th width="8%" align="right">Total<br/>Amt($)</th>
+    <th width="1%">Actions</th>
+  </tr>
+  <!--Contact Time entry and associated expense entry-->
+  <% contact_time_entries.each do |time_entry|%>
+    <%if time_entry.contact.present?%>
+  <% actual_duration = @dur_setng_is_one100th ? one_hundredth_timediffernce(time_entry.actual_duration) : one_tenth_timediffernce(time_entry.actual_duration)%>
+      <tr class="<%=cycle('bg2','bg1')-%>" id="time_<%=time_entry.contact_id%>">
+        <td><%=time_entry.contact.name%></td>
+        <td align="center"><%=actual_duration%></td>
+        <td align="right"><%=number_with_lformat(time_entry_amt = time_entry.final_billed_amount.to_f)%></td>
+        <td align="right"><%=number_with_lformat(expense_entry_amt = time_entry.contact.expense_entries.approved_entries.without_matter.sum(:final_expense_amount).to_f)%></td>
+        <td align="right"><%= number_with_lformat(time_entry_amt+expense_entry_amt) rescue number_with_lformat(time_entry_amt)%></td>
+        <td align="center" width="1%">
+          <div class="icon_action  mt3"><a href="#"></a></div>
+          <div id="liquid-roundAP" class="tooltip" style="display:none;">
+            <!--Icon table strt here -->
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+              <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                  :deactivate_path=> "NO",
+                  :deactivate_text => "Time Entry",
+                  :comment_path=> "NO",
+                  :comment_title => "NO",
+                  :document_path=>"NO",
+                  :history_path=>"NO",
+                  :history_title => "Time Entry History"}) %>
+              <tr>
+                <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                <td style="background: #fff;">
+                  <div class="w100">
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>View Details</span>", {:controller=>'physical/timeandexpenses/time_and_expenses', :action=>'contact_view', :view=>'presales',:contact_id=>time_entry.contact_id, :status => "Approved",:current_tab=>"fragment-2", :view=>'presales',:from_billing=>true},:title=>'View Details') %> </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>Generate Bill</span>",{:controller=>'tne_invoices', :action=>'new', :view=>'presales', :contact_id=>time_entry.contact_id, :from_unbilled=>true}, :method => :get, :title=>"Generate Bill" )%></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <br class="clear"/>
+                  </div>
+                </td>
+                <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+              </tr>
+              <tr>
+                <td valign="top" class="ap_bottom_curve_left"></td>
+                <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                <td valign="top" class="ap_bottom_curve_right"></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    <%end%>
+  <%end%>
+
+  <!--Contact expense entry-->
+  <% contact_expense_entries.each do |expense_entry|%>
+    <%if expense_entry.contact.present?%>
+      <tr class="<%=cycle('bg2','bg1')-%>" id="expense_<%=expense_entry.contact_id%>">
+        <td><%=expense_entry.contact.name%></td>
+        <td align="center"><%='0.00'%></td>
+        <td align="right"><%='0.00'%></td>
+        <td align="right"><%=number_with_lformat(expense_entry.final_expense_amount.to_f)%></td>
+        <td align="right"><%= number_with_lformat(expense_entry.final_expense_amount.to_f) %></td>
+        <td align="center" width="1%">
+          <div class="icon_action  mt3"><a href="#"></a></div>
+          <div id="liquid-roundAP" class="tooltip" style="display:none;">
+            <!--Icon table strt here -->
+            <table width="100%" border="1" cellspacing="0" cellpadding="0">
+              <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                  :deactivate_path=> "NO",
+                  :deactivate_text => "Time Entry",
+                  :comment_path=> "NO",
+                  :comment_title => "NO",
+                  :document_path=>"NO",
+                  :history_path=>"NO",
+                  :history_title => "Expense Entry History"}) %>
+              <tr>
+                <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                <td style="background: #fff;">
+                  <div class="w100">
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>View Details</span>", {:controller=>'physical/timeandexpenses/time_and_expenses', :action=>'contact_view', :view=>'presales',:contact_id=>expense_entry.contact_id, :status => "Approved",:current_tab=>"fragment-2"},:title=>'View Details') %> </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="fl"  style="width:165px;">
+                      <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                        <tr>
+                          <td width="20"><div class="ap_child_action"></div></td>
+                          <td nowrap class="ml5"><%= link_to("<span>Generate Bill</span>",{:controller=>'tne_invoices', :action=>'new', :view=>'presales', :contact_id=>expense_entry.contact_id, :from_unbilled=>true}, :method => :get, :title=>"Generate Bill" )%></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <br class="clear"/>
+                  </div>
+                </td>
+                <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+              </tr>
+              <tr>
+                <td valign="top" class="ap_bottom_curve_left"></td>
+                <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                <td valign="top" class="ap_bottom_curve_right"></td>
+              </tr>
+            </table>
+          </div>
+        </td>
+
+      </tr>
+    <%end%>
+  <%end%>
+</table>

@@ -1,0 +1,186 @@
+<% remote_form_for([@matter,@matter_people_client_contact], :url => {:action => :add_client_contact},:loading=>"return validateExistCont();",:complete=>'return enableAllSubmitButtons("matters")') do |f| %>
+  <div id="matter_client_contact_errors" class="" style="display: none;"></div>
+  <div id="same_contact_errors" class=""></div>
+  <%= raw same_contacts_show %>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+
+  <%=f.hidden_field :people_type, :value => 'client_contact'%>
+  <%=f.hidden_field :company_id, :value => @matter.company_id%>
+  <%=f.hidden_field :matter_id, :value => @matter.id%>
+  <%=f.hidden_field :created_by_user_id, :value => current_user.id%>
+  <%=f.hidden_field :is_active, :value => true%>
+  <%=hidden_field_tag 'share_with_client', @matter.client_access%>
+  <%=hidden_field_tag :create_method%>
+
+  ﻿<div>
+    <table border="0" cellpadding="0" cellspacing="0" class="form_table">
+      <tr>
+        <td width="136" align="left" id="select_exist_td"><%=t (:label_Select_from_Existing)%> <span class="alert_message" id="mandatory">*</span> </td>
+        <td width="240" align="left">
+          <%= f.collection_select :contact_id, @matter.get_account_contacts, :id, :full_name, :include_blank => "---Select---" %>
+          <strong class="text12 mlr8"></strong><label><span id="create_new_span"><a href="#" onclick="return createNewClicked()" class="link_blue">Create New</a></span></label></td>
+      </tr>
+      <tr>
+        <td align="left"><%=t (:label_Provide_Matter_Access)%></td>
+        <td align="left"><%=f.check_box :can_access_matter%></td>
+      </tr>
+      <tr>
+        <td align="left"><%=t(:label_Primary_Matter_Contact)%></td>
+        <td align="left"><%=check_box_tag :primary_matter_contact%></td>
+      </tr>
+    </table>
+
+    <div id="create_new_div" style="display: none;">
+      <h3 class="title_gray" align="left"><%=t(:label_Personal_Information)%></h3>
+      <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+        <tbody>
+          <tr>
+            <td width="23%" align="left"><label><%= t(:label_salutation) %></label></td>
+            <td width="25%" align="left"><%= f.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+            <td width="1%">&nbsp;</td>
+            <td width="23%" align="left">&nbsp;</td>
+            <td width="28%" align="left">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+            <td align="left"><%=f.text_field :name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+            <td>&nbsp;</td>
+            <td align="left"><label><%= t(:label_middle_name) %>&nbsp;</label></td>
+            <td align="left"><%=f.text_field :middle_name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+          </tr>
+          <tr>
+            <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+            <td align="left"><%=f.text_field :last_name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="left"><label>Primary&nbsp;<%= t(:label_phone) %> <span class="alert_message" id="phone_mandatory">#</span></label></td>
+            <td align="left"><%=f.text_field :phone, :maxlength=>15 %></td>
+            <td>&nbsp;</td>
+            <td align="left"><label>Primary&nbsp;<%= t(:label_email) %> <span class="alert_message" id="email_mandatory">#</span></label></td>
+            <td align="left"><%=f.text_field :email,:maxlength=>"64",:size=>"30" %></td>
+          </tr>
+          <tr>
+            <td align="left"><label><%=t(:label_matter_role)%></label></td>
+            <td align="left"><%=f.text_field :role_text%></td>
+            <td valign="top">&nbsp;</td>
+            <td align="left"><label><%=t(:label_notes)%></label></td>
+            <td align="left"><%=f.text_field :notes%></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3 class="title_gray" align="left"><%=t(:text_address)%></h3>
+      <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+        <tr>
+          <td width="23%" align="left"><label><%=t(:label_street)%></label></td>
+          <td width="25%" align="left"><%=f.text_field :address%></td>
+          <td width="1%" align="left">&nbsp;</td>
+          <td width="23%" align="left"><%=t(:label_city)%></td>
+          <td width="28%" align="left"><%=f.text_field :city%></td>
+        </tr>
+        <tr>
+          <td width="23%" align="left"><%=t(:label_state)%></td>
+          <td width="25%" align="left"><%=f.text_field :state%></td>
+          <td width="1%" align="left">&nbsp;</td>
+          <td width="23%" align="left"><%=t(:label_zip_code)%></td>
+          <td width="28%" align="left"><%=f.text_field :zip,:maxlength => 10%></td>
+        </tr>
+        <tr>
+          <td width="23%" align="left"><%=t(:label_country)%></td>
+          <td width="25%" align="left"><%=f.text_field :country%></td>
+          <td width="1%" align="left">&nbsp;</td>
+          <td width="23%" align="left"><%=t(:label_alternate_email)%></td>
+          <td width="28%" align="left"><%=f.text_field :alternate_email,:maxlength=>"64",:size=>"30"%></td>
+        </tr>
+        <tr>
+          <td align="left"><%=t(:label_mobile)%></td>
+          <td align="left"><%=f.text_field :mobile,:maxlength=>15%></td>
+          <td align="left">&nbsp;</td>
+          <td align="left"><%=t(:label_fax)%></td>
+          <td align="left"><%=f.text_field :fax, :maxlength=>15%></td>
+        </tr>
+
+        <tr>
+          <td align="left"><label><%= t(:label_stage) %></label></td>
+          <td align="left">
+            <!-- defalut value is set to 'Clients' as this is add client contact :Rashmi.N Bug #10680 -->
+            <%= collection_select :matter_people, :contact_stage_id, current_company.contact_stages, :id, :alvalue, {:selected=>@client_stage_value[0].id}, {:class=>"textBoxwidth disundis"}  %></td>
+          <td>&nbsp;</td>
+          <td align="left"></td>
+          <td align="left"></td>
+        </tr>
+        <tr>
+          <td colspan="5" align="center">
+            <%=f.submit "Save",:class=>'matters', :id => "add_client_contact_button", :onclick => "jQuery('#create_method').val('create_new');return checkloader();setButtonPressed(this); return check_access_for_submit(this);"%>
+            <input type="button" class='matters' id="Login4" value="Cancel" onclick="tb_remove();" />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="5" align="left"><div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%><span id="either">, <span class="alert_message">#</span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></span></div></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="create_from_existing_div">
+      <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+        <tr>
+          <td colspan="5" align="center">
+            <%=f.submit "Save", :id=>"add_client_contact_button2",:class=>'matters', :onclick => "return checkloader(); jQuery('#create_method').val('create_from_existing');setButtonPressed(this); return check_access_for_submit(this);"%>
+            <input type="button" id="Login4" class="matters" value="Cancel" onclick="tb_remove();" />
+          </td>
+        </tr>
+        <tr><td class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></td></tr>
+      </table>
+    </div>
+  </div>
+<%end%>
+<div class="pagiText"><%=t(:label_page)%>&nbsp;141</div>
+
+<script type="text/javascript">
+  // Need to removed to JS File
+  jQuery("#TB_ajaxContent").height('125px');
+    
+  function createNewClicked() {
+    jQuery("#matter_people_contact_id").attr('disabled', true);
+    jQuery("#matter_people_contact_id").val('');
+    jQuery("#TB_ajaxContent").height('500px');
+    jQuery("#create_new_div").show();
+    jQuery("#create_from_existing_div").hide(); 
+    jQuery("#create_new_span").html("Create New");
+    jQuery("#select_exist_td").html(jQuery("<a class='link_blue' href='#' onclick='return selectExisitingClicked()'>Select from Existing</a>"));
+    return false;
+  }
+
+  function selectExisitingClicked() {
+    jQuery("#matter_people_contact_id").attr('disabled', false);    
+    jQuery("#create_new_div").hide();    
+    jQuery("#create_from_existing_div").show();    
+    jQuery("#select_exist_td").html("Select from Existing <span class='alert_message'>*</span>");
+    jQuery("#create_new_span").html(jQuery("<a class='link_blue' href='#' onclick='return createNewClicked()'>Create New</a>"));
+    jQuery("#TB_ajaxContent").height('125px');
+    return false;
+  }
+  
+  function validateExistCont(){
+    var contact_id = jQuery("#matter_people_contact_id");
+    if(contact_id.attr('disabled')){
+      disableAllSubmitButtons('matters');
+      return true;
+    }else{
+      if(contact_id.val() == ""){
+        show_error_msg("same_contact_errors","Please select a contact.","message_error_div");
+        jQuery('#loader').hide();
+        jQuery("#add_client_contact_button").val('Save');
+        jQuery("#add_client_contact_button2").val('Save');
+        return false;
+      }else{
+        disableAllSubmitButtons('matters');
+        return true;
+      }
+    }
+  }
+  can_access_matter_checked();
+</script>

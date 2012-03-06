@@ -1,0 +1,65 @@
+
+<% com_notes_entries = @com_notes_entries %>
+<%if session[:verified_secretary_id].nil? and !params[:service_provider_id].nil? and params[:service_provider_id] != "" and @sp_session.assignment.nil?%>
+  <div id="loader_position" class="p8">
+    Permission taken from lawyers for showing modules
+    <input type="checkbox" id="accept_permissions" onclick="assign_service_provider('<%=params[:service_provider_id]%>')"></input>
+    <span id="dateandtime" class= "sucessCont" style="display:none;width:150%"></span>
+  </div><br/>
+<%end%>
+<div id = "loader"></div>
+<% form_for :com_notes_entries,com_notes_entries,:url=>{:action =>'create'},:html =>{:method => :post} do |f| %>
+  <div class="form_table mt5">
+    <table id="notestable" width="100%" border="0px" cellspacing="0" cellpadding="0" class="">
+      <tr >
+        <th width="53%" align="left">&nbsp;<%=t(:text_instructions)%>
+          <input type="hidden" value="<%= com_notes_entries.size %>" id="theValue" />
+        </th>
+        <th width="12%" align="center"><%=t(:text_matter)%></th>
+        <th width="12%" align="center"><%=t(:text_contact)%></th>
+        <th width="7%" align="center"><%=t(:text_urgent)%></th>
+      </tr>
+      <div id="loading"></div>
+      <span id="comm_loader" style="display:none; margin-left:500px; "><%= image_tag("loading.gif")  %> </span>
+      <% com_notes_entries.each_with_index do |com_notes_entries, index| %>
+        <% fields_for "com_notes_entries[#{index}]", com_notes_entries do |f| %>
+          <tr>
+            <td><%= f.text_area :description,{:class=>"textarea",:cols=>"65",:rows=>"1"} %></td>
+            <td valign="top" align="center">
+              <span id="matter_drop_<%= index%>_span">
+                <input  type="text" id="matter_cnt_<%= index%>" class="all_matter_input" onclick="this.value=''" title='Search' value="" size="15" autocomplete="off"  ></input> </span>
+              <span id="comm_mtr_<%= index %>_span"></span>
+              <%=link_to_remote(image_tag("/images/download.png",:alt=>"Lists",:class=>"drop_down",:border=>"0"), {:url=>{:controller=>'communications',:action=>'get_matter_info',:emp_id=>@employee.id,:com_id=>index},:id=>"com_matter_entries[#{index}]",:before=>"jQuery('.ac_results').hide();",:loading=>"jQuery('#comm_loader').show();",:success=>"jQuery('#comm_loader').hide();"})%>
+            </td>
+            <td valign="top" align="left">
+              <span id="comm_cnt_<%= index%>_span">
+                <input  type="text" id="contact_cnt_<%=index%>" class="all_contact_input" onclick="this.value=''" title='Search' size="15"   autocomplete="off"  ></input>
+              </span>
+              <span id="contact_drop_<%= index %>_span"></span>
+              <%=link_to_remote(image_tag("/images/download.png",:alt=>"Lists",:class=>"drop_down",:border=>"0"), {:url=>{:controller=>'communications',:action=>'get_matter_info',:emp_id=>@employee.id,:comm_cnt_id=>index},:id=>"com_contact_entries[#{index}]",:before=>"jQuery('.ac_results').hide();",:loading=>"jQuery('#comm_loader').show();",:success=>"jQuery('#comm_loader').hide();"}) %>
+            </td>
+            <td align="center" valign="top"><%=f.check_box :note_priority%></td>
+            <%= f.hidden_field  :is_actionable, :value => true %>
+          </tr>
+        <%end%>
+      <%end%>
+      <tr>
+        <td colspan="6" valign="top" align="left"><div id="new_columnDIV"></div></td>
+      </tr>
+      <tr>
+        <td colspan="6" align="center">
+          <input type="button" value="<%=t(:label_add)%>" class="button" onclick="addNewRecord('#{@employee.id}')"/>
+          <%=f.submit t(:text_save),:class=> "button"%>
+        </td>
+      </tr>
+    </table>
+  </div>
+<%end%>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery("body").click(function(){
+      jQuery('.ac_results').hide();
+    });
+  });
+
+</script>

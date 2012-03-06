@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <style type="text/css">
+.header { position: running(header) }
+.footer {position: running(footer)}
+      @page {
+		    size: A4 landscape;
+		    border-top: 1px solid black;
+		    border-bottom: 1px solid black;
+				margin: 8% 5% 6% 6%;
+		    counter-increment: page;
+
+		    @top-left {
+		      content: element(header);
+		      vertical-align: bottom;
+		      padding: 3px;
+
+		    }
+
+
+		    @bottom-left {
+		      font-family : Arial, Helvetica, sans-serif;
+		      font-size: 12px;
+		      content: element(footer);
+		      vertical-align: top;
+		      padding: 3px;
+
+		    }
+
+		    @bottom-right {
+		      font-family : Arial, Helvetica, sans-serif;
+		      font-size: 12px;
+		      content: "Page " counter(page) " of " counter(pages);
+		      vertical-align: top;
+		      padding: 3px;
+		      text-align: right;
+
+		    }
+
+		  }
+
+      table{ -fs-table-paginate: paginate;  }
+      .border_grey{border:1px solid #000; font-size:10px;}
+      tr.border-top td, tr.border-top th{border-top: 1px solid #000;}
+      tr.border-bottom th{border-bottom: 1px solid #000;}
+      .border_grey tr.th_back th{background-color:#E0E0E0; }
+      .border_grey th, tr.border-bottom td, td.br{border-bottom: 1px solid #828282;}
+      .border_grey th, .border_grey td{border-right: 1px solid #828282;}
+      th.border_black{border-bottom:1px solid #000;}
+      td.no_border,th.no_border{border-right: none;}
+      
+     /* #header {position: absolute; top: 0; left: 0;-fs-move-to-flow: "header";}
+      #footer {position: absolute; bottom: 0; left: 0;-fs-move-to-flow: "footer";} */
+
+
+
+    </style>
+  </head>
+  <body>
+    <div style="margin-bottom:20px">
+      <%unless new_logo.blank?%>
+        <div style="float:left">
+           <img src="<%=new_logo%>" alt="logo" width="154" height="51"/>
+        </div>
+       <br/>
+       <br/>
+      <%end%>
+    </div>
+    <div class="header" style="font-size:9px;">
+      <% if invoice.company.tne_invoice_setting %>
+      <div><%= invoice.company.tne_invoice_setting.header %></div>
+      <% end %>
+    </div>
+    <div class="footer" style="font-size:9px;">
+      <% if invoice.company.tne_invoice_setting %>
+      <div><%= invoice.company.tne_invoice_setting.footer %></div>
+      <% end %>
+    </div>
+    <div style="margin-bottom:20px">
+      <div style="font-size:12px;font-weight:bold;float:left;"><%=invoice.company.name.camelize%></div>
+      <div style="font-size:12px;float:right;font-weight:bold; padding-bottom:10px;">INVOICE</div>
+    </div>
+
+    <div style="font-size:9px;float:right;margin-bottom:20px;">
+      <div>Invoice # <%=invoice.invoice_no%></div>
+      <div>Invoice Date: <%=invoice.invoice_date%> </div>
+      <div>Due Date: <%=invoice.invoice_due_date%></div>
+    </div>
+    <br /><br />
+
+    <div style="font-size:9px;float:left;padding-bottom:5px;margin-bottom:20px">
+       <%unless primary_contact && primary_contact.try(:get_account_name).nil?%>
+        <div>Account : <%= primary_contact.try(:get_account_name) unless primary_contact && primary_contact.get_account_name.nil?%> </div>
+      <%end%>
+      <div>Primary Client : <%=primary_contact.try(:first_name)%>  <%=primary_contact.try(:last_name)%></div>
+      <div>Account/Client Address : <%=invoice.client_address%></div>
+       <div>Matter : <%=invoice.matter_id ? invoice.matter.name : '-'%></div>
+    </div>    
+    <%if detailed%>
+      <br /><br />
+      <br /><br />
+       <%first_column = invoice.consolidated_by.eql?('Date') ? 'Activity' : 'Date' %>
+       <%second_column = invoice.consolidated_by.eql?('User') ? 'Activity' : 'Lawyer'%>
+      <%unless time_entry.blank?%>
+        <!-- time entry-->
+        <table width="100%" class="border_grey" cellpadding="1" cellspacing="0">
+          <thead>
+            <tr class="th_back">
+              <th align="center"  colspan="6">Activity Type</th>
+              <th align="center" width="7%" class="border_black" rowspan="2">Rate</th>
+              <th align="center" width="7%"  class="border_black" rowspan="2">Hours</th>
+              <th align="center" width="15%"  class="border_black no_border" rowspan="2">Amount($)</th>
+            </tr>           
+            <tr class="border-bottom">
+              <th align="center" width="<%= first_column=="Date" ? '18%' : "7%" %>" >Group</th>
+              <th width="<%= first_column=="Date" ? '7%' : "18%" %>"><%=first_column%></th>
+              <th align="center" width="<%= first_column=="Date" ? '14%' : "18%" %>"><%=second_column%></th>
+              <th align="center" width="6%">Hours</th>
+              <th align="center" width="6%">Rate</th>
+              <th align="center">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%time_entry.each do |time|%>
+              <% rowspan = time[1].length+1 %>
+              <tr>
+                <td class="br" valign="top" rowspan="<%=rowspan%>"> <%=time[0]%></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="br" valign="top" rowspan="<%=rowspan%>" align="right"> <%=time[2]%></td>
+                <td class="br" valign="top" rowspan="<%=rowspan%>" align="right"> <%=time[3]%></td>
+                <td valign="top" rowspan="<%=rowspan%>" align="right" class="no_border br"> <%=time[4]%></td>
+              </tr>
+              <% time[1].each do |t| %>
+                <tr class="border-bottom">
+                  <td valign="top"><%=t[0]%></td>
+                  <td valign="top"><%=t[1]%></td>
+                  <td valign="top" align="right"><%=t[2]%></td>
+                  <td valign="top" align="right"><%=t[3]%></td>
+                  <td valign="top"><%=t[4]%></td>
+                </tr>
+              <%end%>
+            <%end%>
+          </tbody>
+        </table>
+      <%end%>
+      <!-- expense -->
+      <%unless expense_entry.blank?%>
+        <br /><br />
+        <table width="100%" class="border_grey" cellpadding="1" cellspacing="0">
+          <thead>
+            <tr class="th_back">
+              <th align="center" colspan="5">Expense Type</th>
+              <th align="center" class="border_black" rowspan="2" width="15%">Amount($)</th>
+            </tr>
+            <tr class="border-top border-bottom">
+              <th align="center" width="<%= first_column=="Date" ? '18%' : "7%" %>" >Group</th>
+              <th width="<%= first_column=="Date" ? '7%' : "18%" %>"><%=first_column%></th>
+              <th align="center" width="<%= first_column=="Date" ? '14%' : "18%" %>"><%=second_column%></th>
+              <th align="center" width="15%">Amount</th>
+              <th align="center">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%expense_entry.each do |expense|%>
+              <%rowspan = expense[1].length+1%>
+              <tr>
+                <td class="br" valign="top" rowspan="<%=rowspan%>"><%=expense[0]%></td>
+                <td valign="top">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="br" valign="top" rowspan="<%=rowspan%>" align="right"> <%=expense[4]%></td>
+              </tr>
+              <%expense[1].each do |e|%>
+                <tr class="border-bottom">
+                  <td valign="top"><%=e[0]%></td>
+                  <td valign="top"><%=e[1]%></td>
+                  <td valign="top" align="right"><%=e[2]%></td>
+                  <td valign="top"><%=e[3]%></td>
+                </tr>
+              <%end%>
+            <%end%>
+          </tbody>
+        </table>
+      <%end%>
+
+    <%else%>
+      <br/><br/>
+      <br/><br/>
+      <table width="100%" class="border_grey" cellpadding="1" cellspacing="0">
+        <thead>
+          <tr class="th_back">
+            <th align="center">Activity/Expense Type</th>
+            <th align="center" width="7%" class="border_black" rowspan="2">Rate</th>
+            <th align="center" width="7%"  class="border_black" rowspan="2">Hours</th>
+            <th align="center" width="15%"  class="border_black no_border" rowspan="2">Amount($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%summary_view.each do |summary|%>
+            <tr>
+              <td align="left"><%=summary[0]%></td>
+              <td align="right"><%=summary[1]%></td>
+              <td align="right"><%=summary[2]%></td>
+              <td align="right" class="no_border"><%=summary[3]%></td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+    <%end%>
+    <br /><br />
+
+
+    <div style="font-size:9px;float:right;margin:10px 0;">
+      <table width="100%" style="float:right;">
+        <tr>
+          <td width="80%" align="right">Sub Total: </td>
+          <td width="20%" align="left"><%=commas(invoice.invoice_amt)%></td>
+        </tr>
+        <%if invoice.discount && invoice.discount!=0%>
+        <tr>
+          <td width="80%" align="right">Discount: </td>
+          <td width="20%" align="left" style="text-align:right;"><%=invoice.discount ? commas(invoice.discount) : 0.00%></td>
+        </tr>
+        <%end%>
+        <% if invoice_setting.present? && invoice_setting.primary_tax_enable %>
+          <%if invoice.primary_tax_rate && invoice.primary_tax_rate!=0%>
+           <tr>
+             <td width="80%" align="right" ><%=invoice.primary_tax_name.blank? ? 'Primary Tax' : invoice.primary_tax_name%> (<%=invoice.primary_tax_rate ? invoice.primary_tax_rate : 0 %> %):</td>
+            <td width="20%" align="left" style="text-align:right;"><%=commas(p_tax)%></td>
+           </tr>
+          <%end%>
+        <%end%>
+         <%if invoice_setting.present? && invoice_setting.secondary_tax_enable && (invoice.secondary_tax_rate && invoice.secondary_tax_rate!=0)%>
+        <tr>
+          <td width="80%" align="right" > <%=invoice.secondary_tax_name.blank? ? 'Secondary Tax' : invoice.secondary_tax_name %> (<%=invoice.secondary_tax_rate ? invoice.secondary_tax_rate : 0%> %): </td>
+          <td width="20%" align="left" style="text-align:right;"> <%=commas(s_tax)%></td>
+        </tr>
+        <%end%>
+        <tr>
+          <td width="80%" align="right">Total: </td>
+          <td width="20%" align="left"><%=commas(n_total)%></td>
+        </tr>
+      </table>
+
+    </div>
+  <%if invoice.check_notes && invoice.invoice_notes.present?%>
+    <div style="font-size:9px; ">
+      <span>Note: <%=invoice.invoice_notes%><br/></span>
+    </div>
+    <%end%>
+  </body>
+</html>

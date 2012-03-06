@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%=t(:text_livia_legal)%></title>
+    <%= stylesheet_link_tag "reset.css","login.css"%>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/login.css" />
+    <!-- included jquery as well as it was giving error on 22/11/10 by anil -->
+    <%= raw(javascript_include_tag "livia_common.js","jquery/jquery-1.7.1.min.js") %>
+  </head>
+  <body>
+    <!-- Begin doc div -->
+    <!-- table necessary for property stretching of layout-->
+    <table  align="center" width="100%">
+      <tbody>
+        <tr>
+          <td align="left" valign="top"><!--Header div @start here -->
+            <div id="login-div" style="margin-top:5%;" >
+              <div style="width:99%; text-align:center; margin:0 auto;">
+                <h1 style="padding:5px 0 5px 0; margin:0;"><%#=home_logo_link%></h1>
+                <div id="middleBody-div"  style=" margin:0 auto 0 auto; ">
+                  <h2 class="title_main">Response</h2>
+                  <div style="width:75%; margin:0 auto; text-align:center;">
+                    <%= flash[:error]%>
+                    <% form_for :response,  @campaign_response ,:url => {:action => 'response_submit'} do |f| %>
+                      <%fields_for :contact, @contact do |c|%>
+                        <%=  f.hidden_field :campaign_id, :value=>@campaign.id %>
+                        <% unless params[:response_token].blank?  %>
+                          <%=  hidden_field_tag :response_token, params[:response_token] %>
+                        <% else %>
+                          <%=  hidden_field_tag :response_token, 'Test Email' %>
+                        <% end %>
+                        <%if(@campaign_response.errors.length >0)%>
+                          <div class='message_error_div'> <%=error_messages_for(:campaign_response)%>
+                            <div class="clear"></div>
+                          </div>
+                        <%end%>
+                        <div class="form_table" style="margin:auto; text-align:center;">
+                          <table width="100%" align="center">
+                            <tr>
+                              <td width="30%" align="left" valign="top"><label><%=t(:label_first_name)%> <span class="alert_message">*</span></label></td>
+                              <td width="70%" align="left" valign="top"><%=c.text_field 'first_name'%></td>
+                            </tr>
+                            <tr>
+                              <td width="30%" align="left" valign="top"><label><%=t(:label_contact_middle_name)%></label></td>
+                              <td width="70%" align="left" valign="top"><%=c.text_field 'middle_name'%></td>
+                            </tr>
+                            <tr>
+                              <td width="30%" align="left" valign="top"><label><%=t(:label_last_name)%></label></td>
+                              <td width="70%" align="left" valign="top"><%=c.text_field 'last_name' %></td>
+                            </tr>
+                            <tr>
+                              <td width="30%" align="left" valign="top"><label><%=t(:label_email)%> <span class="alert_message">*</span></label></td>
+                              <td width="70%" align="left" valign="top"><%=c.text_field 'email'%></td>
+                            </tr>
+                            <tr>
+                              <td width="30%" align="left" valign="top"><label><%=t(:text_response)%><span class="alert_message">*</span></label></td>
+                              <td width="70%" align="left" valign="top"><%= f.text_area  'response',:cols => "20", :rows=>"4", :class=>'txtbox'%></td>
+                            </tr>
+                          </table>
+                          <div class="buttonSub_div">
+                            <%=f.submit t(:text_submit), :class=>"button",:onclick=>'return ValidateForm();'%>
+                            <input value="Reset" type="button" class="button" onclick="jQuery('#contact_first_name').val('');jQuery('#contact_middle_name').val('');jQuery('#contact_last_name').val('');jQuery('#contact_email').val('');jQuery('#response_response').val(''); "></input>
+                          </div>
+                        <%end%>
+                      <%end%>
+                    </div>
+                  </div>
+                </div>
+                <br class="clear" />
+              </div>
+              <!--Header div #ends here --></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
+

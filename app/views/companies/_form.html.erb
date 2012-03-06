@@ -1,0 +1,209 @@
+<div class="box-head"><h2><%=@company.new_record? ? 'New' : 'Edit'%>&nbsp;<%=t(:text_company)%></h2></div>
+<br class="clear"/>
+<%if(@company.errors.length > 0 )%>
+  <div class='errorCont'>
+    <%= error_messages_for("company") %>
+    <div class="cl"></div>
+  </div>
+<%end%>
+<%form_for(@company) do|f|%>  
+  <div class="mid-box-head"><h2 class="left"><%=t(:text_company_detail)%></h2></div>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="17%" align="left" valign="top"><label><%=t(:label_name)%><span>*</span></label></td>
+        <td width="26%"><%=f.text_field :name,:autocomplete => 'off' ,:class=>"field size4"%></td>
+        <td width="11%">&nbsp;</td>
+        <td width="21%" align="left" valign="top"><label><%=t(:label_sales_representative)%></label></td>
+        <td width="25%"><%=f.text_field :sales_rep,:class=>"field size4" %></td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+      <tr>
+        <td width="17%" align="left" valign="top"><label><%=t(:label_about_the_company)%></label></td>
+        <td><%=f.text_area :about, :rows=>2,:cols=>45 ,:class=>"field size4" %></td>
+        <td>&nbsp;</td>
+        <td width="21%" align="left" valign="top"><label><%=t(:label_sales_representative_type)%> </label></td>
+        <td><%=f.select :sales_rep_type, Company::PERSON_TYPE , {:include_blank => '-- select --'}, {:class=>"field size3"}%>
+        </td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+      <tr>
+        <td width="17%" align="left" valign="top"><label><%=t(:label_bill_generation_date)%> <span>*</span></label></td>
+        <td><%=f.text_field :billingdate, :value=>"#{@company.billingdate ?  livia_date(@company.billingdate) : ''}",:readonly => true, :class => "field size4 date_picker", :size=>"10"%></td>
+        <td>&nbsp;</td>
+        <td width="21%" align="left" valign="top"><label><%=t(:label_commission_payable)%></label></td>
+        <td><%=f.radio_button :comm_payable,'true' %><%=t(:text_yes)%> &nbsp;
+          <%=f.radio_button :comm_payable, 'false' %><%=t(:text_no)%>
+        </td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_notes)%> </label></td>
+        <td><%=f.text_area :notes, :rows=>1,:cols=>35 ,:class=>"field size4"%></td>
+        <td>&nbsp;</td>
+        <td align="left" valign="top"><label><%=t(:label_temporary_licence_limit)%> </label>
+        </td>
+        <td><%=f.text_field :temp_licence_limit ,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_is_a_cgc)%></label></td>
+        <td><%=f.check_box :is_cgc %></td>
+        <td>&nbsp;</td>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_languague)%></label></td>
+        <td><%=select("dynamic_label","file_name",[["US","us"],["UK","uk"],["AUS","aus"]],{},{:style => "width:130px"})%></td>
+        <td>&nbsp;</td>
+        <td align="left" valign="top"><label><%=t(:label_own_file_name)%></label></td>
+        <td><%=f.check_box :own_file, {:class=>"checkBox1"}%></td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+    </table>
+  </div>
+  <br class="clear" />
+  <div class="mid-box-head"><h2 class="left"><%=t(:text_billing_address)%></h2></div>
+  <div class="form">
+    <%f.fields_for :billing_address,@billingadd do |badd|%>
+      <%=badd.hidden_field :address_type,:value=>'billing'%>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="17%" align="left" valign="top"><label><%=t(:label_street)%> </label></td>
+          <td width="26%"><%=badd.text_field :street ,:class=>"field size4"%></td>
+          <td width="11%">&nbsp;</td>
+          <td width="21%" align="left" valign="top"><label><%=t(:label_city)%> </label></td>
+          <td width="25%"><%=badd.text_field :city ,:class=> 'field size4'%></td>
+        </tr>
+        <tr><td colspan="5">&nbsp;</td></tr>
+        <tr>
+          <td width="17%" align="left" valign="top"><label><%=t(:label_zip_code)%> </label></td>
+          <td><%=badd.text_field :zipcode,:maxlength => 10 ,:class=>"field size4"%></td>
+          <td>&nbsp;</td>
+          <td width="21%" align="left" valign="top"><label><%=t(:label_country)%> </label></td>
+          <td><%=badd.text_field :country,:class => 'field size4'%></td>
+        </tr>
+        <tr><td colspan="5">&nbsp;</td></tr>
+        <tr>
+          <td width="17%" align="left" valign="top"><label><%=t(:label_state)%></label></td>
+          <td><%=badd.text_field :state ,:class=>'field size4'%></td>
+          <td>&nbsp;</td>
+          <td width="21%" align="left" valign="top">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr><td colspan="5">&nbsp;</td></tr>
+      </table>
+    <%end%>
+  </div>
+  <br class="clear" />
+  <div class="mid-box-head"><h2 class="left"><%=t(:text_payment_detail)%></h2></div>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="17%" align="left" valign="top"><label><%=t(:label_authorize_net_id)%></label></td>
+        <td width="26%"><%=text_field_tag 'dotnetid' ,'',:class=>'field size4' %></td>
+        <td width="11%">&nbsp;</td>
+        <td width="21%" align="left" valign="top"><label><%=t(:label_transaction_key)%></label></td>
+        <td width="25%"><%=text_field_tag 'tkey' ,'',:class => 'field size4' %></td>
+      </tr>
+      <tr><td colspan="5">&nbsp;</td></tr>
+    </table>
+  </div>
+  <br class="clear" />
+  <div class="mid-box-head"><h2 class="left"><%=t(:text_shipping_address)%></h2></div>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="5" align="left" valign="top">
+          <table width="50%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="4%"><%=check_box_tag 'copyaddress','',false,:onclick => "copy_company_address(this)"%></td>
+              <td width="96%"><label><%=t(:text_same_as_billing_address)%></label></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <%f.fields_for :shipping_address ,@shippingadd do |sadd|%>
+        <%=sadd.hidden_field :address_type,:value=>'shipping'%>
+        <tr><td colspan="5">&nbsp;</td></tr>
+        <tr>
+          <td width="17%" align="left" valign="top"><label><%=t(:label_street)%></label></td>
+          <td><%=sadd.text_field :street, :class=>"field size4" %></td>
+          <td>&nbsp;</td>
+          <td width="21%" align="left" valign="top"><label><%=t(:label_city)%></label></td>
+          <td><%=sadd.text_field :city,:class=>"field size4"%></td>
+        </tr>
+        <tr><td colspan="5">&nbsp;</td></tr>
+        <tr>
+          <td width="17%" align="left" valign="top"><label><%=t(:label_zipcode)%></label></td>
+          <td><%=sadd.text_field :zipcode,:maxlength => 10 ,:class=>"field size4"%></td>
+          <td></td>
+          <td width="21%" align="left" valign="top"><label><%=t(:label_country)%></label></td>
+          <td><%=sadd.text_field :country,:class=>"field size4"%></td>
+        </tr>
+        <tr><td colspan="5">&nbsp;</td></tr>
+        <tr>
+          <td align="left" valign="top"><label><%=t(:label_state)%></label></td>
+          <td><%=sadd.text_field :state, :class=>"field size4"%></td>
+          <td>&nbsp;</td>
+          <td align="left" valign="top">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr><td colspan="5">&nbsp;</td></tr>
+      <%end%>
+    </table>
+  </div>
+  <!-- End Form -->
+  <%if @lawfirm_admin.blank?%>
+    <br class="clear" />
+    <div class="mid-box-head">
+      <h2 class="left"><%=t(:text_admin_information)%></h2>
+    </div>
+    <!-- Form -->
+    <div class="form">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <%fields_for :user, @users do |u|%>
+          <%u.error_messages%>
+          <tr>
+            <td width="17%" align="left" valign="top"><label><%=t(:label_first_name)%><span>*</span></label></td>
+            <td width="26%"><%=u.text_field :first_name,:class=>"field size4"%></td>
+            <td width="11%">&nbsp;</td>
+            <td width="21%" align="left" valign="top"><label><%=t(:label_last_name)%><span>*</span></label></td>
+            <td width="25%"><%=u.text_field :last_name,:class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="5">&nbsp;</td></tr>
+          <tr>
+            <td width="17%" align="left" valign="top"><label><%=t(:label_email)%><span>*</span></label></td>
+            <td><%=u.text_field :email,:class=>"field size4"%></td>
+            <td>&nbsp;</td>
+            <td width="21%" align="left" valign="top"><label><%=t(:label_user_name)%><span>*</span></label></td>
+            <td><%=u.text_field :username ,:class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="5">&nbsp;</td></tr>
+          <tr>
+            <td width="17%" align="left" valign="top"><label><%=t(:label_password)%><span>*</span></label></td>
+            <td><%=u.password_field :password, :class=>"field size4"%></td>
+            <td>&nbsp;</td>
+            <td width="21%" align="left" valign="top"><label><%=t(:label_confirm_password)%><span>*</span></label></td>
+            <td><%=u.password_field :password_confirmation,:class=>"field size4"%></td>
+          </tr>
+          <tr><td colspan="5">&nbsp;</td></tr>
+        <%end%>
+      </table>
+    <%end%>
+  </div>
+  <br class="clear" />
+  <div class="buttons">
+    <%if controller.action_name.eql?('new')%>
+      <input type="submit" value="<%=t(:label_create)%>" name="commit" class="button"/>
+    <%else%>
+      <input type="submit" value="<%=t(:label_update)%>" name="commit" class="button"/>
+    <%end%>
+    <%=link_to t(:label_cancel), companies_url, :class => "button" %>
+  </div>
+<%end%>
+<script type="text/javascript">
+  liviadatepicker();
+</script>

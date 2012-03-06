@@ -1,0 +1,54 @@
+
+<div id="show_repository">
+  <% form_remote_tag :url => {:controller=>'physical/clientservices/home',:action => :create_repository} ,:multipart=> true,:method=>:post ,:before=>"jQuery('#save_rep').attr('disabled',true);
+    jQuery('#save_rep').val('Please wait...');jQuery('#loader').show();"  do -%>
+    ﻿<div>
+      <table width="100%">
+        <tr>
+          <td width="23%" valign="top"><%=radio_button_tag 'upload','file',@msg[:file], {:onclick=>"switch_upload(true,false);"}%><label>Document</label></td>
+          <td width="25%" valign="top"><%=radio_button_tag 'upload','link',@msg[:link], {:onclick=>"switch_upload(false,true);"}%><label>Link</label></td>
+          <td width="4%" valign="top">&nbsp;</td>
+          <td width="22%" valign="top">&nbsp;</td>
+          <td width="25%" valign="top">&nbsp;</td>
+        </tr>
+        <tr id="file_label" <%if @msg[:link]%> style="display:none" <%end%>>
+          <td valign="top">&nbsp;</td>
+          <td valign="top" colspan="4">&nbsp;</td>
+        </tr>
+        <tr id="link_label">
+          <td valign="top"> Link</td>
+          <td valign="top" colspan="4"> <%= text_field_tag 'document_home[url]',CGI::unescape(params[:url]), :size => "60" ,:readonly=>true %></td>
+        </tr>
+        <tr>
+          <td valign="top"><label><%=t(:label_name)%> <span class="alert_message">*</span></label></td>
+          <td valign="top"><%=text_field_tag 'document_home[name]', CGI::unescape(params[:title])%></td>
+          <td valign="top"><%=hidden_field_tag 'url',params[:feed_url]%></td>
+          <td valign="top"><%=hidden_field_tag 'feed_title',params[:feed_title]%></td>
+          <td valign="top">&nbsp;</td>
+        </tr>
+        <tr>
+          <td valign="top"><%=t(:label_category)%> </td>
+          <td valign="top">
+            <%=select_tag 'document_home[category_id]', options_for_select(@categories.collect{|c| [c.alvalue,c.id]}),
+              :class=>"widthSelectBox", :id=>"categories_combo",
+              :onchange => "show_sub_categories(this.value)"%>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><label>Tag</label></td>
+          <td valign="top"><%=text_area_tag 'document_home[tag_array]','' , :rows => 3, :cols => 30 %></td>
+          <td valign="top">&nbsp;</td>
+          <td valign="top"><label><%=t(:label_description)%></label></td>
+          <td valign="top"><%=text_area_tag 'document_home[description]', @document_home.description,:html=>{:cols=>"45", :rows=> '4'} %></td>
+        </tr>
+      </table>
+      <div class="buttonSub_div">
+        <%=submit_tag t(:text_upload), :class=>"button",:id=>'save_rep',:onclick=>"return validate_document_name();"%>
+  <%#=link_to(t(:text_cancel), repositories_path, :class=>"linkbutton")%>
+        <input type="submit" id="cancel" value="Cancel" onclick="parent.tb_remove();return false"/>
+      </div>
+      <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    </div>
+  <% end %>
+
+</div>

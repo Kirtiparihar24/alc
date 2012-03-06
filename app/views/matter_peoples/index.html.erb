@@ -1,0 +1,56 @@
+<div>
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <div style="min-width: 0px;" id="fragment-2" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+          <tr>
+            <td width="76%" style="padding:0">
+              <%=render :partial => "matters/matter_contact_account" %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="seperator_dotted_hori"></div>
+      <%=render :partial => "matter_peoples_law_team", :locals => {
+        :title => t(:text_law_firm_team),
+        :matter_peoples => @matter_people_clients,
+        :people_type => 'client',
+        :message => "No Law Team members",
+        :width => 450, :height => 245}%>
+      <br class="clear" />
+      <%=render :partial => "matter_people_client_contacts", :locals => {
+        :title => "Client Contact",
+        :matter_peoples => @matter_people_client_contacts,
+        :people_type => 'client_contact',
+        :message => "No Client Contacts",
+        :width => 670, :height => 400}%>
+      <br class="clear" />
+      <%if @matter.is_litigation%>
+        <%= render :partial => 'matter_peoples', :locals => {
+          :title => t(:text_opposing_legal_team),
+          :matter_peoples => @matter_people_opposite,
+          :people_type => 'opposites',
+          :name => 'Add Opposing Legal Team',
+          :message => "No Opposite Law Team members",
+          :width => 650, :height => 365}%>
+        <br class="clear" />
+      <%end%>
+      <%= render :partial => 'matter_peoples', :locals => {
+        :title => t(:text_client_representatives),
+        :matter_peoples => @matter_people_client_representatives,
+        :people_type => 'client_representative',
+        :name => 'Add Client Representatives',
+        :message => "No Client Representatives",
+        :width => 670, :height => 400}%>
+      <br class="clear" />
+      <%= render :partial => 'matter_peoples', :locals => {
+        :title => t(:text_other_related_parties),
+        :matter_peoples => @matter_people_others,
+        :people_type => 'others',
+        :name => 'Add Other Related Parties',
+        :message => "No Other Related Parties",
+        :width => 670, :height => 400}%>
+    </div>  
+  </div>
+</div>

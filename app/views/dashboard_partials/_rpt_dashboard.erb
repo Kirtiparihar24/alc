@@ -1,0 +1,3 @@
+<% if (display_report_sub_tab?(request)) %>
+  <ul class="tabs-nav" ><li class="<%=["rpt_contacts","rpt_accounts","rpt_opportunities","rpt_matters","rpt_time_and_expenses","rpt_campaigns","report_favourites"].include?(controller.controller_name) ? 'tabs-selected' : ''%>"><a href="/rpt_contacts/current_contact" onclick="show_report();"><span>Reports</span></a></li><li class="<%if controller.controller_name.eql?('dashboards') %>tabs-selected<%end%>"><a href="/dashboards/all_category" onclick="show_dashboard();"><span><%=t(:text_dashboards)%></span></a></li></ul>
+<%end%> 

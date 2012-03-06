@@ -1,0 +1,33 @@
+<script type="text/javascript">
+  livia_datepicker('invoice_date_start');
+  livia_datepicker('invoice_date_end');
+</script>
+<div class="box-head"><h2 class="left"><%=t(:text_invoice_generation)%></h2></div>
+<div id="BillingPayments">
+  <div class="form">
+    <%form_tag({:action => :generate_user_invoice_reports}, {:onsubmit => "jQuery('#gen01').attr('disabled', true); return true;"})  do |f| %>
+      <table width="100%" align="center" cellpadding="0" cellspacing="0" class="" cellpading="0">
+        <tbody>
+          <tr><td></td></tr>
+          <tr>
+            <td align="left" valign="top" style="padding:0 0 0 5px;">
+              <table width="105%" border="0" cellpadding="3" cellspacing="0" class="grayBox" style="font-size:100%;">
+                <tr>
+                  <td width="10%" align="left"><label><%=t(:text_company)%> <span>*</span></label></td>
+                  <td align="left"><%= collection_select(:company, :id, @companies, :id, :name, {:include_blank =>'Please Select'}, html_options = {:onchange => "fetch_data_based_for_company(this.value, 'invoicespinnerdiv', 'invoices/selected_company_invoice_dates')", :class=>'field size3'}) %></td>
+                  <td width="15%" align="right"><label><%=t(:text_invoice_start_date)%> <span>*</span></label></td>
+                  <td width="20%" align="left"><input type="text" id="invoice_date_start" name="date_start"  readonly="true" class="dateTextBox date_picker field size2"  size="10"/></td>
+                  <td width="15%" align="right"><label><%=t(:text_invoice_end_date)%> <span>*</span></label></td>
+                  <td width="20%" align="left"><input type="text" id="invoice_date_end" name="date_end"  readonly="true" class="dateTextBox date_picker field size2" size="10"/></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr><td colspan="7" align="right">&nbsp;</td></tr>
+        </tbody>
+      </table>
+    <div class="buttons"><input type="submit" id="gen01" value="<%=t(:label_generate_invoice)%>"  class="buttonReport" onclick=""/></div>
+    <%end%>
+  </div>
+</div>
+<div id="invoicespinnerdiv"></div>

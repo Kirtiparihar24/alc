@@ -1,0 +1,135 @@
+<div style="margin-top:10px;">
+  <div class="tabular_listing border_gray">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#f1e3c4" class="xbox_gray_new">
+      <tbody><tr>
+          <td>
+            <div class="fl client_comm">
+              <a id="link_to_unread_comments_<%=n%>" href="#" class="selected" onclick="jQuery('#read_comments_div_<%=n%>').hide();jQuery('#link_to_read_comments_<%=n%>').removeClass('selected');jQuery('#unread_comments_div_<%=n%>').show();jQuery(this).addClass('selected');return false;"><%=t(:text_unread_messages)%></a>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <a id="link_to_read_comments_<%=n%>" href="#" onclick="jQuery('#unread_comments_div_<%=n%>').hide();jQuery('#link_to_unread_comments_<%=n%>').removeClass('selected');jQuery('#read_comments_div_<%=n%>').show();jQuery(this).addClass('selected');return false;"><%=t(:text_read_messages)%></a>
+            </div>
+            <br class="clear" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div id="unread_comments_div_<%=n%>">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+        <tr>
+          <th width="15%" align="left"><%= t(:text_title) %></th>
+          <th width="10%" align="left"><%= t(:text_user) %></th>
+          <th width="15%" align="left"><%= t(:text_matter) %></th>
+          <th width="20%" align="left"><%= t(:text_matter_task) %></th>
+          <th width="15%" align="left"><%= t(:text_message_details) %></th>
+          <th width="17%" align="left"><%= t(:text_created_at) %></th>
+          <th width="12%" align="center"><%= t(:text_mark_read) %></th>
+        </tr>
+        <tr>
+          <td colspan="7" style="padding:0; margin:0;">
+            <table id="unread_comments_table_<%=n%>" width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+              <tbody>
+                <% client_comments_unread.each do |comment| %>
+                  <% m, mt = comment.matter_and_task_from_comment %>
+                  <% checkexpired = checkmatter_expired(m) %>
+                  <% if checkexpired[1]=="link" %>
+                    <tr class="<%=cycle('bg1', 'bg2')%>" id="<%= comment.id %>" style="font-weight:bold;">
+                      <td width="15%" align="left"><%= comment.get_title %></td>
+                      <td width="10%" align="left"><%= comment.user.nil?? '' : comment.user.try(:full_name) %></td>
+                      <td width="15%" align="left"><%=conditional_edit_matter(m, checkexpired)%><%#= conditional_edit(m) %></td>
+                      <td width="20%" align="left"><%= raw truncate_hover_link(mt.name, 30, edit_matter_matter_task_path(m, mt)) %></td>
+                      <td width="15%" align="left"><span class="comment"><%= raw(truncate_hover_comments(comment.comment, 40)) %></span></td>
+                      <td width="17%" align="left"><%= comment.created_at.to_time.strftime('%m/%d/%y %H :%M') %></td>
+                      <td width="12%" align="center"  style="padding-top:3px;">
+                        <a href="#" onmouseup="markCommentRead(<%= comment.id %>)" onmousedown="showCheckImage('span_<%=comment.id%>', 'image_<%=comment.id%>');return true;">
+                          <span id="span_<%=comment.id%>" class="icon_placeholder" style="display:block"></span>
+                          <img id="image_<%=comment.id%>" border="0" src="/images/livia_portal/check.gif" style="display: none;"/>
+                        </a>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          </td>
+        </tr>        
+      </table>
+    </div>
+    <div id="read_comments_div_<%=n%>" style="display:none;">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+        <tr>
+          <th width="15%" align="left"><%= t(:text_title) %></th>
+          <th width="10%" align="left"><%= t(:text_user) %></th>
+          <th width="15%" align="left"><%= t(:text_matter) %></th>
+          <th width="20%" align="left"><%= t(:text_matter_task) %></th>
+          <th width="15%" align="left"><%= t(:text_message_details) %></th>
+          <th width="17%" align="left"><%= t(:text_created_at) %></th>
+          <th width="12%" align="left">Mark Unread</th>
+        </tr>
+        <tr>
+          <td colspan="7" style="background-color:#efefef;">
+            <table width="100%" cellpadding="1" cellspacing="1"  style="border-collapse: separate;" id="read_comments_table_<%=n%>" >
+              <tbody>
+                <% client_comments_read.each do |comment| %>
+                  <% m, mt = comment.matter_and_task_from_comment %>
+                  <% checkexpired = checkmatter_expired(m) %>
+                  <% if checkexpired[1]=="link" %>
+                    <tr class="<%=cycle('bg1', 'bg2')%>" id="<%= comment.id %>">
+                      <td width="15%" align="left"><%= comment.get_title && comment.get_title.humanize %></td>
+                      <td width="10%" align="left"><%= comment.user.nil?? '' : comment.user.try(:full_name) %></td>
+                      <td width="15%" align="left"><%=conditional_edit_matter(m, checkexpired)%><%#= conditional_edit(m) %></td>
+                      <td width="20%" align="left"><%= raw truncate_hover_link(mt.name, 30, edit_matter_matter_task_path(m, mt)) %></td>
+                      <td width="15%" align="left"><span class="comment"><%= raw(truncate_hover_comments(comment.comment, 40)) %></span></td>
+                      <td width="17%" align="left"><%= comment.created_at.to_time.strftime('%m/%d/%y %H :%M') %></td>
+                      <td width="12%" align="center"  style="padding-top:3px;">
+                        <a href="#" onmouseup="markCommentUnRead(<%= comment.id %>)" onmousedown="showCheckImage('span_<%=comment.id%>', 'image_<%=comment.id%>');return true;">
+                          <span id="span_<%=comment.id%>" class="icon_placeholder" style="display:block"></span>
+                          <img id="image_<%=comment.id%>" border="0" src="/images/livia_portal/check.gif" style="display: none;"/>
+                        </a>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          </td>
+        </tr>        
+      </table>
+    </div>
+  </div>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;119</div>
+
+<script language="javascript" type="text/javascript">
+  new_tool_tip();
+  function markCommentRead(id) {
+    jQuery("#" + id).remove();
+    jQuery.post(
+    "/comments/" + id + "/mark_read",
+    {"newstatus" : "read"},
+    function(data) {
+      jQuery('#read_comments_table_<%=n%> > tbody:first').prepend(data);      
+      var n = parseInt(jQuery("#new_comments_count").html());
+      n -= 1;
+      jQuery("#new_comments_count").html("" + n);
+    });
+  }
+
+  function markCommentUnRead(id) {  
+    jQuery("#" + id).remove();
+    jQuery.post(
+    "/comments/" + id + "/mark_read",
+    {"newstatus" : "unread"},
+    function(data) {
+      jQuery('#unread_comments_table_<%=n%> > tbody:first').prepend(data);      
+      var n = parseInt(jQuery("#new_comments_count").html());
+      n += 1;
+      jQuery("#new_comments_count").html("" + n);
+    });
+  }
+
+  function showCheckImage(span_id, image_id) {
+    jQuery("#"+span_id).hide();
+    jQuery("#"+image_id).show();
+  }
+</script>

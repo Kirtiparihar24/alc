@@ -1,0 +1,118 @@
+<div class="container_12">
+  <div class="module threeol">
+    <h2><span><%= t(:text_matter_calendar) %></span></h2>
+    <div class="module-body01">
+      <div class="leftColumn">
+        <div id="datepicker" align="center"></div>
+      </div>
+      <div class="middleColumn" id ="task_type_DIV"><%=render :partial => "tasks_by_date"%></div>
+      <div style="width: 20%;float:left;padding:10px 0 0 20px;"><!-- <img src="/images/cgc_images/red_flag.png" width="16" height="16" align="absbottom" /> --><h5><%= t(:text_alerts) %></h5>
+        <p> <span class="overdueMsg"><%= "#{t(:text_you_have)} #{matter_alert_count(@all_matters, 'Overdue')} #{t(:text_overdue_tasks)}"  %></span> <br />
+          <span class="upcomingMsg"><%="#{t(:text_you_have)} #{matter_alert_count(@all_matters, 'Upcoming')} #{t(:text_upcoming_tasks)}"%></span><br />
+        </p></div>
+    </div>
+  </div>
+  <div style="clear:both;"></div>
+</div>
+
+<div class="container_12">
+  <div class="module" >
+    <h2><span><%= t(:text_matter_task) %></span></h2>
+    <%= render :partial => "matter_task" %>
+  </div>
+</div>
+
+<div class="container_12">
+  <div class="module" id="clientopenmattersDiv">
+    <h2><span><%=t(:text_open_matters)%></span></h2>
+    <div class="module-table-body">
+      <table class="tablesorter">
+        <thead>
+          <tr>
+            <th width="15%"><%=t(:text_law_firm)%></th>
+            <th width="20%"><%=t(:text_matter_name)%></th>
+            <th width="10%"><%=t(:text_contact)%></th>
+            <th width="10%"><%=t(:text_lead_lawyer)%></th>
+            <th width="10%"><%=t(:text_status)%></th>
+            <!--<th width="10%"><%=t(:text_forum)%></th>-->
+            <th width="10%" align="center"><%=t(:text_actions)%></th>
+          </tr>
+        </thead>
+        <tbody>          
+          <%if @open_matters.length > 0%>
+            <%@open_matters.each do |open_matter|%>
+              <tr class="<%=cycle("odd", "")%>">
+                <td><%=truncate_hover_blue_tooltip(open_matter.company.name.try(:titleize),20)%></td>
+                <td><%=raw truncate_hover_link_blue_tooltip(open_matter.name.try(:titleize),20,matter_details_path(open_matter))%></td>
+                <td><%=truncate_hover_blue_tooltip(open_matter.contact.try(:full_name).try(:titleize),20)%></td>
+                <td><%=truncate_hover_blue_tooltip(open_matter.user.try(:full_name).try(:titleize),20)%></td>
+                <td><%=open_matter.matter_status.lvalue if open_matter.matter_status%></td>
+                <td align="center"><%=link_to(image_tag('/images/cgc_images/icon-dollar.gif',{:alt =>"Billing History", :title =>"Billing History", :border => 0}), billings_matter_client_path(:id => open_matter.id, :popup => true, :width => 800, :height => 450), :class => "thickbox")%> |  <%=link_to(image_tag('/images/cgc_images/upload-document.gif',{:alt =>"Upload Matter Doc", :title =>"Upload Matter Doc", :border => 0}), client_new_doc_matter_client_path(open_matter,:matter_id=>open_matter.id, :return_path => "/matter_clients"))%></td>
+              <%end%>
+            </tr>
+          <%else%>
+            <tr class="odd"><td colspan="7"><div class="message"><%=t(:text_no_open_matters_found)%></div></td></tr>
+          <%end%>
+
+        </tbody>
+      </table>
+      <%unless @open_matters.blank?%>
+        <%=will_paginate @open_matters%> <%#=raw(page_entries_info @open_matters)%>
+      <%end%>
+      <div style="clear: both"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container_12">
+  <div class="module"id="clientcompletedmatterDIV">
+    <h2><span><%=t(:text_completed_matters)%></span></h2>
+    <div class="module-table-body">
+      <table class="tablesorter">
+        <thead>
+          <tr>
+            <th width="15%"><%=t(:text_law_firm)%></th>
+            <th width="20%" ><%=t(:text_matter_name)%></th>
+            <th width="10%" align="left"><%=t(:text_contact)%></th>
+            <th width="10%" align="left"><%=t(:text_lead_lawyer)%></th>
+            <th width="10%"><%=t(:text_status)%></th>
+            <th width="10%"><%=t(:text_forum)%></th>
+            <th width="10%" align="center"><%=t(:text_actions)%></th>
+          </tr>
+        </thead>
+        <tbody>          
+          <%if @completed_matters.length > 0%>
+            <%@completed_matters.each do |completed_matter|%>
+              <tr class="<%=cycle("odd", "")%>">
+                <td><%=truncate_hover_blue_tooltip(completed_matter.company.name.try(:titleize),20)%></td>
+                <td><%=raw truncate_hover_link_blue_tooltip(completed_matter.name.try(:titleize),20,matter_details_path(completed_matter))%></td>
+                <td><%=truncate_hover_blue_tooltip(completed_matter.contact.try(:full_name).try(:titleize),20)%></td>
+                <td><%=truncate_hover_blue_tooltip(completed_matter.user.try(:full_name).try(:titleize),20)%></td>
+                <td><%=completed_matter.matter_status.lvalue if completed_matter.matter_status%></td>
+                <td></td>
+                <td align="center"><%=link_to(image_tag('/images/cgc_images/icon-dollar.gif',
+                          {:alt =>"Billing History", :title =>"Billing History  ", :border => 0}),
+                        billings_matter_client_path(completed_matter.id,:popup => true, :width => 800, :height => 450), :class =>"thickbox")%> |
+                      <%=link_to(image_tag('/images/cgc_images/upload-document.gif',
+                          {:alt =>"Upload Matter Doc", :title =>"Upload Matter Doc", :border => 0}),
+                        client_new_doc_matter_client_path(completed_matter,
+                          :mapable_type=>'Matter', :mapable_id=> completed_matter.id,:matter_id=>completed_matter.id, :return_path => "/matter_clients"))%></td>
+              <%end%>
+            </tr>
+          <%else%>
+            <tr class="odd"><td colspan="7"><div class="message"><%=t(:text_no_completed_matters_found)%></div></td></tr>
+          <%end%>
+        </tbody>
+      </table>
+      <%unless @completed_matters.blank?%>
+        <div class="pagination"><%=will_paginate @completed_matters%><%#=raw(page_entries_info @completed_matters)%></div>
+      <%end%>
+      <div style="clear: both"></div>
+    </div>
+  </div>
+  <div style="clear:both;"></div>
+</div>
+
+<script type="text/javascript">
+  matter_client_datepicker();
+</script>

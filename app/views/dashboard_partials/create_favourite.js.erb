@@ -1,0 +1,5 @@
+parent.tb_remove()
+jQuery('#list_fav').html("<%=escape_javascript(render(:partial => 'dashboard_partials/favourites',:locals => {:col => @fav_dashboard}))%>")
+tb_init('#list_fav a.thickbox');
+window.location.reload();
+

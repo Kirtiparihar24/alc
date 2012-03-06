@@ -1,0 +1,44 @@
+<div id="invoice_records_show">
+  <%unless invoices.blank?%>
+    <div class="pagging">
+      <div class="left"><%=raw custom_page_entries_info invoices %></div>
+      <div class="right"><%=will_paginate invoices, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%></div>
+    </div>
+  <%end%>
+  <div class="table">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+      <tr>
+        <th width="19%" align="left"><%=t(:text_company_name)%></th>
+        <th width="19%" align="left"><%=t(:text_invoice_generated_date)%></th>
+        <th width="14%" align="left"><%=t(:text_invoice_start_date)%></th>
+        <th width="14%" align="left"><%=t(:text_invoice_end_date)%></th>
+        <th width="12%" align="left"><%=t(:text_invoice_amount)%></th>
+        <th width="8%" align="left"><%=t(:text_status)%></th>
+        <th width="14%" align="left"><%=t(:text_action)%></th>
+      </tr>
+      <%if invoices.blank? %>
+  <%#assets = controller.controller_name%>
+  <%#asset = assets.singularize%>
+        <tr><td colspan="7"><div class="warningCont m5"><%=t(:text_no_generated_invoices)%></div></td></tr>
+      <% else %>
+        <% invoices.each do |invoice| %>
+          <tr>
+            <td align="left"><%=invoice.company.name%></td>
+            <td align="left"><%=invoice.invoice_date.to_time.strftime('%m/%d/%y') if invoice.invoice_date %></td>
+            <td align="left"><%=invoice.invoice_from_date.to_time.strftime('%m/%d/%y') if invoice.invoice_date %></td>
+            <td align="left"><%=invoice.invoice_to_date.to_time.strftime('%m/%d/%y') if invoice.invoice_date %></td>
+            <td align="left"><%=invoice.invoice_amount %></td>
+            <td align="left"><%=invoice.status %></td>
+            <td align="left"><%=raw invoices_list_action_links(invoice)%></td>
+          </tr>
+        <%end%>
+      <%end%>
+    </table>
+  </div>
+  <div class="pagging">
+    <%unless invoices.blank?%>
+      <div class="left"><%=raw custom_page_entries_info invoices %></div>
+      <div class="right"><%=will_paginate invoices, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%></div>
+    <%end%>
+  </div>
+</div>

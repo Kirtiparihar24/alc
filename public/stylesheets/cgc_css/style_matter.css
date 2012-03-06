@@ -1,0 +1,138 @@
+/* FORM FOR MODAL WINDOW*/
+.windowForm {margin:0 auto 0 auto; padding:0; height:100%;}
+.windowForm p{margin:10px 0 10px 0;padding:0;width:100%; }
+.windowForm p label{margin:0 5px 0 0;padding:0; width:40%; float:left; text-align:right;font-size:11px;}
+.windowForm p span.labeltext{margin:0 5px 0 0;padding:0;float:left; text-align:right;font-size:11px; border:1px solid #dddddd; background:#fff; color:#333333;  }
+.windowForm p select{padding:0; float:left; text-align:left;font-size:11px; margin:0 5px 0 0; border:1px solid #dddddd; background:#fff; color:#333333; }
+.windowForm p input{width:198px;padding:0;text-align:left;font-size: 11px; float:left; border:1px solid #dddddd; background:#fff; color:#333333; padding:2px; }
+.windowForm p input.checkBox2{padding:0; width:15px; text-align:left;margin:0; float:left;_margin:-3px 0 0 0;*margin:-3px 0 0 0; border:none; background:none; }
+.windowForm p textarea{padding:0; width:200px; float:left; text-align:left;font-size:11px;font-family: Arial; margin:0 ; height:100%; border:1px solid #dddddd; background:#fff; color:#333333;}
+/*.windowForm input.button{border:1px solid #aed0eb; height:100%; width: auto; background:#c4dff1; color:#00416a; padding:0 5px 0 5px; font-size:11px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}*/
+.windowForm input.button{background:#c4dff1; border:1px solid #aed0eb; color:#00416a;font-size:11px; font-weight:normal;text-align:center; padding:2px 12px; *padding:2px 5px; width:auto; outline:none; cursor:pointer; margin:0;}
+.windowForm .link{color:#3d80b3;font-size: 11px;text-decoration:none; }
+.windowForm .linkbutton a{text-decoration:none;border:1px solid #aed0eb; height:100%; width: auto; background:#c4dff1; color:#00416a; padding:0; font-size:11px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}
+.windowForm .link a{color:#3d80b3; text-decoration:none;}
+.windowForm .link a:hover{color:#3d80b3;text-decoration:underline;}
+.windowForm p.call{margin:5px 0 0 97px;  padding:0; width:100%;_padding:0;_margin:5px 0 0 96px; *margin:5px 0 0 96px; width:50% !important;text-align:center;}
+.windowForm p.call input{padding:0; width:15px; text-align:center;margin:0; border:1px solid #dddddd; background:#fff; color:#333333;}
+.windowForm p.call label{padding:0 0 0 3px; width:80px; color:#0f0f0f;_padding:4px 0 0 0; *padding:3px 0 0 0; text-align:left;}
+.windowForm table{font-size:11px; xwidth:98%;}
+.windowForm table tr th{background:#E3F1FA url(../images/cgc_images/headingBg_th.gif) repeat-x bottom left;height:23px;border-top:1px solid #cce2f2;color:#003e6d;vertical-align:top;text-align:left;padding-left:8px;}
+.windowForm table a{color:#003e6d; text-decoration:none;}
+.windowForm table a:hover{text-decoration:underline;}
+.windowForm table td{padding:2px; vertical-align:top; }
+/*.windowForm table td input.button{border:1px solid #aed0eb; height:100%; width: auto; background:#c4dff1; color:#00416a; padding:0 5px 0 5px; font-size:100%; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}*/
+.windowForm table td input.button{border:1px solid #aed0eb; background:#c4dff1; color:#00416a; font-size:11px; font-weight:normal; text-align:center; padding:2px 12px; *padding:2px 5px; outline:none; cursor:pointer; margin:0;}
+.windowForm table td textarea{padding:0; xwidth:80%; float:left; text-align:left;font-size:100%;font-family: Arial; margin:0 ; height:100%; border:1px solid #dddddd; background:#fff; color:#333333;}
+
+.gridDiv Div.windowForm table td textarea{ width:90%; float:left; font-family: Arial;border:1px solid #dddddd; background:#fff; color:#333333;}
+/* MATTER*/
+.matterForm, .matterTermEngagementForm {margin:0 auto 0 auto; padding:0; height:100%; }
+.matterForm p{margin:5px 0 5px 0;padding:0;width:100%; float:left;}
+.matterForm p label{margin:0 5px 0 0;padding:0; width:40%; float:left; text-align:right;font-size: 11px; }
+.matterForm p select{padding:0; float:left; text-align:left;font-size: 11px; margin:0 5px 0 0; border:1px solid #dddddd; background:#fff; color:#333333;width:200px; }
+.matterForm p input{padding:2px; width:200px; text-align:left;font-size: 11px; border:1px solid #dddddd; background:#fff; color:#333333; }
+.matterForm p input.radio, .matterTermEngagementForm input.radio{background:none; padding:0px; margin:0 2px 0 0; width:auto; border:none; }
+
+.matterForm p input.checkBox1{padding:0; width:15px; text-align:left;margin:0; float:left;_margin:-3px 0 0 0;*margin:-3px 0 0 0; border:none; background:none;}
+.matterForm textarea{padding:0; width:200px; float:left; text-align:left; font-size:11px;font-family: Arial; margin:0 ; height:100%; border:1px solid #dddddd; background:#fff; color:#333333;}
+/*.matterForm input.button, .matterTermEngagementForm input.button{border:1px solid #aed0eb; height:100%; width:90px; background:#c4dff1; color:#00416a; padding:2px 5px 2px 5px; font-size:11px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}*/
+.matterForm input.button, .matterTermEngagementForm input.button{border:1px solid #aed0eb; background:#c4dff1; color:#00416a; font-size:11px; font-weight:normal; text-align:center; padding:2px 12px; *padding:2px 5px; outline:none; cursor:pointer; margin:0;}
+/*.matterForm p input.buttonlong{border:1px solid #aed0eb; height:100%; background:#c4dff1; color:#00416a; width:auto; padding:2px 3px; *padding:0; font-size:11px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}*/
+.matterForm p input.buttonlong{border:1px solid #aed0eb; background:#c4dff1; color:#00416a; font-size:11px; font-weight:normal; text-align:center; padding:2px 12px; *padding:2px 5px; outline:none; cursor:pointer; margin:0;}
+.matterForm .link{color:#3d80b3;font-size: 11px;text-decoration:none; }
+.matterForm .linkbutton a{text-decoration:none;border:1px solid #aed0eb; height:100%; width: auto; background:#c4dff1; color:#00416a; padding:0; font-size:11px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}
+.matterForm .link a{color:#3d80b3; text-decoration:none;}
+.matterForm .link a:hover{color:#3d80b3;text-decoration:underline;}
+.buttonRisk{border:1px solid #aed0eb; background-color:red; color:#00416a; font-size:11px; font-weight:normal; text-align:center; padding:2px 5px; *padding:2px 5px; outline:none; cursor:pointer; margin:0;}
+.matterForm p.call{margin:0 0 0 315px;_margin:0 0 0 158px;  padding:0; float:left; width: 200px;}
+.matterForm p.call input.check{padding:0; width:15px; text-align:left;margin:0; float:left; border:none; background:none;}
+.matterForm p.call label{padding:0 0 0 3px;width:65px; color:#0f0f0f;text-align:left; margin:0;_margin:4px 0 0 0;*margin:4px 0 0 0;}
+.pr5{ padding:0 5px 0 0; }
+.matterList {margin:5px auto 5px auto; padding:0; height:100%;font-size:11px;}
+.matterList form{margin:0; padding:0; }
+.matterList  form p{margin:0 0 0 5px; padding:0;width:320px;}
+.matterList  form p label{margin:0;padding:0;width:120px;float:left; }
+.matterList  form p select{margin:0;padding:0;width:100px;font-size:100%;border:1px solid #dddddd; background:#fff; color:#333333;}
+.matterList  form p input{margin:0 3px 0 0;padding:0;width:15px;float:left; border:1px solid #dddddd; background:#fff; color:#333333;}
+
+
+/* Terms of Engagement */
+.matterTermEngagementForm p{margin:5px 0 5px 0;padding:0 0 0 5px;width:100%; float:left;}
+.matterTermEngagementForm p label{margin:0 5px 0 0;padding:0; float:left; text-align:right;font-size: 11px; }
+.matterTermEngagementForm label{margin:0 5px 0 0px;padding:0; float:left; text-align:right;font-size: 11px; }
+.matterTermEngagementForm textarea{padding:0; width:98%; float:left; text-align:left; font-size:11px;font-family: Arial; margin:0 ; height:80px; border:1px solid #dddddd; background:#fff; color:#333333;}
+.matterTermEngagementForm  input{margin:0 3px 0 0;padding:0; width:auto; font-size:11px; float:left; border:1px solid #dddddd; background:#fff; color:#333333;}
+
+/* ATTACHMENT FOR CREATE MATTERS */
+.attachment{margin:0;padding:0; width:100%; float:left;}
+.attachment label{margin:0;padding:0; width:40%; float:left; font-size:11px;text-align:right; }
+.attachment p{margin:0 0 5px 0;padding:0; width:58%; float:left;}
+.attachment p label{margin:0 0 0 3px;padding:0; width:78px; float:left; text-align:left; }
+.attachment p input{margin:0 0 0 3px;padding:0; width:15px; float:left;_margin:-3px 0 0 3px;*margin:-3px 0 0 3px;  border:1px solid #dddddd; background:#fff; color:#333333;   }
+.attachment p input.check{padding:0; width:15px; text-align:left;margin:0; float:left;_margin:-3px 0 0 0;*margin:-3px 0 0 0; border:none;  background:none;}
+.attachment p input.radio{border:none;  background:none;}
+
+/*CREATE MATTERS -- SHOW/HIDE DIV*/
+.showHide{padding:5px;float:left;width: 320px; height:100%; background:#e5e9eb; border:1px solid #DDDDDD;}
+.showHide p{margin:0;padding:0;float:left;width: 320px; }
+.showHide p label{margin:5px 0 0 2px;padding:0;float:right;width: 250px; float:left; text-align:left; }
+.showHide p input{margin:5px 0 0 0;padding:0;float:left;width: 120px; text-align:left; border:1px solid #dddddd; background:#fff; color:#333333;}
+.showHide p input.check{padding:0; width:15px; text-align:left;margin:5px 0 0 0; float:left; border:none; background:none;}
+
+.matterForm .showHide p.radio{margin:0;padding:0;float:left;width: 200px;}
+.matterForm .showHide p.radio input{margin:0;padding:0;float:left;width: 15px; border:1px solid #dddddd; background:#fff; color:#333333;}
+.matterForm .showHide p.radio label{margin:0 0 0 5px;padding:0;float:left;width: 65px;_margin:4px 0 0 5px;*margin:4px 0 0 5px;}
+.matterForm .showHide p.radio input.radio{margin:0;padding:0;float:left;width: 15px;background:none; border:none;}
+
+
+.mlr5{margin:0px 5px;}
+
+
+/* For Matter Tabs */
+ul.tabNavigation {list-style: none;margin:0 0 17px 0;padding: 0;}
+ul.tabNavigation li {display: inline; margin:0 -3px 0 0px; padding:0; xborder:1px solid red;}
+ul.tabNavigation li a {border:1px solid #DDDDDD;padding: 5px 8px 5px 8px; background:url(/images/cgc_images/tab_bg.png) top left; color: #242424;text-decoration: none; font-size:11px; font-weight:bold; }
+ul.tabNavigation li a.selected {padding-bottom: 6px; border-bottom-width: 0; background:url(/images/cgc_images/tab-background-selected.png) top repeat-x; border-top: 1px solid #dddddd; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd; }
+ul.tabNavigation li a.selected,	ul.tabNavigation li a:hover {cursor: pointer;}
+ul.tabNavigation li a:focus {outline: 0;}
+div#tabs > div{padding: 5px;margin-top: -12px; border-width:0; color:#242424; border-left: 1px solid #dddddd; border-right: 1px solid #dddddd; border-bottom: 1px solid #dddddd; border-top: 1px solid #dddddd; background: #f2f5f7 repeat-x;}
+div#tabs > div h2 {margin-top: 0;}
+/*div#tabs .button {text-decoration:none;border:1px solid #aed0eb; height:100%; width: auto; background:#c4dff1; color:#00416a; padding:0; font-size:11px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}*/
+div#tabs .button {border:1px solid #aed0eb; background:#c4dff1; color:#00416a; font-size:11px; font-weight:normal; text-align:center; padding:2px 12px; *padding:2px 5px; outline:none; cursor:pointer; margin:0;}
+div#tabs a.link {text-decoration:none;border:1px solid #aed0eb; height:100%;background:#c4dff1; color:#00416a; padding:1px 4px 0 4px; font-size:10px; font-weight:normal; outline:none; cursor:pointer; text-align:center; margin:0;}
+#first { background-color:#f2f5f7;}
+#second {background-color:#f2f5f7;}
+#third { background-color:#f2f5f7;}
+#fourth { background-color:#f2f5f7;}
+#fifth { background-color:#f2f5f7;}
+#sixth { background-color:#f2f5f7;}
+#seventh { background-color:#f2f5f7;}
+.waste {min-height: 1000px;}
+
+.textBrwn11{font-size:11px;color:#c04c32; text-align:right; margin:0 5px; line-height:18px;}
+.textBrwn11 a{color:#c04c32; text-decoration:none;}
+.textBlue11{font-size:11px; color:#3D80B3; text-align:right; margin:0 5px; line-height:18px;}
+.textBlue11 a{color:#3D80B3; text-decoration:none;}
+.textBlue11 a:hover, .textBrwn11 a:hover{text-decoration:underline;}
+.pageErrInfo {float:right;font-family:Arial, Helvetica, sans-serif;font-size:11px;padding:4px;}
+
+.childtable-fs {font-size:10px}
+
+
+/*Created by Vaishali for Matter UI  on 10/03.2010*/
+legend{font-size:112.5%; font-weight:bold;color:#515151; }
+.textBoxMatter{width:198px;padding:0;text-align:left;font-size: 100%; float:left; border:1px solid #dddddd; background:#fff; color:#333333; padding:2px; }
+.textBoxDate{width:100px;padding:0;text-align:left;font-size: 100%; float:left; border:1px solid #dddddd; background:#fff; color:#333333; padding:2px; }
+select.selectBox{padding:0; float:left; text-align:left;font-size: 100%; margin:0 5px 0 0; border:1px solid #dddddd; background:#fff; color:#333333; }
+
+/*new matter created by vaishali */
+.newMatterForm {background:#f2f5f7;margin:0; padding:0; height:100%; width:100%;}
+.newMatterForm form table {font-size:11px;}
+.newMatterForm form table td{padding:0 5px 5px 5px;}
+.newMatterForm form table td table td{padding:0 5px 5px 5px;}
+.newMatterForm form table td.checkbox{padding:0; margin:0;width:15px;}
+.textBoxNewMatter{width:400px;border:1px solid #DDDDDD; font-size:11px; padding:3px; margin:0;}
+.textAreaNewMatter{width:400px;border:1px solid #DDDDDD; font-size:11px; padding:3px; margin:0; font-family:Arial, Helvetica, sans-serif;}
+.textBoxSmallMatter{width:100px;border:1px solid #DDDDDD; font-size:11px; padding:3px; margin:0;}
+.selectBoxNewMatter{border:1px solid #DDDDDD; font-size:11px; padding:3px; margin:0;}

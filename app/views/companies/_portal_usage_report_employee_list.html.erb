@@ -1,0 +1,2 @@
+<%=select("employee", "id", employees.collect{|e| [e.full_name, e.id]}, { :include_blank => "All Lawyers" })%>
+

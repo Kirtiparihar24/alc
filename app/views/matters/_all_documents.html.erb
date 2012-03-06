@@ -1,0 +1,21 @@
+<% if  @other_document.count > 0 %>
+  <div id="document" style="display: none;" class="ptb10">
+    <p>
+      There are <%= @other_document.count %> Documents owned by you with the access level as - Public, Matter view and Select view.<br/>
+      (You can change the status and responsibility of individual documents by editing the same in the ‘”Documents” section)
+
+      Do you want to assign these documents to the new lead lawyer?
+    </p>
+    <table cellspacing="0" cellpadding="0" border="0" width="70">
+      <tr>
+        <td width="5"><%= radio_button_tag :all_document_radio, "yes",true, {:onclick => "other_documents=true", :style => "padding:0;margin:4px 0 0 0"} %></td>
+        <td width="35">Yes</td>
+        <td width="5"><%= radio_button_tag :all_document_radio, "no",false,{:onclick => "other_documents=false", :style => "padding:0;margin:4px 0 0 0"} %></td>
+        <td width="35">No</td>
+      </tr>
+    </table>
+  </div>
+<% end %>
+<div id = "private_doc">
+  <%= render :partial => 'matters/private_document' %>
+</div>

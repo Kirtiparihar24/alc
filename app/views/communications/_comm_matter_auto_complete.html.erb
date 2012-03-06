@@ -1,0 +1,13 @@
+<% if from == "matters" %>
+  <%unless @matters.empty?%>
+    <%@matters.each do|result_obj|%>
+      <%=raw ("" + "<span id='id_matter' style=display:none>" + result_obj.id.to_s + "</span>" + "#{result_obj.name}") %>
+    <%end%>
+  <%end%>
+<% else %>
+  <%unless @contacts.empty?%>
+    <%@contacts.each do|result_obj|%>
+      <%=raw ("" + "<span id='id_contact' style=display:none>" + result_obj.id.to_s + "</span>" + "#{result_obj.name}") %>
+    <%end%>
+  <%end%>
+<% end %>

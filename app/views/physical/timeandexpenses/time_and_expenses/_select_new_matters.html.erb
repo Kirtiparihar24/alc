@@ -1,0 +1,2 @@
+<% matter_id = matter_id.blank? && @matters.size > 0 ? @matters[0].id : matter_id %>
+<%=select_tag 'physical_timeandexpenses_time_entry[matter_id]', "<option value=''></option>" + options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id ]},matter_id),{:class => "dropbox1",:style=>"width:120px;",:onchange=>"get_new_time_entry_matters_contact();"}%>

@@ -1,0 +1,123 @@
+<!--[if !IE]>start sidebar<![endif]-->
+<div id="sidebar">
+  <div class="quick_info" style="padding: 0 0 25px 10px;">
+    <div class="quick_info_top">
+      <h2 style="color:white;">Alerts / Notification
+        <span id="links" style="position:relative;left:-27px;float: right;top:-5px;">
+          <span style="cursor:pointer; position:absolute;font-size: 10px; color: #ff0000 " id="message-count" onclick ="jQuery('#messages-box').slideToggle();"><%=@unread_notification%></span>
+        </span>
+      </h2>
+      <div id="notification_div">
+        <%=render :partial => 'layouts/notifications'%>
+      </div>
+    </div>
+    <div class="sct" style="width:235px;">
+      <div class="sct_left">
+        <div class="sct_right">
+          <div class="sct_left">
+            <div class="sct_right" style="padding:10px 15px 0;">
+              <%not_count = notes_count_alert(@assigned_lawfirm_users.map(&:id),@user_ids)%>
+              <% if not_count > 0 %>
+                <dl>
+                  <dt><%= link_to pluralize(not_count, 'Note'), wfm_notes_path(:search=>{:status=>'More-than-2-days'}),:style=>"color: #194D65;"%></dt>
+                  <dd>Open for more than 2 days</dd>
+                </dl>
+              <%end%>
+              <% if @overdue_task_count > 0 %>
+                <dl>
+                  <dt><%= link_to pluralize(@overdue_task_count, 'Task'), wfm_user_tasks_path(:search=>{:status=>'Overdue'}),:style=>"color: #194D65;"%></dt>
+                  <dd>Overdue</dd>
+                </dl>
+              <%end%>
+
+              <% if @todays_task_count > 0 %>
+                <dl>
+                  <dt><%= link_to pluralize(@todays_task_count, 'Task'), wfm_user_tasks_path(:search=>{:status=>'Today'}),:style=>"color: #194D65;"%></dt>
+                  <dd>Today</dd>
+                </dl>
+              <%end%>
+
+              <% if @upcoming_task_count > 0 %>
+                <dl>
+                  <dt><%= link_to pluralize(@upcoming_task_count, 'Task'), wfm_user_tasks_path(:search=>{:status=>'Upcoming'}),:style=>"color: #194D65;"%></dt>
+                  <dd>Upcoming</dd>
+                </dl>
+              <%end%>
+            </div>
+            <!--span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scb" style="width:215px;"><span class="scb_left"></span><span class="scb_right"></span></div>
+  </div>
+  <% if current_user.service_provider && current_user.service_provider.has_front_office_access? %>
+    <div class="inner">
+      <!--[if !IE]>start section<![endif]-->
+      <div class="section">
+        <!--[if !IE]>start title wrapper<![endif]-->
+        <div class="title_wrapper">
+          <h2>List of Lawyers</h2>
+          <span class="title_wrapper_left"></span>
+          <span class="title_wrapper_right"></span>
+        </div>
+        <!--[if !IE]>end title wrapper<![endif]-->
+        <!--[if !IE]>start section content<![endif]-->
+        <div class="section_content">
+          <!--[if !IE]>start section content top<![endif]-->
+          <div class="sct" style="height: 250px;">
+            <div class="sct_left">
+              <div class="sct_right">
+                <div class="sct_left" style="overflow:auto; overflow-x: hidden ; width: 100%; height: 250px;">
+                  <div class="sct_right">
+
+                    <div id="search_wrapper">
+                      <form action="#">
+                        <fieldset>
+                          <label>
+                            <input type="text" name="" id="id_search" class="text"/>
+                          </label>
+                        </fieldset>
+                      </form>
+                    </div>
+                  </div>
+                  <ul id="side_bar_lwayers_list" class="sidebar_menu">
+                    <%i=0%>
+                    
+                    <%@assigned_lawfirm_users.each do |lawfirm_user|%>
+                      <% val = lawfirm_user.id %>
+                      <li> <span class="search_text">
+                       <%=link_to_remote lawfirm_user.full_name, {:url=> get_lawyer_info_wfm_user_task_path(lawfirm_user.id),:before=> "toggle_lawyes_list('#{lawfirm_user.id}')"},{:id=>"lawyer_"+lawfirm_user.id.to_s}%>
+                      </span>
+                        
+                        <div class="lawyer_list" id="verify_lawyer_div_<%= lawfirm_user.id %>">
+                          <%#= render :partial =>'wfm/user_tasks/verify_lawyer', :locals => {:lawfirm_user => lawfirm_user,:i=>i} %>
+                        </div>
+                      </li>
+                      <%i=i+1%>
+                    <%end%>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--[if !IE]>end section content top<![endif]-->
+        <!--[if !IE]>start section content bottom<![endif]-->
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+        <!--[if !IE]>end section content bottom<![endif]-->
+
+      </div>
+      <!--[if !IE]>end section content<![endif]-->
+    </div>
+  <%end%>
+  <!--[if !IE]>end section<![endif]-->
+
+  <!--[if !IE]>start quick info<![endif]-->
+
+
+  <!--[if !IE]>end quick info<![endif]-->
+
+
+
+</div>

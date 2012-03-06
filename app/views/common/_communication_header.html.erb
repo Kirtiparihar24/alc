@@ -1,0 +1,80 @@
+<div id="bodyContnr">
+  <!--HEADER STARTS HERE-->
+  <div>
+    <div class="headerContnr">
+      <!--LOGO-->
+      <div class="fl" style="width: 200px;">
+        <div class="logoDiv"><%= home_logo_link %></div>
+      </div>
+      <!--LOGO-->
+
+      <!--LAWYER NAME & LOGIN INFO-->
+      <div class="topNav">
+        <% if show_selected_lawyer %>
+          <% if @sp_session %>
+            <!--LAWYER NAME-->
+            <div class="fl">
+              <div class="fl"><img height="25" width="6" src="/images/livia_portal/r_left.png"/></div>
+              <div class="rBg fl">
+                <div class="userDetl"><strong><%=@sp_session.assignment.receiver.try(:full_name) %>, </strong><%=@sp_session.assignment.receiver.company_full_name %></div>
+              </div>
+              <div class="fl"><img height="25" width="6" src="/images/livia_portal/r_right.png"/></div>
+              <br clear="all" />
+            </div>
+            <!--LAWYER NAME-->
+          <%end%>
+        <%end%>
+        <!--LOGIN INFO-->
+        <div class="fr headerLink">
+          <div class=" txtR"><strong><%=t(:text_hello)%><%= current_user.name if current_user %> !</strong><%=t(:text_login_at)%><%#= current_user.current_sign_in_at.strftime("%d %B %Y - %I:%M%p %Z") %>
+            <%=local_time(current_user.current_sign_in_at, "header")%></div>
+          <div class="txtR ">
+            <%=home_link %> |
+            <% if current_user %>
+              <%= link_to t(:label_logout),		logout_path, :method => :delete %>
+            <% else %>
+              <%= link_to t(:label_login), login_path ,:method => :delete %>
+            <% end %>
+          </div>
+        </div>
+        <!--LOGIN INFO-->
+        <br clear="all" />
+      </div>
+      <!--LAWYER NAME & LOGIN INFO-->
+
+      <!--LOADER-->
+      <div>
+        <div id="livia_loader" class="livia_loader"><img src="/images/loading_text.gif"/></div>
+      </div>
+      <!--LOADER-->
+      <br clear="all" />
+    </div>
+
+    <!--MANIN NAV-->
+    <div class="headerWidth">
+      <div class="header">
+        <ul>
+          <li <% if (controller.controller_name.eql?('livia_secretaries')||controller.controller_name.eql?('home')) %> id ="current"<%end%>><%=home_link %></li>
+          <%if show_header_tabs%>
+
+            <li <% if controller.controller_name.eql?('calendars') %> id ="current"<%end%>><%=  link_to("<span>Calendar</span>", physical_calendar_calendars_path, :class => controller.controller_name.eql?('calendars')? 'selected' : '') %></li>
+            <li <% if ['leads','prospects','contacts'].include?(controller.controller_name) %> id ="current"<%end%> class="livia_contact_droppable"><%= link_to("<span>Contacts</span>",contacts_url, :class => ['leads','prospects','contacts'].include?(controller.controller_name) ? 'selected' : '') %></li>
+            <li <% if controller.controller_name.eql?('accounts') %> id ="current"<%end%> class="livia_account_droppable"><%= link_to("<span>Accounts</span>",accounts_url, :class=> controller.controller_name.eql?('accounts') ? 'selected' : '') %></li>
+            <li <% if controller.controller_name.eql?('campaigns') %> id ="current"<%end%> class="livia_campaign_droppable"><%= link_to("<span><%= t(:text_campaigns) %></span>", campaigns_path, :class => controller.controller_name.eql?('campaigns') ? 'selected' : '') %></li>
+              <li <% if controller.controller_name.eql?('opportunities') %> id ="current"<%end%> class="livia_oppor_droppable"><%= link_to("<span>Opportunities</span>", opportunities_path, :class => controller.controller_name.eql?('opportunities') ? 'selected' : '') %></li>
+              <li <% if controller.controller_name.eql?('matters') %> id ="current"<%end%>><%= link_to("<span>Matters</span>", matters_path, :class => controller.controller_name.to_s.match('^matter') ? 'selected' : '') %></li>
+              <li <% if controller.controller_name.eql?('time_and_expenses') %> id ="current"<%end%>><%= link_to("<span>Time & Expenses</span>", new_physical_timeandexpenses_time_and_expense_path, :class => controller.controller_name.eql?('time_and_expenses')? 'selected' : '') %></li>
+              <%if is_secretary_or_team_manager?%>
+                <li <% if (controller.controller_name.eql?('communications')||controller.controller_name.eql?('livia_secretaries')) %> id ="current"<%end%>><%=link_to("<span>Communications</span>", get_communications_link_path, :class => (controller.controller_name.eql?('communications')||controller.controller_name.eql?('livia_secretaries'))? 'selected' : '') %></li>
+              <%end%>
+            <%else%>
+              <li <% if controller.controller_name.eql?('liviaservices')%> id ="current"<%end%>><%= link_to("<span>Manager Portal</span>", physical_liviaservices_managers_portal_path, :class => controller.controller_name.eql?('liviaservices ')? 'selected' : '') %></li>
+            <%end%>
+          </ul>
+        </div>
+      </div>
+      <!--MANIN NAV-->
+      <br clear="all" />
+    </div>
+    <!--HEADER ENDS HERE-->
+  </div>

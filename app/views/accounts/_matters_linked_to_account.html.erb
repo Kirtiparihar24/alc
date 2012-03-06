@@ -1,0 +1,38 @@
+<div id ="update_table" class="mt10">
+  <div class="box_gray">
+    <div class="fl pl5">
+      <table cellpadding="0" cellspacing="0" >
+        <tr>
+          <td><strong><%=  t(:label_status) %></strong>&nbsp;&nbsp;</td>
+          <td><%= select_tag(:matter_status, options_for_select(@matter_statuses,{:selected=>@matter_status_id.to_i}),{:onchange =>"account_matter_status('#{params[:id]}', this.value,'ALL')"}) %></td>
+        </tr>
+      </table>
+    </div>
+    <br class="clear" />
+  </div>
+  <div class="tabular_listing mt20" >
+    <table width="100%" cellpadding="1" cellspacing="1"  class="border_gray">
+      <tr>
+        <th><%= t(:text_matter_id) %></th>
+        <th><%= t(:text_matter_name) %></th>
+        <th><%= t(:text_contact) %></th>
+        <th><%= t(:label_matter_date) %></th>
+        <th><%= t(:text_lead_lawyer) %></th>
+      </tr>
+      <% unless account_matters.empty? %>
+        <% account_matters.each do |matter| %>
+          <% checkexpired = checkmatter_expired(matter) %>
+          <tr class="<%= cycle('bg1', 'bg2') %>">
+            <td width="9%"><%= raw truncate_hover(matter.matter_no, 15)%></td>
+            <td width="20%"><%= conditional_edit_matter(matter, checkexpired,extra_parameters(params))%></td>
+            <td width="11%"><%= raw truncate_hover(matter.contact.try(:full_name), 20) if matter.contact%></td>
+            <td align="center" width="11%"><%= livia_date(matter.matter_date.to_time) if matter.matter_date.present?%></td>
+            <td width="10%"><%= raw truncate_hover(matter.get_lawyer_name, 15) %></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr><td colspan="8"><%= render :partial => "common/empty" %></td></tr>
+      <% end %>
+    </table>
+  </div>
+</div>

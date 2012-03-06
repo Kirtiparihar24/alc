@@ -1,0 +1,113 @@
+<!-- Feature 10280: Timer,This partial is rendered in 3 layouts (application, full_screen and left_with_tabs) through ajax by Function fetchTimer() -kirti-->
+<div id="timer_div" style="z-index:99999;">
+  <div style="float:right" class="k_float k_bottom k_right">
+    <div class="clock_timer">
+      <div class="btn">
+        <a href="#" title="Start" id="start" title ="Start" class="btn-1" style="display:none"></a>
+        <a href="#" id="pause" style="display:none" title="Pause" class="btn-2"></a>
+        <a href="<%= physical_timeandexpenses_new_time_entry_path %>?height=325&width=970" id="stop" style="display:none" title="Stop & Save" class="btn-4 thickbox"></a>
+        <a href="#" title="Reset" id="reset" style="display:none" class="btn-3"></a>
+      </div>
+      <div class="clock" id="timer">00 : 00 : 00</div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  <% unless devise_controller? %>
+    var portal_timer = {
+      state: 'stopped',
+      start_time: null,
+      base_seconds: 0
+    };
+
+  <% if current_user.timer_start_time && current_user.timer_state == "paused" %>
+    portal_timer.start_time = new Date();
+  <% end %>
+
+  jQuery(document).ready(function(){
+    jQuery("#timer_div").draggable({containment: "document",scroll: false, snap: true });
+    jQuery("#start").show();
+
+    jQuery('#start').click(function(e) {
+      e.preventDefault();
+      portal_timer.start_time = new Date();
+      portal_timer.state = "running"
+      jQuery.get("/utilities/set_timer", {start_time: portal_timer.start_time.toString(), state: "running"})
+      jQuery("#timer").countdown({since: 00, compact: true, timeSeparator: "&nbsp;:&nbsp;"});
+      jQuery('#start').hide();
+      jQuery("#pause, #stop, #reset").show();
+    });
+
+    jQuery('#pause').click(function(e) {
+      e.preventDefault();
+      domTimerVal = jQuery("#timer span").html();
+      portal_timer.base_seconds = getBaseSeconds(domTimerVal);
+      if (jQuery(this).attr("title") == "Pause"){
+        portal_timer.start_time = new Date("<%= current_user.timer_start_time %>");
+        jQuery("#pause").show();
+        jQuery(this).attr("title", "Resume").css("background-image","url(/images/play.png)");
+        jQuery("#pause").hover(function(){ jQuery(this).css("background-image","url(/images/play_hover.png)");}, function(){jQuery(this).css("background-image","url(/images/play.png)");});
+        jQuery('#timer').countdown('pause') ;
+        portal_timer.state = "paused";
+      } else {
+        portal_timer.start_time = new Date();
+        jQuery(this).attr("title", "Pause").css("background-image","url(/images/pause.png)");
+        jQuery("#pause").hover(function(){ jQuery(this).css("background-image","url(/images/pause_hover.png)");}, function(){jQuery(this).css("background-image","url(/images/pause.png)");});
+        jQuery('#timer').countdown('resume');
+        portal_timer.state = "resume";
+      }
+      jQuery.get("/utilities/set_timer", {start_time: Date(portal_timer.start_time.toString()), state: portal_timer.state, base_seconds: portal_timer.base_seconds});
+    });
+
+    jQuery('#reset').click(function(e) {
+      e.preventDefault();
+      decision = confirm("Are you sure to reset?");
+      if (decision) {
+        resetTimer();
+      }
+    });
+
+    jQuery('#stop').click(function() {
+      jQuery('#TB_window,#TB_overlay,#TB_HideSelect').trigger("unload").unbind().remove();
+      domTimerVal = jQuery("#timer span").html();
+      timer_value = getBaseSeconds(domTimerVal);
+      jQuery('#start').show();
+      var link_value = jQuery("#stop").attr('href')+"&timer_value="+timer_value;
+      jQuery("#stop").attr('href',link_value);
+      resetTimer();
+    });
+
+  <% if current_user.timer_start_time && current_user.timer_state == "resume" %>
+    portal_timer.state = "resume";
+    start_time = new Date("<%= current_user.timer_start_time %>");
+    whats_now = new Date().getTime();
+    elapsed = Math.round((whats_now - start_time) / 1000.0);
+    elapsed = elapsed + parseInt("<%= current_user.base_seconds %>")
+    jQuery("#timer").countdown({since: -elapsed, compact: true, format: 'HMS', timeSeparator: "&nbsp;:&nbsp;"});
+    jQuery('#start').hide();
+    jQuery("#pause, #stop, #reset").show();
+  <% end %>
+
+  <% if current_user.timer_start_time && current_user.timer_state == "running" %>
+    portal_timer.state = "running"
+    portal_timer.start_time = new Date();
+    start_time = new Date("<%= current_user.timer_start_time %>");
+    whats_now = new Date().getTime();
+    elapsed = Math.round((whats_now - start_time) / 1000.0);
+    jQuery("#timer").countdown({since: -elapsed, compact: true,format: 'HMS', timeSeparator: "&nbsp;:&nbsp;"});
+    jQuery('#start').hide();
+    jQuery("#pause, #stop, #reset").show();
+  <% end %>
+
+  <% if current_user.timer_start_time && current_user.timer_state == "paused" %>
+    portal_timer.state = "paused";
+    jQuery("#timer").countdown({since: - parseInt(<%= current_user.base_seconds %>), compact: true, format: 'HMS', timeSeparator: "&nbsp;:&nbsp;"}).countdown('pause');
+    jQuery("#pause, #stop, #reset").show();
+    jQuery('#start').hide();
+    jQuery("#pause").attr("title", "Resume").css("background-image","url(/images/play.png)");
+    jQuery("#pause").hover(function(){ jQuery(this).css("background-image","url(/images/play_hover.png)")}, function(){jQuery(this).css("background-image","url(/images/play.png)")});
+  <% end %>
+  });
+<% end %>
+</script>

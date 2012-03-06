@@ -1,0 +1,146 @@
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#matter_billing_bill_pay_date");
+  });
+</script>
+<div id="matter_bill_errors" class="" style="display: none; text-align:left"></div>
+<div id="one_field_error_div"> </div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+﻿<div style="text-align:center;margin-top:10px;" id="modal_bill_form">
+  <%form_for([@matter, @bill], :url => {:action => @oldbill.nil? ? "create_bill_payment_details" : "update_bill_payment_details"}, :html=> {:multipart=> true,:target=>"upload_frame"}) do |f|%>
+    <%=hidden_field_tag :page_reload, "#{params[:page_reload]}"%>
+    <%=hidden_field_tag :flag, params[:flag] if params[:flag]%>
+    <table width="540" border="0" cellpadding="0" cellspacing="7" style="margin:0 auto;" class="form_table">
+      <%if @oldbill.nil?%>
+        <tr>
+          <td align="left">Matter Name </td>
+          <td align="left"><%=@matter.try(:name)%></td>
+        </tr>
+        <tr>
+          <td align="left">Matter Id </td>
+          <td align="left"><%=@matter.try(:matter_no)%></td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:text_invoice_no) %> <span class="alert_message">*</span></td>
+          <td align="left"><%= f.text_field :bill_no, :size => "12",:onblur=>"displayInvoiceNo(this);"%></td>
+        </tr>
+        <tr>
+          <td align="left">Amount <span class="alert_message">*</span></td>
+          <td align="left"><%= f.text_field :bill_amount, :size => 12 , :maxlength=>8, :class => "phone" %></td>
+        </tr>
+        <tr align="right">
+        <td align="left"><%=t(:text_Invoice_Date)%><span class="alert_message">*</span></td>
+        <td align="left"><%= f.text_field :bill_pay_date, :value => @bill.bill_pay_date, :class=>"date_picker", :size=>"15"%></td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:text_payment_settled_amount) %></td>
+          <td align="left"><%= f.text_field :bill_amount_paid, :value => 0, :size => "12", :class => "phone" %></td>
+        </tr>
+
+      <tr>
+        <td width="161" align="left"><label><%= t(:text_due_date) %></label></td>
+        <td width="258" align="left"><%= f.text_field :bill_due_date, :value => (@bill.bill_due_date || livia_date(Time.zone.now.to_date)), :class=>"date_picker", :size=>"15"%></td>
+      </tr>
+      <%#= render :partial =>'financial_transaction' %>
+      <tr>
+        <td align="left"><%= t(:text_status) %><span class="alert_message"></span></td>
+        <td align="left"><%= f.select :matter_billing_status_id, @matter_billing_statuses.collect{|status| [status.alvalue, status.id]} %></td>
+      </tr>
+        <tr>
+        <td align="left"><%= t(:text_invoice) %></td>
+        <td align="left"><%= file_field_tag 'document_home[file]' %></td>
+      </tr>
+      <tr align="right">
+        <td align="left" valign="top"><%= t(:text_remarks) %></td>
+        <td align="left" valign="top"><%= f.text_area :remarks, :rows => "3", :cols => "40" %></td>
+      </tr>
+      <%else%>
+        <tr>
+          <td align="left" width="20"><%= t(:text_invoice_no) %></td>
+          <td align="left">
+            <%=@oldbill.bill_no%>
+            <%=f.hidden_field :bill_no, :value => @oldbill.bill_no%>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">Invoice Amount</td>
+          <td align="left">
+            $ <%=number_with_lformat(@oldbill.bill_amount) %>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">Balance</td>
+          <td align="left">
+            <%=negative_amount_braces(@oldbill.computed_bill_amount_due) %>
+          </td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:text_Invoice_Date) %></td>
+          <td align="left"><%= @oldbill.bill_pay_date %></td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:text_due_date) %></td>
+          <td align="left"><%= @oldbill.try(:bill_due_date) %></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="left" height="12" style="border-top:1px solid #cecece;"></td>
+        </tr>
+        <tr>
+          <td align="left" nowrap><strong><%= t(:text_amt_available_for_invoice_payment_or_settlement) %></strong></td>
+          <td align="left"><strong>:&nbsp;&nbsp;<%= show_bill_payment_or_settlement(@matter) %></strong></td>
+        </tr>
+         <tr>
+          <td align="left"><%= t(:text_payment_settled_amount) %></td>
+          <td align="left"><%= f.text_field :bill_amount_paid, :value => "0.00",:maxlength=>"9", :size => "12" ,:onblur=>"jQuery(this).val(parseFloat(jQuery(this).val()).toFixed(2));"%></td>
+        </tr>
+         <tr>
+          <td width="161" align="left"><%= t(:text_settlement_date) %> </td>
+          <td width="258" align="left"><%= f.text_field :bill_pay_date,:value=>livia_date(Time.zone.now.to_date), :class=>"date_picker", :size=>"15"%></td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:text_status) %><span class="alert_message"></span></td>
+          <td align="left"><%= f.select :matter_billing_status_id, @matter_billing_statuses.collect{|status| [status.alvalue, status.id]} %></td>
+        </tr>
+        <tr align="right">
+          <td align="left" valign="top"><%= t(:text_remarks) %></td>
+          <td align="left" valign="top"><%= f.text_area :remarks, :rows => "3", :cols => "40" %></td>
+        </tr>
+      <%end%>
+      <%#= render :partial =>'financial_transaction' %>
+      <tr>
+        <td colspan="2" height="10"></td>
+      </tr>
+      <tr align="right">
+        <td colspan="2" align="center">
+          <%if @oldbill.nil?%>
+            <%= f.submit t(:text_save), :id => "save_bill", :onclick=>"return checkloader();"%>
+          <%else%>
+            <%= f.submit t(:text_save), :id => "save_bill", :onclick=>"return validate_blank('invoice_payment_details_remark','Please specify the remark');return checkloader();"%>
+          <%end%>
+          <input type="submit" id="Login2" value="Cancel" onclick="parent.tb_remove();return false" />
+        </td>
+      </tr>
+      <tr><td align="left" colspan="2" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></td></tr>
+      <%if @oldbill.nil?%>
+        <tr><td align="left" colspan="2"><span class="mandatory mt12">Note : Limit on file size is 50 MB.</span></td></tr>
+        <tr><td align="left" colspan="2"><%= render :file=>'common/document_extension' %></td></tr>
+      <%end%>
+    </table>
+  <%end%>
+
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;44</div>
+<script type="text/javascript">
+  livia_datepicker();
+
+  $(document).ready(function(){
+    //to create a hidden field only when a file is selected and to update the file name removing the doc extension :Rashmi.N
+    jQuery('#document_home_file').bind('change', function(){
+      jQuery('#new_matter_billing').append('<input type="hidden" id="document_home_name" name="document_home[name]" value="" />');
+      updatename('document_home_file', 'document_home_name');
+    });
+
+  });
+
+</script>

@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">New Matter Fact Type</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:matter_fact_type,@matter_fact_types, :url => company_matter_fact_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Fact Type", :modal_text => "Fact Type",
+    :all_modal_values => @company.matter_fact_types.collect{|cs|[cs.lvalue]}.uniq,:modelclass=>'matter_fact_types' } %>
+<%end%>
+<br class="clear"/>

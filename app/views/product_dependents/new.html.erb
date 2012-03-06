@@ -1,0 +1,19 @@
+<h1><%=t(:text_new_product_dependent)%></h1>
+
+<% form_for(@product_dependent) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :product_id %><br />
+    <%= f.text_field :product_id %>
+  </p>
+  <p>
+    <%= f.label :parent_id %><br />
+    <%= f.text_field :parent_id %>
+  </p>
+  <p>
+    <%= f.submit t(:text_create) %>
+  </p>
+<% end %>
+
+<%= link_to t(:label_back), product_dependents_path %>

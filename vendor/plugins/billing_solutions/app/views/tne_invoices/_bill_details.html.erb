@@ -1,0 +1,240 @@
+<%if @tne_invoice.new_record? && (params[:contact_id].present? || params[:matter_id].present?)
+  is_disable = "disabled='true'"
+elsif @tne_invoice.new_record? && (!params[:contact_id].present? && !params[:matter_id].present?)
+  is_disable = ""
+else
+  is_disable = "disabled='true'"
+end%>
+<div class="w100 fix_mb">
+  <table width="50%">
+    <tbody>
+      <tr>
+        <td width="1%">
+          <%params[:view] = params[:mode_type] ? (params[:mode_type].eql?('client') ? "presales" : "postsales") : params[:view] %>
+          <% view = params[:tne_invoice].nil? ? (params[:view].blank? ? 'postsales' : params[:view]) : (params[:view].blank? ? (params[:tne_invoice][:view].blank? ? 'postsales' : params[:tne_invoice][:view]) : params[:view] ) %>
+          <input type="radio" value="presales"
+           onclick="window.location.href='<%=is_new_invoice ? new_tne_invoice_path(:view=>'presales') : edit_tne_invoice_path(:id=>@tne_invoice.id,:view=>'presales') %>'"
+           name="tne_invoice[view]" id="tne_invoice_view_presales"
+           class="radio" checked =" <%= (view=="presales") ? 'checked' : "" %> "  <%= is_disable %>/>          
+        </td>
+        <td width="10%" valign="bottom"><label>Non-Matter Related</label></td>
+        <td width="1%">&nbsp;
+          <%if is_new_invoice %>
+            <%=hidden_field_tag :view, params[:view]%>
+          <%else%>
+            <%=f.hidden_field :view%>
+            <%=hidden_field_tag :view, params[:tne_invoice][:view]%>
+          <%end%>
+        </td>
+        <% if billing_and_retainer_available? %>
+          <td width="1%">            
+            <input type="radio" value="postsales" onclick="window.location.href='<%=@tne_invoice.new_record? ? new_tne_invoice_path(:view=>'postsales') : edit_tne_invoice_path(:id=>@tne_invoice.id,:view=>'postsales')%>'" name="tne_invoice[view]" id="tne_invoice_view_postsales" class="radio" <%= (view=="postsales") ? "checked='checked'" : "" %> <%= is_disable %> />
+          </td>
+          <td width="10%" valign="bottom"><label>Matter Related</label></td>
+        <% end %>
+        <td align="right" width="27%"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div id="display_new">
+  <h3 class="title_gray"> </h3>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="form_table mt5">
+    <tr>
+      <%viewby= params[:view].present? ? params[:view] : (params[:tne_invoice].present? ? params[:tne_invoice][:view] : 'postsales') %>
+      <%unless params[:view]=='presales' || viewby == 'presales'%>
+        <% selected =  (params[:from_unbilled] || is_new_invoice) ? (params[:tne_invoice].present? ? params[:tne_invoice][:matter_id].to_i : '') : @tne_invoice.matter_id %>
+        <% selected = params[:matter_id].to_i if params[:matter_id].present? %>
+        <td  valign="middle"><label>Matter<span class="alert_message">*</span></label>&nbsp;&nbsp;
+        <td> <%=f.select :matter_id,options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id]}, selected),{:prompt=>true},{:style=>'width:100%;',:disabled=> (params[:from_unbilled] ? true : (is_new_invoice ? false : true)),:onchange=>"jQuery('.matter_value').val(jQuery(this).val());displayMatterNo(jQuery(this).val());"}%></td>
+        <%=f.hidden_field :matter_id ,:value=> selected,:class=>"matter_value"%>
+        </td>
+        <td>&nbsp;</td>
+        <td><label id="label_matter_no">Matter Id</label></td><td><span id ="bill_matter_name_id"><%=@matter_no if @matter_no%></span></td>
+       <td colspan="4"> &nbsp;</td>
+      <%else%>
+        <% selected = (params[:from_unbilled] || is_new_invoice) ? (params[:tne_invoice].present? ? params[:tne_invoice][:contact_id].to_i : '') : @tne_invoice.contact_id %>
+        <% selected = params[:contact_id].to_i if params[:contact_id].present? %>
+        <td valign="middle"><label>Contact<span class="alert_message">*</span></label>&nbsp;&nbsp;
+        <td> <%=f.select :contact_id,options_for_select(@contacts.collect{|contact|[contact.full_name,contact.id]}, selected),{:prompt=>true},{:style=>'width:100%;',:disabled=> (params[:from_unbilled] ? true : (@tne_invoice.new_record? ? false : true)),:onchange=>"jQuery('.contact_value').val(jQuery(this).val());"}%></td>
+        <%=f.hidden_field :contact_id,:value=> selected ,:class=>"contact_value"%>
+        </td>
+        <td colspan="5"> &nbsp;</td>
+      <%end%>
+        <%=f.hidden_field :view, :value => params[:view]%>
+        
+    </tr>
+    <tr>
+      <td width="10%"><label>Invoice Id<span class="alert_message">*</span></label></td>
+      <td width="12%"><%= f.text_field :invoice_no,:value=>params[:tne_invoice].nil? ? '' : params[:tne_invoice][:invoice_no], :size => 20,:onblur=>"displayInvoiceNo(this);" %></td>
+      <td width="2%">&nbsp;
+        <%= f.hidden_field :company_id, :value=>"#{current_company.id}" %>
+        <%= f.hidden_field :tne_invoice_status_id, :value => @tne_invoice_statuses.find_by_lvalue("Open").id if @tne_invoice.new_record?%>
+        <%= f.hidden_field :created_by_user_id, :value => current_user.id  unless params[:action]=="edit" %>
+        <%= f.hidden_field :updated_by_user_id, :value => current_user.id %>
+        <%= f.hidden_field :regenerate, :value=> params[:tne_invoice][:regenerate] if params[:tne_invoice]%>
+        <%= f.hidden_field :id ,:value => (@tne_invoice.id  unless params[:action]=="new")%>
+      </td>
+      <td width="12%"><label>Apply Final Discount</label></td>
+      <td width="2%">
+        <%if is_new_invoice%>
+          <% @apply_final_discount = params[:tne_invoice].nil? ? (@tne_invoice_setting.blank? ? false : true) : params[:apply_final_discount].present? %>
+        <%else%>
+          <% @apply_final_discount = params[:action]=='display_data'  ? params[:apply_final_discount].present? : (params[:apply_final_discount].present? ? true : (@tne_invoice.discount<=0 ? false :true))%>
+        <%end%>
+        <input id="apply_final_discount" name="apply_final_discount" type="checkbox" <%= "checked='checked'" if @apply_final_discount %> onclick= 'displayDiscount();'/>
+      </td>
+      <td>&nbsp;</td>         
+    </tr>
+    <tr>
+      <td width="10%"><label>Invoice Date</label></td>
+      <td width="12%"><%=f.text_field :invoice_date, :value => (params[:action]=="new" ?  livia_date(Time.zone.now.to_date) :  livia_date(@tne_invoice.invoice_date)), :size =>10, :class => "date_picker",:id=>'tne_invoice_invoice_date_ID'%></td>
+      <td width="2%">&nbsp;</td>
+      <% if primary_tax_disable %>
+        <td colspan="3"></td>
+      <% else %>
+      <td width="12%"><label>Apply Primary Tax Rate</label></td>
+      <td width="2%">
+        <%if is_new_invoice%>
+          <% @apply_primary_tax = params[:tne_invoice].nil? ? (@tne_invoice_setting.blank? ? false : true) : params[:apply_primary_tax].present?  %>
+        <%else%>
+          <% @apply_primary_tax = params[:action]=='display_data'  ? params[:apply_primary_tax].present? : (params[:apply_primary_tax].present? ? true : ((@tne_invoice.primary_tax_rate.blank? || @tne_invoice.primary_tax_rate <=0)  ? false :true))%>
+        <%end%>
+        <input id="apply_primary_tax" name="apply_primary_tax" onclick="insertToDo(this, 'primary_tax');displayPrimarySecondaryName();" type="checkbox" <%=  "checked='checked'" if  @apply_primary_tax%>/></td>
+       <%= hidden_field_tag :apply_primary_tax_checked ,@apply_primary_tax%>
+      <td valign="top">
+        <span id="primary_tax" <%= "style='display:none'" unless @apply_primary_tax %>>
+          <%primary_value=(params[:tne_invoice].nil? ? (@tne_invoice_setting.nil? ? ((is_new_invoice || @tne_invoice.primary_tax_name.blank?) ? 'Primary Tax Name' : @tne_invoice.primary_tax_name ) : (@tne_invoice_setting.primary_tax_name.blank?  ? 'Primary Tax Name' : @tne_invoice_setting.primary_tax_name)) : (params[:tne_invoice][:primary_tax_name].blank? ? 'Primary Tax Name' : params[:tne_invoice][:primary_tax_name]))%>
+          <div style="width:80px; display: block" class="fl">Primary Tax </div>:
+          <%=  f.text_field :primary_tax_name,:value=> primary_value,:size=>15 ,:class=>(@tne_invoice_setting.blank? ? '' : (@tne_invoice_setting.primary_tax_name.blank? ) ? 'textgray': '') ,:onclick => "changeValuename(jQuery(this))", :onblur=> "trackValuename(jQuery(this), 'primary')"%>
+          <%=  f.text_field :primary_tax_rate, :value=>params[:tne_invoice].nil? ? (@tne_invoice_setting.nil? ? 0 :@tne_invoice_setting.primary_tax_rate.to_f.fixed_precision(2)) : params[:tne_invoice][:primary_tax_rate],:size=>5 ,:onblur=> "check_tax_rate(this, '#{@tne_invoice_setting.primary_tax_rate}');convertTOFloat(this)"%> %
+        </span>
+      </td>
+      <% end %>
+    </tr>
+    <tr>
+      <td width="10%"><label>Due Date</label></td>
+      <td width="12%"><%=f.text_field :invoice_due_date, :value => (params[:action]=="new" ?  livia_date(Time.zone.now.to_date) :  livia_date(@tne_invoice.invoice_due_date)), :size =>10, :class => "date_picker" ,:id=>'tne_invoice_invoice_due_date_ID'%></td>
+      <td width="2%">&nbsp;</td>
+      <% if primary_tax_disable %>
+        <td colspan="3"></td>
+      <% else %>
+        <% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+      <td width="12%"><label>Apply Secondary Tax Rate</label></td>
+      <td width="2%">
+        <%if is_new_invoice %>
+         <% @apply_secondary_tax = params[:tne_invoice].nil? ? (@tne_invoice_setting.blank? ? false : true) : params[:apply_secondary_tax].present?  %>
+        <%else%>
+          <% @apply_secondary_tax = params[:action]=='display_data' ? params[:apply_secondary_tax].present? : (params[:apply_secondary_tax].present? ? true : (@tne_invoice.secondary_tax_rate.present? && @tne_invoice.secondary_tax_rate<=0 ? false :true))%>
+        <%end%>
+        <input id="apply_secondary_tax" name="apply_secondary_tax" type="checkbox" onclick="insertToDo(this, 'secondary_rule');displayPrimarySecondaryName();" <%= "checked='checked'" if @apply_secondary_tax %>/>
+        <%= hidden_field_tag :apply_secondary_tax_checked , @apply_secondary_tax%>
+      </td>
+      <td valign="top">
+        <%secondary_tax_rule=(params[:tne_invoice].nil?) ? (@tne_invoice_setting.blank? ? false : @tne_invoice_setting.secondary_tax_rule) : params[:tne_invoice][:secondary_tax_rule].class.eql?(String) ?  params[:tne_invoice][:secondary_tax_rule]=='0' ? false :true : params[:tne_invoice][:secondary_tax_rule]%>
+        <%secondary_tax_rule = secondary_tax_rule ? 1 : 0%>
+        <span id="secondary_rule" <%= "style='display:none'" unless @apply_secondary_tax %>>
+          <%secondary_value= (params[:tne_invoice].nil? ? (@tne_invoice_setting.blank? ? ((is_new_invoice || @tne_invoice.secondary_tax_name.blank?) ? 'Secondary Tax Name' : (@tne_invoice.secondary_tax_name.blank? ? 'Secondary Tax Name'  : @tne_invoice.secondary_tax_name) ) : (@tne_invoice_setting.secondary_tax_name.blank?  ? 'Secondary Tax Name' : @tne_invoice_setting.secondary_tax_name)) : (params[:tne_invoice][:secondary_tax_name].blank? ? 'Secondary Tax Name' : params[:tne_invoice][:secondary_tax_name]))%>          
+          <div style="width:80px; display: block" class="fl">Secondary Tax</div>:
+          <%= f.text_field :secondary_tax_name, :value=> secondary_value,:size=>15, :class=>(@tne_invoice_setting.blank? ? '' : (@tne_invoice_setting.secondary_tax_name.blank? ) ? 'textgray': '') ,:onclick => "changeValuename(jQuery(this))", :onblur=> "trackValuename(jQuery(this), 'secondary')" %>
+          <%= f.text_field :secondary_tax_rate, :value=>params[:tne_invoice].nil? ? (@tne_invoice_setting.blank? ? 0 : @tne_invoice_setting.secondary_tax_rate.to_f.fixed_precision(2)) : params[:tne_invoice][:secondary_tax_rate],:size=>5, :onblur=> "check_tax_rate(this, '#{@tne_invoice_setting.secondary_tax_rate}');convertTOFloat(this)"%> %
+          <%= f.select "secondary_tax_rule",options_for_select({"Apply to pre-tax amount"=>0,"Apply to post-tax amount"=>1},secondary_tax_rule.to_i)%></span>
+       </td>
+      <% else %>
+      <td colspan="3"></td>
+      <% end %>
+      <% end %>      
+    </tr>
+    <tr>
+      <% if is_new_invoice %>
+      <td colspan="2"></td>
+      <% else %>
+      <td valign="top"><label>Address:</label></td>
+      <%client_address = params[:tne_invoice].nil? ? '' : params[:tne_invoice][:client_address]%>
+      <%= hidden_field_tag "old_client_address",client_address %>
+      <%= f.hidden_field :address_modified %>
+      <td><%= f.text_area :client_address, :value=>client_address,:rows=>2, :cols=>40 %></td>
+      <% end %>
+      <td></td>
+      <td valign="top"><label>Show Note</label></td>
+      <% if params[:tne_invoice].present? %>
+        <% if params[:tne_invoice][:check_notes].eql?('1') %>
+          <% show_note_field = true %>
+        <% elsif params[:tne_invoice][:check_notes].eql?('0') %>
+          <% show_note_field =false%>
+        <%else%>
+          <% show_note_field = params[:tne_invoice][:check_notes] %>
+        <%end%>
+      <%elsif is_new_invoice%>
+        <% show_note_field = @default_invoice_note.present? %>
+      <%end%>
+      <td width="10%" valign="top">
+      <%= f.check_box :check_notes,:checked=>"#{'checked' if show_note_field}",:onclick=>"insertToDo(this, 'note')" %>
+      </td>
+      <td valign="top"><span id="note" <%= "style='display:none'" unless show_note_field%>><%=f.text_area :invoice_notes,:value=>params[:tne_invoice].nil? ? @default_invoice_note : params[:tne_invoice][:invoice_notes], :rows=>2, :cols=>40%></span></td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    livia_datepicker();
+    displayDiscount();
+    <%if params[:matter_id]%>
+      jQuery('#tne_invoice_matter_id').val(<%= params[:matter_id].to_i %>)
+    <%end%>
+    if (jQuery('#tne_invoice_matter_id').val() == ''){
+      jQuery("#label_matter_no").hide();
+    }else if (jQuery('#tne_invoice_matter_id').length > 0){
+      displayMatterNo(jQuery('#tne_invoice_matter_id').val());
+    }
+  <% if primary_tax_disable %>
+    changeValuename(jQuery('#tne_invoice_primary_tax_name'));
+    trackValuename(jQuery('#tne_invoice_primary_tax_name'),'primary');
+  <% else %>
+    displayPrimarySecondaryName();
+    <% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+      changeValuename(jQuery('#tne_invoice_secondary_tax_name'));
+      trackValuename(jQuery('#tne_invoice_secondary_tax_name'),'secondary');
+    <%end%>
+  <% end %>
+    var original_value_invoice_address_modified = jQuery("#tne_invoice_address_modified").val();
+    jQuery("#tne_invoice_client_address").change(function(){
+      if(jQuery("#tne_invoice_client_address").val().trim()!= jQuery("#old_client_address").val().trim())
+      {
+        jQuery("#tne_invoice_address_modified").val("t");
+      }
+      else
+      {
+        jQuery("#tne_invoice_address_modified").val(original_value_invoice_address_modified);
+      }
+    });
+  });
+    function changeValuename(field){
+      if(field.val()=="Secondary Tax Name" ||field.val()=="Primary Tax Name" ){
+        field.val("");
+      }
+      field.removeClass('textgray')
+    }
+
+    function trackValuename(field, name){
+      var this_value = field.val();
+      if(this_value==""){
+        if(name=="primary"){
+          field.val('Primary Tax Name');
+        }else{
+          field.val('Secondary Tax Name');
+        }
+        field.addClass('textgray');
+      }else if((name=='secondary' && this_value!="Secondary Tax Name")){
+        if(field.hasClass('textgray')){
+          field.removeClass('textgray')
+        }
+      }else if(name=='primary' && this_value!="Primary Tax Name"){
+          if(field.hasClass('textgray')){
+          field.removeClass('textgray')
+        }
+        }
+    }
+
+</script>

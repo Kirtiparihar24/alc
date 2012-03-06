@@ -1,0 +1,60 @@
+<div style="margin-top:20px; padding:0;">
+  <%form_tag activate_account_accounts_path do%>
+    <%=hidden_field_tag 'id',@account.id%>
+    <table width="100%">
+      <tbody>
+        <tr> <td align="center"><label><%=t(:text_are_you_sure_you_want_to_activate_this_account)%></label></td> </tr>
+        <tr> <td>&nbsp;</td> </tr>
+        <tr>
+          <td align="center">
+            <%=submit_tag t(:label_activate) %>
+            <%=submit_tag t(:label_cancel), :onclick=>'parent.tb_remove();return false'%>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br class="clear" />
+    <div class="textC"><%=t(:text_select_the_contacts_to_activate_with_this_account)%></div>
+    <div class="tabular_listing border_gray">
+      <%unless @contacts.empty?%>
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>
+            <th valign="top">&nbsp;<%=t(:text_all)%><%=check_box_tag 'Checkall'%></th>
+            <th><%=t(:text_name)%></th>
+            <th><%=t(:text_phone)%></th>
+            <th><%=t(:text_email)%></th>
+          </tr>
+          <%@contacts.each do |contact|%>
+            <tr class="<%=cycle("bg1", "bg2")%>">
+              <td width="10%" align="center"><%=check_box_tag "contact_ids[]",contact.id,(@primarycnt.id==contact.id ? true : false),{:onclick=>@primarycnt.id==contact.id ? "this.checked=!this.checked;" : '',:class=>@primarycnt.id==contact.id ? '' : 'contcheck'}%> </td>
+              <td width="30%" align="left">
+                <%=contact.full_name.try(:titleize)%>
+                <div>
+                  <%if contact.title? && contact.department?%>
+                    <%= contact.title.try(:titleize) << ", " << contact.department%>
+                  <%else%>
+                    <%= contact.title if contact.title?%>
+                  <%end%>
+                </div>
+              </td>
+              <td width="20%" align="left"><%= contact.phone? ? contact.phone : (contact.mobile if contact.mobile)%></td>
+              <td width="40%" align="left"> <%= link_to(contact.email, "mailto:" << contact.email.to_s)if contact.email?%></td>
+            <%end%>
+          </tr>
+        </table>
+      <%else%>
+        <div class="warningCont m5"> <%=t(:text_no_contacts_added_yet)%> </div>
+      <%end%>
+    </div>
+  <%end%>
+</div>
+
+<script type="text/javascript">
+  jQuery('#Checkall').click(function(){
+    if (jQuery('#Checkall').attr('checked')){
+      jQuery('.contcheck').attr('checked',true);
+    }else{
+      jQuery('.contcheck').attr('checked',false);
+    }
+  });
+</script>

@@ -1,0 +1,26 @@
+<div id="matter_toe_error" style="display: none" ></div>
+<div style="text-align:left;margin-top:10px;">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <div id ="one_field_error_div"></div>
+  <% form_for :document_home, @document_home ,:url => supercede_or_replace_document_matter_matter_termcondition_path(@matter, @termcondition, :doc_id => @doc_home.id, :document_home_id => @doc_home.id),:html=> {:multipart=> true, :onsubmit=> 'return checkfile("#document_home_file");return disableAllSubmitButtons("matters")'} do |f| %>
+    <table width="440" border="0" cellpadding="0" cellspacing="0" class="form_table">
+      <tr>
+        <td width="115" align="left"><label><%=t(:label_document_name)%> </label></td>
+        <td width="304" align="left"><%=@document.name %> [ <%=link_to(@document.data_file_name, document_home_path(@document.id))%>]</td>
+      </tr>
+      <tr>
+        <td align="left"><label><%=t(:label_new_document)%> <span class="alert_message">*</span></label></td>
+        <td align="left"><%= file_field_tag 'document_home[data]' %></td>
+      </tr><tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td align="left">
+          <%=submit_tag t(:label_submit),:class=>'matters', :onclick=>"return checkloader(); return validate_field('document_home_data', 'Please select a file to continue');"%>
+          <%=submit_tag t(:label_cancel), :name=>"cancel",:class=>'matters', :onclick => "parent.tb_remove(); return false;"%>
+        </td>
+      </tr>
+      <tr><td colspan="2" align="left"><span class="alert_message">*</span>Required Field</td></tr>
+    </table>
+  <% end %>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;138</div>
+</div>

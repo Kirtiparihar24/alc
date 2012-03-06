@@ -1,0 +1,206 @@
+<script type="text/javascript">
+  livia_datepicker();
+  jQuery(function(){
+      expenseDatePicker('<%= Time.zone.now.to_date %>');
+      jQuery('.expense_date_picker').bind('blur',function(){
+        expenseDatePicker('<%= Time.zone.now.to_date %>');
+      });
+    });
+</script>
+<%=raw javascript_include_tag  'time_and_expense/new_time_entry' %>
+<%= raw javascript_include_tag  "time_and_expense/expense_entry" %>
+<h2 class="title_main"><%=t(:label_Expenses_Entry_Form)%>
+<br class="clear" />
+</h2>
+<div id="error_notice"></div>
+<div class="p5">
+  <!--Form container div @start here -->
+  <% form_for @expense_entry, :url =>{:action => 'save_all_expense_entries'},:html=> {:multipart=> true,:onsubmit => "return expence_entry_validation();"} do |time_expense_entry| %>
+    <div class="form_table tabular_listing">
+      <table width="100%" border="0" cellspacing="1" class="border_gray">
+        <tr>
+          <th width="1%" align="left">N.U.</th>
+          <th width="6%" align="left"><%=t(:text_date)%></th>
+          <th width="1%" align="center"><%=t(:label_Int)%>.</th>
+          <th width="11%" align="left">Employee</th>
+          <th width="7%" align="left"><%# if matter_time_expense_available? %><%=t(:text_matter)%> -<%#end%> <%=t(:text_contact)%></th>
+          <%# if matter_time_expense_available? %><th width="11%" align="left">Matter People</th><%#end%>
+          <th width="9%" align="left"><%=t(:text_expense_type)%></th>
+          <th width="17%" align="left"><%=t(:text_description)%><span class="alert_message">*</span></th>
+          <th width="9%" align="right"><%=t(:label_expense_amt)%>&nbsp;(<%=t(:label_doller)%>)<span class="alert_message">*</span></th>
+          <th width="2%"><%=t(:text_billable)%></th>
+          <th width="14%" align="center"><%=t(:text_billing_adjustments)%></th>
+          <th width="8%" align="right"><%=t(:text_final)%> <%=t(:text_bill_amount)%>&nbsp;(<%=t(:label_doller)%>)</th>
+          <th width="1%" align="center"><%=t(:text_action)%></th>
+        </tr>
+        <% for expense_entry in 1..3%>
+          <% file_data = "file_data_"+expense_entry.to_s %>
+    <%#= hidden_field_tag "#{expense_entry}[expense_entry][expense_entry_date]", @entry_date %>
+          <tr class="<%=cycle('bg1','bg2')-%>">
+            <td width="1%" align="center" > 
+              <%= check_box_tag "#{expense_entry}_nonuser","#{expense_entry}_nonuser",false, {:onclick => "toggle_matter_people(#{expense_entry});"} %>
+            </td>
+            <td width="6%" align="left" >
+              <input type="text" id="<%=expense_entry%>_expense_entry_expense_entry_date" name="<%=expense_entry%>[expense_entry][expense_entry_date]" readOnly = "true" class="expense_date_picker"  size="15" value=<%= @entry_date? @entry_date : Time.zone.now.to_date.to_time.strftime('%m/%d/%Y')%> />
+            </td>
+            <td width="1%" align="center" > <%= check_box( expense_entry, 'expense_entry[is_internal]', options = {:id=> "#{expense_entry}_is_internal",:checked => true,:onclick=>"alert_for_matter_and_contact('#{expense_entry}_is_internal');is_internal(#{expense_entry});"}) %></td>
+            <td width="11%" align="left" id="employee_td">
+              <%#unless is_secretary?%>
+                    <span id="expense_matters_div_<%=expense_entry%>" >
+                    <span class="search_div" id="<%=expense_entry%>_employeeSearch">
+                      <%=select_tag "#{expense_entry}[expense_entry][employee_user_id]", options_for_select(@lawyers.collect{|lawyer|[ lawyer.full_name,lawyer.id ]},@expense_entry.employee_user_id),{:onchange =>"reset_matter_contact('#{expense_entry}_matter_ctl','#{expense_entry}_contact_ctl',this,'#{expense_entry}','#{expense_entry}_expense_entry_expense_entry_date'); setMatterORContactSearchInputFields('#{expense_entry}_contact_ctl','#{expense_entry}_matter_ctl',this.value,#{@company_id},'#{expense_entry}_expense_contact_id','#{expense_entry}_expense_matter_id',#{expense_entry},'addexpense_entry');",:class=>'w88'}%>
+                    </span>
+                  </span>
+              <%#end%>
+            </td>
+
+            <td width="7%">
+              <div class="w100">
+                <%# if matter_time_expense_available? #%>
+                <div style="width: 150px;"><label class="mr5"><%=t(:text_m)%></label>
+                   <span id="<%=expense_entry%>_matter_dropdown_entry_id">
+                    <%=render :partial=> '/physical/timeandexpenses/expense_entries/show_matters',:locals=>{:expense_entry=>expense_entry}%>
+                  </span>
+    <%#=select_tag "#{expense_entry}[expense_entry][matter_id]","<option value=''/>" + options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id]}),{:onchange=>"get_matters_contact_for_expenses(#{expense_entry});",:id=>"#{expense_entry}_expense_matter_id",:style=>"width:100px"}%>
+                </div>
+                <%# end %>
+                <div class="mt4" ><label class="mr5"><%=t(:text_c)%></label><span id="expense_contact_span_<%=expense_entry%>" >
+                    <span id="<%=expense_entry%>_contact_span" class="search_div" ></span>
+                    <span id="<%=expense_entry%>_contactSearch" class="search_div" style="width: 100px;">
+                      <%= raw time_entry_contact_search_box("#{expense_entry}[expense_entry][contact_id]","#{expense_entry}_expense_contact_id","#{expense_entry}_contact_ctl","#{expense_entry}") %>
+                    </span>
+                    <%= image_tag("/images/download.png",:border=>"0",:alt=>"Lists",:class=>"#{expense_entry}_drop_down",:onclick=>"showDivListBox('#{expense_entry}_contact_overlay');")  %>
+                    <div  id="<%=expense_entry%>_contact_overlay" class="back_ground_overlay">
+                      <ul>
+                        <%@contacts.each do |contact|%>
+                          <li>
+                            <span id="contact_<%=contact.id%>" style="cursor:pointer;" onclick="expenseMatterContactDropDown(this,<%="#{expense_entry}"%>,'contact','get_all_matters_for_expenses');"><%=contact.full_name%></span>
+                          </li>
+                        <%end%>
+                      </ul>
+                    </div>
+                      <!--<input type="text" title="Search Contact" id="<%=expense_entry%>_expense_contact_id" name='<%="#{expense_entry}[expense_entry][contact_id]"%>' value="Select Contact" size="15" />-->
+                  </span>
+    <%#=select_tag "#{expense_entry}[expense_entry][contact_id]", "<option value=''/>" + options_for_select(@contacts.collect{|contact|[contact.full_name, contact.id]}),{:onchange=>"get_all_matters_for_expenses(#{expense_entry});",:id=>"#{expense_entry}_expense_contact_id",:style=>"width:100px"}%>
+                </div>
+              </div>
+            </td>
+            <%# if matter_time_expense_available? %>
+            <td width="11%" align="left" id="matter_people_td">
+                <span id="expense_matters_div_<%=expense_entry%>" >
+                  <span class="search_div" id="<%=expense_entry%>_matterPeople">
+                    <%=select_tag "#{expense_entry}[expense_entry][matter_people_id]","<option value=''> Select </option>", :disabled => true %>
+                  </span>
+                </span>
+            </td>
+            <%# end %>
+            <td width="9%" valign="top"><%=select_tag "#{expense_entry}[expense_entry][expense_type]", options_from_collection_for_select(current_company.expense_types, :id ,:alvalue ),{:class=>"w88"} %></td>
+            <td width="17%" valign="top"><%=text_area_tag "#{expense_entry}[expense_entry][description]", '' ,:warp =>"virtual", :rows =>'2', :class=> "w94 fl" %></td>
+            <td width="9%" valign="top" ><%=text_field_tag "#{expense_entry}[expense_entry][expense_amount]",  '' ,:maxlength=>5,:size =>"6", :onblur=>"check_expense_amount(this, #{expense_entry});", :class=>"fl w86 amount" ,:style=>"text-align: right;"%></td>
+            <td width="2%" align="center"><%= check_box( expense_entry, "expense_entry[is_billable]", options = {:id=> "#{expense_entry}_is_billable",:checked => false, :disabled => "true",  :onclick=>"enable_disable_billing_types(#{expense_entry},this);"}) %></td>
+
+            <td width="14%" >
+
+              <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0" >
+              <tbody>
+                <tr>
+                  <td width="60%" align="left" style="margin:0;padding:0"></td>
+                  <td width="18%" align="right" style="margin:0;padding:0 7px 0 0;"><div id="<%=expense_entry%>_full_amount">0.00</div></td>
+                </tr>
+                <tr id="<%=expense_entry%>_adjustment_table" style="display:none;">
+                  <td width="60%" align="left" style="margin:0;padding:0">
+                    <%=dynamic_select("#{expense_entry}[expense_entry]","billing_method_type",'expense_entries',{},{:class=>"w95 expense_entry",:disabled=>true})%>
+                    </td>
+                   <td width="18%" align="left" style="margin:0;padding:0;">
+                    <%= text_field_tag "show_full_amount", '',:size => 8 ,:maxlength=>5,:id=>"#{expense_entry}_show_amount", :onblur =>"calculate_discount_rate_for_expense_entry('#{expense_entry}_expense_entry_expense_amount','#{expense_entry}_expense_entry_billing_percent',#{expense_entry})",:style=>"text-align: right;",:disabled=>true%>
+                   </td>
+                </tr>
+              </tbody>
+            </table>
+            </td>
+            <td width="8%" align="right" class="txtR">$ <span id ="<%=expense_entry%>_final_billed_amount"><strong><%=t(:text_0_0)%></strong></span></td>
+            <td width="1%" align="center">
+              <div class="icon_action  mt3"><a href="#"></a></div>
+              <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                <!--Icon table strt here -->
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                  <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                      :deactivate_path=> "NO",
+                      :deactivate_text => "NO",
+                      :comment_path=> "NO",
+                      :comment_title => "NO",
+                      :document_path=>"NO",
+                      :history_path=>"NO",
+                      :history_title => "NO"}) %>
+                  <% if document_available? %>
+                  <tr>
+                    <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                    <td style="background: #fff;">
+                      <div class="w100">
+                        <div class="fl"  style="width:165px;" id=<%="#{file_data}" %>>
+                          <table width="70%" border="0" cellpadding="2" cellspacing="2">
+                            <tr>
+                             <td width="7%"><div class="ap_child_action"></div></td> 
+                             <td nowrap class="ml5" > <div id=<%="#{file_data}" %>  ><span><a href="#"><%=t(:label_upload)%>&nbsp;<%=t(:label_document)%></a></span></div> </td>
+                            </tr>
+                          </table>
+                        </div>
+                        <br class="clear"/>
+                      </div>
+                    </td>
+                    <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                  </tr>
+                  <%end%>
+                  <tr>
+                    <td valign="top" class="ap_bottom_curve_left"></td>
+                    <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                    <td valign="top" class="ap_bottom_curve_right"></td>
+                  </tr>
+                </table>
+              </div>
+
+            </td>
+          </tr>
+          <script>
+    <% input_name ="#{expense_entry}[expense_entry][file]" %>
+    jQuery.noConflict();
+    jQuery("#<%= file_data %> a").click(function (e) {
+      jQuery("#<%= file_data %> a").remove();
+      jQuery("#<%= file_data %>").html("<input type='file' size='10' name='<%= input_name %>' style='z-index:99999;width:auto;border:1px solid #aed0eb;' onclick='event.stopPropagation();'/>");
+      e.stopPropagation();
+    });
+    setMatterORContactSearchInputFields('<%=expense_entry.to_s + "_contact_ctl"%>','<%=expense_entry.to_s + "_matter_ctl"%>',"<%=get_employee_user_id%>","<%=get_company_id%>",'<%=expense_entry.to_s + "_expense_contact_id"%>','<%=expense_entry.to_s + "_expense_matter_id"%>','<%=expense_entry.to_s%>','addexpense_entry');
+      jQuery('#1_expense_entry_description').focus();
+          function is_internal (id)
+   { 
+
+       if(jQuery('#'+id+'_is_internal').is(':checked'))
+          {
+            jQuery('#'+id+'_nonuser').removeAttr("checked");
+            jQuery('#'+id+'_expense_contact_id').val('');
+            jQuery('#'+id+'_expense_matter_id').val('');
+            jQuery('#'+id+'_expense_entry_matter_people_id'); //ref:bug 10015  .append("<option value=''>Select</option>");
+            jQuery('#'+id+'_expense_entry_matter_people_id').attr('disabled','disabled');
+
+
+          }
+    }
+        </script>
+        <% end %>
+      </table>
+    </div>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  <div  class="mandatory mt12">Int:- Internal, M:- Matter, C:- Contact, Amt:- Amount, N.U:- Non-User </div>
+    <div class="buttonSub_div">
+      <%=time_expense_entry.submit t(:text_save_n_exit) , :class => 'time_and_expense', :onclick => "return setButtonPressed(this)", :name => "save_and_add_expense"  %>
+      <!--<a class="linkbutton" href="/physical/timeandexpenses/time_and_expenses/new?time_entry_date=<%#= @entry_date %>"><%=t(:text_cancel)%></a>-->
+      <input type="button" id="cancel" value="<%= t(:text_cancel) %>" onClick="setButtonPressed(this); disableAllSubmitButtons('time_and_expense');window.location='/physical/timeandexpenses/time_and_expenses/new?time_entry_date=<%= @entry_date %>';" class="time_and_expense"/>
+    </div>
+  <% end %>
+  <!--Form container div #ends here -->
+</div>
+<%#*<div class="pagiText">Page 75</div>%>
+
+<script type="text/javascript" charset="utf-8">
+  document.onkeypress = noenter;
+</script>

@@ -1,0 +1,180 @@
+
+<div id="page">
+  <div class="inner">
+    <div class="section table_section">
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Notes (#{@notes_count})</span></span>", wfm_notes_path, :class=>'active' %></li>
+          <li><%=link_to "<span><span>Tasks (#{@tasks_count})</span></span>", wfm_user_tasks_path%></li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <div class="section_content">
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <input class="checkbox" id="task_index" value="1" type="checkbox" style ="display: none"/>
+                  <br/>
+                  <div>
+                    <h3>Create New Note:</h3>
+                  </div><br/>
+                  <div id="modal_new_task_errors" class=""></div>
+                  <div id="loader1" ></div>
+                  <p>&nbsp;</p>
+                  <% form_for :note, @note,:url=>{:action=>'create'} ,:html=>{:autocomplete=>"off" ,:multipart=> true,:class=>"search_form general_form",:method=>:post,:target=>"upload_frame"} do |f| %>
+                    <input type="checkbox" name="reassign_user" id="chk_reassign_task" style="display:none"/>
+                    <input class="radio" name="user_type" value="" type="radio" checked style="display:none"/>
+                    <fieldset >
+                      <div class="forms">
+                        <div class="row">
+                          <label>Lawfirm </label>
+                          <div class="inputs">
+                            <div id="search_wrapper" style="padding-left:0px;">
+                              <div class="searchedform">
+                                <label>
+                                  <input class="text" type="text" id="search_lawfirm" style="width:125%;" />
+                                </label>
+                              </div>
+                              <div id="lawfirm_select" style="position:absolute;" >
+                                <ul class="ac_results" id="notes_lawfirm_list" style="display:none; max-height: 180px; overflow: auto;">
+                                  <%  @lawfirms.each_pair  do |lawfirm_id,lawfirm|%>
+                                    <li id="<%= lawfirm_id %>" class="<%=cycle('ac_even','ac_odd')%> search_text" onclick = "update_lawyers_select('<%=lawfirm_id%>','<%=lawfirm%>')"><%=lawfirm%></li>
+                                  <%end%>
+                                </ul>
+                              </div>
+                            </div>
+                            <div id="drop_lawfirm" style="float: left; padding: 7pt 0pt 0pt;" onclick="jQuery('#notes_lawfirm_list').slideToggle();jQuery('#notes_lwayers_list').hide();">
+                              <img  class="drop_down" src="/images/../stylesheets/wfm/layout/site/drop.gif" title="Dropdown" alt="Dropdown"/>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label>Lawyer <span id="mandatory">*</span></label>
+                          <div class="inputs">
+                            <div id="search_wrapper" style="padding-left:0px;">
+                              <div class="searchedform">
+                                <label>
+                                  <input class="text" type="text" id="search_lawyer"  style="width:125%;"/>
+                                  <!--<input class="text" type="text" id="find_lawyer" style="width:125%;" />-->
+                                  <%= f.hidden_field :assigned_by_employee_user_id %>
+                                </label>
+                              </div>
+                              <div id="lawyers_select" style="position:absolute;" >
+                                <ul class="ac_results" id="notes_lwayers_list" style="display:none; max-height: 180px; overflow: auto;">
+                                  <%@lawyers.each do |lawfirm_user|%>
+                                    <li id="<%=lawfirm_user.id%>" class="<%=cycle('ac_even','ac_odd')%> search_text" onclick = "update_matter_contact_select('<%=lawfirm_user.id%>','<%=lawfirm_user.full_name%>')"><%=lawfirm_user.full_name%></li>
+                                  <%end%>
+                                </ul>
+                              </div>
+                            </div>
+                            <div id="drop_lawyer" style="float: left; padding: 7pt 0pt 0pt;" onclick="jQuery('#notes_lwayers_list').slideToggle();jQuery('#notes_lawfirm_list').hide();">
+                              <img class="drop_down" src="/images/../stylesheets/wfm/layout/site/drop.gif" title="Dropdown" alt="Dropdown"/>
+                            </div>
+                          </div>
+                        </div>
+                        <span id ="matter_contact_select">
+                          <div class="row">
+                            <label>Matter</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank" >
+                                <%=f.select :matter_id, [], {:include_blank => 'Please Select'}%>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Contact</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank" >
+                                <%=f.select :contact_id, [], {:include_blank => 'Please Select'}%>
+                              </span>
+                            </div>
+                          </div>
+                        </span>
+                        <div class="row">
+                          <label>Priority</label>
+                          <div class="inputs">
+                            <span class="input_wrapper blank">
+                              <%=f.select :note_priority, UserTask::PRIORITIES%>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label>Attachment</label>
+                          <div class="inputs">
+                            <input type="file" id="T7"  name="document_home[document_attributes][data][]"/>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label>&nbsp;</label>
+                          <div id="T7-list" class="inputs"></div>
+                        </div>
+                        <div class="row">
+                          <label>Note <span id="mandatory">*</span></label>
+                          <span class="input_wrapper textarea_wrapper">
+                            <%=f.text_area :description, :rows => '8', :cols => "10",  :class => "text note_text", :id=>"note_text" %>
+                          </span>
+                        </div>
+                        <div class="row">
+                          <div class="inputs"><%= check_box_tag 'complete' , 'complete', false, :onclick =>"toggle_assign_complete('complete');"%>Complete</div>
+                          <% if is_team_manager %>
+                            <div class="inputs ml15"><%= check_box_tag 'assign' , 'assign', false, :onclick =>"toggle_assign_complete('assign')"%>Assign</div>
+                          <% end %>
+                          <div class="inputs ml15"><%= check_box_tag 'generate_task' , 'generate_task', false, :onclick =>"toggle_assign_complete('generate_task')"%>Generate Task</div>
+                        </div>
+                        <div id="_loader_img" ></div>
+                        <div id="complete_note" style="display: none" class="complete_note">
+                          <%= render :partial => 'complete' %>
+                        </div>
+                        <div id="assign_div" style="display:none;">
+                          <%= render :partial => 'assign_to' %>
+                        </div>
+                        <br class="clear" />
+                        <div id="generate_task_0" style="display:none;" class="gen_task">
+                          <span id="new_task_form">
+                            <%= render :partial => 'wfm/user_tasks/task_fields' ,:locals =>{:index => '0',:share => true} %>
+                          </span>
+                          <div class="row button_div" id="add_more_div"><span class="button orange_btn" id="add_more_button"><span><span>Add More</span></span><%= button_to_function 'Add More', "add_task_form(#{@note.id});"  %></span> </div>
+                        </div>
+                        <div class="button_div">
+                          <span class="button send_form_btn buttons_to_disable"><span><span id="button_pressed">Save</span></span><input type="submit" name="" onclick="return check_validation_on_note('generate_task','<%= @back_office_user %>');"/></span>
+                          <span class="button send_form_btn ml10 buttons_to_disable"><span><span>Cancel</span></span><%=button_to_function '' do |page| page.redirect_to :back end %></span>
+                          <br class="clear" />
+                        </div>
+                      </div>
+                    </fieldset>
+                  <%end%>
+                  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+                </div>
+              </div>   
+            </div>
+          </div>
+        </div>
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" language="javascript">
+  jQuery(function(){ // wait for document to load
+  jQuery('#T7').MultiFile({
+  list: '#T7-list'
+  });
+  });
+  jQuery(document).ready(function() {
+  jQuery('.search_form').submit(function(){
+  show_spinner();
+  disableAllSubmitButtons('buttons_to_disable');
+  });
+  jQuery("#drop").click(function() {
+  jQuery('.ac_results').hide();
+  });
+  
+  search_lawfirm_and_lawyers();
+  search_lwayers_list();
+
+  });
+</script>
+

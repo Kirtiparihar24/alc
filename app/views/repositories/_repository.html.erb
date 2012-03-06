@@ -1,0 +1,399 @@
+<%= raw paginate_for_five_remote_links(@repositories.total_pages, "searchresults_DIV", params.merge(:action => @search_result ? "search_document" : "index"), params[:page]) if @repositories.present? && @repositories.total_pages > 1 %>
+<div id="searchresults_DIV">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <div class="w100">
+    <div class="fl">
+      <% unless @recycle_bin %>
+        <table>
+          <tr>
+            <td ><label>Categories</label></td>
+            <td>&nbsp;</td>
+            <td>
+              <%= select_tag("stages", '<option value="All">All</option>' + options_for_select(categories.collect{|stage|[stage.alvalue, stage.id]}, @category.to_i),{:onchange =>"filterCategory(this.options[this.selectedIndex].value, '#{params[:parent_id]}')", :style => "height:22px;"}) -%>
+            </td>
+            <td>&nbsp;</td>
+            <td><div class="fl" id="breadcrumb" style="width:100%; font-size: 12px"><%if controller.action_name !='search_document' && !@recycle_bin %><%= path(controller.controller_name,@folder, false) %><%end%></div></td>
+          </tr>
+        </table>
+      <% end %>
+    </div>
+    <div class="fr textR">
+      <% if @recycle_bin %>
+        <span class="link_blue"><%= link_to('Back to Repository', repositories_path()) %></span>
+      <% else %>
+        <div class="link_blue">
+          &nbsp;
+          <%= link_to("<span class='icon_reset fl mr10'></span>", "#", {:class => "vtip", :title => "Reset", :onclick => "reset_page(); return false;"}) %>
+          <%= link_to("<span class='icon_new_folder fl mr5'></span><span class='fl mr10 icon_name'>New Folder</span>", "#", {:onclick => "tb_show('New Folder', '#{create_folder_repositories_path(:parent_id => @parent_id, :keepThis => false, :height => 100, :width => 300)}', '')"}) %>
+          <%= link_to("<span class='icon_upload fl mr5 '></span><span class='fl mr10 icon_name'>Upload Link</span>", "#", {:id => "repository_upload_document", :onclick => "tb_show('Upload Link', '#{new_repository_path(:folder_id => @parent_id, :keepThis => false, :height => 290, :width => 540)}', '')"}) %>
+          <%= link_to("<span class='icon_mass_upload fl' id='repository'></span><span class='fr mr10 icon_name' id='repository'>File(s) Upload</span>","#", {:class=> "vtip", :id => "upload_multi", :title=> "File(s) Upload", :name=> "Mass Upload File", :parentid => @parent_id.to_s, :current_user_id => current_user.id, :employeeuserid => get_employee_user_id, :authenticity_token=> protect_against_forgery? ? form_authenticity_token : "", :company_id => get_company_id, :path => "/repositories/do_the_multi_upload?stop=",:custom_title => get_folder_name(@folder),:return_path => "/repositories/folder_list?parent_id=#{@parent_id.to_s}&flash="}) %>
+        </div>
+        <div id="mass_upload" style="display:none">
+          <%= render :partial => "repositories/upload_multi",:locals => {:from => 'repository'}%>
+          <br class="clear" />
+          <div id="uploader" name="uploader" style="width: 100%;"></div>
+          <div class="mt5 pt5">
+            <div class="mandatory mt12 pl5">
+              Note :Total mass upload limit is 100 mb with a limit on individual file size of 50 mb.
+
+              Files will be scheduled for upload as per sequence specified.Incase a file size
+              exceeds the individual limit or increases the overall limit, the system will
+              pick the next file in the sequence selected.
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <br class="clear" />
+  </div>
+  <div>
+    <% if @repositories.present? && !@recycle_bin %>
+      <div class="pagination_div">
+        <ul class="alphabetical fl"><%# no alphabetical sorting %>
+        </ul>
+        <div class="fl ml10"><%# no reset %>
+        </div>
+        <!-- Added loader on per page limit link -->
+        <div id="perpage_loader" style ="display:none" align="center">
+          <%= image_tag "/images/loading.gif"%>
+        </div>
+        <div class="pagination fr w48">
+          <%= create_per_page_limit_remote_links(params[:per_page], "searchresults_DIV", params.merge(:action => @search_result ? "search_document" : "index")) if(@repositories.present? && @repositories.total_entries >= 25) %>
+          <div class="fr ">
+            <div class="fl"><%= raw page_entries_info @repositories, :entry_name => 'public documents'  %>
+            </div>
+            <div class="fl ml3 mr3 willpaginate"><%= will_paginate @repositories,:renderer => 'WillPaginateRemoteLinkRenderer', :remote => {:update => "searchresults_DIV"}, :params => {:action => @search_result ? "search_document" : "index", :paginating => true}.merge!(params)%>
+            </div>
+            <br class="clear" />
+          </div>
+          <br class="clear" />
+        </div>
+        <br class="clear" />
+      </div>
+    <% end %>
+    <div id="account_DIV"class="tabular_listing">
+      <table width="100%" cellpadding="1" cellspacing="1">
+        <tr>
+          <% if controller.action_name =="search_document"
+            name = "document_name"
+            extension = "document_extension"
+            description = "document_description"
+            creator = "document_creator_name"
+            size = "document_size"
+            updated = "updated_at"
+          else
+            name = "name"
+            creator = "created_by"
+            extension = "extension"
+            description = "description"
+            size = "data_file_size"
+            updated = "document_homes.updated_at"
+          end %>
+          <%= column_sort_link(t(:text_name), name, params[:col], "23%", "left", {:recycle_bin => params[:recycle_bin], :parent_id => (params[:parent_id]||params[:id]), :per_page => params[:per_page]}) %>
+          <%= column_sort_link(t(:text_description), description, params[:col], "33%", "left", {:recycle_bin => params[:recycle_bin], :parent_id => (params[:parent_id]||params[:id]),:per_page=>params[:per_page]})%>
+          <%= column_sort_link(t(:text_size), size, params[:col],"8%","left",{:recycle_bin=> params[:recycle_bin],:parent_id=>(params[:parent_id]||params[:id]),:per_page=>params[:per_page]})%>
+          <th width="8%" align="left"><%=t(:text_category)%></th>
+          <%= column_sort_link(t(:label_type),extension,params[:col],"9%", "left", {:recycle_bin=> params[:recycle_bin],:parent_id => (params[:parent_id] || params[:id]), :per_page => params[:per_page]})%>
+          <%= column_sort_link(t(:text_uploaded_by),creator,params[:col], "13%", "left", {:recycle_bin=> params[:recycle_bin],:parent_id => (params[:parent_id] || params[:id]), :per_page => params[:per_page]})%>
+          <%= column_sort_link(t(:text_created_modified_date), updated,params[:col], "8%", "left", {:recycle_bin => params[:recycle_bin], :parent_id => (params[:parent_id] || params[:id]), :per_page => params[:per_page]}) %>
+          <th width="5%" align="left"><%= t(:text_actions) %></th>
+        </tr>
+        <% if @folders.size > 0 %>
+          <% @folders.each do |folder| %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td id="row_node-<%folder.id%>">
+                <% if  @recycle_bin
+                  folder_length = folder.files.find_only_deleted(:all).count + folder.links.find_only_deleted(:all).count
+                  count = folder.children.find_only_deleted(:all).count
+                  recycle_bin = true
+                else
+                  folder_length = folder.files.has_category(@category).count + folder.links.has_category(@category).count
+                  count = folder.children.count
+                  recycle_bin = false
+                end
+                folder_name = escape_javascript(h(folder.name)) + ' [ ' + folder_length.to_s  + ' ]'
+                if  count > 0
+                  class_name="icon_expand_folder mr5 mt3 fl"
+                else
+                  class_name="icon_folder_01 mr5 mt3 fl"
+                end %>
+                <div class="mr5 mt3 fl"><a href="#" rel="<%= folder.id%>/" onclick="GetFoldersListRepository('<%=folder.id%>',true,this,'<%=recycle_bin%>','loader_<%=folder.id%>', '<%=@category%>');return false;" style="width:auto"><span class="<%=class_name%>" ></span><%= truncate_hover(folder_name , 20)%></a></div><div id ="loader_<%=folder.id%>" class=" mr5 mt3 fl"></div>
+              </td>
+              <td ></td>
+              <td ></td>
+              <td ></td>
+              <td align="center"><%= t(:label_file_folder) %></td>
+              <td ></td>
+              <td  align="center" ><%= folder.created_at.to_time.strftime('%m/%d/%y') %></td>
+              <td align="center">
+                <% parent_folder= true
+                parent_folder = false if (!folder.parent_id.nil? and folder.parent.nil?)
+                if (@recycle_bin && parent_folder) || (!@recycle_bin) %>
+                  <div class="icon_action mt3"><a href="#"></a></div>
+                  <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                    <!--Icon table strt here -->
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                      <%= raw action_pad_top_blue_links({:edit_path=> 'NO',
+                          :deactivate_path=> @recycle_bin ? 'NO' :temp_delete_folder_document_home_path(folder, :path=> "#{repositories_path}") ,
+                          :deactivate_text => "folder",
+                          :comment_path=>"NO",
+                          :comment_title => "NO",
+                          :document_path=>"NO",
+                          :history_path=>"NO",
+                          :history_title => "NO",:edit_modal => true}) %>
+                      <tr>
+                        <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                        <td style="background: #fff;">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                            <tr>
+                              <% unless @recycle_bin %>
+                                <td width="7%" align="center" valign="middle"><div class="icon_renameFolder fl ml13 mr5"></div></td>
+                                <td width="40%" align="left" valign="middle"><%= link_to("<span>Rename Folder</span>", "#", {:onclick=>"tb_show('Rename Folder', '#{edit_folder_document_managers_path(:format => folder.id, :from => "repositories", :height => 100, :width => 300)}', '')"}) %></td>
+                                <td width="7%" align="center" valign="middle"><%= link_to('<span>Move</span>', "#{move_folder_repository_path(folder.id)}?height=300&width=350&update_list=false&doc_type=document",{:class => "thickbox vtip", :title => "Move Folder"}) %></td>
+                                <td width="40%" align="left" valign="middle" nowrap><%#= link_to('<span>Delete</span>',  temp_delete_folder_document_home_path(folder, :path=> "#{repositories_path}"), :id =>folder.id, :confirm => 'Deleting this folder will delete all its content. Do you still want to continue?', :method=> :delete)%></td>
+                              <% else %>
+                                <td width="7%" align="center" valign="middle"><div class="icon_restor_recycle fl"></div></td>
+                                <td width="40%" align="left" valign="middle" nowrap>
+                                  <%= link_to('<span>Restore</span>', "#{restore_folder_document_home_path(folder, :path => repositories_path)}") %>
+                                </td>
+                              <% end %>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                            <% unless @recycle_bin %>
+                              <tr>
+                              </tr>
+                            <% end %>
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                      </tr>
+                      <tr>
+                        <td valign="top" class="ap_bottom_curve_left"></td>
+                        <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                        <td valign="top" class="ap_bottom_curve_right"></td>
+                      </tr>
+                    </table>
+                  </div>
+                <% end %>
+              </td>
+            </tr>
+          <% end
+        end
+        if (@folders.size + @documenthomes.size) > 0
+          @documenthomes.each do |doc|
+            unless doc.class.name == 'Link'
+              is_owner = (doc.owner_user_id.to_i == @emp_user_id) %>
+              <tr class="<%= cycle('bg1', 'bg2') %>">
+                <td>
+                  <%= get_file_extension(doc) %><!--to set the image for the extension type -->
+                  <%= raw truncate_hover_link(doc.name, 25, document_home_path(doc.id, :deleted_doc => @recycle_bin)) %>
+                </td>
+                <td><%= raw truncate_hover(doc.description.try(:titleize), 25) %></td>
+                <td><%= raw number_to_human_size(doc.data_file_size,:separator=>".",:precision=>2) %></td>
+                <td><%= raw truncate_hover(doc.document_type.alvalue.titleize,25) rescue nil %></td>
+                <td align="center"><%= raw truncate_hover(doc.extension, 25) %></td>
+                <td><%= raw truncate_hover(doc.document_home.try(:employee).try(:full_name),50) %> </td>
+                <td align="center"><%= h doc.updated_at.to_time.strftime('%m/%d/%y') %></td>
+                <td align="center">
+                  <% unless @folder && @recycle_bin %>
+                    <div class="icon_action mt3"><a href="#"></a></div>
+                    <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                      <!--Icon table strt here -->
+                      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                        <%= raw action_pad_top_blue_links({:edit_path=> @recycle_bin=='true' ? 'NO' : edit_doc_link_document_home_path(doc.document_home_id, :controller_name => "#{controller.controller_name}", :type => 'DocumentHome', :height => "250"),
+                            :edit_modal => true,
+                            :deactivate_path=> is_owner ? temp_delete_document_home_path(doc.document_home_id, :path => "repositories") : "NO" ,
+                            :deactivate_text => "document and send it to recycle bin?",
+                            :comment_path => "NO",
+                            :comment_title => "NO",
+                            :document_path => "NO",
+                            :history_path => "#{get_doc_history_document_home_path( doc.document_home_id )}?height=90&width=450",
+                            :history_title => "NO",
+                            :edit_modal => true}) %>
+                        <tr>
+                          <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                          <td style="background: #fff;">
+                            <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <tr>
+                                <td width="7%" align="left" valign="middle"><span class="icon_download fl"></span></td>
+                                <td width="40%" align="left" valign="middle" nowrap><%= link_to "<span>Download</span>",document_home_path(doc.id, :deleted_doc => @recycle_bin)%></td>
+                                <% if @recycle_bin %>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_restor_recycle fl"></div></td>
+                                  <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Restore</span>', "#{restore_document_document_home_path(doc.document_home_id)}") %></td>
+                                <% else %>
+                                  <td width="7%" align="left" valign="middle"><span class="ap_child_action fl"></span></td>
+                                  <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Modify Tags</span>","#", :onclick=>"tb_show('Add Tags for #{escape_javascript(doc.name.strip)}', '#{add_tags_repository_path(doc.document_home_id, :type=>'DocumentHome')}&height=200&width=500', '' ); return false;")%></td>
+                                <% end %>
+                              </tr>
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <% unless @recycle_bin %>
+                                <tr>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_move fl"></div></td>
+                                  <td width="40%" align="left" valign="middle"><%= link_to('<span>Move</span>', "#", {:class=> "vtip", :title=> "Move File",:onclick => "tb_show('Move File', '#{move_doc_repository_path(doc.document_home_id)}?height=400&width=500&update_list=false&doc_type=document', '');"})%>  </td>
+                                  <% if is_owner %>
+                                    <td width="7%" align="center" valign="middle"><div class="icon_supercede_document fl"></div></td>
+                                    <td width="40%" align="left" valign="middle"><%= raw link_to "<span>#{t(:label_superseed)}</span>", "#", :onclick => "tb_show('#{t(:label_superseed)}','#{supercede_or_replace_document_document_home_path(doc.document_home_id, :height => 170, :width => 450, :from => 'repository', :parent_id => @parent_id)}','','fixed')" %></td>
+                                  <% end %>
+                                </tr>
+                              <%end%>
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <tr>
+                                <td width="7%" align="left" valign="middle"><span class="icon_email fl mr5"></span></td>
+                                <td width="40%" align="left" valign="middle" nowrap><%= raw(generate_send_email_doc_link(doc.id, doc.name)) %></td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                        </tr>
+                        <tr>
+                          <td valign="top" class="ap_bottom_curve_left"></td>
+                          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                          <td valign="top" class="ap_bottom_curve_right"></td>
+                        </tr>
+                      </table>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% else %>
+              <tr class="<%=cycle('bg1', 'bg2')%>">
+                <td>
+                  <div class="icon_link fl mr10"> &nbsp;</div>
+                  <%= raw link_to(truncate_hover(doc.name, 25), get_url(doc.url), :target => "_blank" ) %>
+                </td>
+                <td><%= raw truncate_hover(doc.description.titleize, 25) %></td>
+                <td></td>
+                <td><%= raw truncate_hover(doc.category.alvalue.titleize, 25) rescue nil %></td>
+                <td>Link</td>
+                <td><%=raw truncate_hover(doc.created_by.try(:full_name).try(:titleize), 50) %></td>
+                <td align="center"><%=h doc.created_at.to_time.strftime('%m/%d/%y') %></td>
+                <td align="center">
+                  <% unless @folder && @recycle_bin %>
+                    <div class="icon_action"><a href="#"></a></div>
+                    <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                      <!--Icon table strt here -->
+                      <% delete_link = (doc.created_by_employee_user_id == @emp_user_id) ? link_to('<span>Delete</span>',  remove_link_repositories_path( :id => doc.id ), :confirm => 'Are you sure you want to send this link to recycle bin?') : 'NO' %>
+                      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                        <%=raw action_pad_top_blue_links({:edit_path=> @recycle_bin.to_s=='true' ? 'NO' : edit_doc_link_document_home_path(doc.id, :controller_name => "#{controller.controller_name}", :type => 'Link', :height => "250"),
+                            :deactivate_path=> @recycle_bin ? 'NO' : remove_link_repositories_path( :id => doc.id) ,
+                            :deactivate_text => "Link",
+                            :comment_path=>"NO",
+                            :comment_title => "NO",
+                            :document_path=>"NO",
+                            :history_path=>"NO",
+                            :history_title => "NO",:edit_modal => true}) %>
+                        <tr>
+                          <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                          <td style="background: #fff;">
+                            <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <tr>
+                                <td width="10%" align="left" valign="middle"><div class="icon_go_url fl"></div></td>
+                                <td width="40%" align="left" valign="middle" nowrap><%= link_to "<span>Open Link</span>",get_url(doc.url), :target=>"_blank" %></td>
+                                <% if  @recycle_bin %>
+                                  <td width="10%" align="center" valign="middle"><div class="icon_restor_recycle fl"></div></td>
+                                  <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Restore</span>', restore_link_repositories_path( :id => doc.id)) %></td>
+                                <% end %>
+                              </tr>
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <% unless @recycle_bin %>
+                                <tr>
+                                  <td width="10%" align="left" valign="middle"><span class="ap_child_action fl"></span></td>
+                                  <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Modify Tags</span>","#", :onclick=>"tb_show('Add Tags for #{doc.name}', '#{add_tags_repository_path(doc, :type=>'Link')}&height=200&width=500', '' ); return false;")%></td>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_move fl"></div></td>
+                                  <td width="40%" align="left" valign="middle"><%= link_to('<span>Move</span>', "#", {:class=> "vtip", :title=> "Move File",:onclick => "tb_show('Move File', '#{move_doc_repository_path(doc)}?height=400&width=500&update_list=false&doc_type=link', '');"})%>  </td>
+                                </tr>
+                              <% end %>
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                        </tr>
+                        <tr>
+                          <td valign="top" class="ap_bottom_curve_left"></td>
+                          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                          <td valign="top" class="ap_bottom_curve_right"></td>
+                        </tr>
+                      </table>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end
+          end
+        else %>
+          <tr><td>
+              <div class="warningCont m5"><%=t(:text_no_document_uploaded_yet)%></div></td></tr>
+        <% end %>
+      </table>
+      <!--Pagination container div @start here -->
+      <% if @repositories.present? && !@recycle_bin %>
+        <div class="pagination_div">
+          <ul class="alphabetical fl"><%# no alphabetical sorting %>
+          </ul>
+          <div class="fl ml10"><%# no reset %>
+          </div>
+          <!-- Added loader on per page limit link -->
+          <div id="perpage_loader" style ="display:none" align="center">
+            <%=image_tag "/images/loading.gif"%>
+          </div>
+          <div class="pagination fr w48">
+            <%= create_per_page_limit_remote_links(params[:per_page], "searchresults_DIV", params.merge(:action => @search_result ? "search_document" : "index")) if(@repositories.present? && @repositories.total_entries >= 25) %>
+            <div class="fr ">
+              <div class="fl"><%=raw page_entries_info @repositories, :entry_name => 'public documents'  %>
+              </div>
+              <div class="fl ml3 mr3 bottom-pagination"><%=will_paginate @repositories,:renderer => 'WillPaginateRemoteLinkRenderer', :remote => {:update => "searchresults_DIV"}, :params => {:action => @search_result ? "search_document" : "index", :paginating => true}.merge!(params)%>
+              </div>
+              <br class="clear" />
+            </div>
+            <br class="clear" />
+          </div>
+          <br class="clear" />
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%= render :file =>'common/document_extension'%>
+</div>
+<script type="text/javascript">
+  // Need to removed to JS File
+  jQuery('a[id=faceboxaccount]').facebox();
+  function reset_page(){
+    var search=jQuery('#display_search').val();
+    jQuery('#loader').show();
+    jQuery.ajax({
+      url: "/repositories/folder_list",
+      type: "GET",
+      success: function(transport){
+        jQuery('#loader').remove();
+        jQuery('#searchresults_DIV').html(transport);
+      }
+    });
+  }
+  jQuery("th.tablesorter a").bind("click", function(){
+<% action = controller.action_name
+if action  == "search_document" %>
+      search(this,this.href);
+      return false;
+<% end %>
+  });
+</script>

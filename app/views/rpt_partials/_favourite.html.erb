@@ -1,0 +1,32 @@
+<div style="margin-top:20px;" id="favourite_id">
+  <% form_remote_tag :url => {:action => :create_favourite} ,:method=>:post,:html=>{:onsubmit=>"jQuery('.button').attr('disabled', 'disabled');jQuery('.button').val('Please wait...')"} do  -%>
+    <div id="nameerror" style="display:none"></div>
+    <% reports = params[:report] || {}
+    reports.keys.each do |key| %>
+      <%=hidden_field_tag "report_favourite[selected_options][#{key}]",reports[key]%>
+    <%end
+    ["get_records","date_start","date_end","report_type","action_name"].each do |key| %>
+      <%=hidden_field_tag "report_favourite[#{key}]",params[key]%>
+    <%end
+    #Due to Absolute path given for TimeANDExpense we are prefixing controller name with '/' character and storing in DB.
+    %>
+    <%=hidden_field_tag "report_favourite[controller_name]",params[:controller] == "rpt_time_and_expenses" ? "/#{params[:controller]}" : params[:controller]%>
+    <%=hidden_field_tag "report_favourite[date_selected]",params[:date_selected].blank? ? false : true  %>
+    <table width="100%">
+      <tr>
+        <td><label><%=t(:label_report_name)%> <span class="alert_message">*</span></label></td>
+        <td><%=text_field_tag "report_favourite[report_name]",params[:report_name]%> </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="buttonSub_div">
+            <%=submit_tag t(:label_add_to_favorite), :class=>"button",:onclick=>"return validate_report_name();"%>
+            <input name="Cancel" type="submit" id="Cancel" value="<%=t(:label_cancel)%>" onclick="parent.tb_remove(); return false;" />
+          </div>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%></div>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;156</div>
+</div>

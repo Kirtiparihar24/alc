@@ -1,0 +1,27 @@
+<% count ||=1  %>
+<div id='from_date' class="clone_periods">
+  <table border='0' cellpadding='0' cellspacing='0' width='100%'>
+    <tr>
+      <td width="51%"><%= t(:label_member_from) %>&nbsp;&nbsp;<input type='text' value='<%=Date.today%>' size='10' class='date_picker new_start_date_picker' /></td>
+      <td width="39%"><%= t(:label_to) %>&nbsp;&nbsp;<input type='text' size='10' class='date_picker new_end_date_picker'/></td>
+      <td width="10%" valign="top"><% unless count==0 %><div style="cursor:pointer; float: left;"><a href='#this' id="remove_clone" class='vtip' title='Remove Dates' onclick="check_dates(this);"><div class='icon_remove mt3' style='width:13px; float:right;'></div></a></div><% end %></td>
+    </tr>    
+  </table>
+</div>
+<script type="text/javascript">
+  var rand_no = get_randomno();
+  add_id_and_date_for_start(rand_no );
+  add_id_and_date_for_end(rand_no );
+  jQuery(".new_start_date_picker").each(function(){
+    if(jQuery(this).val()=='NaN/NaN/NaN'){jQuery(this).parent().parent().parent().remove();}
+  });
+  jQuery(".new_end_date_picker").each(function(){
+    var count_val = 0
+    if(jQuery(this).val()==''){
+      if(count_val>0){
+        jQuery(this).parent().parent().parent().remove();
+      }
+      count_val += 1;
+    }
+  });
+</script>

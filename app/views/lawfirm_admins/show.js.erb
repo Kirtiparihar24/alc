@@ -1,0 +1,6 @@
+<%if params[:populate].eql?("employees")%>
+jQuery('#empdiv').html("<%=escape_javascript(render(:partial => 'employees'))%>");
+<%end%>
+<%if params[:populate].eql?("products")%>
+jQuery('#productdiv').html("<%=escape_javascript(render(:partial => 'products'))%>");
+<%end%>

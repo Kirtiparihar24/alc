@@ -1,0 +1,1 @@
+<%= custom_select_tag 'note[assigned_to_user_id]', options_for_select(@livian_users.map{|x| [x.full_name, x.id]},{:selected=>current_user.id,:disabled=>""}), {:prompt=>"Please Select"}%>

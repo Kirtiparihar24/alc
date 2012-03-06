@@ -1,0 +1,31 @@
+
+<% if from =="matters" %> 
+  <% @contacts.each do |cnt_name| %>
+    <input  type="text" id="contact_cnt_<%=formINDEX %>" class="all_contact_input" title='Search' size="15" value="<%= cnt_name.full_name%>" autocomplete="off" ></input>
+    <input type="hidden" value="<%= params[:matter_id]  %> " id="com_notes_entries_<%=formINDEX %>_matter_id" name="com_notes_entries[<%=formINDEX %>][matter_id]"></input>
+    <input type="hidden" value="<%= cnt_name.id %> " id="com_notes_entries_<%=formINDEX %>_contact_id" name="com_notes_entries[<%=formINDEX %>][contact_id]"></input>
+  <% end %>
+
+<% elsif from=="mat" %>
+  <input  type="text" id="matter_cnt_<%= formINDEX%>" class="all_matter_input" title='Search' value="<%= value %>" size="15" autocomplete="off"  ></input>
+  <input type="hidden" value="<%= params[:matter_id]  %> " id="com_notes_entries_<%=formINDEX %>_matter_id" name="com_notes_entries[<%=formINDEX %>][matter_id]"></input>
+  <% @contacts.each do |cnt_name| %>
+    <input type="hidden" value="<%= cnt_name.id %> " id="com_notes_entries_<%=formINDEX %>_contact_id" name="com_notes_entries[<%=formINDEX %>][contact_id]"></input>
+  <% end %>
+<% else from == "contacts" %>
+  <% if @matters.empty? %>
+    <input  type="text" id="matter_cnt_<%= formINDEX%>" class="all_matter_input" title='Search' value="No Matter found" size="15" autocomplete="off"  ></input>
+    <input type="hidden" value=""  id="com_notes_entries_<%=formINDEX %>_contact_id" name="com_notes_entries[<%=formINDEX %>][matter_id]"></input>
+     <input type="hidden" value="<%= params[:contact_id]%> " id="com_notes_entries_<%=formINDEX %>_contact_id" name="com_notes_entries[<%=formINDEX %>][contact_id]"></input>
+  <% else %>
+    <%=select_tag "com_matter_id", options_for_select(@matters.collect{|mt|[mt.clipped_name, mt.id]}) ,:class=>"dropbox1"%>
+
+    <input type="hidden" class="hiddensetval"  id="com_notes_entries_<%=formINDEX %>_matter_id" name="com_notes_entries[<%=formINDEX %>][matter_id]"></input>
+    <input type="hidden" value="<%= params[:contact_id]%> " id="com_notes_entries_<%=formINDEX %>_contact_id" name="com_notes_entries[<%=formINDEX %>][contact_id]"></input>
+  <% end %>
+<% end %>
+<script type="text/javascript">
+  value = jQuery('#com_matter_id').val();
+  jQuery('.hiddensetval').val(value);
+</script>
+

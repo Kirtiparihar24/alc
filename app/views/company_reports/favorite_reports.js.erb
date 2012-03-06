@@ -1,0 +1,8 @@
+jQuery('#TB_ajaxWindowTitle').text('My'+'<%=t(:text_favorites)%>')
+jQuery('#TB_window').width(600)
+jQuery('#TB_ajaxContent').width(570)
+jQuery('#TB_window').height(320)
+jQuery('#TB_ajaxContent').height(265)
+jQuery('#TB_window').css("margin-left","-315px")
+jQuery('#TB_window').css("margin-top","-150px")
+jQuery('#TB_ajaxContent').html("<%=escape_javascript(render(:file => "company_reports/fav_reports"))%>")

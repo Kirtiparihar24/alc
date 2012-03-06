@@ -1,0 +1,17 @@
+jQuery('#<%=@div_update%>').html("<%=escape_javascript(render(:partial => 'rpt_partials/favourites',:locals => {:col => @favourites}))%>")
+parent.tb_remove()
+window.location.reload();
+jQuery('#altnotice').show();
+jQuery('#altnotice').addClass("message_sucess_div");
+jQuery('#altnotice').html("<span class='icon_message_sucess fl mlr8 mt5'></span> <ul class='mt5 mb5 ml40'><li><%=t(:text_report_successfully_added_under_my_favorite)%></li></ul>")
+    jQuery('#altnotice')
+    .fadeIn('slow')
+    .animate({
+      opacity: 1.0
+    }, 8000)
+    .fadeOut('slow', function() {
+      jQuery('#altnotice').remove();
+      jQuery('#altnotice').removeClass("message_sucess_div ");
+    });
+
+

@@ -1,0 +1,1 @@
+<%=select(:service_provider_skill, :user_id, @livians.collect{|u|[u.full_name, u.id]}, { :include_blank => "---Select---"}, {:class => "dropbox", :onchange => 'getUserSkills(this.value)' })%>

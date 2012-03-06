@@ -1,0 +1,29 @@
+<% @widths_hash = {"Stage" => "10%","Name" => "15%","Contact" => "10%","Amount" => "15%","Est Hours" => "12%","Probability" => "8%","Created" => "7%","Closure" => "7%","Owner" => "10%","Source" => "10%","#{t(:label_Account)}" => "10%"} %>
+<div class="mt5">
+  <div class="w100">
+    <% unless @total_data.blank? %>
+      <div class="title_blue fl"><%= t(:text_total_records) %> = <%= @conditions[:col_length] %>&nbsp;&nbsp;&nbsp;&nbsp;<%= t(:text_amount) %> = <%= livia_amount(@conditions[:amount]) %> </div>
+    <%end%>
+    <div class="fr textR pt5">
+      <%=raw(generate_send_email_rpt_link("opportunity_pipe_rpt")) unless params[:load_popup]%>
+      <%= raw(generate_rpt_fav_link("Opportunity")) unless params[:load_popup]%>
+      <%= raw(generate_reports_links("opportunity_pipe_rpt")) %>
+    </div>
+    <br class="clear" />
+  </div>
+  <% unless @total_data.blank? %>
+    <% @total_data.each do |label,col| %>
+      <div class="w100">
+        <div class="title_blue fl"><%=(label == "" or !label) ? "None" : label%> <span>(<%= pluralize_record(col.length , 'Record',0)%>)&nbsp;&nbsp;<%=t(:text_amount)%> = <%=livia_amount(@conditions[label][0])%>&nbsp;&nbsp;<%=t(:text_hours)%> <%=@conditions[label][1]%></span></div>
+        <div class="fr textR"> <%# links %> </div>
+        <br class="clear" />
+      </div>
+      <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => col} %>
+      <% reset_cycle %>
+    <% end %>
+  </div>
+  <div class="title_blue fl"><%= pluralize_record(@conditions[:col_length] , 'Record',1)%>&nbsp;&nbsp; <%= t(:text_amount) %> = <%= livia_amount(@conditions[:amount]) %>&nbsp;</div>
+<%else%>
+  <div class="title_blue fl"><%= pluralize_record((@conditions[:col_length] rescue 0) , 'Record',1)%></div>
+<% end %>
+<br class="clear" />  

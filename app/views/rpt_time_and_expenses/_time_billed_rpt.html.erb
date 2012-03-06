@@ -1,0 +1,29 @@
+<% @widths_hash = {"Date" => "12%","Hours Accounted" => "12%" , "Hours Billed" => "12%","% Hours Billed" => "12%" , "Amount ($)" => "12%"} %>
+<div class="w100">
+  <%unless @total_data.blank? %><div class="title_blue fl"><%=t(:text_grand_total_hours_accounted)%><%=@conditions[:expenses][0]%> &nbsp;,&nbsp;<%=t(:text_hoursbilled)%><%=@conditions[:expenses][1]%> &nbsp;,&nbsp;<%=t(:text_hoursbilledpercent)%><%=@conditions[:expenses][0] != 0 ? (((@conditions[:expenses][1]/@conditions[:expenses][0].to_f) * 100).roundf2(2).to_s + "%")  : ""%> &nbsp;,&nbsp;<%=t(:text_amount)%> : <%=livia_amount(@conditions[:expenses][2])%></div><% end %>
+  <div class="fr  textR pt5">
+    <%=raw(generate_send_email_rpt_link("time_billed_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("TimeAndExpense")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("time_billed_rpt"))%>
+  </div>
+  <br class="clear" />
+</div>
+<%unless @total_data.blank? %>
+  <% @total_data.each do |label,col| %>
+    <div class="mt5">
+      <div class="w100">
+        <div class="title_blue fl" ><%=label%> (<%= pluralize_record((col.length rescue 0), 'Record',1)%>)</div>
+        <div class="fr textR"> <%# links %></div>
+        <br class="clear" />
+      </div>
+      <%= render :partial => 'rpt_partials/list_col_array_with_index', :locals => {:col => col} %>
+    </div>
+    <div class="title_blue fl"><%=t(:text_hours_accounted)%> <%=@conditions[label][0]%> &nbsp;,&nbsp;<%=t(:text_hoursbilled)%><%=@conditions[label][1]%> &nbsp;,&nbsp;<%=t(:text_hoursbilledpercent)%><%=@conditions[label][0] != 0 ? (((@conditions[label][1]/@conditions[label][0].to_f) * 100).roundf2(2).to_s + "%") : "" %> &nbsp;,&nbsp;<%=t(:text_amount)%> : <%=livia_amount(@conditions[label][2])%></div>
+    <br class="clear" />
+    <%reset_cycle%>
+  <%end%>
+  <div class="title_blue fl"><%=t(:text_grand_total_hours_accounted)%><%=@conditions[:expenses][0]%> &nbsp;,&nbsp;<%=t(:text_hoursbilled)%><%=@conditions[:expenses][1]%> &nbsp;,&nbsp;<%=t(:text_hoursbilledpercent)%><%=@conditions[:expenses][0] != 0 ? (((@conditions[:expenses][1]/@conditions[:expenses][0].to_f) * 100).roundf2(2).to_s + "%")  : ""%> &nbsp;,&nbsp;<%=t(:text_amount)%> : <%=livia_amount(@conditions[:expenses][2])%></div>
+<%else%>
+  <div class="title_blue fl"><%=t(:text_total_record)%> = 0 </div>
+<%end%>
+<br class="clear" />

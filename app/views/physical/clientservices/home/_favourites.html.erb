@@ -1,0 +1,25 @@
+<div class="column_fav h600">
+  <h2 class="title_main"><%=t(:text_favorites)%><%if can?(:manage,:home)%><%=link_to "<span class='icon_add fr mt5 '></span>",physical_clientservices_fav_form_path(:height=>'150', :width=>'350', :KeepThis=>true),{:class =>"thickbox add_fav_form vtip",:title=>"Add to RSS",:name=>"Add to RSS"}%><%end%></h2>
+  <div class="boxtab">
+    <ul class="tabSlider tabnav">
+      <li id="rssfeed" class="ui-tabs-selected"><a href="javascript:void(0);" class="tabSelect" rel="0" onclick="Change_to_favourites('RSSFeed',this,'')">RSS</a></li>
+      <li id="external"><a href="javascript:void(0);" class="tabSelect" rel="1" onclick="Change_to_favourites('External',this,'')">My Links</a></li>
+      <li id="internal"><a href="javascript:void(0);" class="tabSelect" rel="2" onclick="Change_to_favourites('Internal',this,'')">My Forms</a></li>
+      <li><span id="loader_container"></span></li>
+    </ul> 
+    <div class="SlideTab scrollY100" id="Tab0">
+      <%= render :partial => "change_to_favourites"%>
+    </div>
+    <div class="SlideTab scrollY100" id="Tab1" style="display:none">
+      <%#= render :partial => "change_to_favourites"%>
+    </div>
+    <div class="SlideTab scrollY100" id="Tab2" style="display:none">
+      <%#= render :partial => "change_to_favourites"%>
+    </div>
+    <div id="delete_loader_container" class="fc"></div>     
+    <div class="fl mr5 mt15"><%if can?(:manage,:home)%><%= link_to "<span class='icon_add fl mt5'></span>",physical_clientservices_fav_form_path(:height=>'150', :width=>'350',:KeepThis=>true),{:class =>"thickbox add_fav_form vtip",:title=>"Add to RSS",:name=>"Add to RSS"}%> <%end%>
+    </div>
+
+    <!--<input type="submit" value="Add" class="thickbox" alt="/physical/clientservices/fav_form?height=170&width=350" title="Add Favourite"  />-->
+  </div>
+</div>

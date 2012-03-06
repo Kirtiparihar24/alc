@@ -1,0 +1,11 @@
+<table width="100%" class="formTable" border="0" cellspacing="0" cellpadding="0" style="font-size: 9pt;">
+  <tbody>
+    <tr class="<%=cycle("bg1", "bg2")%>">
+      <td width="10%"><%=comment.title.eql?("MatterTask Client") ? "Client Message" : "Internal Comment"%></td>
+      <td width="15%"><%= comment.user.nil?? '' : comment.user.try(:full_name)%></td>
+      <td width="45%">
+        <span class="comment"><%=raw(truncate_hover_comments(comment.comment,60))%></span></td>
+      <td width="15%"><%=comment.created_at.to_time.strftime('%m/%d/%y %H:%M:%S') %></td>
+    </tr>
+  </tbody>
+</table>

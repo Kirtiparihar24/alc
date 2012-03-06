@@ -1,0 +1,95 @@
+<%remote_form_for(:contact, @contact, :url => url_for(:controller => :accounts, :action => :add_contact),:complete=>'enableAllSubmitButtons("accounts")',:loading=>'disableAllSubmitButtons("accounts")',:html=>{:id=>'contact_form'}) do |contact| %>
+  <%= hidden_field_tag :id,params[:id]%>
+  <div style="text-align:center;margin-top:10px;" id="modal_contact">
+    <div id="add_contact_errors" class="" style="display: none; text-align:left"></div>
+    <div id="same_contact_errors" class=""></div>
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <br />
+    <table width="95%" cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <tr>
+          <td width="25%" align="left" id="select_existing_s" style="display:none"><label><%= raw link_to "#{t(:label_select_existing)}", "#", {:onclick => "toggle_form();",:id=>'selector_link_E', :style=>'color:#4081a2;' } %></label></td>
+          <td width="15%" align="left" id="text"><label id="contact_toggle"><%=t(:label_contact)%> <span class="alert_message">*</span></label></td>
+          <td width="55%" align="left">
+            <%= raw contact_search_box('contact[id]', controller.controller_name, "", "") %>
+            <strong id="contact_toggle_s"class="text12 mlr8">or</strong>
+            <label><%= raw link_to "#{t(:label_create_new)}", "#", {:onclick => "toggle_form();",:id=>'selector_link', :style=>'color:#4081a2;' } %></label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br/>
+    <table width="100%" id="create_new_table" cellpadding="0" cellspacing="0" border="0" style="display:none" class="form_table">
+      <tbody>
+        <tr>
+          <td width="24%" align="left"><label><%= t(:label_salutation) %></label></td>
+          <td width="26%" align="left">
+            <%= contact.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %>
+          </td>
+          <td width="2%">&nbsp;</td>
+          <td width="24%" align="left">&nbsp;</td>
+          <td width="26%" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+          <td align="left"><%= contact.text_field :first_name ,:maxlength=>"64",:size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= t(:label_contact_middle_name) %>&nbsp;</label></td>
+          <td align="left"><%= contact.text_field :middle_name,:maxlength=>"64", :size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+          <td align="left"><%= contact.text_field :last_name,:maxlength=>"64", :size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= "#{t(:text_primary)} #{t(:label_phone)}" %><span class="alert_message">#</span></label></td>
+          <td align="left"><%= contact.text_field :phone,:maxlength=>"15", :size =>'15',:class=>'toggle_handler',:disabled=>true %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= "#{t(:text_primary)} #{t(:label_email)}" %><span class="alert_message">#</span></label></td>
+          <td align="left"><%= contact.text_field :email, :size =>'15' ,:class=>'toggle_handler',:disabled=>true%></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_nick_name) %></label></td>
+          <td align="left"><%= contact.text_field :nickname, :size =>'15', :id => 'nickname',:class=>'toggle_handler',:disabled=>true %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= t(:label_preference) %></label></td>
+          <td align="left"><%= contact.text_field :preference, :size =>'15',:id => 'preference' ,:class=>'toggle_handler',:disabled=>true%></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_stage) %></label></td>
+          <td align="left">
+            <%if params[:called_from].eql?("opportunities")%>
+              <%= contact.collection_select('contact_stage_id', current_company.contact_stages, :id, :alvalue, {:selected => @contact.new_record? ? current_company.contact_stages.find_all_by_lvalue(['Prospect','Client']) : current_company.contact_stages }, {:onChange => "status_change(this.value , '#{controller.action_name}')"}) %>
+            <%elsif params[:called_from].eql?("accounts")%>
+              <%= contact.collection_select 'contact_stage_id', current_company.contact_stages, :id, :alvalue, { :selected => @contact.new_record? ? current_company.contact_stages.find_all_by_lvalue('Lead')[0].id : current_company.contact_stages }, {:onChange => "status_change(this.value , '#{controller.action_name}')"} %>
+            <%else%>
+              <%= contact.collection_select 'contact_stage_id', current_company.contact_stages, :id, :alvalue, { :selected => @contact.new_record? ? current_company.contact_stages.find_all_by_lvalue('Prospect')[0].id : current_company.contact_stages }, {:onChange => "status_change(this.value , '#{controller.action_name}')"} %>
+            <%end%>
+          </td>
+          <td>&nbsp;</td>
+          <td align="left"> </td>
+          <td align="left">
+            <span id="lead"></span>
+            <span id="prospect" style="display:none;">
+            </span>
+          </td>
+        </tr>
+        <tr> <td colspan="5" align="left">&nbsp;</td> </tr>
+        <tr> <td colspan="5" align="left">&nbsp;</td> </tr>
+      </tbody>
+    </table>
+    <table width="100%">
+      <tbody>
+        <tr>
+          <td align="center" >
+            <%=contact.submit t(:text_save), :class => 'accounts', :onclick => "return checkloader();return validate_contact_field();setButtonPressed(this);", :name => "Save", :id=>"save_link_account" %>
+            <input type="button" id="Login2" value="Cancel" class="accounts" onclick="tb_remove();" />
+          </td>
+        </tr>
+        <tr><td>&nbsp;</td> </tr>
+        <tr><td align="left" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_field)%><span style="display: none"class="mandatory_alternate">, <span class="alert_message">#</span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></span></td></tr>
+        <tr> <td><div class="pagiText"><%=t(:label_page)%>&nbsp;30</div></td> </tr>
+      </tbody>
+    </table>
+  </div>
+<%end%>

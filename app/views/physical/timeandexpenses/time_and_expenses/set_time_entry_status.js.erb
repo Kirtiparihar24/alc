@@ -1,0 +1,53 @@
+<script>  
+ jQuery('#time_<%= @time_entry.id%>').remove();
+ //<!-- ---Feature 11298-----  -->
+ //<!-- summary view -->
+ var total_open_hrs = jQuery('#total_hr_open');
+ var total_app_hr = jQuery('#total_hr_approved');
+ var total_billed_hr = jQuery('#total_hr_billed');
+ var grand_total_hours = jQuery('#grand_total_hours');
+
+ var total_open_amount = jQuery('#total_open_amount');
+ var total_app_amount = jQuery('#total_approved_amount');
+ var total_billed_amount = jQuery('#total_billed_amount');
+ var grand_total_amount =  jQuery('#grand_total_amount');
+
+ var expense_open = jQuery('#total_expense_open');
+ var expense_approved = jQuery('#total_expense_approved');
+ var expense_billed = jQuery('#total_expense_billed');
+ var total_expense = jQuery('#grand_total_expense');
+
+ var grand_total_open = jQuery('#grand_total_open');
+ var grand_total_approved = jQuery('#grand_total_approved');
+ var grand_total_billed = jQuery('#grand_total_billed');
+ var grand_total_all = jQuery('#grand_total_all');
+
+ //<!-- hrs total -->
+ total_open_hrs.html((<%= @total_hours_open%>).toFixed(2));
+ total_app_hr.html((<%= @total_hours_approved%>).toFixed(2));
+ total_billed_hr.html((<%= @total_hours_billed%>).toFixed(2));
+ grand_total_hours.html((parseFloat(total_open_hrs.html()) + parseFloat(total_app_hr.html()) + parseFloat(total_billed_hr.html())).toFixed(2));
+ 
+ //<!-- amount total -->
+ total_open_amount.html(formatCurrency((<%= @total_amount_open%>).toFixed(2)));
+ total_app_amount.html(formatCurrency((<%= @total_amount_approved%>).toFixed(2)));
+ total_billed_amount.html(formatCurrency((<%= @total_amount_billed%>).toFixed(2)));
+ grand_total_amount.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(total_app_amount.html().replace(/,/g,'')) + parseFloat(total_billed_amount.html().replace(/,/g,''))).toFixed(2)));
+
+ //<!-- expense total -->
+ expense_open.html(formatCurrency((<%= @total_expenses_open%>).toFixed(2)));
+ expense_approved.html(formatCurrency((<%= @total_expenses_approved%>).toFixed(2)));
+ expense_billed.html(formatCurrency((<%= @total_expenses_billed%>).toFixed(2)));
+ total_expense.html(formatCurrency((parseFloat(expense_open.html().replace(/,/g,'')) + (parseFloat(expense_approved.html().replace(/,/g,''))) + (parseFloat(expense_billed.html().replace(/,/g,'')))).toFixed(2)));
+
+ //<!--open amt + expense total -->
+ grand_total_open.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(expense_open.html().replace(/,/g,''))).toFixed(2)));
+ //<!--approved amt + expense total -->
+ grand_total_approved.html(formatCurrency((parseFloat(total_app_amount.html().replace(/,/g,'')) + parseFloat(expense_approved.html().replace(/,/g,''))).toFixed(2)));
+ //<!--billed amt + expense total -->
+ grand_total_billed.html(formatCurrency((parseFloat(total_billed_amount.html().replace(/,/g,'')) + parseFloat(expense_billed.html().replace(/,/g,''))).toFixed(2)));
+
+ //<!-- grand total -->
+ grand_total_all.html(formatCurrency((parseFloat(grand_total_open.html().replace(/,/g,'')) + parseFloat(grand_total_approved.html().replace(/,/g,'')) + parseFloat(grand_total_billed.html().replace(/,/g,''))).toFixed(2)));
+ //<!-- ---Feature 11298-----  -->
+</script>

@@ -1,0 +1,255 @@
+<%priority_hash=Hash[UserTask::PRIORITIES.map {|x| [x[1], x[0]]}]%>
+<%repeat_hash=Hash[UserTask::REPEAT_OPTIONS.map {|x| [x[1], x[0]]}]%>
+<div id="page">
+  <div class="inner">
+    <div class="section table_section">
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Notes (#{@notes_count})</span></span>", wfm_notes_path %></li>
+          <li><%=link_to "<span><span>Tasks (#{@tasks_count})</span></span>", wfm_user_tasks_path, :class=>'active'%></li>
+        </ul>
+        <div class="fr mt8">
+          <span class="title_wrapper_left"></span>
+          <span class="title_wrapper_right"></span>
+        </div>
+      </div>
+      <div class="section_content">
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <br/>
+                  <div>
+                    <h3>Complete Task:</h3>
+                  </div><br/>
+                  <% form_for :task, @task,:url=>{:action=>'update'} ,:html=>{:class=>"search_form general_form task_forms",:method=>:put, :autocomplete=>"off",:onsubmit=>"disableAllSubmitButtons('buttons_to_disable'); return check_stt_tat();"} do |f| %>
+                    <div class="forms">
+                      <div>
+                        <div class="fl w49 ">
+                          <div class="row">
+                            <label>Lawyer</label>
+                            <div class="inputs">
+                              <%=@task.receiver.full_name%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Note Created On</label>
+                            <div class="inputs">
+                              <%=wfm_date_format(@note.created_at)%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Task Created On</label>
+                            <div class="inputs">
+                              <%=wfm_date_format(@task.created_at)%>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="fr w49 ml5">
+                          <div class="row">
+                            <label>Lawfirm</label>
+                            <div class="inputs">
+                              <%=get_company_name(@task.company_id)%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Note Created By</label>
+                            <div class="inputs">
+                              <%=@note.logged_by_with_destroyed.full_name rescue '-'%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Task Created By</label>
+                            <div class="inputs">
+                              <%=@task.logged_by_with_destroyed.full_name rescue '-'%>
+                            </div>
+                          </div>
+                          <br class="clear" />
+                        </div>
+                        <br class="clear" />
+                      </div>
+                      <div class="row">
+                        <label>Task</label>
+                        <span class="input_wrapper textarea_wrapper">
+                          <%= @task.name%>
+                        </span></div>
+                      <div>
+                        <span id="0_loader_img"></span>
+                        <div class="fl w49 ">
+                          <div class="row">
+                            <label>Work Type</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank" id="task_0_work_types">
+                                <%=@task.work_subtype.work_type.name rescue '-'%>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Work Type Skills</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank" id="task_0_work_subtypes">
+                                <%=@task.work_subtype.name rescue '-'%>
+                              </span>
+                            </div>
+                          </div>
+                          <% if belongs_to_back_office? %>
+                            <div class="row">
+                              <label>Complexity</label>
+                              <div class="inputs">
+                                <span class="input_wrapper blank">
+                                  <%=@task.work_subtype_complexity.complexity_level rescue '-'%>
+                                </span>
+                              </div>
+                            </div>
+                          <% end %>
+                          <div class="row">
+                            <label>Priority</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank">
+                                <%=priority_hash[@task.priority.to_s]%>
+                              </span>
+                            </div>
+                          </div>
+                          <div>
+                            <div id="special_handling_0">
+                              <div  id="scheduled_task_0">
+                                <div class="row" id="start_at_0">
+                                  <label>Start At</label>
+                                  <%= wfm_date_format(@task.start_at) %>
+                                </div>
+                                <div class="row" id="due_at_0">
+                                  <label>Due At</label>
+                                  <%=wfm_date_format(@task.due_at)%>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Completed By</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank">
+                                <%=get_completed_by(@task)%>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Completed At</label>
+                            <div class="inputs">
+                              <span class="input_wrapper blank">
+                                <%=wfm_date_format(@task.completed_at) rescue '-'%>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fr w49 ml5">
+                        <!--start old code for special handling on edit -->
+                        <div class="row">
+                          <div class="fl w45">
+                            <label>STT(hrs)</label>
+                            <%=@task.get_stt%>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <label>TAT(hrs)</label>
+                          <%=@task.get_tat%>
+                        </div>
+                        <br class="clear" />
+                        <!-- end old code for special handling on edit -->
+                        <div class="row">
+                          <label>Assigned User</label>
+                          <div class="inputs">
+                            <%= get_assigned_to('user',@task.assigned_to_user_id) %>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="inputs">
+                            <label>Share With Client</label>
+                          </div>
+                          <%= get_share_with_client(@task) %>
+                          <br class="clear" />
+                        </div>
+                        <% if @task.is_repeat_task? %>
+                          <div class="row">
+                            <div class="inputs">
+                              <label>Repeat</label>
+                            </div>
+                            <%= repeat_hash[@task.repeat] %>
+                            <br class="clear" />
+                          </div>
+                          <% if @task.repeat == "WEE" %>
+                            <div class="row">
+                              <div class="inputs">
+                                <label>Week Day</label>
+                              </div>
+                              <%= 'Monday,' if @task.repeat_wday?(2) %>
+                              <%= 'Tuesday,' if @task.repeat_wday?(4) %>
+                              <%= 'Wednesday,' if @task.repeat_wday?(8) %>
+                              <%= 'Thursday,' if @task.repeat_wday?(16) %>
+                              <%= 'Friday,' if @task.repeat_wday?(32) %>
+                              <%= 'Saturday,' if @task.repeat_wday?(64) %>
+                              <%= 'Sunday' if @task.repeat_wday?(1) %>
+                              <br class="clear" />
+                            </div>
+                          <% end %>
+                          <div class="row">
+                            <div class="inputs">
+                              <label>End At</label>
+                            </div>
+                            <%= wfm_date_format(@task.end_at) rescue '-'%>
+                            <br class="clear" />
+                          </div>
+                        <% end %>
+                        <br class="clear" />
+                      </div>
+                      <br class="clear" />
+                    </div>
+                    <div class="button_div">
+                      <span class="button buttons_to_disable send_form_btn ml10"><span><span>Cancel</span></span>
+                        <%=button_to_function '' do |page| page.redirect_to :back end %>
+                      </span>
+                    </div>
+                    <br class="clear" />
+                    <div id="comment_errors" class=""></div>
+                    <%=render :partial => 'comments'%>
+                    <br  class="clear"/>
+                    <div id="doc_errors" class=""></div>
+                    <%=render :partial => 'documents'%>
+                  </div>
+                <%  end %>
+                <br class="clear" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function()
+  {
+    startEndTimeFormat('task_start_time_0');
+    startEndTimeFormat('task_due_time_0');
+    var d = new Date();
+    bln_complete = <%= params[:complete_task].present? %>
+    bln_reassign = <%= params[:reassign_user].present? %>
+    jQuery('#task_due_at').datepicker();
+    jQuery('#task_start_at').datepicker();
+
+    if(bln_complete == true)
+    {
+      jQuery('#chk_complete_task').trigger('click');
+      jQuery('#comments_div').show();
+    }
+    else if(bln_reassign == true)
+    {
+      jQuery('#chk_reassign_task').trigger('click');
+      jQuery('#update_user_div').show();
+      jQuery('#comments_div').show();
+    }
+  });
+</script>

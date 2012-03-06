@@ -1,0 +1,33 @@
+<span id="div_assign_livian" style="display: none;">
+  <br/>
+  <span style="margin-left:10px;">
+    <label>Select Livian:</label>
+    <span class="textNormal">
+      <%= collection_select(:service_providers, :id, @service_providers, :id, :sp_full_name, {:include_blank => 'Please select'},{:onchange=>"show_cluster_list(this.value, 'ServiceProvider')",:class=>'dropbox',:style=>"width:120px; font-size:100%"})%>
+    </span>
+    <br/>
+    <span id="service_provider_cluster_list"></span>
+    <br/>
+    <span style="margin-left:10px;">
+      <%=check_box_tag "temp_assign", "true",false,:onclick=>"display_temp_assignment_fields(this.checked);"%>
+      <label>Temporary Assignment:</label>
+    </span>
+    <br/>
+    <span id="temp_assignment_fields" style="display:none;">
+      <span style="margin-left:10px;">
+        <label>From Date:</label>
+        <%=text_field_tag "from_date", "",:class=>"datePicker"%>
+      </span>
+      <br/>
+      <span style="margin-left:10px;">
+        <label>To Date:</label>
+        <%=text_field_tag "to_date", "",{:class=>"datePicker",:style=>"margin-left:14px;"}%>
+      </span>
+    </span>
+    <br/>
+  </span>
+  <span class="textBlue9em" style="font-size: medium">
+    <%=link_to(t(:label_assign),"#",{:onclick=>"return validate_from_to_date(#{@cluster.id},'assign_sec_to_cluster');",:id=>"assign_sec_to_cluster"},{:title=>'Click to assign'})%>
+  </span>
+</span>
+

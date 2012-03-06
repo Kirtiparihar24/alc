@@ -1,0 +1,13 @@
+<div class="gryBox">
+  <div class="p5 gridTable">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <%if @work_subtypes.blank? %>
+        <tr><td>No Work assigned to this role...</td></tr>
+      <%else%>
+        <%for work_subtype in @work_subtypes%>
+            <tr><td><%=work_subtype.name%></td></tr>
+        <%end%>
+      <%end%>
+    </table>
+  </div>
+</div>

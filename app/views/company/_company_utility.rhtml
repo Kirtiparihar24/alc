@@ -1,0 +1,7 @@
+<% if(is_lawfirmadmin) %>
+  <% if(is_liviaadmin) %>
+    <%matterview = @type && (@type.ends_with?("task_types") || @type.ends_with?("appointment_types") || @type.ends_with?("roles") || @type.eql?("matter_statuses") || @type.eql?("matter_fact_types"))%>
+    <p class='<%= @type && !(matterview) ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Company Utilities', manage_company_utilities_path('contact_stages'))%></p>
+    <p class='<%= @type && (matterview) ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Matter Utilities', manage_company_utilities_path('client_roles'))%></p>
+  <%end%>
+  <p class='<%= action_name.eql?("matter_documents") ? 'currentmenu' : 'headerbar1'%>'><%=link_to('Matter Documents', matter_documents_companies_path)%></p>

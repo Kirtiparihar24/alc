@@ -1,0 +1,50 @@
+<!--
+Added for the Feature #7512 - Link task risk issue fact - all to all
+Added by Shripad
+Used of this page is for mapping issues, activites, risks, facts, researches from action pad
+-->
+<div  id ="ajax_sort">
+<div style="text-align:center;margin-top:10px;">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <!--Tabular container div @start here -->
+  <div class="tabular_listing">
+    <% unless @col.empty? %>
+      <% form_for :document_home,@document_home,:url=>{:controller => "document_homes" ,:action => :assign_tasks_issues_risks_facts_researches,:matter_id => @matter.id,:id => @matter_document.id, :parent_id => params[:parent_id]},:html =>{:method => :post, :onsubmit => "return disableWithPleaseWait('issue_linkage', true, '')" } do |f| %>
+        <%= hidden_field_tag "dynamic_ids",params[:col_type_ids]  %>
+        <table width="100%" cellpadding="0" cellspacing="0" class="form_table">
+          <tr>
+            <%= column_sort_link(params[:label],'name',params[:col], '20%', "left", {:height => params[:height], :width => params[:width], :random => params[:random], :label => params[:label], :col_type => params[:col_type], :col_type_ids => params[:col_type_ids], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <th width="15%" align="left"><%=params[:label]=="Activities" ? "Critical" : (params[:label]=="Fact" ? "Material" : (params[:label]=="Issue" ? "Is Key Issue" : (params[:label]=="Risk" ? "Is Material" : "Is Internal")))%></th>
+            <th width="5%" align="left">&nbsp;</th>
+          </tr>
+          <%
+          method = params[:label]=="Activities" ? "critical" : (params[:label]=="Fact" ? "material" : (params[:label]=="Issue" ? "is_key_issue" : (params[:label]=="Risk" ? "is_material" : "is_internal")))
+          @col.each do |e|
+          %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td align="left"><%= truncate_hover(e.name, 40) %></td>
+              <td align="left"><%=e.send(method) ? "Yes" : "No"%></td>
+              <td align="left"><%= check_box_tag "document_home[#{params[:col_type_ids]}][]", e.id, @col_ids.include?(e.id) %></td>
+              <%=hidden_field_tag :col_typ, @label%>
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="3">&nbsp;</td>
+          </tr>
+          <tr align="center">
+            <td colspan="3" align="center">
+              <%= f.submit "Link" , :id => "issue_linkage", :class=> "button", :onclick => " return checkloader();"%>
+              <input type="button" class="matters" id="Login2" value="Cancel" onclick="tb_remove();disableAllSubmitButtons('matters');" /></td>
+          </tr>
+        </table>
+      <%end%>
+    <% else %>
+      <div class="warningCont m5">No <%=@label.pluralize%> found for this matter</div>
+    <% end %>
+  </div>
+  <!--Tabular container div #ends here -->
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;53 </div>
+</div>
+
+  

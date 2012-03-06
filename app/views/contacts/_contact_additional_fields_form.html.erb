@@ -1,0 +1,307 @@
+<script type="text/javascript">
+   address_changed = false;
+   jQuery(document).ready(function() {
+     jQuery(".address_change").change(function(){
+        address_changed = true;
+     });
+    livia_matter_inception_datepicker_new("#contact_contact_additional_field_attributes_first_contact");
+    livia_matter_inception_datepicker_new("#contact_contact_additional_field_attributes_next_call_back_date");
+    livia_matter_inception_datepicker_new("#contact_contact_additional_field_attributes_date_of_first_deal");
+  });
+</script>
+<% f.fields_for :contact_additional_field do |contact_additional_field| %>
+  <!--Business Contacts Starts-->
+  <div id="fragment-2" class="tabs-container-tabs xtabs-hide" style="border-bottom:none;">
+    <div class="p8 form_table">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <%=f.hidden_field :change_bill_address%>
+      <!--</table>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">-->
+        <tr>
+          <td width="19%"><label><%= t(:text_business_street) %></label></td>
+          <td width="34%"><%= contact_additional_field.text_field :business_street,:class=>"address_change" %></td>
+          <td width="2%">&nbsp;</td>
+          <td width="21%"><%= t(:text_business_city) %></td>
+          <td width="24%"><%= contact_additional_field.text_field :business_city,:class=>"address_change" %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_business_state) %></td>
+          <td><%= contact_additional_field.text_field :business_state ,:class=>"address_change"%></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_business_postal_code) %></td>
+          <td><%= contact_additional_field.text_field :business_postal_code ,:class=>"address_change"%></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_business_country) %></td>
+          <td><%= contact_additional_field.text_field :business_country ,:class=>"address_change"%></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_business_phone) %></td>
+          <td>
+            <%= contact_additional_field.text_field :business_phone ,:maxlength=>"15" %>
+            <%= contact_additional_field.collection_select(:business_phone1_type, @contact_phone_type, :id, :lvalue ) %>
+          </td>
+        </tr>
+        <tr>
+          <td><%= t(:text_business_fax) %></td>
+          <td><%= contact_additional_field.text_field :business_fax, :maxlength => 15, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_businessphone2) %></td>
+          <td>
+              <%= contact_additional_field.text_field :businessphone2,:maxlength=>"15", :size => "15" %>
+              <%= contact_additional_field.collection_select(:business_phone2_type, @contact_phone_type, :id, :lvalue ) %>
+          </td>
+        </tr>
+        <tr>
+          <td><label><%= t(:label_department) %></label></td>
+          <td><%=f.text_field :department, :maxlength => 100, :size => "30" %></td>
+          <td>&nbsp;</td>
+          <td><label><%= t(:label_reports_to) %></label></td>
+          <td><%= f.text_field :reports_to, :maxlength => 100, :size => "30" %></td>
+        </tr>
+        <tr>
+          <td><label><%= t(:label_website) %></label></td>
+          <td><%= f.text_field :website, :maxlength => 100, :size => "30" %></td>
+          <td>&nbsp;</td>
+          <td><label><%= t(:label_comment) %></label></td>
+          <td><%=f.text_field :user_comment %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!--Business Contacts Ends-->
+  <!--Education & Work Starts-->
+  <div id="fragment-3" class="tabs-container-tabs xtabs-hide" style="border-bottom:none;">
+    <div class="p8">
+      <div class="form_table">
+        <h3 class="title_gray"><%=t(:label_Education)%></h3>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="19%"><label><%= t(:text_undergraduate_schools) %></label></td>
+            <td width="34%"><%= contact_additional_field.text_field :undergraduate_schools, :maxlength => 64, :size => "30"  %></td>
+            <td width="2%">&nbsp;</td>
+            <td width="21%"><%= t(:text_graduate_schools) %></td>
+            <td width="24%"><%= contact_additional_field.text_field :graduate_school, :maxlength => 64, :size => "30"  %></td>
+          </tr>
+          <tr>
+            <td><%= t(:text_graduate_degrees) %></td>
+            <td><%= contact_additional_field.text_field :graduate_degree, :maxlength => 64, :size => "30"  %></td>
+            <td>&nbsp;</td>
+            <td><%= t(:text_year_graduated) %></td>
+            <td>
+              <% if contact.contact_additional_field.present? %>
+                <% contact_additional = params[:date].present? ? params[:date][:year_graduated].to_i : Time.zone.now.to_date.year %>
+                <%=raw select_year(contact_additional,{:default => nil, :start_year => Time.zone.now.to_date.year, :end_year => 1900,  :field_name => 'year_graduated',:include_blank => "true"})%>
+              <% else %>
+                <% contact_additional = Time.zone.now.to_date.year %>
+                <%=raw select_year(contact_additional,{:default => nil, :start_year => Time.zone.now.to_date.year, :end_year => 1900, :field_name => 'year_graduated',:include_blank => "true"})%>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td><%= t(:text_professional_expertise) %></td>
+            <td><%= contact_additional_field.text_field :professional_expertise, :maxlength => 64, :size => "30"  %></td>
+            <td>&nbsp;</td>
+            <td> </td>
+            <td> </td>
+          </tr>
+        </table>
+      </div>
+      <div class="border_top_gray mt12 form_table">
+        <h3 class="title_gray"><label><%=t(:label_work)%></label></h3>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="19%"><label><%= t(:text_supervisors_title) %> </label></td>
+            <td width="34%"><%= contact_additional_field.text_field :supervisors_title, :maxlength => 64, :size => "30"  %> </td>
+            <td width="2%">&nbsp;</td>
+            <td width="21%"><%= t(:text_supervisors_phone_number) %> </td>
+            <td width="24%"><%= contact_additional_field.text_field :supervisors_phone_number,:maxlength=>"15", :size => "30" %> </td>
+          </tr>
+          <tr>
+            <td><%= t(:text_supervisors_email) %></td>
+            <td><%= contact_additional_field.text_field :supervisors_email, :maxlength => 64, :size => "30"  %></td>
+            <td>&nbsp;</td>
+            <td><label><%= t(:text_assistants_name) %></label></td>
+            <td><%= contact_additional_field.text_field :assistants_name, :maxlength => 64, :size => "30"  %></td>
+          </tr>
+          <tr>
+            <td><%= t(:text_assistants_phone) %></td>
+            <td><%= contact_additional_field.text_field :assistants_phone,:maxlength=>"15", :size => "30" %></td>
+            <td>&nbsp;</td>
+            <td><%= t(:text_partners_name) %></td>
+            <td><%= contact_additional_field.text_field :partners_name, :maxlength => 64, :size => "30"  %></td>
+          </tr>
+          <tr>
+            <td><%= t(:text_partners_birthday) %></td>
+            <td id="partners_birthday"><%= contact_additional_field.text_field :partners_birthday,:value=>"#{contact.contact_additional_field.try(:partners_birthday).strftime('%m/%d/%Y') if contact.contact_additional_field.partners_birthday}", :class => "date_picker", :size => "10", :onMouseOver=>"livia_datepicker_monthYear(this);"%></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!--Education & Work Ends-->
+  <!--Personal Info Starts-->
+  <div id="fragment-4" class="tabs-container-tabs xtabs-hide" style="border-bottom:none;">
+    <div class="p8 form_table">
+      <% f.fields_for :address do |add| %>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td width="19%"><label><%= t(:label_street) %></label></td>
+            <td width="34%"><%= add.text_field :street, :maxlength => 64, :size => "30" %></td>
+            <td width="2%">&nbsp;</td>
+            <td width="21%"><%= t(:label_city) %></td>
+            <td width="24%"><%= add.text_field :city, :maxlength => 64, :size => "30" %></td>
+          </tr>
+          <tr>
+            <td><%= t(:label_state) %></td>
+            <td><%= add.text_field :state, :maxlength => 64, :size => "30", :style=>"text-transform:capitalize" %></td>
+            <td>&nbsp;</td>
+            <td><%= t(:label_zip_code) %></td>
+            <td><%= add.text_field :zipcode, :maxlength => 10, :size => "30" %></td>
+          </tr>
+          <tr>
+            <td><%= t(:label_country) %></td>
+            <td><%= add.text_field :country, :maxlength => 64, :size => "30" %></td>
+            <td>&nbsp;</td>
+            <td><%#= t(:label_alternate_email) %></td>
+            <td><%#= f.text_field :alt_email, :maxlength => 64, :size => "30" %></td>
+          </tr>
+          <tr>
+            <td><%= t(:label_mobile) %></td>
+            <td><%= f.text_field :mobile, :maxlength => 15, :size => "30" %></td>
+            <td>&nbsp;</td>
+            <td><%= t(:label_fax) %></td>
+            <td><%= f.text_field :fax, :maxlength => 15, :size => "30", :maxlength=>"15" %></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td>
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td><%= f.check_box :do_not_call, {:class => ""}, true %></td>
+                  <td><label class="textgray"><%= t(:text_do_not_call) %></label></td>
+                </tr>
+              </table>
+            </td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+      <% end %>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="19%"><label><%= t(:text_gender) %></label></td>
+          <td width="34%"><%= contact_additional_field.select(:gender, options_for_select(%w{Male Female}, contact.contact_additional_field.gender), :include_blank => "Please Select") %></td>
+          <td width="2%">&nbsp;</td>
+          <td width="21%"><%= t(:text_birthday) %></td>
+          <td width="24%" id="birthday"><%= contact_additional_field.text_field :birthday,:value=>"#{contact.contact_additional_field.try(:birthday).strftime('%m/%d/%Y') if contact.contact_additional_field.birthday}", :class => "date_picker", :size => "10", :onMouseOver=>"livia_datepicker_monthYear(this);"%></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_religion) %></td>
+          <td><%= contact_additional_field.text_field :religion, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_birth_country) %> </td>
+          <td><%= contact_additional_field.text_field :birth_country, :maxlength => 64, :size => "30"  %> </td>
+        </tr>
+        <tr>
+          <td><%= t(:text_children) %></td>
+          <td><%= contact_additional_field.text_field :children, :maxlength => 2,:class=>"number", :size => 30 %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_hobby) %> </td>
+          <td> <%= contact_additional_field.text_field :hobby, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_spouse_name) %></td>
+          <td><%= contact_additional_field.text_field :spouse_name, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_spouse_birthday) %></td>
+          <td id="spouse_birthday">
+            <%= contact_additional_field.text_field :spouse_birthday,:value=>"#{contact.contact_additional_field.try(:spouse_birthday).strftime('%m/%d/%Y') if contact.contact_additional_field.spouse_birthday}", :class => "date_picker", :size => "10", :onMouseOver=>"livia_datepicker_monthYear(this);"%>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!--Personal Info Ends-->
+  <!--Sales Details Starts-->
+  <div id="fragment-5" class="tabs-container-tabs xtabs-hide" style="border-bottom:none;">
+    <div class="p8 form_table">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="19%"><label><%= t(:text_first_contact) %></label></td>
+          <td width="24%"><%= contact_additional_field.text_field :first_contact, :value=>"#{contact.contact_additional_field.try(:first_contact).strftime('%m/%d/%Y') if contact.contact_additional_field.first_contact}", :class => "date_picker", :size => "10"%></td>
+          <td width="2%">&nbsp;</td>
+          <td width="21%"><%= t(:text_date_of_first_deal) %></td>
+          <td width="24%"><%= contact_additional_field.text_field :date_of_first_deal,:value=>"#{contact.contact_additional_field.try(:date_of_first_deal).strftime('%m/%d/%Y') if contact.contact_additional_field.date_of_first_deal}", :class => "date_picker", :size => "10", :onMouseOver=>"livia_datepicker_new(this);"%></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_next_call_back_date) %></td>
+          <td><%= contact_additional_field.text_field :next_call_back_date,:value=>"#{contact.contact_additional_field.try(:next_call_back_date).strftime('%m/%d/%Y') if contact.contact_additional_field.next_call_back_date}", :class => "date_picker", :size => "10", :onMouseOver=>"livia_datepicker_new(this);"%></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_referred_by) %></td>
+          <td><%= contact_additional_field.text_field :referred_by, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_current_service_provider) %></td>
+          <td><%= contact_additional_field.text_field :current_service_provider, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!--Sales Details Ends-->
+  <!--Others Starts-->
+  <div id="fragment-6" class="tabs-container-tabs xtabs-hide" style="border-bottom:none;">
+    <div class="p8 form_table">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="19%"><label><%=t(:label_Skype_Account)%></label></td>
+          <td width="34%"><%= contact_additional_field.text_field :skype_account, :maxlength => 64, :size => "30"  %></td>
+          <td width="2%">&nbsp;</td>
+          <td width="21%"><%= t(:text_linked_in_account) %></td>
+          <td width="24%"><%= contact_additional_field.text_field :linked_in_account, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_facebook_account) %></td>
+          <td><%= contact_additional_field.text_field :facebook_account, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_twitter_account) %></td>
+          <td><%= contact_additional_field.text_field :twitter_account, :maxlength => 64, :size => "30"  %> </td>
+        </tr>
+        <tr>
+          <td><%= t(:text_association_1) %></td>
+          <td><%= contact_additional_field.text_field :association_1, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_association_2) %></td>
+          <td><%= contact_additional_field.text_field :association_2, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_others_1) %></td>
+          <td><%= contact_additional_field.text_field :others_1, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_others_2) %></td>
+          <td><%= contact_additional_field.text_field :others_2, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_others_3) %></td>
+          <td><%= contact_additional_field.text_field :others_3, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_others_4) %></td>
+          <td><%= contact_additional_field.text_field :others_4, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+        <tr>
+          <td><%= t(:text_others_5) %></td>
+          <td><%= contact_additional_field.text_field :others_5, :maxlength => 64, :size => "30"  %></td>
+          <td>&nbsp;</td>
+          <td><%= t(:text_others_6) %></td>
+          <td><%= contact_additional_field.text_field :others_6, :maxlength => 64, :size => "30"  %></td>
+        </tr>
+      </table>
+    </div>
+  </div>  
+<% end %>

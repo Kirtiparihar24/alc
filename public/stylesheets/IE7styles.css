@@ -1,0 +1,43 @@
+.welcomeUser{line-height:14px;}
+ul.tabs-nav li.tabs-selected a{padding:7px 8px 9px 8px;background-color:#FFFFFF;height:31px;}
+ul.tabs-nav li.tabs-selected{background:#fff}
+
+ul.tabs-nav li a:hover, ul.tabs-nav li.tabs-selected {border-color:#6f9fb4; border-style:solid; border-width:1px; border-top-width:2px; border-bottom:none; }
+ul.tabs-nav li.tabs-selected a{border:none}
+ul.listing1 li{padding:0; margin:0;}
+#navigation-div{height:36px; margin:0; padding:0;}
+ul.navigation_list{display:block; margin:0; position:relative; padding:0;height:36px;}
+ul.navigation_list li.active{background-position:left -115px;}
+.fix_mr { margin-right: 3px; margin-top: 2px; }
+.form_table td { line-height: 25px; }
+.IE7_widith { width: 200px; }
+input.expense_date_picker {background:#FFFFFF url(../images/calendar.gif) no-repeat 99% 2px; padding:3px;}
+input.date_picker {background:#FFFFFF url(../images/calendar.gif) no-repeat 99% 2px; padding:3px;}
+.items div {float:left;width:860px; margin-left:9px}
+.tabular_listing table td{line-height:22px; padding-bottom:1px;}
+.tabs-container{margin-top:8px;}
+input[type=text], input[type=password], input.text, input.title, textarea, select{border:1px solid #d9d9d9;}
+body {background:#eff7fb url(../images/bg_body.png) repeat-x left top; font-family:Arial, Helvetica, sans-serif;}
+.back_ground_overlay{padding: 0px;border: 1px solid #000;background-color: #EAEAEA;overflow: auto;z-index: 99999;font-family:Arial,Helvetica,sans-serif;text-align:left; color:#000;position: absolute;width: 230px;margin-top: 25px;margin-left:-200px;
+height: 200px; display: none;}
+.header_link{padding-top:4px;}
+.SlideTab {margin-top: -2px;*margin-top: -3px;background: #fff;border:1px solid #aaccee;min-height: 485px;}
+.box_yellow{background-color:#fafaf0; border:1px solid #efe7d0; padding:0 3px; }
+h2.title_favorites span.left_span_head{margin-top:-7px;}
+
+h2.title_favorites.selected span.left_span_head {margin-top:7px; }
+.box_gray{line-height:20px;}
+
+/***********Entries Table***********/
+.entries th{background:#e4e4e4;padding:5px 0;font-weight:bold}
+.entries td.labels{background:#eff7fa;padding:5px 0 5px 10px;border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.data{border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.total{font-size:90.9%;font-weight:bold;background:#eee7d4;padding:5px 0 5px 10px;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

@@ -1,0 +1,45 @@
+  jQuery('#'+<%=params[:id]%>+'_show_amount').val("<%= number_with_lformat(@expense_entry.final_expense_amount)%>");
+  jQuery('#expense_final_billed_amount_'+<%=params[:id]%>).html("<%=number_with_lformat(@final_expense_amount)%>");
+  jQuery('#hidden_billing_adjustment_expense'+<%=params[:id]%>).val("<%= @expense_entry.final_expense_amount%>");
+  jQuery('#hidden_billing_adjustment_expense'+<%=params[:id]%>).attr('name',"<%= @expense_entry.billing_method_type%>");
+
+ 
+billed_amount_obj = jQuery('#expense_billed');
+grand_total_obj = jQuery('#grand_total');
+jQuery('#expense_final_billed_amount_'+<%=params[:id]%>).html(jQuery('#expenseamount_'+<%=params[:id]%>).children('span').html())
+
+<!-- ---Feature 11298-----  -->
+  <!-- summary view -->
+  var total_open_amount = jQuery('#total_open_amount');
+  var expense_open = jQuery('#total_expense_open');
+  var expense_approved = jQuery('#total_expense_approved');
+  var expense_billed = jQuery('#total_expense_billed');
+  var total_expense = jQuery('#grand_total_expense');
+  var grand_total_open = jQuery('#grand_total_open');
+  var grand_total_all = jQuery('#grand_total_all');
+  var grand_total_approved = jQuery('#grand_total_approved');
+  var grand_total_billed = jQuery('#grand_total_billed');
+  <!-- open amt and expense total -->
+  expense_open.html(formatCurrency((<%= @total_expenses_open %>).toFixed(2)));
+  grand_total_open.html(formatCurrency((parseFloat(total_open_amount.html().replace(/,/g,'')) + parseFloat(expense_open.html().replace(/,/g,''))).toFixed(2)));
+  <!-- total expense-->
+  total_expense.html(formatCurrency((parseFloat(expense_open.html().replace(/,/g,'')) + (parseFloat(expense_approved.html().replace(/,/g,''))) + (parseFloat(expense_billed.html().replace(/,/g,'')))).toFixed(2)));
+  <!-- grand total -->
+  grand_total_all.html(formatCurrency((parseFloat(grand_total_open.html().replace(/,/g,'')) + parseFloat(grand_total_approved.html().replace(/,/g,'')) + parseFloat(grand_total_billed.html().replace(/,/g,''))).toFixed(2)));
+  <!-- ---Feature 11298-----  -->
+
+
+<% if(@final_expense_amount > @previous_final_billed_amount)
+diff_billed_amount = @final_expense_amount - @previous_final_billed_amount
+%>
+billed_amount = parseFloat(billed_amount_obj.html().replace(/,/g,'')) + <%= diff_billed_amount %>;
+grand_total = parseFloat(grand_total_obj.html().replace(/,/g,'')) + <%= diff_billed_amount %>;
+<%else
+diff_billed_amount = @previous_final_billed_amount - @final_expense_amount
+%>
+billed_amount = parseFloat(billed_amount_obj.html().replace(/,/g,'')) - <%= diff_billed_amount %>;
+grand_total = parseFloat(grand_total_obj.html().replace(/,/g,'')) - <%= diff_billed_amount %>;
+<%end%>
+
+billed_amount_obj.html(formatCurrency(billed_amount));
+grand_total_obj.html(formatCurrency(grand_total));

@@ -1,0 +1,9 @@
+<% if params[:people_type] == 'opposites' %>
+  <%= render :partial => 'add_people_legal_team', :locals => {:people_roles => current_company.team_roles, :people_type => "opposites", :matter_form => @matter_people_opposite} %>
+<% elsif params[:people_type] == 'client' %>
+  <%= render :partial => 'client' %>
+<% elsif params[:people_type] == 'others' %>
+  <%= render :partial => 'add_people_legal_team', :locals => {:people_roles => current_company.other_roles, :people_type => "others", :matter_form => @matter_people_other } %>
+<% elsif params[:people_type] == 'client_representative' %>
+  <%= render :partial => 'add_people_legal_team', :locals => {:people_roles => current_company.client_rep_roles, :people_type => "client_representative", :matter_form => @matter_people_client_representative } %>
+<% end %>

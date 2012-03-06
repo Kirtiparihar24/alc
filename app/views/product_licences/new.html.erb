@@ -1,0 +1,65 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer">
+      <div class="title fl"><%= @company.name if @company.present? %></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%= collection_select 'product_licence','company_id',@companies ,:id,:name_type,{:include_blank => 'Please select', :selected => session[:company_id].nil? ? nil : session[:company_id].to_i} ,{:onchange=>"show_company_licence(this.value)" , :class=>"field size3",:style=>'font-size:11px'} %>
+
+      </div>
+    </div>
+  <%end%>
+<% end %>
+<% style = session[:company_id].nil? ? "display:none;" : "display:block;" %>
+<div class="box-head"><h2 class="left"><%=t(:text_buy_licence)%></h2></div>
+<% form_for(@product_licence) do |f| %>
+  <%unless flash[:msg].nil?%>
+    <div class="errorCont"><%=flash[:msg]%></div>
+  <%end%>
+  <div id="company_div"></div>
+  <table border="0"  width="100%" align="center" cellpadding="0" cellspacing="0" style="border:0px solid #dddddd;">
+    <tr>
+      <td width="50%" valign="top">
+        <div id="buy_licence" style=<%= style%>>
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:1px solid #dddddd;">
+            <tr>
+              <td width="25%" align="left" valign="top"><label><%=t(:text_select_product)%><span>*</span></label></td>
+              <td width="75%"><%= f.select :product_id, @products, {:include_blank => 'Please select'}, {:onchange=>"show_product_pricing(this.value)" ,:class=>"field size3"} %><span id="div_prd_price"></span></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="left" valign="top"><label><%=t(:text_select_licence_type)%><span>*</span></label></td>
+              <td ><%=f.select :licence_type ,ProductLicence::LICENCE_TYPE ,{}, :class=>"field size3"%></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top">&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td align="left" valign="top"><label><%=t(:text_licence_expiry_month)%><span>*</span></label></td>
+              <td><%= end_date_tag %></td>
+            </tr>
+            <tr>
+              <td colspan="5">
+                <!-- Product Pricing partial -->
+                <div id="div_product_pricing" style="display:none;">
+                  <%= render 'product_pricing' %>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" align="center">
+                <div id="div_submit" style="display:none;"><%= f.submit 'Generate Licences', :class => 'button' %></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    <tr><td valign="top" id="div_company_licence" style="<%=style%>">
+        <%= render 'get_company_licence'%>
+      </td></tr>
+  </table>
+<% end %>

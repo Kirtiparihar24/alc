@@ -1,0 +1,145 @@
+<% remote_form_for([@matter,@matter_people], :url => {:action => @matter_people.new_record? ? "add_matter_people" : "edit_matter_people"},:loading=>'return disableAllSubmitButtons("matters")',:complete=>'return enableAllSubmitButtons("matters")' ) do |f| %>
+  <div id="matter_people_errors" class="" style="display: none; text-align: left"></div>
+  <div id="same_contact_errors" class="" style="display: none; text-align: left"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+
+  <%=f.hidden_field :people_type, :value => people_type%>
+  <%=f.hidden_field :company_id, :value => @matter.company_id%>
+  <%=f.hidden_field :matter_id, :value => @matter.id%>
+  <%=f.hidden_field :created_by_user_id, :value => current_user.id%>
+  <%=f.hidden_field :is_active, :value => true%>
+  <input type="hidden" id="account" name="account" value="false"/>
+  <div style="text-align:center;">
+    <table border="0" cellpadding="0" cellspacing="0" class="form_table">
+      <tr>
+        <td width="136" align="left" id="select_exist_td"><%=t (:label_Select_from_Existing)%> <span class="alert_message" id="mandatory">*</span> </td>
+        <td width="240" align="left">
+          <%= raw contact_search_box('contact[id]', controller.controller_name, "", "") %>
+          <%= f.hidden_field :contact_id  %>
+          <strong class="text12 mlr8"></strong><label><span id="create_new_span"><a href="#" onclick="return createNewonClick()" class="link_blue">Create New</a></span></label>
+        </td>
+      </tr>
+    </table>
+    <div id="create_new_div" style="display: none;">
+      <h3 class="title_gray" align="left"><%=t (:label_Personal_Information)%></h3>
+      <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+        <tbody>
+          <tr>
+            <td width="23%" align="left"><label><%= t(:label_salutation) %></label></td>
+            <td width="25%" align="left"><%= f.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+            <td width="2%">&nbsp;</td>
+            <td width="23%" align="left">&nbsp;</td>
+            <td width="28%" align="left">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+            <td align="left"><%=f.text_field :name,:maxlength=>"64",:size=>"30"%></td>
+            <td>&nbsp;</td>
+
+            <td align="left"><label><%= t(:label_middle_name) %>&nbsp;</label></td>
+            <td align="left"><%=f.text_field :middle_name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+          </tr>
+          <tr>
+            <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+            <td align="left"><%=f.text_field :last_name,:maxlength=>"64",:size=>"30", :class => "" %></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="left"><label>Primary&nbsp;<%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+            <td align="left"><%=f.text_field :phone,:maxlength=>"15" %></td>
+            <td>&nbsp;</td>
+
+            <td align="left">Primary&nbsp;<label><%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+            <td align="left"><%=f.text_field :email,:maxlength=>"64",:size=>"30" %></td>
+          </tr>
+          <tr>
+            <td align="left" ><label><%=t(:label_matter_role)%></label></td>
+            <td align="left" >
+              <%if people_type.eql?("opposites")%>
+                <%= f.collection_select(:matter_team_role_id, current_company.team_roles, :id, :alvalue) %>
+              <%else%>
+                <%=f.text_field :role_text%>
+              <%end%>
+            </td>
+            <td valign="top">&nbsp;</td>
+            <td align="left"><label><%=t(:label_notes)%></label></td>
+            <td align="left"><%=f.text_field :notes%></td>
+          </tr>
+          <%if people_type.eql?("others")%>
+            <tr>
+              <td align="left">Allow Time & Expense Entry</td>
+              <td align="left" valign="top"><%=f.check_box :allow_time_entry%></td>
+              <td align="left">&nbsp;</td>
+              <td align="left">&nbsp;</td>
+              <td align="left">&nbsp;</td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+      <h3 class="title_gray" align="left"><%=t(:text_address)%></h3>
+      <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+        <tr>
+          <td width="23%" align="left"><label><%=t(:label_street)%></label></td>
+          <td width="25%" align="left"><%=f.text_field :address%></td>
+          <td width="2%" align="left">&nbsp;</td>
+          <td width="23%" align="left"><%=t(:label_city)%></td>
+          <td width="28%" align="left"><%=f.text_field :city%></td>
+        </tr>
+        <tr>
+          <td width="23%" align="left"><%=t(:label_state)%></td>
+          <td width="25%" align="left"><%=f.text_field :state%></td>
+
+          <td width="1%" align="left">&nbsp;</td>
+          <td width="23%" align="left"><%=t(:label_zip_code)%></td>
+          <td width="28%" align="left"><%=f.text_field :zip,:maxlength => 10 %></td>
+        </tr>
+        <tr>
+          <td width="23%" align="left"><%=t(:label_country)%></td>
+          <td width="25%" align="left"><%=f.text_field :country%></td>
+          <td width="1%" align="left">&nbsp;</td>
+
+          <td width="23%" align="left"><%=t(:label_alternate_email)%></td>
+          <td width="28%" align="left"><%=f.text_field :alternate_email,:maxlength=>"64",:size=>"30"%></td>
+        </tr>
+        <tr>
+          <td align="left"><%=t(:label_mobile)%></td>
+          <td align="left"><%=f.text_field :mobile %></td>
+          <td align="left">&nbsp;</td>
+          <td align="left"><%=t(:label_fax)%></td>
+
+          <td align="left"><%=f.text_field :fax %></td>
+        </tr>
+        <tr id="contactstage" style="display:none">
+          <td align="left"><label><%= t(:label_stage) %></label></td>
+          <td align="left"><%= collection_select :matter_people, :contact_stage_id, current_company.contact_stages,:id,:alvalue, {:class=>"textBoxwidth disundis"} %></td>
+          <td>&nbsp;</td>
+          <td align="left"></td>
+          <td align="left"></td>
+        </tr>
+        <tr>
+          <td align="left"><%=t(:label_add_to_business_contacts)%></td>
+          <td align="left" valign="top"><%=check_box_tag "added_to_contact", false,false,:onclick=>"jQuery('#contactstage').toggle();"%></td>
+          <td align="left"><input type="hidden" id="hidden_added_to_contact" name="hidden_added_to_contact" value="false"/>&nbsp;</td>
+          <td align="left">&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+        <tr><td colspan="5" align="left">&nbsp;</td></tr>
+        <tr><td colspan="5" align="left"><div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%><span class="alert_message">#</span> <%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></div></td></tr>
+      </table>
+    </div>
+    <table border="0" cellpadding="0" cellspacing="0" class="form_table" width="100%">
+      <tr>
+        <td colspan="5" align="center">
+          <%=f.submit "Save",:class=>'matters', :id => "add_matter_people_button", :onClick => "return check_contact();" %>
+          <input type="button" class='matters' id="Login4" value="Cancel" onclick="tb_remove();disableAllSubmitButtons('matters');" />
+        </td>
+      </tr>
+    </table>
+  </div>
+  <input type="hidden" id="check_exising" name="check_exising" value="true" class="existing_check"/>
+<%end%>
+<div class="mandatory" id="required"><span class="alert_message">*</span><%=t (:label_Required_field) %></div>
+<div class="pagiText"><%=t(:label_page)%>&nbsp;49 </div>
+<script type="text/javascript">
+  add_matter_people_form_loading();
+</script>

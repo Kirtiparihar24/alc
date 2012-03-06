@@ -1,0 +1,34 @@
+<%if @account && @account.id%>
+  <div class="tabular_listing" style="overflow: auto; width: 500px;">
+    <table align="right" border="0" cellpadding="0" cellspacing="1" width="100%"  class="border_gray">
+      <tbody>
+        <tr>
+          <th align="left"><%= t(:text_name) %></th>
+          <th align="left" width="26%"><%= t(:text_email) %></th>
+          <th align="left" width="16%"><%= t(:text_phone) %></th>
+          <th align="center" width="10%"><%= t(:text_action) %></th>
+        </tr>
+        <% contacts =@account.contacts.find(:all,:conditions=>["contact_id not in  (?)",@account.primary_contact.id],:order=>"created_at")%>
+      <td class="bg1" width="43%"><a href="<%=edit_contact_path(@account.primary_contact.id,:return_url=>request.request_uri)%>"><%= @account.primary_contact.full_name %></a></td>
+      <td class="bg1" width="19%"><%= @account.primary_contact.email%></td>
+      <td class="bg1" width="19%"><%= @account.primary_contact.phone%></td>
+      <td class="bg1" align="center"><span class="red_text"><%=t(:label_primary)%></span></td>
+      <% contacts.each do |ac| %>
+        <tr >
+          <td class="bg1" width="43%"><a href="<%=edit_contact_path(ac.id,:return_url=>request.request_uri)%>"><%= ac.full_name %></a></td>
+          <td class="bg1" width="19%"><%= ac.email%></td>
+          <td class="bg1" width="19%"><%= ac.phone%></td>
+          <td class="bg1" align="center">
+            <%=link_to('<div class="icon_delete mt3"></div>', remove_contact_accounts_path(:id=>ac.id,:account_id=>@account.id), :class => "vtip", :title => "Delete Contact", :confirm => "Are you sure you want to delete this contact from the account?")%>
+          </td>
+        </tr>
+      <%end%>
+      <tr>
+        <td colspan="4" align="right">
+          <span class="fontbold"><%= pluralize_record(@account.contacts.count, t(:text_contact),1)%></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+<%end%>

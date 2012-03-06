@@ -1,0 +1,19 @@
+<div id="matter">
+  <div id="zimbra_activities_errors" class="message_error_div" style="display : none"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <% if task_available? %>
+    <div id="matter_name">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" class="form_table p5">
+        <tbody>
+          <tr valign="top">
+            <td align="left" width="14%"><%=t(:text_matter_name)%></td>
+            <td align="left" width="88%"><%= params[:action]=="create_activity" ? custom_select_tag("matterid", options_for_select(@matters.collect{|matter|[matter.clipped_name, matter.id]}), {:prompt => "Please Select", :style=> "width:150px", :onChange => "check_if_matter_available(this.value)"}) : @matter.name %>
+              <div id="loading_imagediv3" class="fr" style="display: none;"><img alt="Loading" src="/images/loading.gif"/> </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <%end%>
+  <%= render :partial => "personal_activity", :locals =>{:controller => "zimbra_activities", :action => "create", :id => nil} %>
+</div>

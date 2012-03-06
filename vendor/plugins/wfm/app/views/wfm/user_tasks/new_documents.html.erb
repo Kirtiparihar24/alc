@@ -1,0 +1,39 @@
+<div id="loading_img"></div>
+<div id="modal_new_document_errors" class="" style="display:none; text-align: left"></div>
+<% form_for :document_home, @document_home ,:url => {:action => 'upload_documents'}, :html=> {:multipart=> true, :target=>"upload_frame",:onsubmit => "loader.appendTo('#loading_img');",:class=>"search_form general_form"} do |f| %>
+  <fieldset >
+    <%=hidden_field_tag :task_id, @task.id%>
+    <div class="forms">
+      <div class="row">
+        <label>Document</label>
+        <input type="file" id="T7"  name="document_home[document_attributes][data][]"/>
+      </div>
+      <div class="row">
+        <label>&nbsp;</label>
+        <div class="inputs">
+          <div id="T7-list"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="inputs">
+          <%=check_box_tag(:share_documents_with_client, @task.share_with_client,false,options={:disabled =>(!@task.share_with_client), :class=>"ml0"}) %>
+        </div>
+        <label>Share with client</label>
+      </div>
+      <div class="button_div">
+        <span class="button send_form_btn"><span><span id="button_pressed">Save</span></span><input type="submit" name=""/></span>
+        <span class="button send_form_btn ml10" onclick="tb_remove();"><span><span>Cancel</span></span>
+        </span>
+        <br class="clear" />
+      </div>
+    </div>
+  </fieldset>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+<%end%>
+<script type="text/javascript" language="javascript">
+  jQuery(function(){ // wait for document to load
+    jQuery('#T7').MultiFile({
+      list: '#T7-list'
+    });
+  });
+</script>

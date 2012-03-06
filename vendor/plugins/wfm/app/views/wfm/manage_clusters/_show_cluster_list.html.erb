@@ -1,0 +1,8 @@
+<%if @clusters.blank?%>
+  <span style="margin-left: 50px;">User is not assigned to any cluster.</span>
+<%else%>
+  <span style="margin-left: 50px;">User already assigned to clusters:</span><br/>
+  <%@clusters.each do |cluster|%>
+    <span style="margin-left: 55px;"><%=cluster.name%></span><br/>
+  <%end%>
+<%end%>

@@ -1,0 +1,20 @@
+<div style="margin-top:20px; padding:0;">
+  <div class="tabular_listing border_gray">
+    <table width="100%" cellpadding="1" cellspacing="1">
+      <tr>
+        <th align="left"><%= t(:text_title) %></th>
+        <th align="left"><%= t(:text_user) %></th>
+        <th align="left"><%= t(:text_comment_details) %></th>
+        <th align="left"><%= t(:text_created_at) %></th>
+      </tr>
+      <% notes.each do |note| %>
+        <tr class="<%= cycle('bg1','bg2') %>">
+          <td align="left"><%= raw truncate_hover(note.title, 20) %></td>
+          <td align="left"><%= raw truncate_hover(note.user.try(:full_name).try(:titleize), 20) %></td>
+          <td align="left"><%= raw(truncate_hover(note.comment, 50)) %></td>
+          <td align="left"><%= livia_date_time(note.created_at)%></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

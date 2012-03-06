@@ -1,0 +1,54 @@
+<% @widths_hash = {"Date" => "7%" , "Lawyer" => "10%" , "Client" => "10%","Matter" => "15%" , "Internal" => "6%" , "Duration(hrs)" => "6%" ,"Activity type" => "12%" ,"Billable" => "6%" ,"Rate/hr($)" => "6%" ,"Bill Amount" => "7%" , "Discount($)" => "8%","Override amount($)" => "10%" ,"Final bill amount($)" => "10%"} %>
+<div class="w100">
+  <% unless @data.blank? %>
+    <br class="clear" />
+    <div class="title_blue fl"><%= "#{t(:text_total_records)} = #{@col.length}" if @col.length > 0 %> </div>
+  <% else %>
+    <% unless @total_data.blank? %>
+    <% end %>
+    <br class="clear" />
+    <div class="title_blue fl"><%= "#{t(:text_total_records)} = #{@col.length}" if @col.length > 0 %> </div>
+  <% end %>
+  <div class="fr  textR pt5">
+    <%=raw(generate_send_email_rpt_link("time_accounted_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("TimeAndExpense")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("time_accounted_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<%if params[:report][:selected] == "all" or params[:report][:selected] == "internal"%>
+  <% unless @data.blank? %>
+    <div class="mt5">
+      <%= render :partial => 'rpt_partials/list_col_array', :locals => {:col => @data} %>
+    </div>
+    <% if params[:report][:selected] == "all" %>
+      <div class="title_blue fl"><%= t(:text_duration_hrs) %> : <%= livia_amount(@conditions[:all_entries][0]) %>, <%= t(:text_bill_amount_d) %> : <%= livia_amount(@conditions[:all_entries][1]) %>, <%= t(:text_discount_p) %> : <%= livia_amount(@conditions[:all_entries][2].to_s.to_f )%>, <%= t(:text_override_amount) %> : <%= livia_amount(@conditions[:all_entries][3]) %>, <%= t(:text_final_bill_amount) %> : <%= livia_amount(@conditions[:all_entries][4]) %> </div>
+    <% else%>
+      <div class="title_blue fl"><%= t(:text_duration_hrs) %> = <%= livia_amount(@conditions[:internal_entries][0]) %> </div>
+    <% end %>
+    <br class="clear" />
+    <div class="title_blue fl"><%= pluralize_record("#{@col.length}",'Record',1)if @col.length > 0%> </div>
+  <% else %>
+    <div class="title_blue fl"><%=t(:text_total_records)%> = 0</div>
+  <% end %>
+<% else %>
+  <% unless @total_data.blank? %>
+    <div class="mt5">
+      <% @total_data.each do |label,col| %>
+        <div class="w100">
+          <div class="title_blue fl" ><%=params[:report][:selected] == "matter" ? "Matter :" : "Contact :" %> <%=(label == "" or !label) ? "None" : label%> <span >(<%=col.length%> <%= t(:text_records) %> <%= @conditions[label] %>)</span></div>
+          <div class="fr textR"><%# links %></div>
+          <br class="clear" />
+        </div>
+        <%= render :partial => 'rpt_partials/list_col_array', :locals => {:col => col} %>
+        <%reset_cycle%>
+      <% end %>
+    </div>
+    <div class="title_blue fl"><%= t(:text_grand_total_duration_hrs) %> : <%= livia_amount(@conditions[:entries][0]) %>, <%= t(:text_bill_amount_d) %> : <%= livia_amount(@conditions[:entries][1]) %>, <%= t(:text_discount_p) %> : <%= livia_amount(@conditions[:entries][2].to_s.to_f ) %>, <%= t(:text_override_amount) %> : <%= livia_amount(@conditions[:entries][3]) %>, <%= t(:text_final_bill_amount) %> : <%= livia_amount(@conditions[:entries][4]) %></div>
+    <br class="clear" />
+    <div class="title_blue fl"><%= pluralize_record(@col.length,'Record',0) if @col.length > 0%> </div>
+  <% else @total_data.blank?%>
+    <div class="title_blue fl"><%= pluralize_record((@col.length rescue 0),'Record',0)%></div>
+  <% end %>
+<% end %>
+<br class="clear" />

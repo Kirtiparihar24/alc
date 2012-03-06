@@ -1,0 +1,19 @@
+<h1><%=t(:text_listing_company_role_rates)%></h1>
+<table width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><%=t(:text_company)%></th>
+    <th><%=t(:text_role)%></th>
+    <th><%=t(:text_billing_rate)%></th>
+  </tr>
+<% @company_role_rates.each do |company_role_rate| %>
+  <tr>
+    <td><%= get_company_name company_role_rate.company_id %></td>
+    <td><%= company_role_rate.people_role.lvalue %></td>
+    <td><%=h company_role_rate.billing_rate %></td>
+    <td><%= link_to t(:label_show), company_role_rate %></td>
+    <td><%= link_to t(:label_edit), edit_company_role_rate_path(company_role_rate) %></td>
+    <td><%= link_to t(:label_destroy), company_role_rate, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%= link_to t(:label_new_company_role_rate), new_company_role_rate_path %>

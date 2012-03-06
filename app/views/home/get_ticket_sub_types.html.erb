@@ -1,0 +1,24 @@
+<% error_request_type =  (@ticket_sub_types[0] && @ticket_type[0]['name']=='Error') %>  
+<td width="100px" valign="top"><%="Standard List:" if  error_request_type  %> </td>
+   <td  colspan="4">
+  <table>
+     <%count=1%>
+    <tr>
+      <%if error_request_type%>
+        <td> <%= custom_select_tag "ticket[request_sub_type_id]", options_for_select(@ticket_sub_types.collect{|p| [p['name'], p['id']]}),:prompt=>"--------Select---------",:onchange=>"suggestion_display(this.value,jQuery('#ticket_request_sub_type_id option:selected').text());" ,:class=>"request_lists"%></td>
+      <%else%>
+        <%@ticket_sub_types.each do |request_sub_type|%>
+          <%if count%5 !=0 %>
+            <td> <%= radio_button_tag 'ticket[request_sub_type_id]',  request_sub_type['id'], count ==1 , {:rel=>request_sub_type['name'],:class=>"request_lists",:id=>"request_sub_type_id_#{request_sub_type['id']}",:onclick=> "suggestion_display('#{request_sub_type['id']}','#{request_sub_type['name']}');"} %></td>
+            <td><%=request_sub_type['name']%></td>
+             <%count+=1%>
+          <%else%>
+            <%count=1%>
+            <tr></tr>
+            <%redo%>
+          <%end%>
+       <%end%>
+     <%end%>
+   </tr>
+</table>
+</td>

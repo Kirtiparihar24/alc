@@ -1,0 +1,14 @@
+<%=@header_opts[:r_name]%>
+
+<%-@total_data.each do |label,data|-%>
+<%=label%>
+<%=@table_headers.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+<%=",#{@conditions[label][0]}, #{@conditions[label][1]}, #{@conditions[label][1] != 0 ? (((@conditions[label][0]/@conditions[label][1].to_f) * 100).roundf2(2).to_s + "%") : ""} , #{@conditions[label][2]}"%>
+
+<%-end-%>
+<%="Grand Total :,#{@conditions[:expenses][0]} ,#{@conditions[:expenses][1]} , #{@conditions[:expenses][1] ? (((@conditions[:expenses][0]/@conditions[:expenses][1].to_f) * 100).roundf2(2).to_s + "%") : ""} ,#{@conditions[:expenses][2]}"%>
+
+

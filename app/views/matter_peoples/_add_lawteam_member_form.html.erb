@@ -1,0 +1,177 @@
+<div id="matter_lawteam_errors" class="" style="display: none; text-align: left"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+﻿<div>
+  <% if @matter_people_client.new_record?
+    action = :add_lawteam_member
+    mandatory = true
+    title = "Add Legal Team"
+  else
+    action = :edit_lawteam_member
+    mandatory = false
+    title = "Legal Team"
+  end %>
+
+  <% remote_form_for([@matter, @matter_people_client], :url => {:action => action, :id => @matter_people_client.id},:html=>{:loading=>"disableAllSubmitButtons('matters')",:complete=>"return enableAllSubmitButtons('matters');"}) do |f| %>
+    <%=f.hidden_field :people_type, :value => "client"%>
+    <%=f.hidden_field :company_id, :value => @matter.company_id%>
+    <%=f.hidden_field :matter_id, :value => @matter.id%>
+    <%unless @from_matter_task.blank?%>
+      <%=hidden_field_tag :from_matter_task, "true"%>
+    <%end%>
+    <%if @matter_people_client.new_record?%>
+      <%=f.hidden_field :created_by_user_id, :value => current_user.id%>
+    <%else%>
+      <%=f.hidden_field :updated_by_user_id, :value => current_user.id%>
+    <%end%>
+    <%=f.hidden_field :is_active, :value => true%>
+    <div class="form_data mt20">
+      <table border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+        <tr>
+          <td width="20%" align="left"><label><%= t(:label_name) %> <% if mandatory %> <span class="alert_message">*</span><% end  %> </label></td>
+          <td width="80%" align="left">
+            <%if @matter_people_client.new_record?%>
+              <%= f.collection_select :employee_user_id, @employees, :user_id, :full_name,
+                {:include_blank => "-----Select-----"},
+                {:disabled => false} %>
+            <%else%>
+              <%=text_field_tag :employee_display_name, @matter_people_client.get_name, :disabled => true %>
+            <%end%>
+          </td>
+        </tr>
+        <% if params[:access].blank?  %>
+          <tr>
+            <td align="left"><%= t(:label_role) %></td>
+            <td align="left"><%= f.collection_select("matter_team_role_id", current_company.client_roles.except_lead_lawyer_matter_client_for_matter, :id, :alvalue) %></td>
+          </tr>
+        <% end %>
+      </table>
+
+      <table  border="0" cellpadding="0" cellspacing="0" width="100%" class="pt3">
+        <tr>
+          <% if mandatory || params[:access].present? %>
+            <td align="left" width="19%"><%= t(:label_effective)%></td><% end %>
+          <% if mandatory %>
+            <td width="3%"><%= f.radio_button :effective_from, "since_inception", :checked => @matter_people_client.since_inception?, :onclick => "showHideFromToDates(false)", :style =>"padding:0;margin:0 5px 0 2px;"%></td>
+            <td width="30%"><%= t(:label_since_inception) %></td>
+          <% end %>
+
+          <% if mandatory || params[:access].present? %>
+            <% class_val = params[:access].present? ? "access_radio" : "" %>
+            <% disabled = params[:access].present? ? true : false %>
+            <td width="3%"><%= f.radio_button :effective_from, "date_given", :checked => !@matter_people_client.since_inception?, :onclick => "showHideFromToDates(true)", :style =>"padding:0;margin:0 5px 0 0;", :class=>class_val, :disabled => disabled%></td>
+            <td><%= t(:lable_specify_date) %></td>
+          <% end %>
+        </tr>
+      </table>
+
+      <div class="date_picker_div pt5" id="date_picker_div">
+        <% if params[:access].present? %>
+          <br/>
+          <div id="old_dates">
+            <% unless @matter_access_periods.blank? %>
+              <%= render :partial=> "matter_access_period",  :collection => @matter_access_periods %>
+            <% end %>
+          </div>
+          <br/>
+          <div id="add_access"><%=render :partial=> "add_row_click",  :locals => {:matter_access_periods => @matter_access_periods} %></div>
+        <% end %>
+        <%if mandatory  %>
+          <div id="from_date" >
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <tr>
+                <td colspan="2" height="5"></td>
+              </tr>
+              <tr <%if @matter_people_client.since_inception?%> style="display: none;" <%end%> class="from_date">
+                <td width="51%" class="pb5"><label><%= t(:label_member_from) %></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= f.text_field :start_date, :value => @matter_people_client.start_date, :class => "date_picker", :size => "10" %></td>
+                <td width="49%" class="pb5"><label><%= t(:label_to) %></label>&nbsp;&nbsp;<%= f.text_field :end_date,  :value => @matter_people_client.end_date, :class => "date_picker", :size => "10" %></td>
+              </tr>
+            </table>
+          </div>
+        <%end%>
+      </div>
+      <% unless params[:access].blank? %>
+        <div id="clone" style = "cursor:pointer; display:none">
+          <a href="#this" class='vtip' title='Add Dates'><span class="icon_add_row fl mt3"></span></a>
+        </div>
+      <% end %>
+      <%if get_employee_user_id == @matter.employee_user_id && @matter_people_client.new_record?%>
+        <table border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+
+          <tr>
+            <td align="left" colspan="2">
+              <%if @matter_people_client.get_additional_priv != 0%>
+                Additional Privileges
+              <%else%>
+                <a href="#" onclick="return assignAdditionalPriv();">Delegate Access</a>
+              <%end%>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table>
+                <%= render :partial => "delegate_access", :locals => {:visibility => false} %>
+              </table>
+            </td>
+          </tr>
+        </table>
+      <%end%>
+      <table border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table pt5">
+        <tr>
+          <td align="center" colspan="2">
+            <% disabled = false %>
+            <% style = "" %>
+            <% if @matter_access_periods.present? && params[:access] %>
+              <% disabled = true %>
+              <% style = "color:grey" %>
+            <% end %>
+            <%= f.submit t(:text_save),:class=>'matters', :disabled => disabled, :style => style, :id => "add_lawteam_button", :onclick => "checkloader(); setButtonPressed(this);"%>
+            <!--<input type="button" class="matters" id="Login2" value="<%=t(:text_cancel)%>" onclick="tb_remove(); disableAllSubmitButtons('matters');clone_remove();" />-->
+            <input type="button" class="matters" id="Login2" value="<%=t(:text_cancel)%>" onclick="window.location.reload();" />
+          </td>
+        </tr>
+      </table>
+    </div>
+  <%end%>
+</div>
+<% if mandatory %><div><span class="alert_message">*</span><%=t(:label_Required_field)%></div><% end %>
+<script type="text/javascript">
+  datepicker_matter_access_periods("#matter_people_start_date");
+  datepicker_matter_access_periods("#matter_people_end_date");
+<%if @matter_people_client.get_additional_priv != 0%>
+    jQuery(".additional_priv").show();
+<%end%>
+  jQuery(document).ready(function() {
+<% unless params[:access].blank? %>
+      jQuery('.access_radio').attr('checked', true);
+<% end %>
+
+    if(jQuery('.access_radio').attr('checked')){
+<% present = true %>
+<% if @matter_access_periods.present? %>
+  <% present = false %>
+<% end %>
+<% if present %>
+        jQuery("<%= escape_javascript(render :partial=>'add_date_row', :locals=>{:count=>0})%> ").appendTo("#date_picker_div");
+<% end %>
+      return false;
+    }
+  });
+
+  matter_access_live_events();
+  function add_new(){
+    random_no = get_randomno();
+    jQuery("<%= escape_javascript(render :partial=>'add_date_row')%> ").appendTo("#date_picker_div");
+    jQuery("#clone").hide();
+  }
+
+  function add_rows(){
+    random_no = get_randomno();
+    jQuery("#add_lawteam_button").attr('disabled',false);
+    jQuery("#add_lawteam_button").attr('style','');
+    jQuery("<%= escape_javascript(render :partial=>'add_date_row', :locals=>{:count=>0})%> ").appendTo("#date_picker_div");
+    jQuery("#clone").hide();
+    jQuery("#add_access").hide();
+  }
+
+</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;48 </div>

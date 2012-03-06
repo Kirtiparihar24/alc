@@ -1,0 +1,1 @@
+<%=select_tag "#{entry_id}[expense_entry][matter_people_id]", options_for_select(@matter_people_others.collect{|mp|[ mp.rep_full_name,mp.id ]}) %>

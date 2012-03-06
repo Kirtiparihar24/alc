@@ -1,0 +1,10 @@
+jQuery('#TB_ajaxWindowTitle').text("<%=truncate(CGI::unescape(params[:title]),40)%>")
+jQuery('#TB_window').width(520)
+jQuery('#TB_ajaxContent').width(500)
+jQuery('#TB_window').height(200)
+jQuery('#TB_ajaxContent').height(150)
+jQuery('#TB_window').css("margin-left","-300px")
+jQuery('#TB_window').css("margin-top","-160px")
+jQuery('#TB_ajaxContent').html("<%=escape_javascript(render(:file => "physical/clientservices/home/new_workspace"))%>")
+jQuery("#fragment-1").removeClass('tabs-container')
+

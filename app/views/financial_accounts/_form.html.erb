@@ -1,0 +1,61 @@
+<style type="text/css">
+  
+  .p5 {padding: 0px 5px 0px 5px;}
+</style>
+<%= render :partial => 'additional_header' %>
+<% if (@financial_account.errors.length > 0) %>
+<div class="message_error_div" style="background-image:none;"><%= f.error_messages %></div>
+<% end %>
+<% matter_list = (@matters && @matters.size > 0) ? 'yes' : 'no' %>
+<%= hidden_field_tag :is_matter_list, matter_list  %>
+<%= hidden_field_tag :is_financial_account %>
+<% matter_name = @financial_account.matter_id ? @financial_account.matter.name : ""%>
+<% account_name = @financial_account.account_id ? @financial_account.account.name : ""%>
+<div class="form">
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><span class="alert_message">*</span><%= t(:text_financial_account_name) %>:</label></div>
+  <div style="float: left;width:200px;"><%= f.text_field(:name, :size => 30, :class =>"field size4", :maxlength=>197 ) %></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><span class="alert_message">*</span><%= t(:text_financial_account_bank_name) %>:</label></div>
+  <div style="float: left;width:200px;"><%= f.text_field(:bank_name, :size => 30, :class =>"field size4", :maxlength=>197) %></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><%= t(:text_financial_account_account_no)%>:</label></div>
+  <div style="float: left;width:200px;"><%= f.text_field(:account_no, :size => 30, :class=>'field size4 trust_number', :maxlength=>35) %></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><%= t(:text_financial_account_routing_no) %>:</label></div>
+  <div style="float: left;width:200px;"><%= f.text_field(:routing_no, :size => 30, :class=>'field size4', :maxlength=>35) %></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><span class="alert_message">*</span><%= t(:text_financial_account_address) %>:</label></div>
+  <div style="float: left;width:200px;"><%= f.text_area(:address, :rows => 3, :class=>'field', :cols => 30) %></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><span class="alert_message">*</span><%= t(:text_financial_account_description) %>:</label></div>
+  <div style="float: left;width:200px;"><%= f.text_field(:description, :rows => 3, :class=>'field size4', :cols => 30) %></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><%= t(:text_financial_account_financial_account_type) %>:</label></div>
+  <div style="float: left;width:200px;">
+    <% selected = @financial_account.financial_account_type ? @financial_account.financial_account_type.lvalue : "Operating" %>
+    <select name="financial_account[financial_account_type_id]" id="financial_account_financial_account_type_id" class="field size3 financial_account_type">
+      <% @company.financial_account_types.each do |financial_account_type| %>
+        <option value="<%= financial_account_type.id %>" lvalue="<%=financial_account_type.lvalue%>" <%= 'selected="selected"' if financial_account_type.lvalue==selected %>><%= financial_account_type.alvalue %></option>
+      <% end %>
+    </select>
+  </div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><%= t(:text_financial_account_contact_or_client) %>:</label></div>
+  <div style="float: left;width:200px;"><%= text_field_tag 'financial_account_account_sphinx_search', '', :size => '30', :title => '', :value => account_name, :class => "financial_account search field size4" %></div>
+  <div id="account_search_div"></div>
+  <div class="clear" style="height: 20px;"></div>
+  <div style="float: left;width:200px; text-align: center;vertical-align:bottom;"><label><%= t(:text_financial_account_to_matter) %>:</label></div>
+  <div style="float: left;width:200px;"><%= text_field_tag 'financial_account_matter_sphinx_search', '', :size => '30', :title => '', :value => matter_name, :class => "financial_account search field size4" %></div>
+  <div id="matter_search_div"></div>
+
+  <%= f.hidden_field(:matter_id) %>
+  <%= f.hidden_field(:account_id) %>
+  
+  <div class="clear"></div>
+  <div class="clear" style="height: 20px;"></div>
+  </div>
+  <div class="buttons buttonSub_div">
+    <%= f.submit t(:text_save), :name => "save", :class => 'financial_accounts' %>
+    <%= link_to((f.submit t(:text_cancel), :type => 'button', :class => 'financial_accounts', :name => "cancel"), financial_accounts_path) %>
+  </div>
+

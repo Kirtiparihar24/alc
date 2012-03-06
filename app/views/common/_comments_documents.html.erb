@@ -1,0 +1,227 @@
+<%=render :partial => "matters/matter_new_comment", :locals => {:commentable_type => commentable_type, :commentable_id => commentable_id, :matter_type => matter_type}%>
+<!--Comment-->
+<div>
+  <div class="box_gray_new">
+    <a href="#comment_toggle" id="comment_toggle">
+      <div class="icon_orange_arrow_up mr5 mt3 fl toggle_comment"></div>
+      <div class="icon_orange_arrow_down mr5 mt3 fl toggle_comment" style="display:none"></div>
+    </a>
+    <div class="fl"> <strong><%=t(:label_comments)%></strong> <span id="comment_count">[<%=@notes.size%>]</span> </div>
+    <div class="fr mt5 mr5">
+      <a title="Add Comment" name="Add Comment" class="thickbox fr link_blue vtip" href="#TB_inline?height=190&width=380&inlineId=modal_matter_comment"><span class="icon_add fl"></span></a>
+    </div>
+    <br class="clear" />
+  </div>
+  <div class="tabular_listing" id="comment_div">
+    <table cellpadding="1" cellspacing="1" width="100%" class="border_gray mt5">
+      <tbody>
+        <tr id="matter_comments">
+          <th align="left" width="63%"><a href="#"><%=t(:label_comment)%></a></th>
+          <th align="left" width="13%"><a href="#"><%=t(:label_user)%></a></th>
+          <%if !@matter_issue && !@matter_fact && !@matter_research && !@matter_risk%>
+            <th align="left" width="13%"><a href="#"><%=t(:label_type)%></a></th>
+          <%end%>
+          <th align="center" width="11%"><a href="#"><%=t(:label_Created_At)%></a></th>
+        </tr>
+        <%unless @notes.empty?%>
+          <%@notes.each do|e|%>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td><%=truncate_hover(e.comment, 110)%></td>
+              <td><%=e.user.try(:full_name)%></td>
+              <%if !@matter_issue && !@matter_fact && !@matter_research && !@matter_risk%>
+                <td><%=e.get_title%></td>
+              <%end%>
+              <td align="center"><%=livia_date_time(e.created_at)%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr id="no_comments_found">
+            <td colspan="4"><%=t(:label_No_comments_found)%>.</td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--Comment-->
+<br class="clear" />
+<!--Document-->
+<% if document_available? %>
+  <div>
+    <div class="box_gray_new">
+      <a href="#doc_toggle" id="doc_toggle">
+        <div class="icon_orange_arrow_up mr5 mt3 fl toggle_doc"></div>
+        <div class="icon_orange_arrow_down mr5 mt3 fl toggle_doc" style="display:none"></div>
+      </a>
+      <div class="fl">
+        <strong><%=t(:label_documents)%></strong> [<%=@lawyer_documents.size%>]
+      </div>
+      <div class="fr mt5 mr5">
+        <% path = params[:from].present? ? params[:from] : 'edit' %>
+        <%= link_to("<span class='icon_add fr' id='matter_tabs'></span>","#", {:class=> "vtip",:multiple=>true, :id => "upload_multi", :title=> "File(s) Upload", :name=> "Mass Upload File", :parentid=>@parent_id.to_s,:current_user_id=>current_user.id,:employeeuserid=>get_employee_user_id,:company_id=>get_company_id,:matter_id=>@matter.id,:document_home_matter_issue_ids=>@matter_issue.try(:id),:document_home_matter_risk_ids=>@matter_risk.try(:id),:document_home_matter_fact_ids=>@matter_fact.try(:id),:document_home_matter_research_ids=>@matter_research.try(:id),:document_home_matter_task_ids=>@matter_task.try(:id),:path=>"/document_homes/create_multiple?stop=",:return_path=>"#{path}"})%>
+      </div>
+      <br class="clear" />
+    </div>
+    <div class="tabular_listing" id="doc_div">
+      <table cellpadding="1" cellspacing="1" width="100%" class="border_gray mt5">
+        <tbody>
+          <tr>
+            <th align="left" width="59%"><a href="#"><%=t(:label_documents)%>&nbsp;<%=t(:label_name)%></a></th>
+            <th align="left" width="15%"><%=t(:label_Size)%></th>
+            <th align="center" width="21%"><%=t(:label_Uploaded_On)%></th>
+            <th align="center" width="5%"><a href="#"><%=t(:label_Actions)%></a></th>
+          </tr>
+          <%unless @lawyer_documents.empty?%>
+            <%@lawyer_documents.each do|e|%>
+              <% if e.access_rights%>
+                <% if document_accesible?(e, get_employee_user_id,current_company.id,@matter) %>
+                  <%wip_doc,e, parent_doc=get_final_matter_doc(e)  %>
+
+                  <tr class="<%= cycle('bg1', 'bg2') %>">
+                    <td align="left"><%= link_to("#{e.latest_doc.name}", document_home_path(e.latest_doc.id)) %><%= " [WIP Document]" if wip_doc %></td>
+                    <td align="left"><%=matter_filesize_to_human(e.latest_doc.data_file_size)%></td>
+                    <td align="center"><%=livia_date(e.updated_at)%></td>
+                    <td align="center">
+                      <div class="icon_action mt3"><a href="#"></a></div>
+                      <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                        <!--Icon table strt here -->
+                        <% if e.owner_user_id==get_employee_user_id
+                          link = matter_document_home_path(@matter, e, :matter_type => matter_type,  :matter_commentable_id => commentable_id)
+                          onclick="return confirm_for_delete_document(this, '', '', '', '#{session[:_csrf_token]}', 'lawyer')"
+                        else
+                          link = "NO"
+                        end %>
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                          <%= raw action_pad_top_blue_links({
+                              :edit_path => "#{edit_matter_document_home_path(@matter,e,:height => 450, :width => 950)}",
+                              :edit_title => "Edit Document",
+                              :edit_modal=>true,
+                              :deactivate_path => link,
+                              :comment_path => "NO",
+                              :document_path => "NO",
+                              :history_path => e.mapable_type =='Matter' ? "#{get_doc_history_matter_document_home_path(@matter,e)}?height=300&width=700" : 'NO',
+                              :history_title => "Versions Of Document:"
+                            },onclick) %>
+                          <tr>
+                            <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                            <td style="background: #fff;">
+                              <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                                <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                                <% delete_doc = true %>
+                                <tr>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_download fl"></div></td>
+                                  <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Download</span>", document_home_path(e.latest_doc.id))%></td>
+                                  <%unless wip_doc%>
+                                    <td width="7%" align="center" valign="middle"><div class="icon_supercede_document fl"></div></td>
+                                    <td width="40%" align="left" valign="middle"><%=link_to("<span>#{t(:label_supercede)}</span>", supercede_or_replace_document_document_home_path(e, :height=>200, :width=>600), :class => "thickbox", :name => "#{t(:label_superseed)}")%>
+                                    </td>
+                                  <%end%>
+                                </tr>
+                              </table>
+                            </td>
+                            <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="ap_bottom_curve_left"></td>
+                            <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                            <td valign="top" class="ap_bottom_curve_right"></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                <%end%>
+              <%end%>
+            <%end%>
+          <%else%>
+            <tr><td colspan="4"><%=t(:label_No_documents_found)%>.</td></tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+<!--Document-->
+<br class="clear" />
+<%if controller.controller_name=='matter_tasks'%>
+  <!--Client Documents-->
+  <div>
+    <div class="box_gray_new">
+      <a href="#client_doc_toggle" id="client_doc_toggle">
+        <div class="icon_orange_arrow_up mr5 mt3 fl toggle_client_doc"></div>
+        <div class="icon_orange_arrow_down mr5 mt3 fl toggle_client_doc" style="display:none"></div>
+      </a>
+      <div class="fl">
+        <strong><%=t(:label_client)%>&nbsp;<%=t(:label_documents)%></strong> [<%=@client_documents.size%>]
+      </div>
+      <br class="clear" />
+    </div>
+    <div class="tabular_listing" id="client_doc_div">
+      <table cellpadding="1" cellspacing="1" width="100%" class="border_gray mt5">
+        <tbody>
+          <tr>
+            <th align="left" width="29%"><a href="#"><%=t(:label_documents)%>&nbsp;<%=t(:label_name)%></a></th>
+            <th align="left" width="48%"><%=t(:label_description)%></th>
+            <th align="center" width="18%"><%=t(:label_Creation_Date)%></th>
+            <th align="center" width="5%"><a href="#"><%=t(:label_Actions)%></a></th>
+          </tr>
+          <%unless @client_documents.empty?%>
+            <%@client_documents.each do|e|%>
+              <tr class="<%= cycle('bg1', 'bg2') %>">
+                <td align="left"><%=e.latest_doc.name%></td>
+                <td align="left"><%=e.latest_doc.description%></td>
+                <td align="center"><%=livia_date_time(e.created_at)%></td>
+                <td align="center">
+                  <div class="icon_action mt3"><a href="#"></a></div>
+                  <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                    <!--Icon table strt here -->
+                    <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                      <%= raw action_pad_top_blue_links({
+                          :edit_path => "NO",
+                          :deactivate_path => "NO",
+                          :comment_path => "NO",
+                          :document_path => "NO",
+                          :history_path => "NO"
+                        }) %>
+                      <tr>
+                        <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                        <td style="background: #fff;">
+                          <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                            <tr>
+                              <td width="7%" align="center" valign="middle"><div class="ap_child_action"></div></td>
+                              <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Download</span>",document_home_path(e.latest_doc.id))%></td>
+                              <td width="7%" align="center" valign="middle"></td>
+                              <td width="40%" align="left" valign="middle"></td>
+                            </tr>
+                            <tr>
+                              <td colspan="4"><div class="ap_pixel10"></div></td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                      </tr>
+                      <tr>
+                        <td valign="top" class="ap_bottom_curve_left"></td>
+                        <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                        <td valign="top" class="ap_bottom_curve_right"></td>
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            <%end%>
+          <%else%>
+            <tr><td colspan="4"><%=t(:label_No_client_documents_found)%>.</td></tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--Client Documents-->
+<%end%>
+<script type="text/javascript">
+  toggle_doc_comments();
+</script>

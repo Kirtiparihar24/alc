@@ -1,0 +1,170 @@
+.message_success_div
+{
+ border:1px solid #a5c776;
+ background-color:#cdfcd2;
+ padding: 5px 5px 5px 10px;
+ margin: 0 12px 10px;
+}
+
+.message_error_div
+{
+ border:1px solid #E89E9D;
+ background-color:#F8E3E2;
+ padding: 5px 5px 5px 10px;
+ margin: 0 12px 10px;
+}
+
+.message_error_div li{list-style: none;}
+
+#mandatory
+{
+    color: red;
+}
+
+.lawyer_list_div
+{
+    display:none;
+    height: auto;
+    border: 1px solid #D7D7D7;
+    border-top: none;
+}
+
+.button:hover {
+	cursor: pointer;
+}
+
+/* images for column sorting on index pages*/
+table.tablesorter thead tr .header {
+/*	background-image: url(layout/site/icon/bg.gif);*/
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(layout/site/tables/asc.gif);
+}
+
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(layout/site/tables/desc.gif);
+}
+
+.icon_edit{ background:url(layout/site/icon/icon_edit.png) no-repeat left 5px}
+.icon_generate_task{background:url(layout/site/icon/icon_task_general_small.png) no-repeat left 5px}
+.icon_complete_note{background:url(layout/site/icon/icon_note_complete_small.png) no-repeat left 5px}
+.icon_complete_task{background:url(layout/site/icon/icon_task_complete_small.png) no-repeat left 5px}
+.icon_reassign_task{background:url(layout/site/icon/icon_task_reassign_small.png) no-repeat left 5px}
+.icon_task_histroy{background:url(layout/site/icon/icon_history.png) no-repeat left 5px}
+.icon_call_recording{
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_call_recording.png) no-repeat left 5px
+}
+.icon_edit_disable{
+    color:gray;
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_edit_disable.png) no-repeat left 5px
+}
+.icon_generate_task_disable{
+    color:gray;
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_task_general_small_disable.png) no-repeat left 5px
+}
+.icon_complete_note_disable{
+    color:gray;
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_note_complete_small_disable.png) no-repeat left 5px
+}
+.icon_call_recording_disable{
+    color:gray;
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_call_recording_disable.png) no-repeat left 5px
+}
+.icon_complete_task_disable{
+    color:gray;
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_task_complete_small_disable.png) no-repeat left 5px
+}
+.icon_reassign_task_disable{
+    color:gray;
+    text-indent: 20px;
+    background:url(layout/site/icon/icon_task_reassign_small_disable.png) no-repeat left 5px
+}
+.temp_livian_details_div{
+    margin-left:10px;
+    margin-top:-20px;
+    position: absolute;
+    background:#cbe2ed url(layout/site/task_details_bg.png) repeat-x bottom left;
+    -moz-border-radius:10px;border-radius:10px;
+    -webkit-border-radius:10px;
+    border:1px solid #628c9b;
+    padding:5px;
+    width:300px;
+    z-index: 100;
+    top:300px;
+    right:30px;
+}
+.legends_div{
+    color: #7E898F;
+    font-style: italic;
+}
+.sct_right dl {
+	margin: 0;
+	padding: 0;
+	font-size: 11px;
+	line-height: 18px;
+	color: #194D65;
+}
+
+.sct_right dt {
+	font-weight: bold;
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.sct_right dd {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+textarea{resize:none;}
+
+.modalTable{
+    border-left: 1px solid #D3E5ED;
+    border-top: 1px solid #D3E5ED;
+    margin-top: 10px;
+}
+
+.ac_loading{
+    background: url(/images/loading.gif) 130px no-repeat !important;
+}
+
+.ac_results {	
+        left:120px;
+        top:31px;
+        width: 174px !important;
+}
+.ac_results li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: default;
+	display: block;
+	/*
+	if width will be 100% horizontal scrollbar will apear
+	when scroll mode will be used
+	*/
+	/*width: 100%;*/
+	font: menu;
+	font-size: 10px;
+	/*
+	it is very important, if line-height not setted or setted
+	in relative units scroll will be broken in firefox
+	*/
+	line-height: 16px;
+	overflow: hidden;
+        width: 93%;
+        z-index: 99999;
+}
+
+.ml0{margin-left: 0px;}

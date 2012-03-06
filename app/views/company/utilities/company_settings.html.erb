@@ -1,0 +1,54 @@
+<% content_for :company_selection do %>
+  <%= render :partial => "/company/utilities/company_selection" %>
+<% end %>
+<div class="box-head"><h2 class="left">Campaign mailer email ids</h2></div>
+<div class="actionLinks"><%= link_to "Company Settings", company_settings_path %> | <%= link_to t(:label_upload_logo), upload_logos_path %> | <%= link_to "Automate Matter Numbering", automate_matter_numbering_path %> |
+  <% if params[:company_id].present? %>
+    <%  if @company.tne_invoice_setting.blank? %>
+      <%= link_to "Invoice Setting", new_tne_invoice_setting_path(:company_id=>params[:company_id]) %>
+    <% else %>
+      <%= link_to "Invoice Setting", edit_tne_invoice_setting_path(@tne_setting,:company_id=>params[:company_id]) %>
+    <% end %>
+  <% end %>
+  </div>
+  <% if @company.present? %>
+    <div id="list" class="table"><%= render :partial =>"campaign_mailer_emails/list" %></div>
+    <div class="box-head"><h2><label><%= " #{t(:text_add)} #{t(:text_new)} #{t(:text_email)}" %></label></h2></div>
+    <% form_for(@campaign_mailer_email) do |f| %>
+      <div class="form">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="25%" align="left"><label>Email Id</label></td>
+            <td width="75%" align="left"><%= f.hidden_field :created_by_user_id, :value => current_user.id %>
+              <%= f.hidden_field :company_id, :value => @company.id %>
+              <% textfieldvalue = params[:campaign_mailer_email].blank? ? nil : params[:campaign_mailer_email][:setting_value] %>
+              <%= f.text_field :setting_value, :value => textfieldvalue ,:class=>"field size3"%>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+    <div class="buttons"><%=submit_tag t(:label_save), :class=>"button"%></div>
+
+  <div class="box-head"><h2><label>Time & Expense Duration Calculation Setting</label></h2></div>
+
+  <div id="duration_setting" class="table"><%= render :partial =>"duration_settings/list", :locals => {:duration_setting=>@duration_setting}%></div>
+
+
+  <% end %>
+  <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function() {
+      jQuery('.errorCont')
+      .fadeIn('slow')
+      .animate({
+        opacity: 1.0
+      }, 8000)
+      .fadeOut('slow', function() {
+        jQuery('.errorCont').remove();
+      });
+    });
+  </script>

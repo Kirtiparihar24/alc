@@ -1,0 +1,29 @@
+--- 
+users_001: 
+  last_login_at: 2009-12-30 11:58:52.422
+  company: 
+  updated_at: 2009-12-31 11:01:35.445
+  last_request_at: 2009-12-31 11:01:35.445
+  title: 
+  permanent_deleted_at: 
+  deleted_at: 
+  current_login_ip: 127.0.0.1
+  perishable_token: _645YJQbGm-XWKvw3Y_A
+  contact_id: 
+  current_login_at: 2009-12-31 10:58:53.517
+  password_salt: 1uWcBVeTEXSOJkED6Y0r
+  username: liviaadmin
+  mobile: 
+  company_id: "1"
+  login_count: "44"
+  persistence_token: c03482689817cce032d3074ccfa2f8d16bd221a64ee601fd63ede6e0eafe015a9a9a908189019bb91f2b8e8d33fe42842178f49c24c9bea4ee5ca93bc975c54e
+  password_hash: 8050760d9df497de69a524ae73244fa2d07256eec7d2c6441a40720ff2cd2425be64626fbe38b5d6e1169ac62b67a95e7c69a832f246ccf2933a4dc9bedaa62d
+  user_type: liviaadmin
+  phone: 
+  time_zone: 
+  first_name: livia
+  last_name: admin
+  created_at: 2009-12-16 11:28:13.738
+  last_login_ip: 127.0.0.1
+  alt_email: 
+  email: liviaadmin@liviaservices.com

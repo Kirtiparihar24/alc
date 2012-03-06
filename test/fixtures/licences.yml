@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value
+
+# == Schema Information
+#
+# Table name: licences
+#
+#  id            :integer         not null, primary key
+#  company_id    :integer         not null
+#  product_id    :integer         not null
+#  licence_count :integer         not null
+#  cost          :integer         not null
+#  start_date    :datetime        not null
+#  expired_date  :datetime
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+

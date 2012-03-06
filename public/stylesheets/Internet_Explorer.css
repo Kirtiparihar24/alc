@@ -1,0 +1,936 @@
+/* ------------------------------------------------------------------------------------------------------------
+	Personal CSS Framework
+   * File Name:			base.css
+   * Description:		global classes
+   * Version:			1.0.0(20 April 2010)
+   * Author: 			Khushboo, vaishali, Naresh
+============STRUCTURE===========================================================================================
+   * Page width:		1280 to 1600 (controled by resolution_js.js)
+   * Header:			header-div
+   * Footer:			footer-div
+------------------------------------------------------------------------------------------------------------------ */
+body.main_page_body {background:#eff7fb url(../images/bg_body.png) repeat-x left top; font-family:Arial, Helvetica, sans-serif;}
+#doc, #foot{/*max-width:1600px; min-width:1280px; */width:1200px; }
+/*========= Header css start here==================================================================================== */
+/*========= Footer css start here==================================================================================== */
+
+/*========= Navigation css start here==================================================================================== */
+/*ul.navigation_list li{*padding:0px 8px 0px 8px; }
+ul.navigation_list li a{*padding:9px 8px 11px 8px;}
+*html ul.navigation_list li a{*padding:9px 8px 11px 8px; }/
+ul.navigation_list li a{padding:0 8px 0 8px; *padding:0 8px;}
+/*#navigation-div{margin:9px 0 0 0; padding:0; border: 1px solid red;}/
+ul.navigation_list li{ padding:11px 8px 10px 8px;}
+/*ul.navigation_list li.active a{padding-top:8px;}*/
+/*#header-div{height:72px;}*/
+/*ul.navigation_list{margin-top:17px}*/
+/*========= Middle Body css start here=============================================================================== */
+#middleBody-div{}
+/*========= Global css start here=====================================================================================*/
+/*--------------Border -----------------------------------------------------------------------------------------*/
+ul.navigation_list li.active a, #TB_HideSelect, #TB_iframeContent{border:none;}
+.section_left, .column_right, .openDiv, .column_main, .column_fav, .border_gray, .stickNote_box{ border:1px solid #cecece;}
+p#vtip{border:1px solid #c5c5c5; z-index:9999999}
+.box_gray, .box_gray_new{border:1px solid #dbdbdb;}
+.message_error_div{border:1px solid #e89e9d;}
+.message_sucess_div{border:1px solid #a5c776; }
+.message_warning_div{border:1px solid #ecc635; }
+.message_normal_div{border:1px solid #b8b8b8;}
+input[type=text], input[type=password], input.text, input.title, textarea, select{border:1px solid #d9d9d9;}
+input[type=submit],.customFields{border:1px solid #b2b2b2;}
+input[type=button]{border:1px solid #b2b2b2;}
+.tabs-container {border:1px solid #6f9fb4;}
+ul.tabs-nav li a{border:1px solid #dbdbdb;}
+ul.listing1 li{border-bottom:1px solid #f0f0f0;}
+
+ul.tabs-nav li a:hover, ul.tabs-nav li.tabs-selected a{border-color:#6f9fb4; border-style:solid; border-width:1px; border-top-width:2px; border-bottom:none; }
+
+.highlight_bg_1{xborder-top:3px solid #efefef;}
+.border_top_gray{border-top:1px solid #cecece;}
+#TB_window img#TB_Image{border-top: 1px solid #666;}
+.title_stickyNote{border-top:1px solid #ffffff;}
+
+.border_dotted_right{border-right:1px dotted #306f90;}
+ul.navigation_list li{border-right:1px solid #22607d;}
+.section_left, .column_right, .column_main, .openDiv, .column_fav, .stickNote_box{border-right:2px solid #c0c1c1;}
+
+#TB_window img#TB_Image{border-right: 1px solid #ccc;}
+
+.highlight_bg_1{xborder-bottom:1px solid #efefef; }
+ul.favorite li{border-bottom:1px solid #fff;}
+.section_left, .column_right, .column_main, .openDiv, .column_fav, .stickNote_box{border-bottom:2px solid #c0c1c1;}
+.tabular_listing table th{border-bottom:1px solid #dbe1e4;}
+#TB_window img#TB_Image{border-bottom: 1px solid #ccc;}
+.title_main, .title_favorites, .title_stickyNote,{border-bottom:1px solid #dbdbdb;}
+.calender_table th{border-bottom:1px solid #1a485c;}
+.calender_table .week{border-right:1px solid #1a485c;}
+.calender_table th.week{border-bottom:none;}
+.welcomeUser{border-left:1px dotted #306f90;}
+
+#TB_window img#TB_Image{border-left: 1px solid #666;}
+/*--------------Background Color -----------------------------------------------------------------------------------------*/
+.TB_overlayBG {background-color:#000;}
+/*input.deactive{background-color:none; xborder:none; color:red;  border:1px solid red;}*/
+.bg_white, .bg0, .tabular_listing, #TB_HideSelect, input[type=text], input[type=password], input.text, input.title, textarea, select, ul.tabs-nav li a:hover, ul.tabs-nav li.tabs-selected a, .tabs-container{background-color:#FFF;}
+
+.bg1, .week, .calender_table td.week, .calender_table th.week{background-color:#efefef;}
+.bg2{background-color:#dddddd;}
+.bg3, ul.listing_tab li.active{background-color:#b0b0b0;}
+.bg4{background-color:#eeeeee;}
+.bg5{background-color:#f4f4f4;}
+
+p#vtip{background-color:#373736; }
+.message_error_div{background-color:#f8e3e2; }
+.message_sucess_div{background-color:#cdfcd2; }
+.message_warning_div{background:#fdf0cd; }
+.message_normal_div{background-color:#f0f0f0; }
+ul.navigation_list li.active{background-color:#eff7fb;}
+.section_left, .column_right, .column_main, .openDiv, .column_fav, .stickNote_box{background-color:#fcfcfc;}
+.openDiv{background-color:#e4eff1;}
+input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus {border-color:#cccccc;}
+.tabular_listing table th {background-color:#ccdadf;}
+
+.highlight_bg_1{background-color:#f7f7f7;}
+ul.tabs-nav li a{background-color:#e4e4e4;}
+.calender_table th{background-color:#5597b6; color:#fff;}
+/*--------------BACKGROUND IMAGE -----------------------------------------------------------------------------------------*/
+#footer-div, .title_main, .title_stickyNote, .stickNote_bg, .box_gray, .box_gray_new, input[type=submit],input[type=button], .base_images, .icon_user, .icon_home, .icon_mail, .icon_workspace, .icon_repository, #breadcrumb div a, .arrow_dotted, .icon_listing_arrow_right, .icon_listing_arrow_down, .icon_contacts, .icon_deActivated, .icon_search, .icon_prev, .icon_next, .icon_action, .seperator_dotted, .seperator_dotted_hori, ul.navigation_list li.active, .arrow_tooltip, .icon_TnE, .icon_favReport, .icon_dashboard, .icon_overdue, .icon_today, .icon_upcoming, .icon_document_receiv, .icon_comment_receiv, .icon_close, #TB_title, #TB_closeWindowButton, .icon_edit, .icon_active, .icon_deActive, .icon_comment, .icon_history, .icon_note, .arrow_up, .arrow_down, .icon_time, .icon_asso_exp, .icon_exp, .icon_upload, .icon_download, .icon_sort_down, .icon_sort_up, .icon_sticky_note, .icon_calender, .icon_folder, .icon_folder_open, .icon_doc, .icon_lock, .icon_lock_open, .icon_new_folder, .icon_new_file, .icon_mass_upload,  .icon_Report, .icon_favDashboard, .icon_check, .icon_small_edit, .icon_small_note, .icon_small_history, .icon_small_comment, .icon_create_new, .icon_activate, .icon_deactivate, .icon_manage, .icon_client_doc, .icon_client_comment, .icon_add_doc, .icon_add_task, .icon_privilaged_indicator, .icon_client_indicator, .icon_bill_pay_details, .icon_star_full, .icon_star_half, .icon_star_empty, .icon_add_to_fav, .icon_email, .icon_pdf, .icon_xls, .icon_asv, .icon_supercede_document, .icon_update_bill, .icon_bill_payment_details, .icon_add_risk, .icon_add, .icon_imports, .icon_go_url, .icon_remove, .icon_document_view, .icon_critical, .icon_top_add_fav, .icon_file, .icon_message_error, .icon_message_sucess, .icon_message_warning, .icon_message_normal, .icon_reset, .icon_add_comment, .icon_chat, .btn_addPageFav, .icon_Pprev, .icon_Nnext, .title_favorites, .icon_make_time_entry, .icon_orange_arrow_up, .icon_orange_arrow_down, .icon_checkout, .icon_critical_red, .icon_gray_placeholder, .icon_calender_withoutBorder, .icon_TnE_withoutBorder, .icon_favReport_withoutBorder, .icon_dashboard_withoutBorder, .icon_fullView, .icon_trash,  .icon_task_maketime_entry, .btn_save, .btn_save_exit, .btn_cancel, .btn_upload, .icon_time_list, .icon_recycle, .icon_send_recycle,.icon_restor_recycle, .icon_delete , .icon_notecount, .icon_check_doc, .icon_rep_interim_doc, .icon_access_int_doc, .icon_access_int_doc, .icon_access_control, .icon_privilege, .icon_client_access, .icon_expense_entry, .icon_filter, .icon_remove_filter, .icon_task , .icon_appointment ,.icon_move, .icon_file_folder, .icon_collapse_folder, .icon_open_folder, .icon_expand_folder,.icon_folder_01,.icon_link, .icon_quickContacts, .icon_activity,.icon_renameFolder,.icon_delFolder, .icon_empty_recycle_bin, .icon_utility, .icon_calender_link, .icon_followupdate, .icon_add_row, .icon_save, .icon_manual, .icon_system, .customFields, .icon_ppt, .icon_doc, .icon_image_file, .sync_icon{background-image:url(../images/livia_portal_base_images.png);}
+.base_images, .icon_user, .icon_home, .icon_mail, .icon_workspace, .icon_repository, #breadcrumb div a, .arrow_dotted, .icon_listing_arrow_right, .icon_listing_arrow_down, .icon_contacts, .icon_deActivated, .icon_search, .icon_prev, .icon_next, .icon_action, .arrow_tooltip, .icon_TnE, .icon_favReport, .icon_dashboard, .icon_overdue, .icon_today, .icon_upcoming, .icon_document_receiv, .icon_comment_receiv, .icon_close, #TB_closeWindowButton, #column_left_accordion a.title, #column_left_accordion a.selected, .icon_edit, .icon_active, .icon_deActive, .icon_comment, .icon_history, .icon_note, .arrow_up, .arrow_down, .icon_time, .icon_asso_exp, .icon_exp, .icon_upload, .icon_download, .icon_sort_down, .icon_sort_up, .icon_sticky_note, .icon_calender, .icon_folder, .icon_folder_open, .icon_doc, .icon_lock, .icon_lock_open,  .icon_Report, .icon_favDashboard, .icon_check, .icon_small_edit, .icon_small_note, .icon_small_history, .icon_small_comment, .icon_create_new, .icon_activate, .icon_deactivate, .icon_manage, .icon_client_doc, .icon_client_comment, .icon_add_doc, .icon_add_task, .icon_privilaged_indicator, .icon_client_indicator, .icon_bill_pay_details, .icon_star_full, .icon_star_half, .icon_star_empty, .icon_add_to_fav,.icon_email, .icon_pdf, .icon_xls, .icon_asv, .icon_supercede_document, .icon_update_bill, .icon_bill_payment_details, .icon_add_risk, .icon_add, .icon_imports, .icon_go_url, .icon_remove, .icon_document_view, .icon_critical, .icon_top_add_fav, .icon_file, .icon_message_error, .icon_message_sucess, .icon_message_warning, .icon_message_normal, .icon_reset, .icon_add_comment, .icon_chat, .btn_addPageFav, .icon_Pprev, .icon_Nnext, .icon_make_time_entry, .icon_orange_arrow_up, .icon_orange_arrow_down, .icon_checkout, .icon_critical_red, .icon_gray_placeholder, .icon_calender_withoutBorder, .icon_TnE_withoutBorder, .icon_favReport_withoutBorder, .icon_dashboard_withoutBorder, .icon_fullView, .icon_trash, .icon_task_maketime_entry, .btn_save, .btn_save_exit, .btn_cancel, .btn_upload, .icon_time_list, .icon_recycle, .icon_send_recycle,.icon_restor_recycle,.icon_delete, .icon_notecount, .icon_check_doc, .icon_rep_interim_doc, .icon_access_int_doc, .icon_access_int_doc, .icon_access_control, .icon_privilege, .icon_client_access, .icon_expense_entry, .icon_filter, .icon_remove_filter, .icon_utility, .icon_calender_link, .icon_followupdate, .icon_add_row, .icon_save, .icon_manual, .icon_system, .icon_ppt, .icon_doc, .icon_image_file, .sync_icon {background-repeat:no-repeat;}
+#footer-div, .title_main, .title_favorites,   .title_stickyNote, .box_gray, .box_gray_new, input[type=submit], input[type=button], .seperator_dotted, .seperator_dotted_hori, ul.navigation_list li.active,  #TB_title,  .icon_task , .icon_appointment, .icon_move, .icon_file_folder, .icon_collapse_folder, .icon_open_folder, .icon_expand_folder, .icon_folder_01,.icon_link, .icon_quickContacts, .icon_activity,.icon_renameFolder,.icon_delFolder,.icon_empty_recycle_bin, .customFields {background-repeat:repeat-x;}
+/*------------Newly added ICON  khushboo-----------------------------------------------------------------------------------------------------*/
+.icon_sticky_note{background-position:-96px -413px; width:12px; height:15px;}
+.icon_calender{background-position:-169px -510px; width:28px; height:28px;}
+.icon_Report{background-position:-57px -510px; width:28px; height:28px;}
+.icon_favDashboard{background-position:left -510px; width:28px; height:28px;}
+.icon_check{background-position:-109px -415px; width:11px; height:13px;}
+.icon_small_edit{background-position:-92px -359px; width:14px; height:16px;}
+.icon_small_note{background-position:-168px -360px; width:14px; height:16px;}
+.icon_small_history{background-position:-121px -415px; width:16px; height:15px;}
+.icon_small_comment{background-position:-138px -414px; width:16px; height:15px;}
+.icon_create_new{background-position:left -392px; width:21px; height:18px;}
+.icon_activate{background-position:-22px -392px; width:21px; height:18px;}
+.icon_deactivate{background-position:-43px -392px; width:21px; height:19px;}
+.icon_manage{background-position:-65px -392px; width:21px; height:17px;}
+.icon_gray_placeholder{background-position:left -655px; width:64px; height:55px;}
+.icon_time{background-position:-19px -416px; width:14px; height:14px;}
+.icon_asso_exp{background-position:-34px -416px; width:13px; height:14px;}
+.icon_exp{background-position:-46px -416px; width:13px; height:13px;}
+.icon_make_time_entry{background-position:left -592px; width:17px; height:13px;}
+.icon_make_time_entry{background-position:left -592px; width:17px; height:13px;}
+
+/*18 Jun10*/
+.icon_today, .icon_star_full{background-position:-59px -438px;}
+.icon_star_half{background-position:-69px -438px; width:9px; height:9px;}
+.icon_star_empty{background-position:-79px -438px; width:9px; height:9px;}
+.icon_add_to_fav{background-position:-184px -362px; width:14px; height:13px;}
+.icon_email{background-position:-77px -789px;width:16px;height:11px;}
+.icon_pdf{background-position:-58px -345px; width:14px; height:13px;}
+.icon_xls{background-position:-72px -345px; width:14px; height:13px;}
+.icon_asv{background-position:-86px -345px; width:14px; height:13px;}
+.icon_supercede_document{background-position:-82px -415px; width:13px; height:13px;}
+.icon_update_bill{background-position:-121px -345px; width:13px; height:13px;}
+.icon_bill_payment_details{background-position:-134px -345px; width:13px; height:13px;}
+.icon_add_risk{background-position:-156px -589px; width:23px; height:16px;}
+.icon_add{background-position:left -606px; width:32px; height:15px;}
+.icon_reset{background-position:left -622px; width:32px; height:15px;}
+.icon_add_comment{background-position:-33px -606px; width:73px; height:15px;}
+.icon_imports{background-position:-180px -589px; width:20px; height:13px;}
+.icon_upload{background-position:-99px -345px; width:11px; height:13px;}
+.icon_download{background-position:-110px -345px; width:11px; height:13px;}
+.icon_go_url{background-position:-172px -414px; width:13px; height:13px;}
+.icon_remove{background-position:-161px -346px; width:13px; height:13px;}
+.icon_document_view{background-position:-174px -346px; width:16px; height:13px;}
+.icon_critical{background-position:-177px -390px; width:12px; height:12px;}
+.icon_top_add_fav{background-position:-113px -538px; width:16px; height:32px;}
+.icon_file{background-position:-60px -416px; width:11px; height:14px;}
+.icon_message_error{background-position:-29px -539px; width:24px; height:24px;}
+.icon_message_sucess{background-position:-54px -539px; width:24px; height:24px;}
+.icon_message_warning{background-position:-80px -539px; width:24px; height:24px;}
+.icon_message_normal{background-position:-131px -539px; width:32px; height:25px;}
+
+
+
+/*------------ICON -----------------------------------------------------------------------------------------------------*/
+.icon_user{background-position:left -341px;}
+.icon_home{background-position:left -359px;}
+.icon_mail{background-position:-16px -359px;}
+.icon_workspace{background-position:-48px -359px;}
+.icon_repository{background-position:-64px -359px;}
+.icon_action{background-position:-77px -589px; width:17px; height:17px;}
+.icon_contacts{background-position:left -452px;}
+.icon_deActivated{background-position:-48px -452px;}
+.icon_TnE{background-position:left -538px;}
+.icon_favReport{background-position:-85px -510px;}
+.icon_dashboard{background-position:-141px -510px;}
+.icon_overdue{background-position:-38px -439px; }
+
+.icon_upcoming{background-position:-48px -439px;}
+.icon_document_receiv{background-position:-123px -358px;}
+.icon_comment_receiv{background-position:-143px -360px;}
+.icon_close{background-position:-24px -431px;}
+.icon_search{background-position:left -415px;}
+.icon_edit{background-position:-73px -452px;}
+.icon_note{background-position:-97px -452px;}
+.icon_history{background-position:-121px -452px;}
+.icon_comment{background-position:-145px -452px;}
+.icon_deActive{background-position:-168px -452px;}
+.icon_active{background-position:left -391px;}
+.icon_sort_down{background-position:-58px -431px;}
+.icon_sort_up{background-position:-66px -431px;}
+.icon_sort_up_disabled{background: url(../images/up-disabled.gif); width:8px;height: 4px;}
+.icon_sort_down_disabled{background: url(../images/down-disabled.gif); width:8px;height: 4px;}
+#TB_closeWindowButton{background-position:-16px -344px;}
+#column_left_accordion a.title, .icon_listing_arrow_right {background-position:-189px -403px;}
+#column_left_accordion a.selected, .icon_listing_arrow_down {background-position:-189px -391px;}
+ h2.left_nav_head span.left_span_head,  h2.selected span.left_span_head {background:url(../images/livia_portal_base_images.png) no-repeat; float:left;height:12px;width:12px;margin-top:7px; }
+ h2.left_nav_head span.left_span_head{background-position:-189px -403px;}
+ h2.selected span.left_span_head {background-position:-189px -391px;}
+.box_gray, .box_gray_new{background-position:left -70px;}
+#footer-div{background-position:left -28px;}
+ul.navigation_list li.active{background-position:left -125px;}
+.arrow_dotted{background-position:left -445px;}
+ul.listing1 li.seperator_dotted, .seperator_dotted_hori{ background-position:left -169px;}
+.title_main{background-position:left top;}
+.title_favorites{background-position:left -272px;}
+.title_stickyNote{background-position:left -218px;}
+.stickNote_bg{background-position:left -245px;}
+input[type=submit],.customFields{background-position:left -101px;}
+input[type=button]{background-position:left -101px;}
+.arrow_up{background-position:-31px -345px;}
+.arrow_down{background-position:-45px -345px;}
+.icon_placeholder{width:16px; height:16px; border:1px solid #ccc; background-color:#efefef;}
+
+/*khushboo 28 jun 10*/
+.icon_home, .icon_mail, .icon_workspace, .icon_repository, .icon_chat{height:20px;}
+.icon_chat{background-position:-32px -359px; width:16px;}
+.btn_addPageFav{background-position:-32px -622px; width:112px; height:15px; }
+.icon_prev{background-position:-99px -440px; width:4px; height:8px; }
+.icon_next{background-position:-104px -440px;  width:4px; height:8px;}
+.icon_Pprev{background-position:-89px -440px;  width:9px; height:8px;}
+.icon_Nnext{background-position:-109px -440px;  width:9px; height:8px;}
+
+/* Vaishali 29th june 2010*/
+.icon_orange_arrow_up{background-position:-137px -434px; width:16px; height:16px;}
+.icon_orange_arrow_down{background-position:-120px -434px; width:16px;height:16px;}
+.icon_checkout{background-position:-25px -567px; width:16px;height:16px;}
+.icon_critical_red{background-position:-43px -572px; width:2px;height:11px;}
+/**ADDED BY VAISHALI**/
+
+/*------------Newly added ICON  vaishali-----------------------------------------------------------------------------------------------------*/
+.icon_folder{background-position:-87px -392px; }
+.icon_folder_open{background-position:-99px -392px;}
+.icon_doc{background-position:-111px -392px;}
+.icon_lock{background-position:-123px -392px;}
+.icon_lock_open{background-position:-135px -392px;}
+.icon_new_folder{ background-position:-150px -392px;}
+.icon_new_file{ background-position:-164px -392px;}
+.icon_mass_upload{ background-position:-155px -414px;}
+.icon_client_doc{background-position:left -638px;}
+.icon_client_comment{background-position:-16px -638px;}
+.icon_add_doc{background-position:-35px -589px;}
+.icon_add_task{background-position:-54px -590px;}
+
+.icon_privilaged_indicator{background-position:-95px -589px;}
+.icon_client_indicator{background-position:-111px -589px;}
+.icon_bill_pay_details{background-position:-128px -589px;}
+
+/*------------Newly added ICON  Naresh-----------------------------------------------------------------------------------------------------*/
+.icon_task_maketime_entry{background-position:-44px -638px; width:23px; height:17px;}
+
+/*22/12/2010*/
+.icon_task {background-position:-125px -638px; width:15px; height:17px;}
+.icon_appointment {background-position:-140px -638px; width:15px; height:17px;}
+
+/*11/01/2011*/
+.icon_folder_01{background-position:-175px -761px; width:17px; height:13px;}
+
+/*08/02/2011*/
+.icon_link {background-position:-155px -634px; width:11px; height:17px;}
+
+/*10/02/2011*/
+.icon_quickContacts {background-position:-168px -638px; width:16px; height:12px;}
+.icon_activity {background-position:-65px -655px; width:16px; height:17px;}
+
+/*03/03/2011*/
+.icon_delFolder {background-position:-158px -778px; width:16px;
+height:13px;}
+.icon_renameFolder {background-position:-175px -778px; width:16px;
+height:13px;}
+
+/*---background none----------------------------*/
+ul.listing1, ul.listing1 li.bgnone, ul.listing_stage_filter, ul.listing_folder li,  ul.listing_matter_filter{background:none;}
+/*--------------Width ----------------------------------------------------------------------*/
+.w100, .main_containt, #TB_overlay, #TB_HideSelect, .box_gray, ul.tabs-nav li.tabs-selected a{width:100%;}
+.w20{width:20%;}
+.w25{width:25%;}
+.w32{width:32%;}
+.w40{width:40%;}
+.w48{width:48%;}
+.w49{width:49%;}
+.w65{width:65%;}
+.w67{width:67%;}
+.w75{width:75%;}
+.w77{width:77%;}
+.w81, .column_right{width:81%;}
+.w80{width:80%;}
+.w88{width:88%;}
+.w90{width:90%;}
+.w95{width:95%;}
+.w98{width:98.5%;}
+.w99, .box_gray_new{width:99.3%}
+
+
+.w3p, .arrow_dotted{width:3px !important;}
+.w4 {width:4px;}
+.w7p{width:7px;}
+.w8p, .icon_close, .icon_sort_up, .icon_sort_down{width:8px;}
+.w9p, .icon_today, .icon_star_full, .icon_overdue, .icon_upcoming{width:9px;}
+.w10p {width:10px;}
+.w12p, .icon_listing_arrow_right, .icon_listing_arrow_down{width:12px;}
+.w11p, .icon_folder, icon_folder_open, icon_doc, .icon_lock{width:11px;}
+.w13p, .arrow_up, .arrow_down, .icon_new_folder, .icon_new_file, .icon_bill_pay_details{width:13px;}
+.w14p, #TB_closeWindowButton, .icon_lock_open{ width:14px;}
+.w16p, .icon_user, .icon_home, .icon_mail, .icon_workspace , .icon_repository, .icon_mass_upload, .icon_privilaged_indicator, .icon_client_indicator, .icon_client_doc{width:16px;}
+.w19p, .icon_document_receiv, .icon_add_doc{width:19px;}
+.w18p, .icon_search{width:18px;}
+.w20p, .action_div{width:20px;}
+.w23p, .icon_add_task{width:23px;}
+.icon_client_comment{width:24px;}
+.w28p, .icon_contacts, .icon_deActivated, .icon_edit, .icon_active, .icon_deActive, .icon_comment, .icon_history, .icon_note, .icon_comment_receiv{width:24px;}
+.icon_TnE, .icon_favReport, .icon_dashboard{width:28px;}
+.w29p {width:29px;}
+.w32p {width:32px;}
+.w200p, .hidden_action{width:200px;}
+.w208p, #TB_load{width:208px;}
+.w212p, .column_left{width:212px;}
+.w260p, .column_fav{width:260px;}
+.w350p{width:350px;}
+/*--------------Height ----------------------------------------------------------------------*/
+html, body, .h100, #TB_overlay, #TB_HideSelect, .tabs-container{height:100%;}
+.h2p, ul.listing1 li.seperator_dotted, .seperator_dotted_hori{height:2px;}
+.h4, .icon_sort_up, .icon_sort_down{height:4px;}
+.h5 {height:5px;}
+.h7, .arrow_dotted{height:7px;}
+.h8, .icon_close{height:8px;}
+.h9p, .icon_today, .icon_star_full, .icon_overdue, .icon_upcoming{height:9px;}
+.h11p, .icon_comment_receiv{height:11px;}
+.h12p, .icon_listing_arrow_right, .icon_listing_arrow_down{ height:12px;}
+.h13p, #TB_load, .arrow_up, .arrow_down{height:13px;}
+.h14p, #TB_closeWindowButton, .icon_folder, icon_folder_open, icon_doc, .icon_lock, .icon_lock_open, .icon_client_doc, .icon_client_comment{height:14px;}
+.h15p, .icon_search, .icon_add_task{height:15px;}
+.h16p, .icon_user, .icon_comment_receiv, .icon_mass_upload, .icon_add_doc, .icon_privilaged_indicator, .icon_client_indicator, .icon_bill_pay_details{height:16px;}
+.h17p, .icon_new_folder, .icon_new_file{ height:17px;}
+.h18p, .icon_document_receiv{height:18px;}
+.h24p, .icon_contacts, .icon_deActivated, .icon_edit, .icon_active, .icon_deActive, .icon_comment, .icon_history, .icon_note{height:24px;}
+.h25p, #TB_caption, #TB_closeWindow, #TB_title{height:25px;}
+.h28p, .icon_TnE, .icon_favReport, .icon_dashboard{height:28px;}
+.h29p{height:29px;}
+.h32p{height:32px;}
+
+.h75p{height:75px; }
+.h100p, .scrollY100 {height:100px;}
+.h438{height:438px;}
+.h550{height:550px;}
+.h600{height:600px;}
+#middleBody-div{min-height:395px;}
+/*--------------padding top right bottom left ----------------------------------------------------------------------*/
+form, ul.listing_stage_filter, ul.listing1 li.seperator_dotted, .seperator_dotted_hori, .welcomeUser, .tabs-container, .message_error_div ul li, .message_sucess_div ul li, .message_warning_div ul li, .message_normal_div ul li,  ul.listing_matter_filter{padding:0;}
+
+.plr5, .pt0, #doc,  #foot, ul.alphabetical li, #breadcrumb a,  ul.favorite, .title_main, .title_favorites, .title_stickyNote, .stickNote_bg, ul.listing1 li a, ul.listing_folder li a, ul.listing_stage_filter li,  ul.listing_matter_filter li{padding-top:0;}
+.pt1, .box_gray, .box_gray_new, input[type=submit],.customFields,input[type=button]{padding-top:1px;}
+.pt2, ul.listing1, input[type=text], input[type=password], input.text, input.title, textarea, select, #TB_ajaxContent, ul.alphabetical li a {padding-top:2px;}
+.pt3, .tabular_listing table th{padding-top:3px;}
+.pt4, .p4, #footer-div,  .hidden_action{padding-top:4px;}
+.pt5, .p5, .tooltip_container, .ptb5lr8,ul.listing1 li, ul.listing_folder li,  .openDiv, ul.favorite li, p#vtip, #TB_ajaxContent p, .calender_table th{padding-top:5px;}
+.pt7, #TB_caption, #TB_closeAjaxWindow,#TB_ajaxWindowTitle, ul.tabs-nav li.tabs-selected a, ul.tabs-nav li a{padding-top:7px}
+.p8, .buttonSub_div, .message_error_div, .message_sucess_div, .message_warning_div, .message_normal_div{padding-top:8px;}
+
+
+#TB_closeWindow{padding-top:11px;}
+#TB_ajaxContent.TB_modal{padding-top:15px;}
+
+.pr0, .box_gray, .box_gray_new, .welcomeUser, ul.listing1 li a, ul.listing_folder li a, #TB_ajaxWindowTitle, #TB_ajaxContent p{padding-right:0;}
+ #breadcrumb a{padding-right:1px;}
+ul.listing_stage_filter li,  ul.listing_matter_filter li{padding-right:2px;}
+.p4, .hidden_action, ul.listing_folder li ul li{padding-right:4px;}
+.tabular_listing table th, .tabular_listing table td, .plr5, ul.favorite, .title_main, .title_favorites, .title_stickyNote, .stickNote_bg, ul.listing_folder li, input[type=text], input[type=password], input.text, input.title, textarea, select, .p5, .openDiv, ul.favorite li, p#vtip {padding-right:5px;}
+.p8, .pr8, #doc, #foot, .tooltip_container, .ptb5lr8, .buttonSub_div, .message_error_div, .message_sucess_div, .message_warning_div, .message_normal_div, ul.tabs-nav, ul.tabs-nav li.tabs-selected a{padding-right:8px;}
+.pr10, #TB_closeAjaxWindow{padding-right:10px;}
+.pr15, input[type=submit],.customFields,input[type=button], #TB_ajaxContent, #TB_ajaxContent.TB_modal{padding-right:15px;}
+.pr25, #TB_closeWindow{padding-right:25px;}
+.pr30, #TB_caption{padding-right:30px;}
+
+.pb0, .plr5, #doc, #foot, ul.alphabetical li, #breadcrumb a,  ul.favorite, .title_main, .title_favorites, .title_stickyNote, .welcomeUser, ul.listing1 li a, ul.listing_folder li a, ul.listing_stage_filter li, ul.listing_matter_filter li{padding-bottom:0;}
+.pb1, .box_gray, .box_gray_new{padding-bottom:1px;}
+.pb2, ul.listing1, input[type=text], input[type=password], input.text, input.title, textarea, select, ul.alphabetical li a {padding-bottom:2px;}
+.pb3, .tabular_listing table th, input[type=submit],.customFields,input[type=button]{padding-bottom:3px;}
+.p4, .pb4, .hidden_action{padding-bottom:4px;}
+.p5, .pb5, .tooltip_container, .ptb5lr8, ul.listing1 li, ul.listing_folder li, #TB_closeAjaxWindow, #TB_ajaxWindowTitle, .openDiv, ul.favorite li, p#vtip, #TB_ajaxContent p{padding-bottom:5px;}
+.pb7, ul.tabs-nav li a{padding-bottom:7px;}
+.p8, .buttonSub_div, .message_error_div, .message_sucess_div, .message_warning_div, .message_normal_div,  ul.tabs-nav{padding-bottom:8px;}
+.pb9, ul.tabs-nav li.tabs-selected a{padding-bottom:9px;}
+.pb10, #TB_caption, #TB_closeWindow{padding-bottom:10px;}
+.pb15, #TB_ajaxContent,#TB_ajaxContent.TB_modal{padding-bottom:15px;}
+
+.pl0, .box_gray, ul.listing1 li,  #TB_closeWindow, #TB_closeAjaxWindow, #TB_ajaxContent p{padding-left:0;}
+.pl1, #breadcrumb a{padding-left:1px;}
+.pl2, ul.listing_stage_filter li,  ul.listing_matter_filter li{padding-left:2px;}
+.pl3{padding-left:3px;}
+.pl4, .actionpad_box_body, .p4, .hidden_action, ul.listing_folder li{padding-left:4px;}
+.p5, .pl5, .tabular_listing table th, .tabular_listing table td, .plr5, ul.favorite, .title_main, .title_favorites, .title_stickyNote, .box_gray_new, .welcomeUser, input[type=text], input[type=password], input.text, input.title, textarea, select, .openDiv, ul.favorite li, p#vtip {padding-left:5px;}
+.p8, .pl8, #doc, #foot, .tooltip_container, .ptb5lr8, .buttonSub_div, .message_error_div, .message_sucess_div, .message_warning_div, .message_normal_div, ul.tabs-nav, ul.tabs-nav li.tabs-selected a{padding-left:8px;}
+.pl10, #TB_ajaxWindowTitle{padding-left:10px;}
+.pl15, input[type=submit],.customFields,input[type=button], #TB_ajaxContent, #TB_ajaxContent.TB_modal{padding-left:15px;}
+.pl18, ul.listing1 li a, ul.listing_folder li a{padding-left:18px;}
+.pl25, #TB_caption{padding-left:25px;}
+
+ul.listing_tab li{padding:5px 10px; xborder:1px solid red; xline-height:18px; margin:1px; border:1px solid #b0b0b0; }
+ul.listing_tab li.active{border:1px solid #fff; xborder-bottom:none;}
+
+ul.tabs-nav li.tabs-selected a{*padding:7px 8px 23px 8px;}
+/*--------------margin top right bottom left ----------------------------------------------------------------------*/
+.mAuto, #doc, #foot, .action_div{margin:0 auto;}
+.m0, form, ul.favorite, ul.alphabetical, .message_error_div ul li, .message_sucess_div ul li, .message_warning_div ul li, .message_normal_div ul li{margin:0;}
+.m2, #column_left_accordion a.title, #column_left_accordion a.selected, ul.alphabetical li, .pagination .willpaginate a, .pagination .bottom-pagination a, .pagination .willpaginate span.current, .pagination .bottom-pagination span.current{margin:2px;}
+.mtbrl5{margin:5px;}
+
+
+#header-div h1, .column_left, .alert_message, ul.tabs-nav li {margin-top:0;}
+.mt1{margin-top:1px;}
+.mt2, .icon_listing_arrow_right, .icon_listing_arrow_down{margin-top:2px;}
+.mt3 {margin-top:3px;}
+.mt4, ul.favorite,.arrow_dotted{margin-top:4px;}
+.mt5, .mtb5{margin-top:5px;}
+.mt7{margin-top:7px;}
+.mt8, .mtb8, .buttonSub_div, ul.tabs-nav{margin-top:8px;}
+/*.box_gray{margin-top:10px;}*/
+.mt10{margin-top:10px;}
+.mt12{margin-top:12px;}
+.mt18{margin-top:18px;}
+.mt15, #TB_window img#TB_Image{margin-top:15px;}
+.mt17{margin-top:17px}
+.mt20, #footer-div{margin-top:20px;}
+
+.mr0, .header_nav, .box_gray, #footer-div, #TB_window img#TB_Image, ul.tabs-nav{margin-right:0;}
+.mr1, ul.tabs-nav li{margin-right:1px;}
+.mr2, .mlr2, .alert_message{margin-right:2px;}
+.mr3{margin-right:3px;}
+.mr5, .mlr5, #header-div h1{margin-right:5px;}
+.mr8, .arrow_dotted, .mlr8{margin-right:8px;}
+.mr10, .column_left{margin-right:10px;}
+
+.mb0, .header_nav,.column_left, #footer-div, #TB_window img#TB_Image, .alert_message, ul.tabs-nav, ul.tabs-nav li{margin-bottom:0;}
+.mb1, #TB_closeAjaxWindow, #TB_ajaxWindowTitle{margin-bottom:1px;}
+.mb4, .arrow_dotted, .pagination_div{margin-bottom:4px;}
+.mb5, .mtb5, #header-div h1{margin-bottom:5px;}
+.mb8, .mtb8{margin-bottom:8px;}
+/*.box_gray{margin-bottom:10px;}*/
+
+.mr0, #header-div h1, .column_left,.box_gray, #footer-div, ul.tabs-nav{margin-left:0;}
+.mr1, ul.tabs-nav li{margin-left:1px;}
+.ml2, .mlr2, .alert_message{margin-left:2px;}
+.ml3{margin-left:3px;}
+.ml5, .mlr5, .welcomeUser{margin-left:5px;}
+.ml8, .arrow_dotted, .mlr8{margin-left:8px;}
+.ml10, .header_nav{margin-left:10px;}
+.ml15, #TB_window img#TB_Image{margin-left:15px;}
+.ml18{margin-left:18px;}
+.ml20{margin-left:20px;}
+.ml24{margin-left:24px;}
+.ml35{margin-left:35px;}
+.ml40{margin-left:40px;}
+/*--------------Position -----------------------------------------------------------------------------------------*/
+.search_div, .action_div, ul.tabs-nav li.tabs-selected a{position:relative;}
+.search_div span.icon_search, .openDiv, .hidden_action, p#vtip, p#vtip #vtipArrow {position:absolute;}
+#TB_overlay, #TB_load, #TB_HideSelect{position:fixed;}
+#TB_window{position:absolute;}
+/*--------------z-index -----------------------------------------------------------------------------------------*/
+#TB_HideSelect, #TB_HideSelect{z-index:99;}
+#TB_overlay {z-index:100;}
+#TB_window {z-index: 102;}
+#TB_load{z-index:103;}
+.hidden_action{z-index:999999;}
+/*--------------Display -----------------------------------------------------------------------------------------*/
+ul.listing1 li a, ul.listing_folder li a, #column_left_accordion a.title, #TB_window img#TB_Image, ul.tabs-nav{display:block;}
+ul.listing_stage_filter li,  ul.listing_matter_filter li, ul.header_link li, ul.alphabetical li, .navigation_list li, ul.tabs-nav li, ul.listing_tab li{display:inline;}
+p#vtip, #TB_window, #TB_load, .hidden_action, .tabs-hide{display:none;}
+.scrollY100 {overflow-y:scroll; overflow-x:hidden;}
+#TB_ajaxContent{overflow:auto;}
+/*--------------listing -----------------------------------------------------------------------------------------*/
+ul.listing1 li, ul.listing_stage_filter li,  ul.listing_matter_filter li, ul.alphabetical li, .navigation_list li, ul.favorite li, ul.tabs-nav li, ul.listing_tab li, ul.listing_folder li, .message_error_div ul li, .message_sucess_div ul li, .message_warning_div ul li, .message_normal_div ul li{list-style:none;}
+/*--------------Text Transform ----------------------------------------------------------------------*/
+.welcomeUser a.active{text-transform:capitalize;}
+/*--------------Text color ----------------------------------------------------------------------*/
+.welcomeUser a.active{color:#c56405;}
+#breadcrumb a, ul.alphabetical li a, .pagination a{color:#4081a2;}
+.tabular_listing table td{color:#2c2b2b;}
+.tabular_listing table td a, .form_table td a,  ul.listing_folder li ul li a, .header_link a.active, .link_blue a, .link_blue, .link_blue_underline a{color:#074d6d; }
+input.search, .textgray{color:#9c9c9c;}
+ul.alphabetical li.active a, ul.alphabetical li, .welcomeUser, .welcomeUser a,  .header_link a{color:#22607d; }
+#footer-div, .link_gray a, .calender_table th.week, ul.listing_tab li a{color:#393939;}
+.tabular_listing table th, .tabular_listing table th a, .title_main, .title_main a, .title_favorites, .title_stickyNote, #TB_ajaxWindowTitle{color:#3a3a39;}
+body, #breadcrumb, .text10 a, ul.favorite li a, .mandatory, input[type=submit],.customFields, input[type=button],ul.listing_stage_filter li a{ color:#4a4b4a; }
+.title_blue{color:#074d6d;}
+#overdue, #overdue a, .red_text{color:#990000;}
+#today, #today a{color:#f58b00;}
+#upcoming, #upcoming a{color:#3e5cd4;}
+.text_black, .text_black a{color:#020202;}
+.hidden_action a.hidden_anchor, p#vtip, ul.navigation_list li a{color:#fff;}
+#TB_window, ul.navigation_list li.active a{color:#000;}
+ul.navigation_list li.active{color:#423f40;}
+ul.listing1 li a, ul.listing_folder li a{color:#0b425c;}
+.alert_message{color:#d10202;}
+ul.tabs-nav li a{color:#646464;}
+ul.tabs-nav li.tabs-selected a{color:#356990;}
+ul.listing_matter_filter li a, .text_orange{color:#ca5b00;}
+.green_text{ color:#093;}
+.pagination{color:#000000;}
+.action_pad_inactive{color:#999999}
+/*------------Font size 12px -----------------------------------------------------------------------------------------------------*/
+html {font-size:100.01%;}
+body {font-size:68.8%;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {font-size:100%;}
+.title_main, .title_favorites, .title_stickyNote, .title_gray, .alert_message, input[type=submit],.customFields,input[type=button], ul.alphabetical li.active a, .text12, .calender_table th, #TB_ajaxWindowTitle, .listing_matter_filter{ font-size:109.1%;  }
+ul.navigation_list li{font-size:118.2%;}
+ul.alphabetical li a, #breadcrumb, #breadcrumb a, .text10, .textsize10, .text10 a, .mandatory, .pagination{font-size:90.9%;}
+.title_blue{font-size:118.2%;}
+/*------------Font Bold -----------------------------------------------------------------------------------------------------*/
+.title_main, .title_favorites, .title_stickyNote, ul.listing1 li a, ul.listing_folder li a, .tabular_listing table th, .title_gray, .alert_message, ul.alphabetical li.active a, .header_link a.active, .title_blue, ul.tabs-nav li a, ul.tabs-nav li.tabs-selected a, ul.tabs-nav li.tabs-selected a, .calender_table th, .calender_table td.week, #TB_ajaxWindowTitle, .listing_matter_filter, .fontbold{font-weight:bold; }
+
+.mandatory{ font-style:italic;}
+/*------------Font weight normal -----------------------------------------------------------------------------------------------------*/
+ul.listing1 li a, ul.listing_folder li ul li a, ul.listing_matter_filter li a.selected{font-weight:normal;}
+/*--------------Text Link ----------------------------------------------------------------------*/
+a, input[type=submit],.customFields, input[type=button],.tabular_listing table th a{cursor:pointer;}
+
+.link_gray a, .welcomeUser a, .welcomeUser a.active, ul.listing_folder li a, ul.listing1 li a, ul.listing_folder li ul li a, ul.listing_stage_filter li a, ul.listing_matter_filter li a, .tabular_listing table td a, #breadcrumb a:hover, .form_table td a, ul.alphabetical li a, .header_link a, ul.navigation_list li a, ul.navigation_list li.active a, .tabular_listing table th a, .link_blue a, .link_blue_underline a:hover, .text10 a, #overdue a, #today a, #upcoming a, .text_black a, ul.favorite li a, ul.tabs-nav li a, ul.tabs-nav li.tabs-selected a, ul.listing_tab li a, .pagination a, .title_main a{text-decoration:none; }
+/*------------Text link hover -----------------------------------------------------------------------------------------------------*/
+.welcomeUser a:hover,.welcomeUser a.active:hover, .link_gray a:hover, ul.listing1 li a:hover, ul.listing_folder li a:hover,  ul.listing1 li a:hover, ul.listing_folder li ul li a:hover, ul.listing_stage_filter li a:hover, ul.listing_matter_filter li a:hover, .pagination a:hover, .tabular_listing table td a:hover, #breadcrumb a, .form_table td a:hover, ul.alphabetical li a:hover, .header_link a:hover, ul.navigation_list li a:hover, ul.navigation_list li.active a:hover, .tabular_listing table th a:hover, .link_blue a:hover, .link_blue_underline a, .text10 a:hover, #overdue a:hover, #today a:hover, #upcoming a:hover, .text_black a:hover, ul.favorite li a:hover, ul.listing_tab li a:hover, .pagination a:hover{text-decoration:underline;}
+/*--------------Title ----------------------------------------------------------------------*/
+/*--------------Messages ----------------------------------------------------------------------*/
+.alert_message{ font-family:Georgia, "Times New Roman", Times, serif;}
+/*--------------line height ----------------------------------------------------------------------*/
+.lh18, .welcomeUser, .tabular_listing table th, #overdue, #today, #upcoming{line-height:18px;}
+.lh25, .title_stickyNote, .box_gray, .box_gray_new, .title_gray, .title_blue, .title_main, .title_favorites{line-height:25px;}
+/*.title_main{line-height:27px;}*/
+#footer-div{line-height:37px;}
+#TB_ajaxContent{line-height:1.4em;}
+/*--------------Common ----------------------------------------------------------------------*/
+ul.alphabetical li a{text-transform:capitalize;}
+.clear, #TB_ajaxContent, #TB_iframeContent {clear:both;}
+.fl, .arrow_dotted, .column_left, .column_right, .icon_listing_arrow_right, .icon_listing_arrow_down, #breadcrumb a, #header-div h1, #TB_closeWindowButton, #TB_caption, #TB_ajaxWindowTitle, .column_right_tabs, .icon_folder, .icon_folder_open, icon_doc{float:left;}
+.fr, .header_nav, .column_fav, #TB_closeWindow, #TB_closeAjaxWindow{float:right;}
+.textL, #header-div h1, ul.listing1, ul.listing_stage_filter,  ul.listing_matter_filter, ul.alphabetical, #breadcrumb, #TB_window, #TB_ajaxContent{text-align:left;}
+.textC, .buttonSub_div, .tooltip_container, .action_div, .calender_table th, .calender_table td.week, .calender_table td{text-align:Center;}
+.textR, #TB_closeAjaxWindow{text-align:right;}
+.verticalT, #middleBody-div, .tabular_listing table th, .scrollY100 , .tabular_listing table td, .calender_table th, .calender_table td{ vertical-align:top;}
+
+/*--------------position----------------------------------------------------------------------*/
+#TB_overlay, #TB_HideSelect {top:0px;left:0px;}
+.search_div span.icon_search{right:1px;}
+.hidden_action{right:10px;}
+p#vtip #vtipArrow {top:-11px;left:0px; }
+p#vtip{top:2px;left:5px;}
+#TB_window, #TB_load{top:50%;left:50%;}
+/*--------------Table----------------------------------------------------------------------*/
+/*========= Form =====================================================================================*/
+input[type=text], input[type=password], input.text, input.title, textarea, select{font-family:Arial, Helvetica, sans-serif;}
+input[type=checkbox], input[type=radio], input.checkbox, input.radio {}
+textarea {}
+/*--------Mozilla----------------------------------------------------------------------------------*/
+p#vtip{-moz-border-radius: 3px; -webkit-border-radius: 3px;}
+/* ------- THICBOX MODAL------------------------------------------------------------------------------------------------*/
+
+/*.TB_overlayMacFFBGHack {background: url(macFFBgHack.png) repeat;}*/
+.TB_overlayBG {filter:alpha(opacity=28);-moz-opacity:0.28;opacity: 0.28;}
+#TB_HideSelect{filter:alpha(opacity=0);-moz-opacity: 0;opacity: 0;}
+#TB_load{margin: -6px 0 0 -104px; /* -height/2 0 0 -width/2 */}
+#TB_iframeContent{margin-bottom:-1px;margin-top:1px;_margin-bottom:1px;}
+ /* ie6 hack */
+* html #TB_overlay {position: absolute; height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');}
+* html #TB_window {position: absolute;margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');}
+* html #TB_load {position: absolute;margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = document.documentElement && document.documentElement.scrollTop || document.body.scrollTop) + 'px');}
+* html #TB_HideSelect {position: absolute; height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px');}
+/*=========================TABS===============================*/
+/*.tabs-container {border:1px solid #6f9fb4; declare background color for container to avoid distorted fonts in IE while fading }*/
+
+.box_yellow{background-color:#fafaf0; border:1px solid #efe7d0; padding:3px; }
+.calender_table td.week{color:#484848; font-weight:bold;}
+ul.tabs-nav li.nontab {background:none; border:none;}
+ul.tabs-nav li.nontab a {background:none; border:none;color:#327796;font-size:10px;font-weight:normal;}
+
+.calender_table th {padding:4px;}
+.calender_table td{padding:0px 4px 0 4px;}
+.calender_table td {background:#fff url(../images/calender_active_bg.png) repeat-x left top; height:75px;padding-right:5px;}
+.calender_table td:hover{background:#fff url(../images/calender_active_bg_hover.jpg) repeat-x left top; height:75px;padding-right:5px;}
+
+.calender_table td.prvmonth {background:#fff url(../images/calender_deactive_bg.png) repeat-x left top;}
+.calender_table td.week, .calender_table th.week {background-image:none;}
+.calender_table td a {color:#3e3e3e; text-decoration:none;}
+.calender_table td.prvmonth a {color:#767676; text-decoration:none;}
+.calender_table td.today {border:1px solid #327798;font-weight:bold; background:#fff url(../images/calender_today.png) repeat-x left top;}
+.calender_table td.today a {color:#333333;}
+.week .tm_accounted {background:url(../images/icon_tm_accounted.png) no-repeat right 6px; color:#4b4b4b;  padding-right:12px; line-height:18px; text-align:left; margin:0 auto; }
+div.tm_accounted a, div.tm_billed a, div.total_amount a{color:#4b4b4b; text-decoration:none;}
+.week .tm_billed {background:url(../images/icon_tm_billed.png) no-repeat right 6px; color:#4b4b4b;  padding-right:12px; line-height:18px; text-align:left;}
+.week .total_amount {background:url(../images/icon_total_amount.png) no-repeat right 6px; color:#4b4b4b;  padding-right:12px; line-height:18px; text-align:left;}
+
+.grand_toatal{background-color:#eee7d4; color:#3a3a39; line-height:18px; padding:0px 8px; font-weight:bold;}
+.expese_billed{background:url(../images/icon_expese_billed.png) no-repeat left 3px; color:#4b4b4b;  padding-left:12px; line-height:18px; text-align:left;}
+.expese_amount{background:url(../images/icon_expese_amount.png) no-repeat left 3px; color:#4b4b4b;  padding-left:12px; line-height:18px; text-align:left;}
+
+
+
+#verticaltabs { margin:0; width: 350px; height: 80%; }
+#verticaltabs > ul > li { width: 80px; height: 10px; background-color: #e6e6e6 !important;list-style-type: none; display: block; text-align: center; margin: auto; padding-bottom: 10px;border: 1px solid #ddd; position: relative;border-right: none;}
+#verticaltabs > ul > li a {text-decoration: none;color:#646464;}
+#verticaltabs > ul > li.selected { border: 1px solid #ddd; border-right: none; z-index: 10; background-color: #fafafa !important; position: relative;}
+#verticaltabs > ul {float: left; width: 80px; text-align: left; display: block; margin: auto 0; padding: 0; position: relative;}
+#verticaltabs > div {background-color: #fafafa;  margin-left: 80px; border: 1px solid #ddd; min-height: 115px; padding: 4px; position: relative;}
+
+
+.w18{width:18%;}
+
+/* dashboard tabSlider */
+ul.tabSlider{clear: both;list-style-type: none;height: 30px;}
+ul.tabSlider li{float: left;margin: 10px 10px;}
+
+
+/*Action pad*/
+/*.actionpad_box_body{border-right:3px solid #317593;}
+.actionpad_box_body{border-left:3px solid #317593; }
+.actionpad_box_body{background-color:#FFF;}
+.actionpad_box_body .fixed_icon{background-color:#eee;}
+.actionpad_box_top{height:5px;}*/
+.actionpad_actionpad_topLeft{background:url(../images/actionpad_topLeft.png) no-repeat left top; width:9px; height:9px; }
+.actionpad_actionpad_bottomLeft{background:url(../images/actionpad_bottomLeft.png) no-repeat left top; width:9px; height:9px;}
+.actionpad_actionpad_left_gray{background:url(../images/actionpad_actionpad_left_gray.png) repeat-y left top; width:9px;}
+.actionpad_actionpad_right_gray{background:url(../images/actionpad_actionpad_right_gray.png) repeat-y left top; width:9px;}
+
+.actionpad_actionpad_topRight{background:url(../images/actionpad_topRight.png) no-repeat left top; width:9px; height:9px;}
+.actionpad_actionpad_bottomRight{background:url(../images/actionpad_bottomRight.png) no-repeat left top; width:9px; height:9px;}
+.actionpad_actionpad_right{background:url(../images/actionpad_right.png) repeat-y left top; width:9px;}
+.actionpad_actionpad_left{background:url(../images/actionpad_left.png) repeat-y left top; width:9px;}
+.actionpad_actionpad_top{background:url(../images/actionpad_top.png) repeat-x left top; height:2px;}
+.actionpad_actionpad_bottom{background:url(../images/actionpad_bottom.png) repeat-x left top; height:9px;}
+.action_div table td{padding:0;}
+
+/*khushboo 29jun10*/
+.scrolling_arrow_right_deactive{background:url(../images/scrolling_arrow_right.png) no-repeat left top; width:17px; height:53px;}
+.scrolling_arrow_left_deactive{background:url(../images/scrolling_arrow_left.png) no-repeat left top; width:17px; height:53px;}
+
+.icon_calender_withoutBorder{background-position:-176px -517px; width:14px; height:15px; padding: 5px 8px 0}
+.icon_TnE_withoutBorder{background-position:-5px -543px; width:19px; height:17px; padding: 5px 8px 0}
+.icon_favReport_withoutBorder{background-position:-93px -515px; width:15px; height:18px; padding: 5px 8px 0}
+.icon_dashboard_withoutBorder{background-position:-147px -517px; width:19px; height:17px; padding: 5px 8px 0}
+.icon_fullView{background-position:-48px -568px; width:16px; height:16px; }
+.title_main{height:28px;}
+
+/* dashboard tabs - Sanjay 1juny10 */
+ul.tabSlider{clear: both;list-style-type: none;height: 30px;}
+ul.tabSlider li{float: left;margin: 5px 0px;}
+.boxtab {width: auto;margin-bottom:5px;line-height:20px;*line-height:42px;padding:8px;}
+.boxtab a {color: #224E02;text-decoration: none;}
+.boxtab a:hover {color: #444;text-decoration: underline;}
+.tabnav ul {float:left;margin:0px; padding:0px;margin-top:5px;margin-bottom:6px;border:1px solid #aaccee}
+* html .tabnav li {display:inline;}
+.tabnav li {display: inline;list-style: none;padding-right: 5px;margin-left:5px;}
+.tabnav li a {outline:0;background: #ebf3fb;text-decoration: none;text-transform: uppercase;color: #222;font-weight: bold;padding:6px 6px 6px 6px;border:1px solid #aaccee; color:#07519a; font-size:81.8%;}
+.tabnav li a:hover {color: #074D6D;text-decoration: none;outline:0;}
+.tabnav li.ui-tabs-selected a {background-color:#fff;border-bottom: 1px solid #ffffff; color:#e85f17; font-size:100%;}
+.tabnav li a:active {background-color:#ffffff;border:1px solid #aaccee;	border-bottom: 1px solid #ffffff;}
+.SlideTab {margin-top: -2px;*margin-top: -3px;background: #fff;border:1px solid #aaccee;min-height: 485px;}
+.tabdiv li {margin-left: 20px; padding-left:5px; line-height:22px}
+
+.icon_trash{background-position:-187px -434px; width:13px; height:15px;}
+
+/*Contact Form Bottom Div for Button*/
+.buttonDiv{background: #FFFFFF; border-right: 1px solid #6f9fb4;border-left: 1px solid #6f9fb4;border-bottom: 1px solid #6f9fb4; padding: 8px; text-align: center;}
+
+/* css scrollble - Sanjay 07-07-2010 */
+.scrollable {position:relative;overflow:hidden;width:860px;height:67px;}
+.scrollable .items {width:20000em;position:absolute;clear:both;}
+.items div {float:left;width:860px; xmargin-left:9px}
+.scrollable a {text-align: center; width:auto;height:auto;-moz-border-radius:4px;-webkit-border-radius:4px;}
+.scrollable .active {border:2px solid #000;position:relative;cursor:default;}
+.scrollable {float:left;}
+a.browse {background:url(../images/scrolling_arrow_left.png) no-repeat;display:block;width:20px;height:54px;float:left;cursor:pointer;font-size:1px; margin-top:7px}
+/* right */
+a.right {background:url(../images/scrolling_arrow_right.png) no-repeat; clear:right; margin-right: 0px;outline:0}
+a.right:hover {background:url(../images/scrolling_arrow_right.png) no-repeat 0px -53px;outline:0 }
+a.right:active {background:url(../images/scrolling_arrow_right.png) no-repeat;outline:0 }
+/* left */
+a.left {margin-left: 0px; outline: 0 }
+a.left:hover  {background:url(../images/scrolling_arrow_left.png) no-repeat 0px -53px;outline:0}
+a.left:active {background:url(../images/scrolling_arrow_left.png) no-repeat;outline:0}
+/* up and down*/
+a.up, a.down {background:url(../images/scrolling_arrow_right.png) no-repeat;float: none;margin: 10px 50px;}
+a.up:hover {background-position:0 0px;}
+a.up:active {background-position:0px 0;}
+a.down 	{background-position: 0 0px; }
+a.down:hover {background-position:0px 0px;}
+a.down:active {background-position:0px 0px;}
+a.disabled:hover {background-position:0px 0px; outline: 0}
+
+/* tooltip - by Sanjay 06th-July-10 for newtooltip */
+#tooltip a {border:0;cursor:pointer;margin:0 8px;}
+.tooltip {display:none; color:#000;width:auto;}
+.tooltip.bottom {padding-top:40px;height:55px;}
+.tooltip div.top_curve_left {background:transparent url(../images/top_curve_left_tooltip.png);height:11px;width:10px}
+.tooltip div.top_curve_right {background:transparent url(../images/top_curve_right_tooltip.png);height:11px;width:12px}
+.tooltip div.top_middle{background: transparent url(../images/top_tooltip.png); height:11px;}
+.tooltip td.center_left {background:url(../images/border_left_tooltip.png) bottom left;}
+.tooltip td.center_right { background:url(../images/border_right_tooltip.png) bottom left;}
+.tooltip div.bottom_curve_left{background: url(../images/bottom_curve_left_tooltip.png);height:11px;width:10px}
+.tooltip div.bottom_curve_right {background:transparent url(../images/bottom_curve_right_tooltip.png);height:12px;width:12px}
+.tooltip div.bottom_middle{background:transparent url(../images/bottom_tooltip.png); height:12px}
+
+#liquid-round {background:#fff url(../images/leftside.gif) repeat-y scroll left top;width:220px;}
+.top {background:transparent url(../images/top.gif) no-repeat scroll left top;height:20px;width:100%;}
+.top span{background:transparent url(../images/top-right.gif) no-repeat scroll right top;display:block;height:20px;position:relative;}
+.center-content {-moz-border-radius: 15px 0 15px 0;background:#fff url(../images/rightside.gif) repeat-y scroll right top;padding:1px 20px 1px 25px;margin:-1px 0 -50px;position:relative;}
+.bottoms {background:transparent url(../images/bottom.gif) no-repeat scroll left bottom;height:60px;width:100%;}
+.bottoms span{background:transparent url(../images/bottom-right.gif) no-repeat scroll right top;display:block;height:60px;position:relative;}
+
+.center-contentTT {padding:12px;background:url(../images/tooltip_bg.png) bottom left;word-wrap:break-word;width:220px;}
+.center-contentTE {height:200px;overflow:scroll;width:220px;background: #fff;border:1px solid #ccc;}
+#liquid-roundAP{width:220px;}
+#liquid-roundTT{width:220px;z-index:102}
+#liquid-roundTE{width:220px;}
+.tabular_listing table td #liquid-roundAP table td{line-height:15px;padding:0;margin:0;}
+.tabular_listing table td #liquid-roundTT table td{line-height:15px;padding:0;margin:0;}
+ table.frmtable td #liquid-roundTE {line-height:15px;padding:5px;margin:0;}
+
+/* date picker color 6:50 */
+.ui-datepicker-trigger{cursor:pointer; position: relative; height:21px; width:24px; left: -24px; border:0; color:transparent; top:2px; background:transparent; outline:0px}
+input.date_picker {background: url(../images/calendar.gif) no-repeat 99% 2px; padding:3px;}
+input.expense_date_picker {background: url(../images/calendar.gif) no-repeat 99% 2px; padding:3px;}
+input.tne_date_picker {background:#FFFFFF url(../images/calendar.gif) no-repeat 99% 2px; padding:3px 3px 2px 3px;}
+#ui-datepicker-div{z-index: 9999999;}
+
+.ap_top_curve_left{background:url(../images/top_curve_left.png);height:68px;width:13px;}
+.ap_top_middle {background: url(../images/topap.png);}
+.ap_top_curver_right{background: url(../images/top_curve_right.png);height:68px;width:13px;}
+.ap_middle_left{background:url(../images/border_left.png);}
+.ap_middle_right{background:url(../images/border_right.png);}
+.ap_bottom_curve_left{background: url(../images/bottom_curve_left.png);width:13px;height: 13px;}
+.ap_bottom_middle{background: url(../images/bottomap.png);width:13px;height: 13px;}
+.ap_bottom_curve_right{background: url(../images/bottom_curve_right.png);width:13px;height: 13px;}
+.ap_pixel15, .ap_pixel10, .ap_pixel13 {background:url(../images/pixel.png);}
+.ap_pixel15 {width:1px;height:15px;}
+.ap_pixel10 {width:1px;height:10px;} .ap_pixel11 {width:1px;height:11px;}
+.ap_pixel13 {width:13px;height:13px;} .ap_pixel12 {width:13px;height:12px;}
+.ap_pixel1 {width:1px;height:1px;}
+
+/* action pad images */
+.ap_edit_active{background: url(../images/icon_edit.png);width:14px;height: 16px;}
+.ap_deactivate_active{background: url(../images/icon_deactive.png);width:16px;height: 16px;}
+.ap_comment_active{background: url(../images/icon_comments.png);width:16px;height: 16px;}
+.ap_document_active{background: url(../images/icon_document.png);width:12px;height: 16px;}
+.ap_history_active{background: url(../images/icon_history.png);width:16px;height: 14px;}
+/* action pad inactive */
+.ap_edit_inactive{background: url(../images/inactive_edit.gif);width:14px;height: 16px;}
+.ap_deactivate_inactive{background: url(../images/inactive_deactivate.gif);width:16px;height: 16px;}
+.ap_comment_inactive{background: url(../images/inactive_comments.gif);width:16px;height: 16px;}
+.ap_document_inactive{background: url(../images/inactive_documents.gif);width:12px;height: 16px;}
+.ap_history_inactive{background: url(../images/inactive_history.gif);width:16px;height: 14px;}
+
+.ap_child_action{background: url(../images/icon_child_action.png); width:16px;height: 14px;}
+
+/**Created by Vaishali 07.07.2010 */
+.box_bg_bdr_1{border-top:3px solid #efefef;background-color:#f7f7f7;}
+.box_bg_1{background-color:#f7f7f7;}
+.bdr_bot_1{border-bottom:1px solid #efefef; }
+.drop_down_top{
+    background: url(../images/top_curve_left.png);width:13px;height: 68px;
+}
+.drop_down_center{
+    background: url(../images/topap.png);width:400px;
+}
+.drop_down_bottom{
+    background: url(../images/bottom_curve_right.png);width:400px;
+}
+
+.weekend {background:#ffff00;}
+#preview{position:absolute;border:1px solid #ccc;background:#e2eef0;padding:5px;display:none;color:#3381A6;}
+.back_ground_overlay{
+       padding: 0px;
+	border: 1px solid #000;
+	background-color: #EAEAEA;
+	overflow: auto;
+	z-index: 99999;
+        font-family:Arial,Helvetica,sans-serif;
+        text-align:left;
+        color:#000;
+	position: absolute;
+	top: -1;
+	left: 1;
+	width: 230px;
+	height: 200px;
+        display: none;
+}
+.back_ground_overlay ul li :hover{
+    background-color:#327796;
+    color:#fff;
+}
+
+
+.with_focus td span.newtooltip a{font-weight :bold}
+
+/*------------Newly added ICON  Naresh-----------------------------------------------------------------------------------------------------*/
+.icon_task_maketime_entry{background-position:-44px -638px; width:23px; height:17px;}
+.icon_time_list{background-position:-106px -606px; width:16px; height:15px;}
+
+/*22/07/2010*/
+.icon_recycle{background-position:-64px -567px; width:12px; height:13px;}
+.icon_send_recycle{background-position:-76px -567px; width:18px; height:13px;}
+.icon_restor_recycle{background-position:-94px -567px; width:18px; height:15px;}
+
+/*23/07/2010*/
+.icon_delete{background-position:-112px -568px; width:11px; height:11px;}
+
+/*08/12/2010*/
+.icon_expense_entry {background-position:-67px -638px; width:16px; height:14px;}
+.icon_filter {background-position:-83px -638px; width:20px; height:17px;}
+.icon_remove_filter {background-position:-103px -638px; width:20px; height:17px;}
+
+
+/*--------------BACKGROUND IMAGE -----------------------------------------------------------------------------------------*/
+/*#footer-div, .title_main, .title_stickyNote, .stickNote_bg, .box_gray, .box_gray_new, input[type=submit],.customFields, .base_images, .icon_user, .icon_home, .icon_mail, .icon_workspace, .icon_repository, #breadcrumb div a, .arrow_dotted, .icon_listing_arrow_right, .icon_listing_arrow_down, .icon_contacts, .icon_deActivated, .icon_search, .icon_prev, .icon_next, .icon_action, .seperator_dotted, .seperator_dotted_hori, ul.navigation_list li.active, .arrow_tooltip, .icon_TnE, .icon_favReport, .icon_dashboard, .icon_overdue, .icon_today, .icon_upcoming, .icon_document_receiv, .icon_comment_receiv, .icon_close, #TB_title, #TB_closeWindowButton, #column_left_accordion a.title, #column_left_accordion a.selected, .icon_edit, .icon_active, .icon_deActive, .icon_comment, .icon_history, .icon_note, .arrow_up, .arrow_down, .icon_time, .icon_asso_exp, .icon_exp, .icon_upload, .icon_download, .icon_sort_down, .icon_sort_up, .icon_sticky_note, .icon_calender, .icon_folder, .icon_folder_open, .icon_doc, .icon_lock, .icon_lock_open, .icon_new_folder, .icon_new_file, .icon_mass_upload,  .icon_Report, .icon_favDashboard, .icon_check, .icon_small_edit, .icon_small_note, .icon_small_history, .icon_small_comment, .icon_create_new, .icon_activate, .icon_deactivate, .icon_manage, .icon_client_doc, .icon_client_comment, .icon_add_doc, .icon_add_task, .icon_privilaged_indicator, .icon_client_indicator, .icon_bill_pay_details, .icon_star_full, .icon_star_half, .icon_star_empty, .icon_add_to_fav, .icon_pdf, .icon_xls, .icon_asv, .icon_supercede_document, .icon_update_bill, .icon_bill_payment_details, .icon_add_risk, .icon_add, .icon_imports, .icon_go_url, .icon_remove, .icon_document_view, .icon_critical, .icon_top_add_fav, .icon_file, .icon_message_error, .icon_message_sucess, .icon_message_warning, .icon_message_normal, .icon_reset, .icon_add_comment, .icon_chat, .btn_addPageFav, .icon_Pprev, .icon_Nnext, .title_favorites, .icon_make_time_entry, .icon_orange_arrow_up, .icon_orange_arrow_down, .icon_checkout, .icon_critical_red, .icon_gray_placeholder, .icon_calender_withoutBorder, .icon_TnE_withoutBorder, .icon_favReport_withoutBorder, .icon_dashboard_withoutBorder, .icon_fullView, .icon_trash, .btn_save, .btn_save_exit, .btn_cancel, .btn_upload, .icon_task_maketime_entry, .icon_time_list, .icon_recycle, .icon_send_recycle,.icon_restor_recycle, .icon_delete{background-image:url(../images/livia_portal_base_images.png);}
+.base_images, .icon_user, .icon_home, .icon_mail, .icon_workspace, .icon_repository, #breadcrumb div a, .arrow_dotted, .icon_listing_arrow_right, .icon_listing_arrow_down, .icon_contacts, .icon_deActivated, .icon_search, .icon_prev, .icon_next, .icon_action, .arrow_tooltip, .icon_TnE, .icon_favReport, .icon_dashboard, .icon_overdue, .icon_today, .icon_upcoming, .icon_document_receiv, .icon_comment_receiv, .icon_close, #TB_closeWindowButton, #column_left_accordion a.title, #column_left_accordion a.selected, .icon_edit, .icon_active, .icon_deActive, .icon_comment, .icon_history, .icon_note, .arrow_up, .arrow_down, .icon_time, .icon_asso_exp, .icon_exp, .icon_upload, .icon_download, .icon_sort_down, .icon_sort_up, .icon_sticky_note, .icon_calender, .icon_folder, .icon_folder_open, .icon_doc, .icon_lock, .icon_lock_open,  .icon_Report, .icon_favDashboard, .icon_check, .icon_small_edit, .icon_small_note, .icon_small_history, .icon_small_comment, .icon_create_new, .icon_activate, .icon_deactivate, .icon_manage, .icon_client_doc, .icon_client_comment, .icon_add_doc, .icon_add_task, .icon_privilaged_indicator, .icon_client_indicator, .icon_bill_pay_details, .icon_star_full, .icon_star_half, .icon_star_empty, .icon_add_to_fav, .icon_pdf, .icon_xls, .icon_asv, .icon_supercede_document, .icon_update_bill, .icon_bill_payment_details, .icon_add_risk, .icon_add, .icon_imports, .icon_go_url, .icon_remove, .icon_document_view, .icon_critical, .icon_top_add_fav, .icon_file, .icon_message_error, .icon_message_sucess, .icon_message_warning, .icon_message_normal, .icon_reset, .icon_add_comment, .icon_chat, .btn_addPageFav, .icon_Pprev, .icon_Nnext, .icon_make_time_entry, .icon_orange_arrow_up, .icon_orange_arrow_down, .icon_checkout, .icon_critical_red, .icon_gray_placeholder, .icon_calender_withoutBorder, .icon_TnE_withoutBorder, .icon_favReport_withoutBorder, .icon_dashboard_withoutBorder, .icon_fullView, .icon_trash, .btn_save, .btn_save_exit, .btn_cancel, .btn_upload, .icon_task_maketime_entry, .icon_time_list, .icon_recycle, .icon_send_recycle,.icon_restor_recycle,.icon_delete{background-repeat:no-repeat;}
+#footer-div, .title_main, .title_favorites,   .title_stickyNote, .box_gray, .box_gray_new, input[type=submit],.customFields, .seperator_dotted, .seperator_dotted_hori, ul.navigation_list li.active,  #TB_title{background-repeat:repeat-x;}*/
+.icon_notecount{background-position:-124px -568px; width:15px; height:13px;}
+
+
+/*CHANGES DONE PREVIOUSLY BEFORE COPYING BASE.CSS */
+#header-div{height:73px; width:100%; }
+#header-div h1{margin-top:10px;}
+.header_link{margin-top:8px;}
+.form_table td{line-height:25px;}
+.tabular_listing table td{line-height:22px; padding-bottom:1px;}
+/*{margin-top: 8px;}*/
+.search_div{margin-top:1px;margin-right:1px;}
+.fix_mt5{margin-top:4px; margin-bottom:6px;}
+.box_gray{line-height:26px;}
+
+ul.navigation_list{display:block; margin:0; position:relative;}
+ul.navigation_list li{padding:10px 8px 9px 8px; }
+ul.navigation_list li a{display:inline-block; line-height:35px; padding-left:8px; padding-right:8px;}
+#navigation-div{height:35px; margin:0; padding:0; }
+ul.navigation_list li{border-right:1px solid #22607d;}
+ul.listing1 li  ul, ul.listing1 li  ul li{padding-left:8px;  border:1px solid red; }
+
+span.icon_search{margin: 3px 5px 0px 0px;}
+
+.alignRight{text-align: right;}
+/* Added on 20/12/10 by anil to fix Bug #3347 */
+.w100{margin-top:5px;}
+
+/*supriya 29-12-2010*/
+#footer .link_gray a{text-decoration:underline;}
+
+/*supriya 30-12-2010*/
+.icon_move{background-position:-98px -760px;width:14px; height:16px;}
+.icon_expand_folder{background-position:-113px -761px;width:16px; height:13px;}
+.icon_open_folder{background-position:-130px -761px;width:16px; height:13px;}
+.icon_collapse_folder{background-position:-147px -761px;width:16px; height:13px;}
+.icon_file_folder{background-position:-164px -761px;width:10px; height:13px;}
+
+
+/*****************Supriya k 11-01-11******************/
+.tm_accounted {background:url(../images/icon_tm_accounted.png) no-repeat right 6px; color:#4b4b4b;  padding-right:12px; line-height:18px; text-align:right; margin:0 auto; }
+.tm_billed {background:url(../images/icon_tm_billed.png) no-repeat right 6px; color:#4b4b4b;  padding-right:12px; line-height:18px; text-align:right;}
+.total_amount {background:url(../images/icon_total_amount.png) no-repeat right 6px; color:#4b4b4b;  padding-right:12px; line-height:18px; text-align:right;}
+=======
+/*Supriya 10-01-2011*/
+.opportunityAmt{width:75px;}
+
+/*Supriya M 22-3-2011*/
+.icon_empty_recycle_bin {background-position: left -784px;height: 17px;width: 13px;}
+
+/*Login.css added*/
+
+body.login {font-size:68.8%; color:#4a4b4a; background:#f6f6f6 url(../images/bg_login.png) repeat-x left top; font-family:Arial, Helvetica, sans-serif; height:100%; padding:0 8px; margin:0 auto; text-align:center;}
+#login-div{background:#eff7fb url(../images/login_body.png) no-repeat; width:518px; height:307px; margin:0 auto; position:relative;}
+#login-div h1{padding:15px 10px 30px 10px;}
+.w180p{width:180px;}
+.mt30{margin-top:30px;}
+#login-div label a{text-decoration: none;color: #074D6D;}
+#login-div label a:hover{text-decoration: underline;color: #074D6D;}
+
+
+/*Helpdesk css 14 Jan10*/
+.whitelink a{color:#fff; text-decoration:none;font-size:118.2%;}
+.whitelink a:hover{text-decoration:underline;}
+.abouWrapper{background:url(../images/livia_about_bg.png) repeat-x left bottom;}
+/************************/
+.helpDeskLink{color:#fff;padding: 10px 0;}
+.helpDeskLink a{color:#fff;text-decoration: none;font-size: 118.2%;}
+.helpDeskLink a:hover{text-decoration: underline;}
+
+.client_comm a{color:#074D6D;text-decoration: none;}
+.client_comm a:hover{text-decoration: none;}
+.client_comm a.selected{font-weight: bold;}
+
+/************supriya K 28 March 2011***********/
+.expese_billed01{background:url(../images/icon_expese_billed.png) no-repeat left 0px; color:#4b4b4b;  padding-left:12px; line-height:18px;}
+.expese_amount01{background:url(../images/icon_expese_amount.png) no-repeat left 0px; color:#4b4b4b;  padding-left:12px; line-height:18px;}
+.w65p{width:65px}
+/***********************/
+.w380p{width:380px;}
+/**************added by supriya k 12-04-2011*************/
+.pagiText{color: #D0D0D0; padding-top:5px; text-align:right;}
+/*added by supriya k for legend followupdate icon 06/07/2011*/
+.icon_followupdate{width:10px;height: 10px;background-position: -50px -790px;}
+
+/**supriya k 04/08/2011*/
+ul.tabs-nav li a{padding-left:7px;padding-right:7px;}
+/**********Add Row And Save Icon*************/
+.icon_add_row{width: 16px;height: 15px;background-position: -95px -785px;}
+.icon_save{width: 14px;height: 14px;background-position: -112px -785px;}
+
+
+/*Added by Raj Kumar Mishra - 16092011*/
+.cmpgn_custm{
+  background:#e8e8e8;
+  /*position:absolute;*/
+  border:1px solid #D9D9D9;width:245px;
+  line-height:18px; overflow:auto; max-height:215px;
+  left: 10%;
+  top: 20%;
+  padding :5px 10px 10px 10px;
+}
+/*.cmpgn_custm span{padding:5px;}*/
+ div.liquid-1{  /*float:right;position:absolute; margin-left: 303px;margin-top:-32px;*/}
+.cmpgn_custm ul li label{ width:75px; float:left;margin-right:40px;font-weight:bold;}
+.cmpgn_custm div.greetings{height: 48px;margin-bottom: 10px;margin-left: -5px;margin-top: 5px;width: 260px;padding-left:5px;background: none repeat scroll 0 0 #D8D8D8;}.cmpgn_custm div.greetings label{}
+
+.cmpgn_custm h1{font-style: normal;font-size: 1.1em;padding-bottom: 5px;}
+.toggle_button{position:absolute;z-index:100;}
+.toggle_button-container{float:left;margin-left: 202px;margin-top: -70px;}
+.customFields{padding: 3px 15px;}
+.cmpgn_custm ul.li-breather li {margin-top: 4px;}
+.box_title{background-color:#f7f7f7;border-bottom:2px solid #686964;width: 245px;padding: 5px 10px;border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: none;font-size: 14px; }
+.cust_fields_text{width: 245px;padding: 5px 10px;border: 1px solid #ccc;border-top: none;border-bottom: none;line-height: 14px;}
+
+
+/* Added By Supriya Khedekar - 11/11/2011 */
+.icon_ppt{width:15px;height:14px;background-position:0px -824px;}
+.icon_doc{width:13px;height:14px;background-position:-18px -824px;}
+.icon_image_file{width:14px;height:16px;background-position:-34px -823px;}
+
+/* Added on 24-11-2011 for Synchronize appointments */
+.sync_icon{background-position:-164px -541px;width:22px;height:22px;}
+
+/************** Drop down 2-11-2011***********************/
+
+#comm_mat_cont_drop  :hover{background-color: #327796;color: #FFFFFF;}
+ul#comm_mat_cnt_drop li:hover{background-color: #327796;color: #FFFFFF;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

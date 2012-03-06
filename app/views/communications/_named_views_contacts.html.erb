@@ -1,0 +1,79 @@
+<% contacts = @contacts %>
+<script language="text/javascript">
+  jQuery('a[rel*=facebox]').facebox();
+</script>
+<div class="titleHead"><%=t(:text_contacts)%></div>
+<div class="gryBox">
+  <!--TABULAR DATA STARTS-->
+  <div class="gridTable">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+      <thead>
+        <tr>
+          <th width="30"><%=t(:text_type)%></th>
+          <th><div class="w42p txtC"><%=t(:text_rating)%></div></th>          
+          <th width="8%"><%=t(:text_name)%></th>
+          <th width="10%"><%=t(:text_account)%></th>          
+          <th width="10%"><%=t(:text_assigned_to)%></th>          
+          <th><%=t(:text_stage)%></th>
+          <th width="75"><%=t(:text_phone)%></th>          
+          <th><%=t(:text_email)%></th>          
+          <th><%=t(:text_created)%></th>
+        </tr>
+      </thead>
+      <tbody class="scrollY200" style="*overflow:scroll; *height:20px;">
+        <%unless contacts.blank? %>
+          <% contacts.each do |contact| %>
+            <tr class="<%=cycle("bg1", "bg2")%>">
+              <td width="30">
+                <%= image_tag('/images/livia_portal/icon_usr.gif') %>
+              </td>
+              <td width="30">
+                <div class="w50p txtC">
+                  <%contact.rating.times do%>
+                    <%=image_tag('/images/livia_portal/starR.png',:align =>'left',:alt=>"Star Rating",:title=>"Star Rating")%>
+                  <%end%>
+                  <%(3-contact.rating).times do%>
+                    <%=image_tag('/images/livia_portal/starE.png',:align =>'left',:alt=>"Star Rating",:title=>"Star Rating")%>
+                  <%end%>
+                </div>
+              </td>
+              <td width="8%">
+                <%=link_to(contact.full_name, edit_contact_path(:id=>contact.id))%>
+                <div class="txtSml_gry">
+                  <%if contact.title? && contact.department?%>
+                    <%= contact.title << ", " << contact.department%>
+                  <%else%>
+                    <%= contact.title if contact.title?%>
+                  <%end%>
+                </div>
+              </td>
+              <td width="9%"><%=contact.accounts[0].name if contact.accounts[0]%></td>
+              <td width="10%"><%=contact.assignee.try(:full_name).try(:titleize) if contact.assigned_to_employee_user_id && contact.assignee%></td>
+              <td width="8%"><%=contact.contact_stage.alvalue.try(:titleize) if contact.contact_stage%></td>
+              <td width="7%">
+                <%if contact.phone?%>
+                  <%= contact.phone%>
+                <%else%>
+                  <%= contact.mobile if contact.mobile%>
+                <%end%>
+              </td>
+              <td width="18%"><%=link_to(contact.email, "mailto:" << contact.email.to_s)if contact.email?%></td>
+              <td width="8%"><%=contact.created_at.to_time.strftime('%m/%d/%y') if contact.created_at %></td>
+            </tr>
+          <%end%>
+          <%unless contacts.empty?%>
+            <tr><td colspan="9"><br/></td></tr>
+            <tr>
+              <td colspan="9" align="right" class="pr5">
+              </td>
+            </tr>
+            <tr><td colspan="9"><br/></td></tr>
+          <%end%>
+        </tbody>
+      <%else%>
+        <tr><td colspan="9"><div class="warningCont m5"><%=t(:text_no_data)%></div></td></tr>
+      <%end%>
+    </table>
+  </div>
+  <!--TABULAR DATA ENDS-->
+</div>

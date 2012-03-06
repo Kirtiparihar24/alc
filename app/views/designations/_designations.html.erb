@@ -1,0 +1,32 @@
+<div class="actionLinks">
+  <%if !current_user.role?:lawfirm_admin%>
+    <%= link_to t(:label_new_designation), :controller=>"designations",:action=>"new",:id=>@company.id%>
+  <%else%>
+    <%= link_to t(:label_new_designation), :controller=>"designations", :action=>"new",:id=>current_user.company_id%>
+  <%end%>
+</div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="88%" align="left"><%=t(:text_designation_name)%></th>
+      <th width="12%" align="left" ><%=t(:text_action)%></th>
+    </tr>
+    <%unless @designations.nil?%>
+      <%@designations.each do |designation|%>
+        <tr>
+          <td align="left"><span class="textBlue11Height20">&nbsp;&nbsp;<%=designation.lvalue.try(:capitalize)%></span></td>
+          <td align="left"><%=link_to t(:label_edit), edit_designation_path(designation) %> </td>
+        </tr>
+      <%end%>
+    <%else%>
+      <td>  <span class="textBlue11Height20">&nbsp;&nbsp;<%=t(:text_no_designations)%></span>  </td>
+    <%end%>
+  </table>
+</div>
+
+
+
+
+
+
+

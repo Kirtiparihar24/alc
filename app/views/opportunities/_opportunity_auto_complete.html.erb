@@ -1,0 +1,7 @@
+<%unless @search_result.empty?%>    
+    <%@search_result.each do|result_obj|%>
+      <% contactname = result_obj.contact.try(:full_name).to_s %>
+      <% accountname = result_obj.contact.get_account_name.to_s%>
+      <%="" + "#{result_obj.name}" + ((contactname == "")?"":(", Contact Name: #{contactname}")) + ((accountname == "")? "" : (", Acc: #{accountname}"))  %>
+    <%end%>
+<%end%>

@@ -1,0 +1,21 @@
+﻿<div style="margin-top:20px; padding:0;">
+  <% unless matter_risks.empty? %>
+    <div class="tabular_listing border_gray">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+        <tr>
+          <th width="85%" align="left"><%= t(:text_risk) %></th>
+          <th width="15%" align="left"><%= t(:text_material) %></th>
+        </tr>
+        <% matter_risks.each do |e| %>
+          <tr class="bg1">
+            <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_risk_path(@matter,e)))%></td>
+            <td align="left"><%=e.is_material ? "#{t(:text_yes)}" : "#{t(:text_no)}"%></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% else %>
+    <div class="warningCont m5">  <%= t(:text_no_risks_linked_yet) %> </div>
+  <% end %>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;144</div>

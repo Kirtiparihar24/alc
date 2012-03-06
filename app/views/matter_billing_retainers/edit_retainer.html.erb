@@ -1,0 +1,50 @@
+<div style="text-align:center;margin-top:20px;">
+  <%form_for([@matter, @retainer], :url => {:action => "update_retainer"}, :html=> {:multipart => true}) do|f|%>
+    <%if(@retainer.errors.length > 0)%>
+      <div class='errorCont'>
+        <%=f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+  <table border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;" class="form_table">
+      <tr>
+        <td width="115" align="left"><label><%=t(:text_date)%> <span class="alert_message">*</span></label></td>
+        <td width="304" align="left"><%= f.text_field :date, :value => @retainer.date, :class => "date_picker", :size => "10" %></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%= t(:text_amount_received) %><span class="alert_message">*</span></label></td>
+        <td align="left"><%= f.text_field :amount, :size => "40" %></td>
+      </tr>
+      <tr>
+        <td valign="top" align="left"><%=t(:text_replace_receipt)%></td>
+        <td align="left">
+          <%= file_field_tag 'document_home[file]' %>
+          <%doc = @retainer.get_document%>&nbsp;&nbsp;&nbsp;&nbsp;
+          <%unless doc.nil?%>
+            <%= link_to(doc.latest_doc.data_file_name, document_home_path(doc.id))%>
+          <%end%>
+        </td>
+      </tr>
+      <tr align="right">
+        <td align="left" valign="top"><label><%= t(:text_remarks) %></label></td>
+        <td align="left" valign="top"><%= f.text_area :remarks, :rows => "3", :cols => "40" %></td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">
+          <%= f.submit "#{t(:text_save)}" %>
+          <input type="submit" id="Login2" value="Cancel" onclick="parent.tb_remove();return false" />
+        </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<script type="text/javascript" language="javascript">  
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#matter_retainer_date");
+  });
+</script>

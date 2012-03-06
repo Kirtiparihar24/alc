@@ -1,0 +1,12 @@
+<%=@r_name%>
+
+<%-@total_data.each do |label,data|-%>
+<%=label%>
+<%=@headers_.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+
+<%-end-%>
+<%="Total Records = #{@col.length}"%>

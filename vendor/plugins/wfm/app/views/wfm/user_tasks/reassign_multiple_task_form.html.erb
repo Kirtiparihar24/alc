@@ -1,0 +1,76 @@
+<%if @valid && @same_category%>
+  <div class="section_content">
+    <% remote_form_for :task, :before=>'loader.appendTo("#loader_img");',:url=>reassign_multiple_tasks_wfm_user_tasks_path,:html=>{:class=>"search_form general_form"}, :loading=>"return disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable','Reassign');" do |f| %>
+      <%=hidden_field_tag :task_ids, @task_ids.join(',')%>
+      <div id="modal_new_task_errors" class=""></div>
+      <div id="loader_img"></div>
+        <div class="forms">
+          <div class="row">
+            <table border="0" width="100%" style="float:left;">
+              <tr>
+                <th>Task Name</th><th>Due Date</th>
+              </tr>
+              <% @tasks.each do |task| %>
+                <tr>
+                  <td><%= task.name %>
+                  </td>
+                  <td><%= task.due_at %></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+          <div class="row"></div>
+          <div class="row">
+            <div class="fl w21"><input class="radio" name="user_type" value="CommonPool" type="radio" onclick="jQuery('#user_task_assigned_to_user_id').val('');update_user_select_multiple_task_reasign('CommonPool','<%=@task_ids.join(',')%>');" /><span class="radio_text" style="float:right;"><%if @back_office_tasks%>BO <%end%>Common Queue</span></div>
+            <div class="fl w21" style="margin-left:7px;"><input class="radio" name="user_type" value="ClusterUsers" type="radio" onclick="update_user_select_multiple_task_reasign('ClusterUsers','<%=@task_ids.join(',')%>');" checked/><span class="radio_text" style="float:right;"><%unless @back_office_tasks%>Cluster Users<%else%>BO Agents<%end%></span></div>
+            <% unless @back_office_tasks %>
+              <div class="fl ml8" style="width:26%;"><input class="radio" name="user_type" value="CommonPoolAgent" type="radio"  onclick="update_user_select_multiple_task_reasign('CommonPoolAgent','<%=@task_ids.join(',')%>');"/><span class="radio_text" style="padding:0 33px 0 0;float:right;">Common Pool Agent</span></div>
+            <% end %>
+            <br class="clear" />
+          </div>
+          <div id="task_0_user_select" class="row">
+            <label>User</label>
+            <div class="inputs">
+              <span class="input_wrapper blank" id="task_0_users">
+                <%=f.select :assigned_to_user_id,options_for_select(@users_select,{:selected=>current_user.id})%>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <label>Comment <span id="mandatory">*</span> </label>
+            <span class="input_wrapper textarea_wrapper">
+              <textarea name="comment_text" cols="10" rows="8" class="text "></textarea>
+            </span>
+          </div>
+          <br class="clear" />
+          <div class="button_div">
+            <span class="button buttons_to_disable send_form_btn"><span><span id="button_pressed">Reassign</span></span>
+              <input type="submit" name=""/>
+            </span>
+            <span class="button buttons_to_disable send_form_btn ml10" onclick="tb_remove();"><span>
+                <span>Cancel</span></span>
+            </span>
+            <br class="clear" />
+          </div>
+        </div>
+    <%end%>
+  </div>
+<%end%>
+<script type="text/javascript">
+  var str_valid = "";
+  var str_cat = "";
+  var str_no_clusters = "";
+  <% if !@valid %>
+       str_valid = " Please select tasks from same cluster.";
+  <%end%>
+  <% if !@same_category %>
+       str_cat = " Please select tasks of same category";
+  <%end%>
+  <% if @no_clusters_assigned %>
+      str_no_clusters = " <%= @no_clusters_assigned %>";
+  <% end %>
+  <% if !@valid || !@same_category || @no_clusters_assigned %>
+     tb_remove();
+     alert(str_no_clusters + str_valid + str_cat);
+  <%end%>
+</script>

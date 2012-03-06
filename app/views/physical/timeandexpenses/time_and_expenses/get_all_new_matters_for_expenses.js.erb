@@ -1,0 +1,6 @@
+jQuery('#' + <%=params[:id]%> + '_matters_div').html("<%=escape_javascript(render(:partial => 'select_new_matters_for_expenses', :locals => {:matters => @matters, :matter_id => @matter_id, :expense_id => params[:id]}))%>")
+
+jQuery('#' + <%=params[:id]%> + '_matterSearch').css({'display':'none'});
+jQuery('#'+ <%=params[:id]%> + '_is_internal').attr('disabled', false);
+jQuery('#'+ <%=params[:id]%> + '_is_internal').attr('checked', false);
+jQuery('#' + <%= params[:id] %> + '_expense_entry_employee_user_id').html("<%= @html_options_str  %>");

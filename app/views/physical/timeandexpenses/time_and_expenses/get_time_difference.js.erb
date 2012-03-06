@@ -1,0 +1,9 @@
+<% unless @errorgenerated%>
+set_time_difference("<%=@time_difference%>");
+jQuery('#bill_amount').html("<%=@billed_amount%>")
+jQuery('#final_billed_amount').html("<%=number_with_lformat(@final_billed_amount)%>")
+<%else%>
+set_time_values_to_blank();
+jQuery('#error_notice').show()
+jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>")
+<%end%>

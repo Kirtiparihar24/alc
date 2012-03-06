@@ -1,0 +1,15 @@
+<%if current_user.role?:livia_admin%>
+  <% content_for :company_selection do %>
+    <div id="topheadContainer">
+      <div class="title fl"><%= @company.name if @company.present? %></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%= collection_select(:company, :id, @companies, :id, :name_type, {:include_blank => 'Please select', :selected => session[:company_id].nil? ? nil : session[:company_id].to_i },{:onchange=>"populatelawyers(this.value)",:class=>'field size3'})%>
+      </div>
+    </div>
+  <%end%>
+<%end%>
+<div class="box-head"><h2 class="left"><%=t(:text_product_assignments)%></h2></div>
+<% style = session[:company_id].nil? ? "display:none;" : "display:block;" %>
+<div id="empdiv" style='<%=style%>'>
+  <%= render(:partial => 'employees',:locals=>{:productlicence=>@productlicence, :activeusers=>@activeusers, :employees=>@employees, :company_id=>@company_id,:activepermlicence=>@activepermlicence,:activetemplicence=>@activetemplicence,:usedpermlicence=>@usedpermlicence,:usedtemplicence=>@usedtemplicence,:licences=>@licences}) unless @company_id.nil? %>
+</div>

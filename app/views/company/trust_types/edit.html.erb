@@ -1,0 +1,9 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit_campaign)%> Status Type</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<% remote_form_for(:trust_type,@trust_type, :url => company_trust_type_path(@company,@trust_type),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%#= render :partial=>"form", :locals => {:f => f} %>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Status Type", :modal_text => "#{t(:label_status_name)}",
+    :all_modal_values => @company.trust_types.collect{|cs|[cs.lvalue]}.uniq ,:modelclass=>'trust_types'} %>
+<%end%>
+<br class="clear"/>

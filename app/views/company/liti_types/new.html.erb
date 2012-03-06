@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_new)%> <%= t(:text_litigation) %></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:liti_type,@liti_type, :url => company_liti_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post, :onsubmit=> "jQuery('#liti_type_lvalue').val(jQuery.trim(jQuery('#liti_type_lvalue').val()));"}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Litigation", :modal_text => "#{t(:label_litigation_name)}",
+    :all_modal_values => @company.liti_types.collect{|lt|[lt.lvalue]}.uniq,:modelclass=>'liti_types' } %>
+<%end%>
+<br class="clear"/>

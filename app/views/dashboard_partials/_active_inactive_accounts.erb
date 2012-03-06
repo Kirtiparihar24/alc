@@ -1,0 +1,53 @@
+<script type="text/javascript">  
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#from_date");
+    livia_matter_inception_datepicker_new("#to_date");
+  });
+</script>
+<% form_remote_for "dashboard_charts",:before=>"validate_date_dashboards();",:url=>{:controller=>'dashboards',:action=>'manage_dashboard'} do |f| %>
+  <div class="box_org">
+    <div class="fl pl4">
+      <input type="hidden" name="dashboard_chart_id" value='<%=chart.dashboard.id%>' ></input>
+      <input  id="dashboard_check_id" type="hidden" name="chart_id" value='<%=chart.try(:id)%>' ></input>
+      <table width="" border="0" cellpadding="3" cellspacing="0" class="grayBox" >
+        <tr>
+
+          <td><%=select_tag("duration",options_for_select([["All",""],["Last 1 Months","1months"],["Last 3 Months","3months"],["Last 6 Months","6months"],["Last 12 Months","12months"],["Date range","5"]],:selected=>chart.parameters[:duration]),{:style => "width:100px"})%></td>
+          <% if chart.parameters[:duration] == "5"
+            style="display:block"
+          else
+            style="display:none"
+          end %>
+          <td>
+            <div style="<%=style%>" id="date_div" class="mt2">
+              <table width="100%"  cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="left">
+                  <td align="right"><%=t(:text_start_date)%>&nbsp;</td>
+                  <td align="left">
+                    <input size="10" type="text" id="from_date" name='from_date'  readonly="true" class="dateTextBox date_picker"  value="<%=chart.parameters["'from_date'"]%>"/>
+                  </td>
+                  <td align="right"><%=t(:text_end_date)%>&nbsp;</td>
+                  <td align="left">
+                    <input size="10" type="text" id="to_date" name='to_date'  readonly="true" class="dateTextBox date_picker"  value="<%=chart.parameters["'to_date'"]%>"/>
+                  </td>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </td>
+          <td>
+            <input type="Submit" value="Submit" class="button"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="fr mr5 link_blue">
+      <%=link_to(t(:text_add_to_favorite),"#",{:onclick => "return show_fav_div()",:style=>"line-height:30px;"})%>
+    </div>
+    <br class="clear"/>
+  </div>
+<%end%>
+<script type="text/javascript">
+  db_date_change();
+</script>

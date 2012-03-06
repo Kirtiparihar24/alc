@@ -1,0 +1,7 @@
+<%=raw(javascript_include_tag 'matters_contacts_select_box.js')%>
+<% remote_form_for :note,@note,:url=>{:controller=>"physical/clientservices/home",:action =>'create'},:html =>{:onsubmit => 'show_spinner()',:method => :post },:loading=>"disableAllSubmitButtons('button')",:complete=>"enableAllSubmitButtons('button')" do |f| %>
+  <div id="loader1" style="display:none;"><img src='/images/loading.gif' /></div>
+  <div id="nameerror" class="errorCont" style="display:none"></div>
+  <%= render :partial => "common/instructions", :locals => {:f => f} %>
+<%end%>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;3</div>

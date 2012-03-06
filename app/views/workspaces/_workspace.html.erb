@@ -1,0 +1,245 @@
+<%= raw(javascript_include_tag "latest/scripts.js") if params[:height] %>
+<div id="search_results_DIV">
+  <div class=" w100">
+    <h2 class="title_main"><%if @recycle_bin%><%=link_to("My Workspace",workspaces_path)%> &nbsp; >> &nbsp; Recycle Bin<%else %>My Workspace<%end%></h2>
+    <div class="p5">
+      <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>      
+      <div  class="w100">
+        <div class="fl" id="breadcrumb"><%if controller.action_name !='search_document' && !@recycle_bin%><%=path(controller.controller_name, @folder, false)%><%end%></div>
+        <div class="fr textR fix_mb fix_mb_ie">
+          <%if @recycle_bin%>
+            <span class="link_blue"><%=link_to('Back to Workspace',workspaces_path)%></span>
+            <%=link_to("<span class='icon_reset fl mr10'></span>", workspaces_path(:recycle_bin=>true), {:class => "vtip", :title=> "Reset"})%>
+            <%=link_to("<span class='icon_empty_recycle_bin  fl mr5'></span>", permanent_delete_workspaces_path(), {:class => "vtip", :title=> "Empty Recycle Bin", :confirm => 'If you choose to empty the recycle bin, all items in it will be permanently lost. Do you still want to continue?'})%>
+          <%else%>
+            <%=link_to("<span class='icon_reset fl mr10'></span>", "#", {:class => "vtip", :title=> "Reset",:onclick=>"reset_workspace_page(); return false;"})%>
+            <%=link_to("<span class='icon_recycle fl mr5'></span>", workspaces_path(:recycle_bin=>true), {:class => "vtip", :title=> "Recycle Bin", :name=> "Recycle Bin"})%>
+            <%=link_to("<span class='icon_new_folder fl ml13 mr5'></span>", "#", {:class=> "vtip", :title=> "New Folder", :name=> "New Folder",:onclick=>"tb_show('New Folder', '#{create_folder_workspaces_path(:parent_id=>@parent_id, :height=>110, :width=>300)}', '')"})%>
+            <%=link_to("<span class='icon_new_file fl ml13 mr5'></span>", "#", {:class=> "vtip", :title=> "Upload File", :name=> "Upload File",:onclick => "tb_show('Upload File', '#{new_workspace_path(:folder_id=>@parent_id, :height=>110, :width=>500)}', '')"})%>
+            <%=link_to("<span class='icon_mass_upload fl ml13 '></span>","#", {:class=> "vtip", :title=> "File(s) Upload", :name=> "Mass Upload File",:onclick => "tb_show('File(s) Upload', '#{upload_multi_workspaces_path(:id => @parent_id, :height=>110, :width=>400)}', '','absolute')"})%>
+          <%end%>
+        </div>
+        <br class="clear" />
+      </div>
+      <div class="tabular_listing">
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>
+            <% if controller.action_name =="search_document"%>
+              <% name = "document_name" %>
+              <% extension = "document_extension" %>
+              <% size = "document_size" %>
+            <% else %>
+              <% name = "name" %>
+              <% extension = "extension" %>
+              <% size = "data_file_size" %>
+            <% end %>
+            <%unless !current_user.role?('lawyer')||@recycle_bin %><th width="8%" align="center">Livian Access</th><%end%>
+            <%=column_sort_link(t(:text_name),name,params[:col],"68%","left",{:recycle_bin=> params[:recycle_bin],:parent_id=>(params[:parent_id]||params[:id])})%>
+            <%=column_sort_link(t(:text_size),size,params[:col],"8%","left",{:recycle_bin=> params[:recycle_bin],:parent_id=>(params[:parent_id]||params[:id])})%>
+            <%=column_sort_link(t(:label_file_type),extension,params[:col],"8%","left",{:recycle_bin=> params[:recycle_bin],:parent_id=>(params[:parent_id]||params[:id])})%>
+            <%=column_sort_link(t(:text_creation_date),"created_at",params[:col],"8%","left",{:recycle_bin=> params[:recycle_bin],:parent_id=>(params[:parent_id]||params[:id])})%>
+            <th width="6%" align="center"><%=t(:text_actions)%></th>
+          </tr>
+          <%if @folders.length>0%>
+            <%@folders.each do |folder|%>
+              <tr class="<%=cycle('bg1', 'bg2')%>">
+                <%unless !current_user.role?('lawyer') || @recycle_bin%><td align="center" id="access_control_<%=folder.id%>"><%=get_livian_access(folder,@current_user)%></td><%end%>
+                <%if @recycle_bin %>
+                  <%folder_name=escape_javascript(h(folder.name)) + ' [ ' + folder.files.find_only_deleted(:all).length.to_s + ' ]' %>
+                  <%count=folder.children.find_only_deleted(:all).count%>
+                  <%recycle_bin = true%>
+                <% else %>
+                  <%folder_name=escape_javascript(h(folder.name)) + ' [ ' + folder.files.length.to_s + ' ]'%>
+                  <%count=folder.children.count%>
+                  <%recycle_bin=false%>
+                <% end %>
+                <td id="row_node-<%=folder.id%>">
+                  <% if count > 0 %>
+                    <%class_name="icon_expand_folder mr5 mt3 fl"%>
+                  <% else %>
+                    <%class_name="icon_folder_01 mr5 mt3 fl"%>
+                  <% end%>
+                  <div class="mr5 mt3 fl"><a href="#" rel="<%=folder.id%>/" onclick="GetFoldersList('<%=folder.id%>',true,this,'<%=recycle_bin%>','loader_<%=folder.id%>');return false;" style="width:auto"><span class="<%=class_name%>" ></span ><%= truncate_hover(folder_name , 120)  %></a></div><div id ="loader_<%=folder.id%>" class=" mr5 mt3 fl"></div>
+                </td>
+                <td  align="center" ></td>
+                <td  align="center" ><%=t(:label_file_folder)%></td>
+                <td  align="center" ><%=folder.created_at.to_time.strftime('%m/%d/%y')%></td>
+                <td align="center">
+                  <% parent_folder = (!folder.parent_id.nil? and folder.parent.nil?) ? false :true%>
+                  <%if (@recycle_bin && parent_folder )||(!@recycle_bin)%>
+                    <div class="icon_action mt3"><a href="#"></a></div>
+                    <div id="liquid-roundAP" class="tooltip" style="display:none;">
+
+                      <%unless @recycle_bin
+                        path= temp_delete_folder_document_home_path(folder, :path=> "#{workspaces_path}")
+                      end%>
+                      <!--Icon table strt here -->
+                      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                        <%=raw action_pad_top_blue_links({:edit_path=>'NO',
+                            :deactivate_path=> path,
+                            :deactivate_text => "delete,Deleting this folder will delete all its content. Do you still want to continue?",
+                            :comment_path=>"NO",
+                            :comment_title => "NO",
+                            :document_path=>"NO",
+                            :history_path=>"NO",
+                            :history_title => "NO",:edit_modal => true}) %>
+                        <tr>
+                          <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                          <td style="background: #fff;">
+                            <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                              <tr>
+                                <%unless @recycle_bin%>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_renameFolder fl ml13 mr5"></div></td>
+                                  <td width="40%" align="left" valign="middle"><%=link_to("<span>Rename Folder</span>", "#", {:onclick=>"tb_show('Rename Folder', '#{edit_folder_document_managers_path(:format=>folder.id,:from=>"workspace",:height=>100,:width=>300)}', '')"})%></td>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_delFolder fl"></div></td>
+                                  <td width="40%" align="left" valign="middle" nowrap><%=link_to('<span>Delete</span>',  temp_delete_folder_document_home_path(folder, :path=> "#{workspaces_path}"), :id =>folder.id, :confirm => 'Deleting this folder will delete all its content. Do you still want to continue?', :method=> :delete)%></td>
+                                <%else%>
+                                  <td width="7%" align="center" valign="middle"><div class="icon_restor_recycle fl"></div></td>
+                                  <td width="40%" align="left" valign="middle"><%= link_to('<span>Restore</span>', "#{restore_folder_document_home_path(folder,:path=> workspaces_path)}") %></td>
+                                  <td colspan="2"><div class="ap_pixel10"></div></td>
+                                <%end%>
+                              </tr>
+                              <tr>
+                                <td colspan="4"><div class="ap_pixel10"></div></td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                        </tr>
+                        <tr>
+                          <td valign="top" class="ap_bottom_curve_left"></td>
+                          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                          <td valign="top" class="ap_bottom_curve_right"></td>
+                        </tr>
+                      </table>
+                    </div>
+                  <%end%>
+                </td>
+              </tr>
+            <%end%>
+          <%end%>
+          <%if @files.length>0%>
+            <%@files.each do |document|%>
+              <%doc=document.latest_doc%>
+              <%unless doc.nil?%>
+                <tr class="<%=cycle("bg1", "bg2")%>">
+                  <%unless !current_user.role?('lawyer') || @recycle_bin%><td> </td><%end%>
+                  <td>
+                    <span class="icon_file fl mt3"></span> &nbsp;
+                    <%if @recycle_bin%>
+                      <%=raw truncate_hover_link(doc.name,40, document_home_path(doc, :deleted_doc=>true))%>
+                    <%else%>
+                      <%=raw truncate_hover_link(doc.name,40, document_home_path(doc))%>
+                    <%end%>
+                  </td>
+                  <td align="center"><%=h number_to_human_size(doc.data_file_size,:separator=>".",:precision=>2) %></td>
+                  <td align="center"><%=h document.extension %></td>
+                  <td align="center"><%=h document.created_at.to_time.strftime('%m/%d/%y') %></td>
+                  <td align="center">
+                    <%unless @folder && @recycle_bin%>
+                      <div class="icon_action mt3"><a href="#"></a></div>
+                      <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                        <!--Icon table strt here -->
+                        <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                          <%unless @recycle_bin%>
+                            <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                                :deactivate_path=> temp_delete_document_home_path(document,:path=>"workspace"),
+                                :deactivate_text => "file.",
+                                :comment_path=>"NO",
+                                :comment_title => "",
+                                :document_path=>"NO",
+                                :history_path=>"#{get_doc_history_document_home_path(document.id)}?height=90&width=450",
+                                :history_title => "History #{document.name}"}) %>
+                          <%else%>
+                            <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                                :deactivate_path=> "NO",
+                                :deactivate_text => "",
+                                :comment_path=>"NO",
+                                :comment_title => "",
+                                :document_path=>"NO",
+                                :history_path=>"NO",
+                                :history_title => ""}) %>
+                          <%end%>
+                          <tr>
+                            <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                            <td style="background: #fff;">
+                              <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                                <tr><td colspan="4"><div class="ap_pixel10"></div></td> </tr>
+                                <%unless @recycle_bin%>
+                                  <tr>
+                                    <td width="7%" align="left" valign="middle"><span class="icon_download fl"></span></td>
+                                    <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Download</span>', document_home_path(doc)) %> </td>
+                                    <td width="7%" align="center" valign="middle"><div class="icon_supercede_document fl"></div> </td>
+                                    <td width="40%" align="left" valign="middle"><%=raw link_to "<span>#{t(:label_superseed)}</span>", "#", :onclick => "tb_show('#{t(:label_superseed)}','#{supercede_document_document_home_path(document)}?height=170&width=450&from=workspace&parent_id=#{@parent_id}','','fixed')" %></td>
+                                  </tr>
+                                  <tr><td colspan="4"><div class="ap_pixel10"></div></td> </tr>
+                                  <tr>
+                                    <td width="7%" align="left" valign="middle"><!--<div class="icon_send_recycle fl"></div>--></td>
+                                    <td width="40%" align="left" valign="middle" nowrap><%#= link_to('<span>Delete</span>',  temp_delete_document_home_path(document,:path=>"workspace"), :id => document.id,  :method=> :delete)%> </td>
+                                    <td width="7%" align="center" valign="middle"><div class="icon_move fl"></div></td>
+                                    <td width="40%" align="left" valign="middle"><%= link_to('<span>Move</span>', "#", {:class=> "vtip", :title=> "Move File",:onclick => "tb_show('Move File', '#{move_doc_workspace_path(document)}?height=400&width=500&update_list=false', '')"})%>  </td>
+                                  </tr>
+                                <%else%>
+                                  <tr>
+                                    <td width="7%" align="left" valign="middle"><span class="icon_download fl"></span></td>
+                                    <td width="40%" align="left" valign="middle" nowrap><%= link_to('<span>Open Document</span>', document_home_path(doc.id, :deleted_doc=> true)) %> </td>
+                                    <td width="7%" align="center" valign="middle"><div class="icon_restor_recycle fl"></div> </td>
+                                    <td width="40%" align="left" valign="middle"><%= link_to('<span>Restore</span>', restore_document_document_home_path(document,:from=>"workspace")) %></td>
+                                  </tr>
+                                <%end%>
+                              </table>
+                            </td>
+                            <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                          </tr>
+                          <tr>
+                            <td valign="top" class="ap_bottom_curve_left"></td>
+                            <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                            <td valign="top" class="ap_bottom_curve_right"></td>
+                          </tr>
+                        </table>
+                      </div>
+                    <%end%>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%if @folders.length ==0 and @files.length==0 %>
+            <tr class="<%=cycle("bg1", "bg2")%>"><td colspan="6"><%=t(:text_no_subfolders_or_files_present)%></td></tr>
+          <%end%>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Need to removed to JS File
+  function reset_workspace_page(){
+    var search=jQuery('#display_search').val();
+    jQuery('#loader').show();
+    jQuery.ajax({
+      type: "GET",
+      url: "/workspaces",
+      dataType: 'script',
+      data: {
+        'display_search' : search
+      },
+      success: function(transport){
+        jQuery('#loader').remove();
+        jQuery('#browser').html(transport);
+      }
+    });
+  }
+  
+  jQuery("th.tablesorter a").bind("click", function(){
+<%action = controller.action_name %>
+<%if action  == "search_document"%>
+      search(this,this.href);
+      return false;
+<%end%>
+  });
+</script>

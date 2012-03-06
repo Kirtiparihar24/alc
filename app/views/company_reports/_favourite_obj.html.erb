@@ -1,0 +1,5 @@
+<% reports = {:report => {}}
+obj.selected_options.keys.each do |key|
+  reports[:report][key] = obj.selected_options[key]
+end %>
+<%=link_to obj.report_name , {:action => obj.action_name , :controller => obj.controller_name,:fav_id => obj.id,:link_to_remove => true,:get_records => obj.get_records , :date_selected => obj.date_selected , :date_start => obj.date_start, :date_end => obj.date_end,:format => :html}.merge(reports)%>

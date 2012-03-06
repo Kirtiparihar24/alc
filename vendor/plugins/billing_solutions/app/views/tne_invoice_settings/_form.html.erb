@@ -1,0 +1,90 @@
+<% adminview = is_lawfirmadmin || is_liviaadmin %>
+<h3 class="<%= adminview ? 'box-head' : 'title_gray' %>"><%= t(:text_invoice_settings) %></h3>
+<div class="highlight_bg_1 p15p box_bg_bdr_1 bdr_bot_1">
+  <% form_for @tne_invoice_setting, :html=>{:onsubmit => "return disableAllSubmitButtons('bill_settings')"} do |f| %>
+    <%= f.hidden_field :company_id, :value => params[:company_id] if is_liviaadmin%>
+    <%= hidden_field_tag :button_pressed %>
+    <div class="<%= 'p8 form' if adminview %>">
+      <div class="<%= 'border_top_gray mt5 p5' if adminview %>">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tbody><tr>
+              <td width="18%"><label><%= t(:text_primary_tax_enable) %></label></td>
+              <td width="18%"><%= f.check_box "primary_tax_enable", {:onclick => "enable_primary();"} %></td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr class="pte">
+              <td><label><%= t(:text_primary_tax_name) %></label></td>
+              <td><%= f.text_field :primary_tax_name %></td>
+              <td width="5%">&nbsp;</td>
+              <td width="15%"><label><%= t(:text_primary_tax_rate) %></label></td>
+              <td><%= f.text_field :primary_tax_rate, :size => 5, :onblur => "check_tax_rate(this, '#{@tne_invoice_setting.primary_tax_rate}'); convertTOFloat(this, '#{@tne_invoice_setting.primary_tax_rate}')" %></td>
+            </tr>
+            <tr class="pte">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr class="pte">
+              <td><label><%= t(:text_secondary_tax_enable) %></label></td>
+              <td><%= f.check_box "secondary_tax_enable", {:onclick => "enable_secondary();"} %></td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr class="pte">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr class="pte ste">
+              <td><label><%= t(:text_secondary_tax_name) %></label></td>
+              <td><%= f.text_field :secondary_tax_name %></td>
+              <td width="2%">&nbsp;</td>
+              <td><label><%= t(:text_secondary_tax_rate) %></label></td>
+              <td><%= f.text_field :secondary_tax_rate, :size => 5, :onblur => "check_tax_rate(this, '#{@tne_invoice_setting.secondary_tax_rate}'); convertTOFloat(this, '#{@tne_invoice_setting.secondary_tax_rate}')" %></td>
+            </tr>
+            <tr class="pte ste">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr class="pte ste">
+              <td valign="top"><label><%= t(:text_apply_secondary_rule) %></label></td>
+              <td valign="top"><%= f.select :secondary_tax_rule, options_for_select({"Apply to pre-tax amount" => false,"Apply to post-tax amount" => true }) %></td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr class="pte ste">
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr>
+              <td valign="top"><label><%= t(:text_default_note) %></label></td>
+              <td valign="top"><%= f.text_area :invoice_note, :rows => 3, :cols => 30 %></td>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr>
+              <td><label><%= t(:text_header) %></label></td>
+              <td><%= f.text_field :header, :size => 30,:maxlength => 255 %></td>
+              <td width="2%">&nbsp;</td>
+              <td><label><%= t(:text_footer) %></label></td>
+              <td><%= f.text_field :footer %></td>
+            </tr>
+            <tr>
+              <td colspan="5">&nbsp;</td>
+            </tr>
+          </tbody></table>
+      </div>
+    </div>
+    <div class="buttons" align="center">
+      <%= f.submit t(:text_save), :name => "save", :class => "bill_settings", :onclick => "setButtonPressed(this);" %>
+      <% if adminview %>
+        <input name="Cancel" type="button" id="Cancel"  value="<%= t(:text_cancel) %>" onclick="window.location='/company_settings';return false;" />
+      <% end %>
+    </div>
+  <%end%>
+  <% if adminview.blank? %>
+    <div style="text-align: left;" class="mandatory">Note: Changes made to the invoice settings will impact all the new bills created in the firm</div>
+  <% end %>
+</div>
+<script type="text/javascript">
+  jQuery(function() {
+    enable_primary();
+  });
+</script>

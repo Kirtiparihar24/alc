@@ -1,0 +1,65 @@
+<% check_access = ['lead_status_types','prospect_status_types','campaign_status_types','opportunity_stage_types','rating_types','client_roles','matter_statuses','campaign_member_status_types','document_categories','matter_privileges','campaign_Member_status_types','rating_type','tne_invoice_statuses'].include?(modelclass) %>
+<div class="actionLinks">
+  <%= link_to(t(:text_new),"/companies/#{@company.id}/#{modelclass}/new?width=450&height=240", :class=> "thickbox") %>
+</div>
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left" id="<%= table_id %>">
+    <tbody>
+      <tr>
+        <th width="296" align="left"><%= header %></th>
+        <th width="292" align="left">Custom <%= header %></th>
+        <%if (modelclass =='opportunity_stage_types')%>
+          <th width="99" align="left">Percentage</th>
+        <%end%>
+        <th width="99" align="left"><%=t(:text_actions)%></th>
+      </tr>
+      <% active_entries.sort_by{|t| t.sequence.to_i}.each do |obj| %>
+        <tr class="update-list <%=cycle("bg1", "bg2")%>">
+          <td>
+            <%= hidden_field_tag "support_#{obj.id}", obj.id, :class=>"supportFieldID" %>
+            <span><% obj.sequence %> <%= obj.lvalue %></span>
+          </td>
+          <td><span><%= obj.alvalue %></span></td>
+          <%if (modelclass =='opportunity_stage_types')%>
+            <td width="10%"><%=obj.percentage.to_f.fixed_precision(2)%></td>
+          <%end%>
+        <td>
+          <% modelclass = modelclass.downcase if (['campaign_Member_status_types', 'company_activity_types']).include?(modelclass)%>
+          <% path = "/companies/#{@company.id}/#{modelclass}/#{obj.id}" %>
+          <%#= link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), "#{path}/edit?width=450&height=240", :class=> "thickbox")%>
+          <%= link_to "Edit", "#{path}/edit?width=450&height=240", :class=> "thickbox" %>
+            <%if defined?(linkage) %>
+            <%= link_to_remote "De-activate",
+            :url => deactivate_item_path(:company_id=>@company,
+            :modelclass=>modelclass,:item=>obj.id,
+            :linkage=>linkage) unless check_access %>
+           <%end%>
+        </td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<div class="cl"></div>
+<div class="pagging">&nbsp;</div>
+<% unless check_access %>
+  <div class="mid-box-head">De-activated Entries</div>
+  <div class="table">
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+      <tr>
+        <th width="296" align="left"><%= header %></th>
+        <th width="292" align="left">Custom <%= header %></th>
+        <th width="99" align="left">Actions</th>
+      </tr>
+      <% deactive_entries.each do |obj|%>
+        <tr class="<%=cycle("bg1", "bg2")%>">
+          <td><span><%= obj.lvalue %></span></td>
+          <td><span><%= obj.alvalue %></span></td>
+          <td><%= link_to "Activate", "/companies/#{@company.id}/#{modelclass}/#{obj.id}", :confirm => "Are you sure you want to activate this entry?" %></td>
+        </tr>
+      <%end%>
+    </table>
+  </div>
+  <div class="cl"></div>
+  <div class="pagging">&nbsp;</div>
+<% end %>

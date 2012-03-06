@@ -1,0 +1,40 @@
+<% form_for :comment,@comment, :url=>{:controller=>:comments,:action=>:create},:method=>:post ,:html=> {:multipart=> true, :id=>'new_comment'} do |f| -%>
+  <%= hidden_field_tag "comment[created_by_user_id]", @current_user.id%>
+  <%= hidden_field_tag "comment[commentable_id]", params[:commentable_id]%>
+  <%= hidden_field_tag "comment[title]", 'Comment'%>
+  <%= hidden_field_tag "comment[commentable_type]",params[:commentable_type]%>
+  <br class="clear"/>
+  <div class="adminForm ">
+    <table cellspacing="1" border="0" align="center" width="100%" >
+      <tr>
+        <td width="35%" class="txtR" valign="top"><%=t(:text_comment)%>&nbsp;<span class="txt_red">*</span></td>
+        <td width="65%">
+          <%= f.text_area :comment,:size=>8,:rows =>2, :style => 'font-size:11px;',:id=>"comment_comment" %></td></tr>
+      <tr>
+        <td colspan="2" height="8px"></td>
+      </tr>
+      <%if params[:client_task]%>
+        <tr>
+          <td align="right"><%=t(:text_for_client)%></td><td><input type="checkbox" name="comment_for_client" value="1" class="checkBox1" /></td>
+        </tr>
+      <%end%>
+      <tr>
+        <td colspan="2" height="8px">
+          <div class="txtC Pb8">
+            <%=f.submit t(:text_add_comment), :class=>"button"%>
+            <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="tb_remove();" />
+            <br class="clear"/>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <!--TABULAR DATA-->
+    <br class="clear"/>
+  </div>
+<%end%>
+
+
+
+
+
+

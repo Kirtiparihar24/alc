@@ -1,0 +1,1 @@
+<%=select_tag 'document_home[sub_category_id]', options_for_select(@sub_categories.collect{|sc| [sc.alvalue,sc.id]}), :class=>"widthSelectBox",:id=>"sub_categories_combo"%>

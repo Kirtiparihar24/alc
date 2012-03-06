@@ -1,0 +1,56 @@
+<div>
+  <div class="titleHead"><%=t(:text_manager)%></div>
+  <div class="gryBox">
+    <!--TABULAR DATA STARTS-->
+    <div class="gridTable">
+      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tbody>
+          <tr>
+            <th width="40%"><%=t(:text_secretary_name)%></th>
+            <th width="15%"><%=t(:text_status)%></th>
+            <th width="10%"><%=t(:text_notes)%></th>
+            <th width="10%"><%=t(:text_oldest_note)%></th>
+            <th width="10%"><%=t(:text_tasks)%></th>
+            <th width="10%"><%=t(:text_oldest_task)%></th>
+          </tr>
+          <% unless @secratary.blank? %>
+            <% @secratary.each do |secratary|%>
+              <tr class="<%=cycle("bg1","bg2") -%>">
+                <td width="40%">                
+                  <%= link_to(secratary.sp_full_name.try(:capitalize),"#", {:onclick=>"secrataryDetails(#{secratary.user_id});return false;"}) %>
+                </td>
+                <td width="15%"><%=secratary.is_online%></td>
+                <td width="10%"><%=notes_count(secratary.user_id)%></td>
+                <td width="10%"><%=notes_oldest(secratary.user_id).blank? ? 0 :time_ago_in_words(notes_oldest(secratary.user_id).created_at)%></td>
+                <td width="10%"><%=task_count(secratary.user_id)%></td>
+                <td width="10%"><%=task_oldest(secratary.user_id).blank? ? 0 :time_ago_in_words((task_oldest(secratary.user_id)).created_at)%></td>
+              </tr>
+            <%end%>
+          <%end%>
+          <tr class="bg1">
+            <td width="40%">
+              <%=link_to(t(:text_unassigned),"#",{:onclick=>"secrataryUnassign('','unassigned','');return false;"})%>
+            </td>
+            <td width="15%">-</td>
+            <td width="10%">-</td>
+            <td width="10%">-</td>
+            <td width="10%"><%=@task_unassigned_count%></td>
+            <td width="10%"><%=@task_unassigned_oldest.blank? ? 0 :time_ago_in_words(@task_unassigned_oldest.created_at)%></td>
+          </tr>
+          <tr class="lh22">
+            <td width="40%" class="bg3"> </td>
+            <td width="15%" class="bg3"> </td>
+            <td width="10%" class="bg3"><strong><%=t(:text_total)%></strong> (<strong><%=@total_notes_count%></strong>)</td>
+            <td width="10%" class="bg3"> </td>
+            <td width="10%" class="bg3"><strong><%=t(:text_total)%></strong> (<strong><%=@total_task_count%></strong>)</td>
+            <td width="10%" class="bg3"> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--TABULAR DATA ENDS-->
+  </div>
+  <br class="clear" />
+  <div id="secratary_details_task_list_DIV"></div>
+</div>
+ 

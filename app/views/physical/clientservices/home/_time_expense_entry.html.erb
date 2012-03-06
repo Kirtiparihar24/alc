@@ -1,0 +1,318 @@
+<%=raw javascript_include_tag  "time_and_expense/new_time_entry" %>
+<%=raw javascript_include_tag  "time_and_expense/expense_entry_for_time_entry" %>
+<!--CONTENT STARTS-->
+<div id="error_notice"></div>
+<div class="w100" style="width: 924px;">
+  <div id="new_errors"><%#=error_messages_for :time_entry%></div>
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_new_time_entry)%></div>
+    <div class="formMain">
+      <div id="loader" style="float:right; display:none;">
+        <%= image_tag("spinner.gif" ,:size => "25x25") %>
+      </div>
+      <div id="errors_div_for_tne_facebox" style="display: none" class="errorCont">
+      </div>
+<%# form_for :document_home, @document_home ,:url => {:action => 'upload', :mapable_id=> @mapable.id}, :html=> {:multipart=> true} do |f| %>
+      <% form_for :physical_timeandexpenses_time_entry, @time_entry, :url =>{:action => 'create', :controller => 'physical/timeandexpenses/time_and_expenses'}, :html=> {:multipart=> true, :id => :new_physical_timeandexpenses_time_entry, :onsubmit => "return validateFieldsForTnEFaceboxForm('tne_entry_button');"} do |time_entry| %>
+  <%# remote_form_for :physical_timeandexpenses_time_entry, @time_entry, :url =>{:action => 'create', :controller => 'physical/timeandexpenses/time_and_expenses'}, :html=> {:multipart=> true, :id => :new_physical_timeandexpenses_time_entry} do |time_entry| %>
+        <div>
+          <!--BOX 1-->
+          <div class="timeExp">
+            <div class="mt5 w60" >
+              <p>
+                <label><%=t(:label_date)%>&nbsp;</label><span class="star">*</span>
+                <%= time_entry.text_field 'time_entry_date', { :class=>"datepicker date_picker", :size=>"10", :onclick=>"livia_datepicker(this);", :value=> (@entry_date || @time_entry.time_entry_date || Time.zone.now.to_date) } %>
+              </p>
+
+              <p><label><%=t(:label_matters)%>&nbsp;</label>
+                <span id="matters_div"><%=time_entry.select 'matter_id', @team_matters.collect{|matter|[matter.clipped_name,matter.id ]},{:include_blank => true },{ :onchange=>"get_matters_contact();" , :class=>"dropbox1"}%></span>
+                <br class="clear" />
+              </p>
+
+              <p><label><%=t(:label_contact)%>&nbsp;</label>
+                <span id="contact_span">
+                  <%=time_entry.select 'contact_id', @my_contacts.collect{|contact|[contact.full_name,contact.id ]},{:include_blank => true },{ :onchange=>"get_all_matters();" , :class=>"dropbox1"}%>
+                </span>
+
+                <br class="clear" />
+              </p>
+         <p><label><%=t(:label_internal)%>&nbsp;</label><%= time_entry.check_box 'is_internal' ,{:class=>"radio", :checked=>(@time_entry.is_internal), :onclick =>"alert_for_matter_and_contact('physical_timeandexpenses_time_entry_is_internal');"}%></p>
+
+
+              <p><label><%=t(:label_attachment)%>&nbsp;</label>
+                <%= time_entry.file_field 'file', { :value=>get_time_entry_document(@time_entry.id).blank? ? 'NA' : get_time_entry_document(@time_entry.id).data_file_name} %>
+              </p>
+              <br class="clear" />
+            </div>
+            <div>
+              <div class="fl w60" >
+                <p>
+                  <label><%=t(:label_start_time)%>&nbsp;</label>
+                  <%= time_entry.text_field 'start_time' ,:size =>3 , :value => @time_entry.formatted_start_time, :class => "w35p"%>
+                  <label class="fromTo"><%=t(:label_end_time)%>&nbsp;
+                  </label><%= time_entry.text_field 'end_time',:size =>3 , :value => @time_entry.formatted_end_time, :class => "w35p", :onblur => "get_time_difference(); return false;" %>
+                  <label class="fromTo" ><%=t(:label_duration_hrs)%>&nbsp;</label>
+                  <span class="star">*</span><%= time_entry.text_field 'actual_duration',:size =>3 ,:class => "w35p", :onblur=>"calculate_bill_amount()"%>
+                  <br class="clear" />
+                </p>
+                <p>
+                  <label><%=t(:label_activity_type)%>&nbsp;</label>
+                  <%=time_entry.select 'activity_type', current_company.company_activity_types.collect{|activity|[ activity.alvalue,activity.id ]},{},{:class => "", :onchange=>"get_activity_rate();" }%>
+                  <br class="clear" />
+                </p>
+                <p><label><%=t(:label_description)%>&nbsp;</label><span class="star">*</span>
+                  <%=time_entry.text_area 'description' ,:rows =>5,:cols=> 25 , :class =>"textarea"%>
+                  <br  class="clear"/>
+                </p>
+                <br  class="clear"/>
+              </div>
+              <div class="fl w40">
+
+                <p><label><%=t(:label_rate_hr)%>&nbsp;</label><span class="star">*</span>
+                  <%=time_entry.text_field 'actual_activity_rate', :size=>5,:class => 'txtbox',:onblur => "calculate_bill_amount();" %>
+                  <%= hidden_field_tag("physical_timeandexpenses_time_entry[activity_rate]", @time_entry.activity_rate ) %>
+
+                </p>
+                <p><label><%=t(:label_billable)%>&nbsp;</label><%= time_entry.check_box 'is_billable', {:checked=> @time_entry.is_billable , :onclick =>"enable_disable_time_entry_billing();", :class=>"radio"}%></p>
+
+                <br class="clear" />
+                <div class="billableBox">
+                  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tbody>
+                      <tr>
+                        <td class="txtR" width="100"><%=t(:text_bill_amount)%>&nbsp;</td>
+                        <td width="105" >
+                          $ <span id="bill_amount"><%= @time_entry.calculate_billed_amount %></span>
+                        </td>
+                        <td width="45"> </td>
+                      </tr>
+                      <tr>
+                        <td width="100" class="txtR"><%=time_entry.radio_button 'billing_method_type','1',{:checked => @time_entry.billing_method_type.blank? ? false : ((@time_entry.billing_method_type.to_i == 1) ? true : false), :disabled=>@time_entry.billing_method_type.blank? ? true : false, :class=>"radio", :onclick => "disable_amount_and_percent('physical_timeandexpenses_time_entry_billing_percent','physical_timeandexpenses_time_entry_final_billed_amount', null, null);calculate_bill_amount()"}%>                          </td>
+                        <td><%=t(:text_bill_full_amount)%></td>
+                        <td width="45"> </td>
+                      </tr>
+                      <tr>
+                        <td width="100" class="txtR"><%=time_entry.radio_button 'billing_method_type','2',{:checked => @time_entry.billing_method_type.blank? ? false : ((@time_entry.billing_method_type.to_i == 2) ? true : false), :disabled=>@time_entry.billing_method_type.blank? ? true : false, :class=>"radio", :onclick =>"enable_disable_time_percent('physical_timeandexpenses_time_entry_billing_method_type_2','physical_timeandexpenses_time_entry_billing_percent','physical_timeandexpenses_time_entry_final_billed_amount');"}%></td>
+                        <td><%=t(:text_discount)%></td>
+                        <td width="45"><%=time_entry.text_field 'billing_percent',{:size=>5 , :disabled => @time_entry.billing_method_type.blank? ? true : false ,:class =>"w30",:onblur=>"calculate_billing_percent();"}%></td>
+                      </tr>
+                      <tr>
+                        <td width="100" class="borderBot txtR"><%= time_entry.radio_button 'billing_method_type','3',{:checked => @time_entry.billing_method_type.blank? ? false : ((@time_entry.billing_method_type.to_i == 3) ? true : false), :disabled=>@time_entry.billing_method_type.blank? ? true : false,:class=>"radio", :onclick =>"enable_disable_time_percent('physical_timeandexpenses_time_entry_billing_method_type_3','physical_timeandexpenses_time_entry_final_billed_amount','physical_timeandexpenses_time_entry_billing_percent');"}%></td>
+                        <td class="borderBot"><%=t(:text_override_amount)%></td>
+                        <td width="45" class="borderBot"><%=  time_entry.text_field 'final_billed_amount',{:size =>5, :disabled => @time_entry.billing_method_type.blank? ? true : false ,:class =>"w30",:onblur =>"set_override_amount(this);"}%></td>
+                      </tr>
+                      <tr>
+                        <td width="100" align="right"><strong><%=t(:text_final_bill_amt)%>&nbsp;</strong></td>
+                        <td>
+                          <strong>$ <span id="final_billed_amount"><%= @time_entry.final_billed_amount ? number_with_lformat(@time_entry.final_billed_amount) : @time_entry.final_billed_amount %></span></strong>
+                        </td>
+                        <td width="45"> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <br class="clear" />
+            </div>
+          </div>
+          <!--BOX 1-->
+        </div>
+        <br class="clear" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div id ="associated_expense" class="w100">
+          <% time_entry.fields_for :expense_entry,@expense_entry,:html=>{:multipart => true} do |time_expense_entry| %>
+            <div class="gridDiv">
+      
+
+
+                 <div class="back1" id="toggle_busi_cont_detail_toggle">
+        <div class="fl" style="font-size:12px;"><strong><%=t(:text_expenses_entry_form)%></strong></div>
+        <div class="fr textNormal pr5 mtr5">
+          <img src="/images/livia_portal/expand_button.gif" alt="" align="bottom" class="toggle_busi_cont_detail icon_show" />
+          <img src="/images/livia_portal/collapse_button.gif" alt="" align="bottom" class="toggle_busi_cont_detail icon_hide" />
+        </div>
+        <br class="clear" />
+      </div>
+
+
+              <div class="gryBox"  >
+                <div class="gridTable" id="toggle_busi_cont_detail_div" style="display:none;"">
+                  <!--TABULAR DATA STARTS-->
+                  <div class="formMain">
+                    <form action="" method="get">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="expenseEntry">
+                        <tr>
+                          <th width="40"><%=t(:text_expense_type)%></th>
+                          <th width="30%"><%=t(:text_description)%></th>
+                          <th width="60" class=""><%=t(:text_expense_amount)%></th>
+                          <th width="40"><div  class="txtC"><%=t(:text_billable)%></div></th>
+                          <th width="30"><div  class="txtC"><%=t(:text_full)%></div></th>
+                          <th width="60"><div  class="txtC"><%=t(:text_discount)%></div></th>
+                          <th width="80"><div  class="txtC"><%=t(:text_override)%>
+                              <%=t(:text_amount)%></div></th>
+                          <th width="8%" class="txtR"><%=t(:text_final_bill_amount)%></th>
+                          <th width="50"><div  class="txtC"><%=t(:text_attachment)%></div></th>
+                        </tr>
+
+
+                        <% for expense_entry in 1..2%>
+
+                          <% file_data = "file_data_"+expense_entry.to_s %>
+
+                          <%= hidden_field_tag "#{expense_entry}[expense_entry][is_internal]", @time_entry.is_internal %>
+
+                          <%= hidden_field_tag "#{expense_entry}[expense_entry][expense_entry_date]", @expense_entry_date %>
+                          <%= hidden_field_tag "#{expense_entry}[expense_entry][contact_id]", @time_entry.contact_id %>
+                          <%= hidden_field_tag "#{expense_entry}[expense_entry][matter_id]", @time_entry.matter_id %>
+                          <tr>
+                            <td width="40">
+
+                              <%=select_tag "#{expense_entry}[expense_entry][expense_type]", options_from_collection_for_select(current_company.expense_types, :id ,:lvalue ),{:class => "typeselect"}%>
+                            </td>
+
+                            <td width="35%" valign="top"><%=text_area_tag "#{expense_entry}[expense_entry][description]", '' ,:warp =>"virtual", :rows =>'1' %><span class="star" style="vertical-align:top;">*</span>
+                            </td>
+
+
+                            <td width="60" class=""><%=text_field_tag "#{expense_entry}[expense_entry][expense_amount]",  '' ,:class =>'txtbox',:size =>4, :onblur=>"disable_all(#{expense_entry},this);" %><span class="star" style="vertical-align:top;">*</span>
+
+                            </td>
+
+   <td width="40" class=""><div class="txtC"> <%= check_box( expense_entry, 'expense_entry[is_billable]', options = {:id=> expense_entry,:checked => false,:disabled => @time_entry.is_internal, :onclick=>"enable_disable_billing(#{expense_entry});"}) %>
+                          </div>
+                        </td>
+                            
+
+
+                            <td width="30" class=""> <div class="txtC"><%=radio_button_tag "#{expense_entry}[expense_entry][billing_method_type]",  1 , false , :disabled => "true", :onclick=>"disable_amount_and_percent('#{expense_entry}_expense_entry_billing_percent','#{expense_entry}_expense_entry_final_billed_amount', '#{expense_entry}_expense_entry_expense_amount', '#{expense_entry}_final_billed_amount')"%>
+                              </div>
+                            </td>
+
+                            <td width="60" class=""><div class="txtC">
+                                <%=radio_button_tag "#{expense_entry}[expense_entry][billing_method_type]", 2 ,  false, :class=> "radio", :disabled => "true",:onclick=>"enable_disable_time_percent('#{expense_entry}_expense_entry_billing_method_type_2', '#{expense_entry}_expense_entry_billing_percent','#{expense_entry}_expense_entry_final_billed_amount')" %>
+                                <%= text_field_tag "#{expense_entry}[expense_entry][billing_percent]", '',:class =>'w30',:size => 4 ,:disabled=> true, :onblur =>"calculate_discount_rate_for_expense_entry('#{expense_entry}_expense_entry_expense_amount','#{expense_entry}_expense_entry_billing_percent',#{expense_entry})"%>
+                              </div>
+                            </td>
+
+
+                            <td width="80" class=""> <div class="txtC"><%=radio_button_tag "#{expense_entry}[expense_entry][billing_method_type]", 3 ,	false, :class=>'radio', :disabled => "true",:onclick=>"enable_disable_time_percent('#{expense_entry}_expense_entry_billing_method_type_3','#{expense_entry}_expense_entry_final_billed_amount','#{expense_entry}_expense_entry_billing_percent')"%>
+                                <%= text_field_tag "#{expense_entry}[expense_entry][final_billed_amount]", '',:class =>'w30',:size => 4 , :disabled=> true, :onblur =>"set_expense_billing_amount('#{expense_entry}_expense_entry_final_billed_amount','#{expense_entry}_expense_entry_expense_amount','#{expense_entry}_final_billed_amount');"%>
+                              </div>
+                            </td>
+
+                            <td width="8%" class="txtR">$ <span id ="<%=expense_entry%>_final_billed_amount"><strong><%=t(:text_0_0)%></strong></span></td>
+
+
+                            <td width="50" class="txtC">
+                              <div id=<%="#{file_data}" %> >
+                                <a href="#"><%= image_tag('/images/livia_portal/upload-document.gif',{:alt =>"Upload Document", :title =>"Upload", :border => 0}) %></a>
+                              </div>
+                            </td>
+
+                          </tr>
+                          <script type="text/javascript">
+      <% input_name ="#{expense_entry}[expense_entry][file]" %>
+        jQuery.noConflict();
+        jQuery("#<%= file_data %> a").click(function () {
+          jQuery("#<%= file_data %> a").remove();
+          jQuery("#<%= file_data %>").append("<input type='file' size='10' name='<%= input_name %>' style='z-index:99999;width:auto;border:1px solid #aed0eb;' />");
+        });
+                          </script>
+
+                          </tr>
+
+                        <% end  %>
+
+                      </table>
+                      <br class="clear"/>
+                      <div class="txtC mtb8" >
+                        <br class="clear"/>
+                      </div>
+
+                    <br class="clear"/>
+                  </div>
+
+                </div>
+              </div>
+              <!--TABULAR DATA ENDS-->
+            </div>
+
+          </div>
+        <% end  %>
+
+
+
+
+
+
+    <br class="clear" />
+        <div class="txtC" id="save_buttons">
+          <%= time_entry.submit t(:text_save_n_add_associated_expense), :id => 'tne_entry_button' %>
+          <input type="submit" id="cancel" value="<%= t(:text_cancel) %>" onclick="parent.tb_remove();return false;"/>          
+          <%=hidden_field :called_from_home, true%>
+          <br class="clear"/>
+        </div>
+        <br class="clear" />
+      </div>
+      <!--TABULAR DATA ENDS-->
+    </div>
+  <% end %>
+  <br class="clear" />
+  <div id ="associated_expense" class="w100">
+  </div>
+</div>
+<!--CONTENT STARTS-->
+<br class="clear" />
+<!--MIDDLE CONTENT ENDS -->
+
+<script type="text/javascript">
+
+</script>
+
+<script language="javascript" type="text/javascript">
+  livia_datepicker();
+  //initliviatoggle();
+
+   jQuery("#toggle_busi_cont_detail_toggle").click(function(){
+        jQuery("#toggle_busi_cont_detail_div").toggle();
+        jQuery(".toggle_busi_cont_detail").toggle();
+    });
+
+
+</script>
+
+
+<style type="text/css">
+  #ui-datepicker-div
+  {
+    z-index: 9999999;
+  }
+</style>

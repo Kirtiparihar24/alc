@@ -1,0 +1,16 @@
+<div id ="browser" class="column_main">
+  <div  class="w100">
+    <br class="clear"/>
+    <div class="fl" id="breadcrumb" ><%if controller.action_name !='search_document'%><%=path(controller.controller_name, @folder, false,@matter)%><%end%></div>
+    <div class="fr textR fix_mb fix_mb_ie link_blue">
+      <%=get_checkout_all_link(@matter, @emp_user_id)%>
+      <%=link_to("<span class='icon_new_folder fl mr5'></span><span class='fl mr10 icon_name'>New Folder&nbsp;</span>", "#", {:onclick=>"tb_show('New Folder', '#{create_folder_matter_document_homes_path(:parent_id=>@parent_id, :height=>110, :width=>300)}', '')"})%>&nbsp;
+      <% path = @parent_id.blank? ? "#{folder_list_matter_document_homes_path()}?&flash=" : "#{folder_list_matter_document_homes_path(:id=> params[:id]||params[:parent_id])}&flash=" %>
+      <%= link_to("<span class='icon_mass_upload fl mr5' id='matter'></span><span class='fl mr5 icon_name' id='matter'>File(s) Upload</span>","#", {:class=> "vtip",:multiple=>true, :id => "upload_multi", :title=> "File(s) Upload", :name=> "Mass Upload File", :parentid=>@parent_id.to_s,:current_user_id=>current_user.id,:employeeuserid=>@emp_user_id,:company_id=>@company.id,:matter_id=>@matter.id,:document_home_matter_task_ids=>@linked[:task],:document_home_matter_fact_ids=>@linked[:fact],:document_home_matter_risk_ids=>@linked[:risk],:document_home_matter_research_ids=>@linked[:research],:document_home_matter_issue_ids=>@linked[:issue],:custom_title => get_folder_name(@folder),:path=>"/document_homes/create_multiple?stop=",:return_path=> path})%>
+      <br class="clear"/>
+    </div>
+    <br class="clear"/>
+  </div>
+  <%= render :partial => 'document_homes/document_search_result' %>
+</div>
+<%=raw paginate_for_five_links(@documenthomes.total_pages, {:action=>"index",:per_page=>params[:per_page]}, params[:page]) if @documenthomes.total_pages > 1 %>

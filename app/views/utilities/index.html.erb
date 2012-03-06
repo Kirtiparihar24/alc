@@ -1,0 +1,42 @@
+<%= raw javascript_include_tag "jquery/jquery.MultiFile.js" %>
+<h2 class="title_main"><%= t(:text_menu_utility) %>
+  <br class="clear" />
+</h2>
+<div class="p5">
+  <% if @employee.present? %>
+    <% if(@employee.errors.length > 0) %>
+      <div class='message_error_div'>
+        <%= error_messages_for(:employee) %>
+        <%= flash[:error]%>
+      </div>
+    <% end %>
+  <% end %>
+  <% if @tne_invoice_setting.present? %>
+    <% if(@tne_invoice_setting.errors.length > 0) %>
+      <div class='message_error_div'>
+        <%= error_messages_for(:tne_invoice_setting) %>
+        <%= flash[:error]%>
+      </div>
+    <% end %>
+  <% end %>
+  <% if @user.present? %>
+    <% if(@user.errors.length > 0) %>
+      <div class='message_error_div'>
+        <%= error_messages_for(:user) %>
+        <%= flash[:error]%>
+      </div>
+    <% end %>
+  <% end %>
+  <% if(@company.errors.length > 0 ) %>
+    <div class='message_error_div'>
+      <%= error_messages_for("company") %>
+      <div class="clear"></div>
+    </div>
+  <% end %>
+  <%= render :partial => "password_management" %><br/>
+  <%= render :partial => "security_questions" %><br/>
+  <%= render :partial => "new" %><br/>
+  <% if can? :manage, TneInvoice %>
+    <%= render :partial => "tne_invoice_settings/form" %>
+  <% end %>
+</div>

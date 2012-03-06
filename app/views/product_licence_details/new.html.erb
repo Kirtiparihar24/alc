@@ -1,0 +1,11 @@
+<h1><%=t(:text_new_product_licence_detail)%></h1>
+
+<% form_for(@product_licence_detail) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit t(:text_create) %>
+  </p>
+<% end %>
+
+<%= link_to t(:label_back), product_licence_details_path %>

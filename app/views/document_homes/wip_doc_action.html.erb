@@ -1,0 +1,34 @@
+<div  id="loader1" style="display:none;"><img src='/images/loading.gif' /></div>
+<div class="message_error_div" id="modal_new_document_errors" style="display: none;"></div>
+<% form_tag :action=>'wip_doc_action' do  %>
+  <%=hidden_field_tag 'document_home[id]',@document_home%>
+  <div class="form_table">
+    <table style="margin: 0pt auto;" width="100%" border="0" cellpadding="3" cellspacing="3">
+      <tbody>
+        <tr>
+          <td colspan="2"    class="seperator_dotted_hori"> The document you are trying to check in has a Interim Doc. Please select an option to continue</td>
+        </tr>
+        <tr>
+          <td width="7%"><%=radio_button_tag(:perform,:supercede,true) %></td>
+          <td width="16%"><%= t(:text_create_new_version) %></td>
+        </tr>
+        <tr>
+          <td width="7%" align="left"><%= radio_button_tag(:perform,:replace,false) %></td>
+          <td width="13%"><%= t(:text_wip_replace_doc) %></td>
+        </tr>
+        <tr>
+          <td width="7%"><%=radio_button_tag(:perform,:discard,false) %></td>
+          <td width="24%"><%=t(:text_discard_wip)%></td>
+        </tr>
+        <tr>
+          <td width="203" align="left"></td>
+          <td width="743" align="left"> </td>
+        </tr>
+        <tr>
+          <td align="center" colspan="2">
+            <%= submit_tag t(:text_submit), :disable_with => "Please wait..."%>  </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<%end%>

@@ -1,0 +1,20 @@
+<% content_for :company_selection do %>
+  <div id="topheadContainer"><div class="title fl"><%= @company.name  if (session[:company_id].present? and current_user.role?:livia_admin) %></div></div>
+<% end %>
+<div class="box-head"><h2><%=t(:text_new_employee)%></h2></div>
+<% form_for :employee, @employee ,:url => {:action => 'create'} do |f|%>
+  <div class="form">
+    <%if(@employee.errors.length > 0)%>
+      <div class='errorCont'>
+        <%=f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <%=render :partial =>'emp_fields', :locals=>{:f=>f}%>
+    <%=render :partial =>'userfields'%>
+    <div class="buttons">
+      <%=f.submit t(:text_save), :class=>"button"%> &nbsp;
+      <%=link_to t(:label_back), company_employees_path(:company_id =>@company.id), :class=>"button"%>
+    </div>
+  </div>
+<% end %>

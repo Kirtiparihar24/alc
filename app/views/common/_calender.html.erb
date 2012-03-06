@@ -1,0 +1,97 @@
+<!--Header ends here -->
+<!--Middle Body starts here -->
+<script type="text/javascript">
+  common_datepicker();
+</script>
+
+<div class="mainContnr">
+  <span id="main_spinner" class="LoadingDiv" style="display:none;"></span>
+  <%=render :partial => '/common/common_flash_message'%>
+  <!--Left Container starts here -->
+  <div class="leftCol">
+    <!-- Calender Div @start -->
+    <div class="leftMonthDiv">
+      <div id="datepicker" style="font-size:1em;"></div>
+      <div class="monthHeadBox">
+        <%= link_to t(:label_ist), "/set_time_zone/Mumbai"%>|
+        <%= link_to t(:label_edt), "/set_time_zone/Eastern Time (US & Canada)"%>|
+        <%= link_to t(:label_cdt), "/set_time_zone/Central Time (US & Canada)"%>|
+        <%= link_to t(:label_pdt), "/set_time_zone/Pacific Time (US & Canada)"%>
+      </div><br />
+      <% if controller.action_name.eql?('show') && controller.controller_name.eql?('calendars')%>
+        <div class="monthHeadBox">
+          <%= link_to t(:label_tasks), "#", {:onclick => "insert_task_view();"} %>
+          <script>
+            function insert_task_view()
+            {
+              document.getElementById("presence").style.display = "block";
+            }
+          </script>
+        </div><br class="clear" /><br class="clear" />
+        <div id="header">
+          <div class="fl">
+            <%=image_tag "/images/livia_portal/icon_max.gif",:alt =>"Maximize",:class =>"toggle_mycal icon_left" %>
+            <%=image_tag "/images/livia_portal/icon_min.gif",:alt =>"Minimize",:class =>"toggle_mycal icon_right" %>
+          </div>
+          <div class="fl pl5"><%=t(:text_my_calendars)%></div>
+          <br clear="all" />
+        </div>
+        <div id="nav">
+          <ul class="sidebar">
+            <li>
+              <a href="#email" class="linkclass"><%=t(:text_calendar_settings)%></a>
+              <div id="email" class="setting calsetwidth">
+                <ul>
+                  <li><a href="#"><%=t(:text_display_only_this_calendar)%></a></li>
+                  <li><a href="#"><%=t(:text_calendar_settings)%></a></li>
+                  <li><a href="#"><%=t(:text_create_event_on_this_calendar)%></a></li>
+                  <li><a href="#"><%=t(:text_share_this_calendar)%></a></li>
+                  <li><a href="#" class="last"><%=t(:text_notifications)%></a></li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <a href="#tasks" class="linkclass last"><%=t(:text_timezones)%></a>
+              <div id="tasks" class="setting tzwidth">
+                <ul>
+                  <li><a href="#"><%=t(:text_ist)%></a></li>
+                  <li><a href="#"><%=t(:text_edt)%></a></li>
+                  <li><a href="#"><%=t(:text_cdt)%></a></li>
+                  <li><a href="#" class="last"><%=t(:text_pdt)%></a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div><br class="clear" /><br class="clear" />
+      <%end%>
+      <div class="monthHeadBox" id="apptHeader">
+        <div class="fl">
+          <%=image_tag "/images/livia_portal/icon_max.gif",:alt =>"Maximize",:class =>"toggle_appt icon_left" %>
+          <%=image_tag "/images/livia_portal/icon_min.gif",:alt =>"Minimize",:class =>"toggle_appt icon_right" %>
+        </div>
+        <div class="fl pl5"><%=t(:text_appointments)%></div>
+        <br clear="all" />
+      </div>
+      <div id="appointments"><%= render :partial => 'layouts/appointments' %></div>
+      <br class="clear" />
+      <%if controller.controller_name.eql?('communications') && controller.action_name.eql?('new')%>
+        <div class="monthHeadBox" id="viewHeader">
+          <div class="fl">
+            <%=image_tag "/images/livia_portal/icon_max.gif",:alt =>"Maximize",:class =>"toggle_view icon_left" %>
+            <%=image_tag "/images/livia_portal/icon_min.gif",:alt =>"Minimize",:class =>"toggle_view icon_right" %>
+          </div>
+          <div class="fl pl5"><%=t(:text_views)%></div>
+          <br clear="all" />
+        </div>
+        <div class="leftViews" id="viewHeaderArea">
+          <%= link_to_remote t(:label_my_tasks),:url => { :action => "named_views_my_task"}%>
+          <%= link_to_remote t(:text_secretary_s_tasks),:url => { :action => "named_views_secretarys_task"}%>
+          <%= link_to_remote t(:label_contacts),:url => { :action => "named_views_contacts", :sort_key=>'first_name',:sort_order=>'asc' }%>
+          <%= link_to_remote t(:label_accounts),:url => { :action => "named_views_accounts", :sort_key=>'name',:sort_order=>'asc' }%>
+          <%= link_to_remote t(:label_opportunities),:url => { :action => "named_views_opportunities", :sort_key=>'stage',:sort_order=>'asc' }%>
+          <%= link_to_remote t(:label_matters),:url => { :action => "named_views_matters", :sort_key=>'name',:sort_order=>'desc' }%>
+        </div>
+      <%end%>
+    </div>    
+  </div>
+</div>

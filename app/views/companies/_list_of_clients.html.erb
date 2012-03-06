@@ -1,0 +1,23 @@
+<div class="box-head"><h2 class="left">Listing Default Security Questions</h2></div>
+<div class="actionLinks"><%=link_to(t(:text_add_new_client), new_client_companies_path(:company_id=>@company.id))%></div>
+<div class="table">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+      <tr>
+        <th width="20%" align="left"><%=t(:text_name_of_the_client)%></th>
+        <th width="20%" align="left"><%=t(:text_username)%></th>
+        <th width="43%" align="left"><%=t(:text_matters)%></th>
+        <th width="17%" align="left"><%=t(:text_action)%></th>
+      </tr>
+      <%@clients.each do |client|%>
+        <tr class="bg1">
+          <td><%=client.full_name%></td>
+          <td><%=client.user.username rescue '-'%></td>
+          <td><%=client.matter_peoples.collect {|e| display_matter_names(e.matter_id)}.join(",")%></td>
+          <td><%=link_to(t(:label_reset_password), reset_password_form_user_path(:id=>client.user_id, :height=>240, :width => 450), :class=>"thickbox")%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<div class="pagging"></div>

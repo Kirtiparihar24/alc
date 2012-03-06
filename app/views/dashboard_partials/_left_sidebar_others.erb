@@ -1,0 +1,17 @@
+<table align="left" class="w18">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="ot_val_check<%=@selected_charts["contact_graph"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["contact_graph"][1]%>);" type="checkbox" <%=@selected_charts["contact_graph"][0]%> name="charts[<%=@selected_charts["contact_graph"][1]%>]" value="<%=@checked_charts["contact_graph"] ? @checked_charts["contact_graph"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=contact_graph&height=500&width=600' class="thickbox preview" title="Contacts Breakup - By Stage" name="Contacts Breakup - By Stage" id="/images/charts/big_1.jpg"><img class="border_gray" src="/images/charts/contact_graph.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="contact_graph" href='/dashboards/dashboard_show?chart_name=contact_graph&height=500&width=600' class="thickbox" title="Contacts Breakup - By Stage" name="Contacts Breakup - By Stage">Contacts Breakup - By Stage&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+

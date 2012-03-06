@@ -1,0 +1,21 @@
+<div style="text-align:left;margin-top:10px;">
+  <div id="one_field_error_div" class="message_error_div" style="display:none" align="left">
+  </div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <table border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+    <tr>
+      <td width="30%" align="center">
+        <label><%= t(:label_name)%><span class="alert_message">*</span></label>
+      </td>
+      <td width="70%" align="left"><%= text_field_tag :folder_name, "", :maxlength => 254, :style => "width: 65%"%></td>
+    </tr>
+    <tr><td colspan="2" height="2"></td></tr>
+    <tr align="right">
+      <td align="center" colspan="2">
+        <input type="submit" class="button" value="<%= t(:text_create) %>" name="create" id="create_folder" onclick="return createFolder('<%= create_folder_workspaces_path(:parent_id => params[:parent_id], :selected_node => params[:selected_node], :page => params[:page], :per_page => params[:per_page]) %>');"/>
+        <input type="button" id="Login2" value="Cancel" onclick="tb_remove(); " class="button"/></td>
+    </tr>
+  </table>
+</div>
+<div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;111</div>

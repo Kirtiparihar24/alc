@@ -1,0 +1,54 @@
+<script type="text/javascript">    
+  jQuery(document).ready(function(){
+    new_tool_tip();
+  });
+</script>﻿
+<div id="ajax_sort">
+  <% invoice = params[:commentable_type]=="TneInvoice" %>
+  <div style="text-align:center;">
+    <div class="tabular_listing mt10">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;" class="border_gray">
+        <tr>
+          <% if histories.length>0 %>
+            <%= column_sort_link(t(:text_title),'title',params[:col], '25%', "left", { :commentable_type => params[:commentable_type], :id=>params[:id], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_user),'users.first_name',params[:col], '20%', "left", { :commentable_type => params[:commentable_type], :id=>params[:id], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:label_details),'comment',params[:col], '35%', "left", { :commentable_type => params[:commentable_type], :id=>params[:id], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_date),'comments.created_at',params[:col], '15%', "center", { :commentable_type => params[:commentable_type], :id=>params[:id], :ajax_sort => true, :class=>"tablesorter"}) %>
+          <% else %>
+            <th width="25%" align="left"> <%= t(:text_title) %> </th>
+            <th width="20%" align="left"> <%= t(:text_user) %> </th>
+            <th width="35%" align="left"> <%= t(:text_details) %> </th>
+            <th width="15%" align="left"> <%= t(:text_date) %> </th>
+           <% end %>
+          <% if invoice %> <th width="4%"><%=t(:text_pdf)%></th> <% end %>
+          <% if invoice %> <th width="4%"><%=t(:label_XLS)%></th> <% end %>
+         </tr>
+        <%histories.each do |history|%>
+          <tr class="<%= cycle('bg1','bg2')%>">
+            <%if history.title!='Comment' %>
+              <td align="left"><%= raw truncate_hover(history.title, 20) %></td>
+              <td align="left"><%= raw truncate_hover(history.user.current_lawyer.try(:full_name).try(:titleize), 20) %></td>
+              <td align="left"><%= raw(truncate_hover(history.comment, 45)) %></td>
+              <td align="center"><%= livia_date(history.created_at) %></td>
+            <%end%>
+            <% if invoice %>
+              <td align="center">
+                <% if history.document_homes.last%>
+                  <% pdf_doc=history.document_homes.last.latest_doc %>
+                  <%= link_to "<span class='icon_pdf fl' style='margin:5px;'></span>", document_home_path(pdf_doc)%>
+                <%end%>
+              </td>
+              <td align="center">
+                <%if history.document_homes.first and (history.document_homes.first.latest_doc.data_content_type.include?("summary info") or history.document_homes.first.latest_doc.data_content_type.include?("vnd.ms-excel") )%>
+                  <% xls_doc=history.document_homes.first.latest_doc %>
+                  <%= link_to "<span class='icon_xls fl' style='margin:5px;'></span>", document_home_path(xls_doc)%>
+                <%end%>
+              </td>
+            <% end %>
+          </tr>
+        <%end%>
+      </table>
+    </div>
+  </div>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;22</div>
+</div>

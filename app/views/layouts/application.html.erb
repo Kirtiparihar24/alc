@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%= get_title_for_site %></title>
+    <% if devise_controller? or controller_name == 'access_codes' %>
+      <%= stylesheet_link_tag "reset.css", "new_thickbox.css", "base.css" %>
+      <%=style_sheet %>
+      <%= raw(javascript_include_tag "jquery/jquery-1.7.1.min.js","jquery/jquery.tools.min.js","latest/new_thickbox.js",'livia_common.js','latest/resolution.js') %>
+    <% else %>
+      <!--PLEASE DO NOT INCLUDE BASE.CSS AS PER REQUIRMENT WE HAD APPLIED BROWSER CSS.  -->
+      <%= include_stylesheets :application_stylesheet ,:media => 'all'%>
+      <%= include_stylesheets :plupload_stylesheet ,:media => 'all'%>
+      <%= include_stylesheets :base_stylesheet ,:media => 'all'%>
+      <%= style_sheet %>
+      <%= stylesheet_link_tag "jquery.countdown.css" %>
+      <%= include_javascripts :application_javascripts %>
+      <%= raw(javascript_include_tag 'jquery/jquery.jeditable.js','time_and_expense/form.js') %>
+      <%= include_javascripts :plupload_javascripts %>
+      <%= raw(javascript_include_tag "application.js" ,"sticky_note_core.js", "jquery.countdown.min.js") %>
+      <%= raw(javascript_include_tag "latest/livia_keycode.js")  if current_user.sign_in_count>1 %>
+      <%= raw(javascript_include_tag "/javascripts/jquery/jquery-ui-1.8.16/ui/minified/jquery-ui.min.js") %>
+      <%= raw(javascript_include_tag "rails.js") %>
+      <%= csrf_meta_tag %>
+      <style type="text/css">
+        .help_tip span{font-weight:bold; background-color:#000; color:#fff; }
+        .coming_soon{border:1px solid #ccc;  background:#FFE9A9; width:200px; position:absolute; text-align:center; z-index:100}
+        #coming_fav{margin:-120px 0 0 -120px;} #coming_cal{margin:10px 0 0 30px;} #coming_settings, #coming_know{margin:0 0 0 -120px}
+        .coming_soon div#main{border:4px solid #CFEAED; }
+        .coming_soon div#link{text-align:right} .coming_soon a, .coming_soon a:visited{color:#000; text-decoration:none}
+        /*img.ui-datepicker-trigger{position:absolute; margin:2px 0 0 2px}*/
+        .livia_dashboardroller {position: absolute; width:200px;word-wrap:break-word;padding: 10px 10px; margin-left:50px; z-index: 9999; color: #303030; border:1px solid #aed0eb; background:#e3f1fa;line-height: 18px; color:#000;font:normal 1em Arial, Helvetica, sans-serif; text-decoration:none; text-align:left;}
+      </style>
+    <% end %>
+    <script type="text/javascript">
+      jQuery(document).ready(function(){
+<% if devise_controller? %>
+      jQuery('body').removeClass('main_page_body');
+      jQuery('body').addClass('login');
+<%end%>
+  });
+    </script>
+    <script type="text/javascript">
+      var calcHeight = function() {
+        var headerDimensions = jQuery('#header-div').height() + jQuery('#navigation-div').height() + jQuery('#breadcrumb-div').height();
+        jQuery('#helpdesk').height(jQuery(window).height() - headerDimensions);
+      }
+      function changeFrame() {
+        var oIframe = document.getElementById("helpdesk");
+        var oDoc = oIframe.contentWindow || oIframe.contentDocument;
+        if (oDoc.document) {
+          oDoc = oDoc.document;
+        }
+        oDoc.body.style.backgroundColor = "#00f";
+        return true;
+      }
+    </script>
+    <%= yield(:head) %>
+    <%= yield(:js) %>
+  </head>
+  <body class="body_container main_page_body" >
+    <script type='javascript'>
+      if(!(jQuery.cookie('timezone'))) {
+      current_time = new Date();
+      jQuery.cookie('timezone', current_time.getTimezoneOffset(), { path: '/', expires: 10 } );
+      }
+    </script>
+    <% unless devise_controller? %>
+      <div id="doc" class="body_container">
+        <script type="text/javascript">
+          jQuery(document).ready(function(){
+  <% unless is_secretary_or_team_manager? || current_user.sign_in_count<1 %>
+        fetchTimer();
+  <% end %>
+    });
+    jQuery.noConflict();
+    application_layout_init();
+    if(Cookies['sNo']=='true'){
+      jQuery(document).ready(function(){
+        setFlagForStickyNote(true)
+      });
+    }
+        </script>
+        <div id="timer-container"></div>
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td>
+                <%= render :partial =>'layouts/header' %>
+                <%= render :partial =>'layouts/header_tabs' %>
+                <div id="middleBody-div">
+                  <% if params[:controller] == "physical/clientservices/home" %>
+                    <div class="searchboxDiv w100">
+                      <div class="search_div fr">
+                        <%= text_field_tag :search_string, '', :class => "search", :size => "30" %>
+                        <span onclick="searchInCommon();" class="icon_search fr"></span></div>
+                      <br class="clear"/>
+                    </div>
+                  <% else %>
+                    <div class="mtb5" id="breadcrumb-div">
+                      <div id="breadcrumb" class="fl"><%= raw render_breadcrumbs :separator => '<div class="arrow_dotted"></div>' %></div>
+                      <%if request.get? && !current_user.service_provider%>
+                        <div class="fr mlr2 ie7_mt4">
+                          <%=link_to "<span class='btn_addPageFav fr'></span>", "#", :onclick=> "tb_show('#{t(:text_add )} #{t(:text_favorite)}','#{physical_clientservices_add_to_fav_path}?height=100&width=350','');return false;", :class => "btn_addPageFav fr vtip", :title => "#{t(:text_add )} #{t(:text_favorite)}" %>
+                        </div>
+                      <%end%>
+                      <br class="clear" />
+                    </div>
+                  <% end %>
+                  <div id="altnotice"></div>
+                  <div class="main_containt">
+                    <div id="ajax_flash" class ="sucessCont"></div>
+                    <%= render :partial => '/common/common_flash_message' %>
+                    <% unless ['home', 'company_reports', 'zimbra_mail', 'passwords', 'communications'].include?(controller_name) %>
+                      <div id="column_left_accordion" class="column_left">
+                        <% if controller_name.match("^rpt") %>
+                          <%= render :partial => 'layouts/left_report_sidebar' %>
+                        <% else %>
+                          <%= render :partial =>'layouts/left_sidebar' %>
+                        <% end %>
+                      </div>
+                      <script type="text/javascript">
+                        jQuery(document).ready(function(){
+                          var config = {
+                            sensitivity: 2, // number = sensitivity threshold (must be 1 or higher)
+                            interval: 100, // number = milliseconds for onMouseOver polling interval
+                            over: megaHoverOver, // function = onMouseOver callback (REQUIRED)
+                            timeout: 500, // number = milliseconds delay before onMouseOut
+                            out: megaHoverOut // function = onMouseOut callback (REQUIRED)
+                          };
+                          jQuery("ul#topnav li .sub").css({
+                            'opacity':'0'
+                          });
+                          jQuery("ul#topnav li").hoverIntent(config);
+                        });
+                      </script>
+                      <% if controller_name.eql?("workspaces")%>
+                        <div class="fr dashbard_left">
+                          <%= yield %>
+                          <div class="pagiText"><%=t(:label_page)%>&nbsp;<%=h @pagenumber%></div>
+                        </div>
+                      <% elsif controller_name.eql?("repositories")%>
+                        <div class="fr dashbard_left">
+                          <%= yield %>
+                          <div class="pagiText"><%=t(:label_page)%>&nbsp;<%=h @pagenumber%></div>
+                        </div>
+                      <% elsif controller_name.eql?("document_managers")%>
+                        <div class="fr dashbard_left">
+                          <%= yield %>
+                          <div class="pagiText"><%=t(:label_page)%>&nbsp;<%=h @pagenumber%></div>
+                        </div>
+                      <% else %>
+                        <div class="column_right fr">
+                          <%= yield %>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <%= yield %>
+                    <% end %>
+                    <br class="clear" />
+
+                    <% if controller_name.eql?("workspaces")%>
+                      <div class="pagiText"></div>
+                    <%elsif controller_name.eql?("repositories")%>
+                      <div class="pagiText"></div>
+                    <%elsif controller_name.eql?("document_managers") %>
+                      <div class="pagiText"></div>
+                    <%else%>
+                      <div class="pagiText"><%=t(:label_page)%>&nbsp;<%=h @pagenumber%></div>
+                    <%end%>
+                    <br class="clear" />
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <%= yield %>
+    <% end %>
+    <%unless devise_controller? %>
+      <%= render :partial =>'layouts/footer' %>
+      <%=hidden_field_tag "user_offset",Time.zone.now.utc_offset%>
+      <%=hidden_field_tag "user_of", Time.zone.now.to_time.strftime("%Z")%>
+      <%=hidden_field_tag "user_date", Time.zone.now.to_date %>
+      <%=hidden_field_tag "user_time", Time.zone.now.to_time.strftime("%H:%M:%S") %>
+    <%end%>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<div class="gryBox">
+  <div class="p5 gridTable">
+    <table width="100%" border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <th width="30%"  style="text-align: center" ><%=t(:text_company)%></th>
+        <th width="30%"  style="text-align: center" ><%=t(:text_lawyer)%></th>
+        <th width="20%"  style="text-align: center" >Priority</th>
+
+      </tr>
+      <%unless @secretary.service_provider_employee_mappings.blank? %>
+        <%@secretary.service_provider_employee_mappings.each do |sa|%>
+          <tr>
+            <td class="textBlack11Height10L" ><%=sa.user.company.name%></td>
+            <td class="textBlack11Height10L" ><%=sa.user.try(:full_name)%></td>
+            <td>
+              <%pt=(@priority_types.select {|pt| pt.lvalue == sa.priority.to_s})%>
+              <%selected = pt.blank? ? "" : pt.first.lvalue.to_s %>
+              <%=collection_select sa, :priority, @priority_types,:lvalue, :alvalue,{:include_blank => 'Null', :selected=>selected},
+                {:class=>"dropbox",:style=>"width:121px;",:id => "setpriority_#{sa.id}",:onchange=>"update_mapping_priority(#{@secretary.id},#{sa.id});return false;"}%>
+            </td>
+          </tr>
+        <%end%>
+      <%else%>
+        <tr >
+          <td colspan="3">
+            <div class="warningCont m5">
+              <%= secretary.sp_full_name + " "%><%=t(:text_is_not_serving_to_any_lawyer)%>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+    </table>
+  </div>
+</div>
+
+

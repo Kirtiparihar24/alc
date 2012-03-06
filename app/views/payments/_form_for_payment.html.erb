@@ -1,0 +1,63 @@
+<script type="text/javascript">
+  livia_datepicker('payment_payment_date');
+  livia_datepicker('payment_cheque_date');
+</script>
+
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_payment)%></div>
+  <div class="formMain">
+    <% form_for @payment,:url => {:controller=>'payments',:action => 'create'} do |f| %>
+      <input type="hidden" id="invoice_id" name="invoice_id" value="<%=params[:id]%>" />
+      <%if(@payment.errors.length > 0)%>
+        <div class='errorCont'>
+          <%=f.error_messages %>
+          <div class="clear"></div>
+        </div>
+      <%end%>
+      <div class="w45 fl">
+        <div class="clear"></div>
+        <div>
+          <p>
+            <label><%=t(:label_payment_mode)%><span class="text_red">*</span></label>
+            <%=f.collection_select(:payment_mode,  @payment_modes, :id, :lvalue, {:include_blank => "--Select--",:selected => @mode_id.blank?? nil :@mode_id.to_i},{ :onChange => "payment_mode_change(this.value)"})%>
+          </p>
+          <br class="clear"/>
+          <p>
+            <label><%=t(:label_amount)%><span class="text_red">*</span></label>
+            <%=f.text_field :amount, :value=>"#{@amount}",:class=>"",:size =>'25', :id => 'pAmount'%>
+          </p>
+          <br class="clear"/>
+          <p>
+            <label><%=t(:label_payment_date)%><span class="text_red">*</span></label><%=f.text_field :payment_date, :id=>"payment_payment_date" , :readonly=>"true", :class=>"dateTextBox date_picker", :size=> "10", :style=>"vertical-align:top;"%>
+          </p>
+
+        </div>
+      </div>
+      <div class="w55 fl" id="cheque_details" <% unless @payment_type == "Cheque" %>style="display: none"<% end %>>
+        <br class="clear"/>
+        <p>
+          <label style="width: 100px"><%=t(:label_cheque_number)%><span class="text_red">*</span></label><%=f.text_field :cheque_no,:class=>"",:size =>'25',:id => 'pCheckNo'%>
+        </p>
+        <p>
+          <label ><%=t(:label_cheque_date)%><span class="text_red">*</span></label><%=f.text_field :cheque_date, :id=>"payment_cheque_date" , :readonly=>"true", :class=>"dateTextBox date_picker", :size=>"10", :style=>"vertical-align:top;"%>
+        </p>
+        <p>
+          <label style="width: 100px"><%=t(:label_bank_name)%><span class="text_red">*</span></label><%=f.text_field :bank_name,:class=>"",:size =>'25', :id => 'pBankName'%></p>
+        <p>
+          <label><%=t(:label_branch_name)%><span class="text_red">*</span></label><%=f.text_field :branch_name,:class=>"",:size =>'25', :id => 'pBranchName'%></p>
+      </div>
+      <div class="w55 fl" id="paypal_details" <%unless @payment_type == "Paypal"%> style="display: none"<%end%>>
+        <br class="clear"/>
+        <p>
+          <label style="width: 100px"><%=t(:label_paypal_account_id)%><span class="text_red">*</span></label><%=f.text_field :paypal_account_id,:class=>"",:size =>'25',:id => 'pPaypalDetails'%></p>
+      </div>
+      <br class="clear"/>
+      <br class="clear"/>
+      <div class="txtC">
+        <%= submit_tag t(:label_create), :class => 'button' %> |<label class="textBlue11"> <%= link_to t(:label_back), {:controller=>'invoices',:action => 'index'}%></label>
+        <br class="clear"/>
+      </div>
+      <br class="clear"/>
+    <%end%>
+  </div>
+</div>

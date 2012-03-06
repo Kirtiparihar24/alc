@@ -1,0 +1,13 @@
+<%=@header_opts[:r_name]%>
+
+<%-@total_data.each do |label,data|-%>
+<%=label%>
+<%=@table_headers.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+
+<%-end-%>
+Total Records : <%=@conditions[:total_records]%>
+

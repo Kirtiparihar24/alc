@@ -1,0 +1,11 @@
+<%=render :partial => '/common/common_flash_message'%>
+<% if @show == true %>
+  <div class="textNormal" >
+    <%=t(:text_select_lawyer)%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= collection_select(:employee, :id, @employees, :id, :full_employee_name, {:include_blank => 'Please select'},{:class=>'dropbox',:style=>"width:120px; font-size:100%"})%>
+  </div>
+  <div class="textNormal" id="show_cluster_list">
+    Select Cluster&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= collection_select(:cluster, :id, @clusters, :id, :name, {:include_blank => 'Please select'},{:class=>'dropbox',:style=>"width:120px; font-size:100%"})%>
+  </div>
+  <br class="clear" />
+  <div class="textBlue9em"><%=link_to(t(:label_assign),"#",{:onclick=>"assign_sec_to_emp(#{@secretary_id});return false;",:id=>"assign_sec_to_emp"},{:title=>'Click to assign'})%>|<%= link_to t(:label_back), {:action => 'assign_unassign_serviceprovider'} %></div>
+<% end %>

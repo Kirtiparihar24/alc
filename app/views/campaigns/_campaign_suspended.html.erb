@@ -1,0 +1,103 @@
+<div <% unless params[:height] %> id="fragment-4" class="tabs-container-tabs tabs-hide tabular_listing" <% else %> class="tabular_listing" <% end %>>
+  <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+  <div id="ajax_sort">
+  <table width="100%" class="mt20">
+    <tr>
+      <td width="76%"><strong><%= t(:text_campaigns) %> - </strong><%= truncate_hover(@campaign.name.try(:titleize),35) %></td>
+      <td width="24%"><strong><%= t(:text_start_date) %> -</strong><%= @campaign.starts_on.to_time.strftime('%m/%d/%y') if @campaign.starts_on %></td>
+    </tr>
+    <tr>
+      <td><strong><%= t(:text_owner) %> - </strong><%= @campaign.get_assigned_to %></td>
+      <td><strong><%= t(:text_end_date) %> - </strong><%= @campaign.ends_on.to_time.strftime('%m/%d/%y') if @campaign.ends_on %></td>
+    </tr>
+  </table>
+  <div class="seperator_dotted_hori"></div>
+  <div  id="ajax_sort" class="p5" >
+<table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+    <tr>
+       <% if params[:action] == "suspended_list" %>
+    <%= column_sort_link(t(:text_contact),'campaign_members.first_name',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page], :height => params[:height], :width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <%= column_sort_link(t(:text_email),'campaign_members.email',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page], :height => params[:height], :width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <th align="left" width="10%"><%=t(:text_status)%></th>
+    <%= column_sort_link(t(:text_last_mailed_date),'first_mailed_date',params[:col], '10%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page], :height => params[:height], :width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <%= column_sort_link(t(:text_response_date),'responded_date',params[:col], '10%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page], :height => params[:height], :width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <%= column_sort_link(t(:text_response),'response',params[:col], '10%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page], :height => params[:height], :width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <% else %>
+      <th align="left" width="30%"><%=t(:text_contact)%></th>
+      <th align="left" width="30%"><%=t(:text_email)%></th>
+      <th align="left" width="10%"><%=t(:text_status)%></th>
+      <th align="center" width="10%"><%=t(:text_last_mailed_date)%></th>
+      <th align="center" width="10%"><%=t(:text_response_date)%></th>
+      <th align="center" width="10%"><%=t(:text_response)%></th>
+      <% end %>
+      <th align="center" width="1%"><%=t(:text_actions)%></th>
+    </tr>
+    <% if @campaign_suspended_list.length > 0 %>
+      <% @campaign_suspended_list.each do |member| %>
+        <tr class="<%=cycle('bg1', 'bg2')%>">
+          <td><%= member.try(:full_name)%></td>
+          <td><%= member.try(:email)%></td>
+          <td><%= member.status.lvalue%></td>
+          <td align="center"><%= member.get_last_mailed_date%></td>
+          <td align="center"><%= livia_date(member.responded_date)%></td>
+          <td align="center"><%= raw(truncate_hover(member.response,15)) %></td>
+
+          <% unless params[:height] %>
+            <td align="center">
+              <div class="icon_action mt3"><a href="#"></a></div>
+              <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                <!--Icon table strt here -->
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                  <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                      :deactivate_path=> "NO",
+                      :deactivate_text => "NO",
+                      :comment_path=>"NO",
+                      :comment_title => "NO",
+                      :document_path=>"NO",
+                      :history_path=>"NO",
+                      :history_title => "NO"}) %>
+                  <tr>
+                    <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                    <td style="background: #fff;">
+                      <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                        <tr>
+                          <td colspan="4"><div class="ap_pixel15"></div></td>
+                        </tr>
+                        <tr>
+                          <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                          <td width="40%" align="left" valign="middle" nowrap><%= link_to("Create Opportunity",  "/campaigns/create_opportunity/#{member.id}?fragment=fragment-4&#{extra_parameters(params,true)}" )%></td>
+                          <td width="7%" align="center" valign="middle"><div class="ap_child_action"></div></td>
+                          <td width="40%" align="left" valign="middle" nowrap> <%= link_to("Reject",  "/campaigns/reject_member_status/#{member.id}?fragment=fragment-4&#{extra_parameters(params,true)}", :confirm => 'Are you sure you want to reject this member?'  )%></td>
+                        </tr>
+                        <tr>
+                          <td colspan="4"><div class="ap_pixel10"></div></td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                  </tr>
+                  <tr>
+                    <td valign="top" class="ap_bottom_curve_left"></td>
+                    <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                    <td valign="top" class="ap_bottom_curve_right"></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          <%else%>
+            <td align="center"><%= link_to(t(:text_convert_to_opportunity), "/campaigns/create_opportunity/#{member.id}?fragment=fragment-4&#{extra_parameters(params,true)}" , :class => 'button', :style=>'font-size:11px;')%></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="8"><div class="warningCont"><%=t(:text_no_suspended_members)%></div></td></tr>
+    <% end %>
+  </table>
+
+  </div>
+</div>
+
+<%if params[:action]=="suspended_list"%>
+  <div class="pagiText"><%=t(:label_page)%>&nbsp;80</div>
+<%end%>
+</div>

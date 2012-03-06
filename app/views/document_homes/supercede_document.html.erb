@@ -1,0 +1,80 @@
+<div class="mt20">
+  <div id ="one_field_error_div"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <% form_for :document_home, @document_home ,:url => {:action => 'supercede', :doc_id=> @doc_home.id, :replace=> (@replace=='Replace'? true : false) }, :html=> {:multipart=> true, :onsubmit=> "return validate_uploadfile_field('new_doc', 'Please select a file to continue');"} do |f| %>
+    <%= hidden_field_tag 'fragment' , params[:fragment] %>
+    <%= hidden_field_tag 'campaign_id',params[:campaign_id] %>
+    <%= hidden_field_tag 'from', "matters" if params[:from].eql?("matters") %>
+    <%= hidden_field_tag 'from', "workspace" if params[:from].eql?("workspace") %>
+    <%if params[:from].eql?("document_manager")%>
+      <%= hidden_field_tag 'from', "#{params[:from]}" %>
+      <%= hidden_field_tag 'selected_node', "#{params[:selected_node]}" %>
+    <%end%>
+    <%= hidden_field_tag 'parent_id', params[:parent_id] unless params[:parent_id].blank? %>
+    <table width="100%">
+      <tr>
+        <td width="30%"><label><%=t(:label_document_name)%></label></td>
+        <td width="70%"><strong> <%=@document.name %> [ <%=link_to(@document.data_file_name, document_home_path(@document.id))%> ]</strong></td>
+      </tr>
+      <tr>
+        <td width="30%"><label><%=t(:label_owner)%> </label></td>
+        <td width="70%"><%= @document.assignee.try(:full_name) if  @document.assignee%> </td>
+      </tr>
+      <%unless params[:from]=="workspace"%>
+        <tr>
+          <td width="30%" valign="top"><label><%=t(:label_tag)%> </label></td>
+          <td width="70%"><%=text_area_tag 'document_home[tag_array]',@doc_home.tag_list , :rows=>2, :cols=>33 %></td>
+        </tr>
+        <tr>
+          <td width="30%" valign="top"><label><%=t(:label_description)%> </label></td>
+          <td width="70%"><%=text_area_tag 'document_home[description]',@document.description, :rows=>2, :cols=>33 %></td>
+        </tr>
+      <%end%>
+      <tr>
+        <td width="30%" valign="top"><label><%=t(:label_new_document)%><span class="alert_message">*</span> </label></td>
+        <td width="70%"><%= file_field_tag 'document_home[data]', :id=>'new_doc' %> </td>
+      </tr>
+      <tr>
+        <td width="30%"><label> </label></td>
+        <td width="70%"> </td>
+      </tr>
+      <tr>
+        <td colspan="2"><div class="buttonSub_div">
+            <%=submit_tag  @replace, :id => "btn_replace"%>&nbsp;
+            <%=submit_tag t(:label_cancel), :name => "cancel", :onclick => "tb_remove(); return false;"%>
+          </div></td>
+      </tr>
+    </table>
+  <% end %>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  <div class="mandatory mt12">
+    <pre>Note : Limit on file size is 50 MB.</pre>
+  </div>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;26 </div>
+<script>
+  jQuery(document).ready(function(){
+    // Need to removed to JS File
+    jQuery('#new_doc').bind('change', function() {
+      if ($.browser.msie ) {}else{
+        //this.files[0].size gets the size of your file.
+        var file_size = this.files[0].size;
+        var max_size = 52428800;
+        if (file_size <= 1 || file_size > max_size){
+          jQuery('#one_field_error_div').html('Upload File size should be between is 1KB-50MB.');
+          jQuery('#one_field_error_div').addClass('message_error_div');
+          jQuery('#one_field_error_div').show();
+          jQuery('#new_doc').val('');
+        }else{
+          jQuery('#one_field_error_div').hide();
+          jQuery('#one_field_error_div').removeClass("message_error_div");
+        }
+      }
+    });
+
+    jQuery('#btn_replace').bind('click', function() {
+      jQuery('#one_field_error_div').hide();
+      jQuery('#one_field_error_div').removeClass("message_error_div");
+    });
+  });
+</script>

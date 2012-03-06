@@ -1,0 +1,7 @@
+@import url("general.css");
+@import url("dashboard.css");
+@import url("tables.css");
+@import url("pagination.css");
+@import url("forms.css");
+#notes_lawfirm_list  :hover{background-color: #327796;color: #FFFFFF;}
+#notes_lwayers_list  :hover{background-color: #327796;color: #FFFFFF;}

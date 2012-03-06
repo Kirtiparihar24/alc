@@ -1,0 +1,26 @@
+<div id="favorite_edit_div">
+  <div class="mt20">
+    <div id="favorite_edit_error_div" ></div>
+    <% form_remote_tag :url => {:action => :update_favourite} ,:method=>:post do  -%>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+        <input type="hidden" id="edit_favorite_id" name="edit_favorite_id" value="<%= @obj.id %>" />
+        <tr>
+          <td>&nbsp;</td>
+          <td><label>Name: <span class="alert_message">*</span></label></td>
+          <td><%=text_field_tag :edit_favorite_name,"#{@obj.name}"%></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="4" align="center">
+          <%=submit_tag('Save' ,:onclick=>"loader.appendTo('#fav_loader_container');",:style=>"margin-left:18px;")%>
+          <input type="submit" value="Cancel" onclick="parent.tb_remove();return false"/>
+          </td>
+        </tr>
+      </table>
+    <%end%>
+  </div>
+  <div id="fav_loader_container"></div>
+</div>
+<div></div>
+<div class="mandatory"><span class="alert_message">*</span><%=t (:label_Required_fields)%></div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;126</div>

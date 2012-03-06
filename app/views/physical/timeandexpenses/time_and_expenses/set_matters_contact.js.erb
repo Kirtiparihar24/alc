@@ -1,0 +1,11 @@
+var contactSearch =jQuery('#001_contactSearch');
+if(contactSearch.length > 0){
+   contactSearch.children("input").val('<%=@contact.full_name.try(:titleize)  unless @contact.nil?%>');
+}else{
+ jQuery('#_contact_ctl').val('<%=@contact.full_name.try(:titleize)  unless @contact.nil?%>');
+}
+jQuery('#physical_timeandexpenses_time_entry_contact_id').val("<%=@contact.id unless @contact.nil?%>");
+//jQuery('#contact_span').html("<%#=escape_javascript(render(:partial => 'select_new_contacts', :locals => {:contact_id => @contact_id}))%>")
+jQuery('#physical_timeandexpenses_time_entry_is_internal').attr('checked', false);
+jQuery('#physical_timeandexpenses_time_entry_is_internal').attr('disabled', false);
+jQuery('#physical_timeandexpenses_time_entry_is_billable').attr('disabled', false);

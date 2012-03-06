@@ -1,0 +1,49 @@
+<script type="text/javascript">
+  livia_datepicker();
+</script>
+<div id="BillingPayments">
+  <div class="titleHead"><%=t(:text_invoice_generation)%></div>
+  <div class="formMain2">
+    <%form_tag "generate_user_invoice_reports", :url => {:action => :generate_user_invoice_reports}  do |f| %>
+      <div class="gridTable">
+        <table width="100%" align="center" cellpadding="0" cellspacing="0" class="" cellpading="0">
+          <tbody>
+            <tr>
+              <td width="96%"></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top" style="padding:0 0 0 5px;">
+                <table width="105%" border="0" cellpadding="3" cellspacing="0" class="grayBox" style="font-size:100%;">
+                  <tr>
+                    <td width="6%" align="left"><%=t(:text_company)%></td>
+                    <td width="20%" align="left"><%= collection_select(:company, :id, Company.all, :id, :name, {:include_blank =>'---Select---'}) %></td>
+                    <td width="35%">
+                      <div class=""  id="date_div" >
+                        <table width="100%" id="" style="font-size:100%"  cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td width="8%" align="right"><%=t(:text_start_date)%></td>
+                            <td width="13%" align="left"><input type="text" id="datepicker_date_start" name="date_start" size="10" readonly="true" class="dateTextBox date_picker" value="" onclick="livia_datepicker(this);"/></td>
+                            <td width="8%" align="right"><%=t(:text_end_date)%></td>
+                            <td width="14%" align="left"> <input type="text" id="datepicker_date_end" name="date_end" size="10" readonly="true" class="dateTextBox date_picker" value="" onclick="livia_datepicker(this);"/></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                    <td width="15%" align="left">
+                      <input type="submit" value="<%=t(:label_generate_invoice)%>"  class="buttonReport"/>
+                    </td>
+                    <td width="25%" align="left"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="7" align="right">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br class="clear"/>
+    <%end%>
+  </div>
+</div>

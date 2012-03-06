@@ -1,0 +1,21 @@
+<% fields_for "financial_transaction" do |tr| %>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table box_bg_bdr_1 bdr_bot_1 p5 mb10">
+  <tr>
+    <% unless @financial_account_banks %>
+      <td><%= t(:text_financial_account_contact_or_client) %></td>
+      <td><%= tr.select "account_id", '<option>All</option>' + options_for_select(FinancialTransaction.all_clients(current_company.id).map {|x| [x.name, x.id]}) %></td>
+    <% else %>
+      <td><%= t(:text_financial_account) %></td>
+      <td><%= tr.select "financial_account_id", '<option>All</option>' + options_for_select(@financial_account_banks.map {|x| [x.name, x.id]}) %></td>
+    <%end%>
+    <td><%= t(:text_financial_account_matter) %></td>
+    <td><%= tr.select "matter_id", '<option>All</option>' + options_for_select(@matters.map {|x| [x.name, x.id]}) %></td>
+  </tr>
+  <tr>
+    <td><%= t(:text_financial_account_bank_status) %></td>
+    <td><%= tr.select "transaction_status_id", '<option>All</option>' + options_for_select(current_company.transaction_statuses.map {|x| [x.alvalue, x.id]}) %></td>
+    <td><%= t(:text_financial_account_approval_status) %></td>
+    <td><%= tr.select "approval_status_id", '<option>All</option>' + options_for_select(current_company.approval_statuses.map {|x| [x.alvalue, x.id]}) %></td>
+  </tr>
+</table>
+<% end %>

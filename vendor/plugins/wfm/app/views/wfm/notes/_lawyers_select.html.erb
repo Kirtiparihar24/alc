@@ -1,0 +1,10 @@
+<ul class="ac_results" id="notes_lwayers_list" style="display:none; max-height: 180px; overflow: auto">
+  <% if lawfirm_users.blank? %>
+    <li style="color:red">No Lawyers Found!</li>
+  <% else %>
+    <%lawfirm_users.each do |lawfirm_user|%>
+      <li class="search_text <%=cycle('ac_even','ac_odd')%>" id="<%=lawfirm_user[1]%>" onclick = "update_matter_contact_select('<%=lawfirm_user[1]%>','<%=lawfirm_user[0]%>')"><%=lawfirm_user[0]%></li>
+    <%end%>
+  <% end %>
+</ul>
+

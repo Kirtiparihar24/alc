@@ -1,0 +1,21 @@
+<div id="nameerror" style="display:none"></div>﻿
+<div id="favourite_id">  
+  <% form_remote_tag :url => {:action => :update_report_name},:method => :put do -%>
+    <%=hidden_field_tag "td_update",params[:td_update] %>
+  <table width="100%">
+    <tr>
+      <td><label><%=t(:label_report_name)%> <span class="alert_message">*</span></label></td>
+      <td><%=text_field_tag "report_favourite[report_name]",@favourite.report_name%></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <!--<div class="buttonSub_div">-->
+        <div style="padding:8px 0 0 0">
+          <%=submit_tag t(:label_update_report_name), :onclick=>"return validate_report_name();"%>
+          <input type="submit" id="Login2" value="Cancel" onclick="parent.tb_remove();return false" />
+        </div>
+      </td>
+    </tr>
+  </table>
+  <% end %>
+</div>

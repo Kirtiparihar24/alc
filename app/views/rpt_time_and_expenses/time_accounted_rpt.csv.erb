@@ -1,0 +1,25 @@
+<%=@header_opts[:r_name]%>
+<%-if @conditions[:select] == "all" or @conditions[:select] == "internal"-%>
+<%=@table_headers.join(",")%>
+<%-@data.each do |data|-%>
+<%=data.join(",")%>
+<%-end-%>
+
+<%-if @conditions[:select] == "all"-%>
+<%="Grand Total : ,,,,, #{@conditions[:all_entries][0]} ,,,,  #{@conditions[:all_entries][1]} ,  #{@conditions[:all_entries][2]} ,  #{@conditions[:all_entries][3]} ,  #{@conditions[:all_entries][4]}"%>
+<%-else-%>
+<%="Grand Total : ,,#{@conditions[:internal_entries][0]}"%>
+<%-end-%>
+
+<%-else-%>
+<%-@total_data.each do |label,data|-%>
+<%="#{@conditions[:select] == "matter" ? "Matter : #{label}, (#{data.length} Records), #{@conditions[label]}" : "Contact : #{label}, (#{data.length} Records)"}"%>
+<%=@table_headers.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+<%-end-%>
+<%="Grand Total : ,, #{@conditions[:select] == "matter" ? "" : ","} #{@conditions[:entries][0]} ,,,, #{@conditions[:entries][1]} , #{@conditions[:entries][2]} , #{@conditions[:entries][3]} , #{@conditions[:entries][4]}"%>
+<%-end-%>
+<%="Total Records = #{@col.length}"%>

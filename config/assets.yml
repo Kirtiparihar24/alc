@@ -1,0 +1,66 @@
+package_assets: always # (on, off, always)
+#embed_assets: on # (on, off, datauri)
+compress_assets: on # (on, off)
+#gzip_assets: off # (on, off)
+#template_function: _.template # (defaults to the built-in micro-templating)
+#package_path: packages # (defaults to assets)
+#javascript_compressor: closure # (yui, closure)
+#compressor_options:
+  #compilation_level: ADVANCED_OPTIMIZATIONS
+
+javascripts:
+  application_javascripts:
+    - public/javascripts/jquery/jquery-1.7.1.min.js
+#    - public/javascripts/latest/jquery-tabSwtich.js
+#    - public/javascripts/jquery/datepicker/ui.core.js
+#    - public/javascripts/jquery/datepicker/ui.datepicker.js
+    - public/javascripts/jquery/jrails.js
+    # Dont Comment "jquery.tools.min.js" it is required in portal : Pratik AJ.
+    #moved here cause modal windows were breaking
+    - public/javascripts/jquery/jquery.tools.min.js
+    - public/javascripts/livia_common.js
+    - public/javascripts/latest/resolution.js
+    - public/javascripts/facebox.js
+    - public/javascripts/jquery/jquery-hint.js
+    - public/javascripts/jquery/jquery.autocomplete.js
+    - public/javascripts/jquery/jquery.tabs.pack.js
+    - public/javascripts/matters_contacts_select_box.js
+    - public/javascripts/jquery/jquery.MultiFile.js
+    - public/javascripts/jquery/jquery.MultiFile.pack.js
+    - public/javascripts/latest/livia_core.js
+    - public/javascripts/latest/scripts.js
+    - public/javascripts/jquery/jquery.thickbox.js
+#    - public/javascripts/jquery.ui.core.js
+#    - public/javascripts/jquery.ui.widget.js
+#    - public/javascripts/jquery.ui.mouse.js
+#    - public/javascripts/jquery.ui.draggable.js
+    - public/javascripts/jquery/jquery.textarea-expander.js
+    - public/javascripts/jquery/jquery.hoverIntent.minified.js
+    - public/javascripts/common.js
+    - public/javascripts/jquery/jquery-ui-1.8.16/ui/minified/jquery-ui.min.js
+#    - public/javascripts/jquery.MultiFile.js
+#    - public/javascripts/jquery.MultiFile.pack.js
+    - public/javascripts/jquery/jquery.jeditable.js
+    - public/javascripts/matters_contacts_select_box.js
+    - public/javascripts/jquery/jquery.timeentry.pack.js
+  plupload_javascripts:
+    - public/javascripts/plupload/js/plupload.js
+    - public/javascripts/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js
+    - public/javascripts/plupload/js/plupload.html5.js
+    - public/javascripts/plupload/js/plupload.flash.js
+    - public/javascripts/plupload/js/plupload.browserplus.js
+stylesheets:
+  application_stylesheet:
+    - public/stylesheets/reset.css
+    - public/stylesheets/jquery.autocomplete.css
+    - public/stylesheets/facebox.css
+    - public/stylesheets/jquery-ui.css
+    - public/stylesheets/thickbox.css   
+  admin_stylesheet:
+    - public/stylesheets/admin_style.css
+    - public/stylesheets/matter_clients/thickbox.css
+    - public/stylesheets/jquery-ui.css
+  plupload_stylesheet:
+    - public/javascripts/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css
+  base_stylesheet:
+    - public/stylesheets/base.css

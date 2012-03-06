@@ -1,0 +1,56 @@
+<div class="box-head"><h2 class="left">Departments</h2></div>
+<div class="actionLinks"><%= link_to t(:label_view_organization_chart),{:controller => 'departments',:action => 'view_chart', :id => params[:company_id]} %> | <%= link_to 'New Department',new_department_path%></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="24%" align="left"><%=t(:text_department_name)%></th>
+      <th width="19%" align="left"><%=t(:text_location)%></th>
+      <th width="50%" align="left"><%=t(:text_manager)%></th>
+      <th width="7%" align="left" ><%=t(:text_action)%></th>
+    </tr>
+    <%@departments.each do |department|%>
+      <% department_id = department.id %>
+      <tr>
+        <td align="left">
+          <%if department_id.nil?%>
+            <span>&nbsp;&nbsp;<%=department.name%></span>
+          <%else%>
+            <span style="cursor:pointer;" id="<%= department_id %>_plus" onclick="javascript:expand_collapse_div_details(<%= department_id %>, '<%= department_id %>_subproduct', 'minus', 'plus')" title="Click to view employees"><%= image_tag('/images/arrow_1_nxt.gif',:alt=>"Plus", :border => 0, :hspace => "1")%> <%=department.name%></span>
+            <span style="display: none; cursor:pointer;" id="<%= department_id %>_minus" onclick="javascript:minimize_details(<%= department_id %>, '<%= department_id %>_subproduct', 'plus', 'minus')" title="Click to hide detail"> <%= image_tag('/images/arrow_1_prv.gif',:alt=>"Minus", :border => 0, :hspace => "1")%> <%=department.name%></span>
+          <%end%>
+        </td>
+        <td align="left"><%=department.location%></td>
+        <td align="left"><span style="width:200px;"><%= get_employee_with_no_parent(department) %></span></td>
+        <td align="left"><%=link_to t(:label_edit), edit_department_path(department) %></td>
+      </tr>
+      <tr style="display: none;" id="<%=department.id%>_subproduct">
+        <td colspan="4">
+          <%if department.employees.empty?%>
+            <div class="warningCont m5"><%=t(:text_no_users)%></div>
+          <% else %>
+            <div class="titleHead"><%=t(:text_userlist)%></div>
+            <table width="100%" border="1" cellpadding="0" cellspacing="0">
+              <tr>
+                <th><%=t(:text_name)%></th>
+                <th><%=t(:text_designation)%></th>
+                <th><%=t(:text_reporting_to_department)%></th>
+              </tr>
+              <%department.employees.each do |pld|%>
+                <tr>
+                  <td><%=(pld.first_name)+(pld.last_name)%></td>
+                  <%if pld.department.nil?%>
+                    <td><%=pld.designation rescue"-"%></td>
+                  <%else%>
+                    <td><%=CompanyLookup.get_employee_designation(pld.designation_id) rescue "-"%></td>
+                    <td><%= pld.parent.nil? ? t(:text_no_reporting_department) : pld.parent.department.name%></td>
+                  <%end%>
+                </tr>
+              <%end%>
+            </table>
+          <%end%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<div class="pagging"></div>

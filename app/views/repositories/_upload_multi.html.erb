@@ -1,0 +1,26 @@
+<div class="gridDiv">
+  <div class="mt3 gridTable">
+    <table cellspacing="1" width="100%" cellpadding="0" class="tableBg">
+      <% if from == 'repository' %>
+      <tr>
+        <td valign="top" width="12%"><%=t(:label_category)%> </td>
+        <td valign="top" width="30%"> 
+        <%=select_tag 'document_home[category_id]', options_for_select(@categories.collect{|c| [c.alvalue,c.id]}),
+          :class=>"widthSelectBox", :id=>"categories_combo"%> <span id ="categories_span"></span>
+        </td>
+        <td valign="top" width="5%">&nbsp;&nbsp;&nbsp;</td>
+      </tr>
+      <% end %>
+      <tr>
+        <td colspan="5" height="5"></td>
+      </tr>
+      <tr>
+        <td valign="top" width="16%"><label>Tag</label></td>
+        <td valign="top" width="30%"><%=text_area_tag 'tag_array','' , :class=>"w95 h75p"%></td>
+        <td valign="top" width="5%">&nbsp;&nbsp;&nbsp;</td>
+        <td valign="top" width="16%"><label><%=t(:label_description)%></label></td>
+        <td valign="top" width="30%"><%=text_area_tag 'description','',:class=>"w95 h75p"%></td>
+      </tr>
+    </table>
+  </div>
+</div>

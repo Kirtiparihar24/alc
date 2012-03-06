@@ -1,0 +1,5 @@
+<div class="box-head"><h2><%=t(:text_products_configuration)%></h2></div>
+<div class="buttons"> 
+  <%=t(:text_select_product)%>&nbsp;&nbsp;<%= collection_select(:company, :id, Product.all, :id, :name, {:include_blank => 'Please select'},{:onchange=>"show_prod_config(this.value)",:class=>'field size3' })%>
+</div>
+<div><div id="edit_product_config"></div></div>

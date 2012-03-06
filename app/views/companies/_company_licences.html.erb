@@ -1,0 +1,53 @@
+<div id="div_company_licence">
+  <div id="topheadContainer"><div class="title fl"><%=t(:text_licence_details_of)%> <%=@company.name%></div></div>
+  <div class="table">
+    <% unless params[:id].nil? %>
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <th width="5%"><%=t(:text_s_no)%></th>
+          <th width="20%"><%=t(:text_product)%></th>
+          <th width="12%"><%=t(:text_licence_type)%></th>
+          <th width="12%"><%=t(:text_start_date)%></th>
+          <th width="10%"><%=t(:text_end_date)%></th>
+          <th width="15%"><%=t(:text_billing_rate_usd)%></th>
+          <th width="10%"><%=t(:text_status)%></th>
+          <th width="10%"><%=t(:text_user)%></th>
+        </tr>
+        <% i=@offset - 1 %>
+        <%if @product_licences.blank? %>
+          <tr><td colspan="8"><div class="warningCont m5"><%=t(:text_no_records_found)%></div></td></tr>
+        <% else %>
+          <%@product_licences.each do |pl|  %>
+            <tr  class="<%=cycle("bg1", "bg2")%>">
+              <td width="5%"><%= i = i+1 %></td>
+              <td width="20%"><%=pl.product.name%></td>
+              <td width="12%"><%=ProductLicence::LICENCE_TYPE[pl.licence_type][0] %></td>
+              <td width="12%"><%=pl.start_at.to_time.strftime("%d-%b-%y") rescue "-"%></td>
+              <td width="10%"><%=pl.end_at.to_time.strftime("%d-%b-%y") rescue "-"%></td>
+              <td width="10%">$<%=pl.licence_cost.to_i rescue "-"%></td>
+              <td width="10%"><%=ProductLicence::Status[pl.status][0] %></td>
+              <td width="10%">
+                <%pl.product_licence_details.each do |pld|%>
+                  <%=pld.user.try(:full_name) rescue "-"%>
+                <%end%>
+              </td>
+            </tr>
+          <%end%>
+          <% if @next_page.present? || @offset.present? %>
+            <tr>
+              <td colspan="8" align="right">
+                <% if @offset > 1  %>
+                  <%= link_to t(:label_prev_page), "#", :onclick=>"ownnextpage(#{@offset},#{@company.id},'prev'); return false;" %> <% if @next_page %>|<% end %>
+                <% end %>
+                <% if @next_page %>
+                  <%= link_to t(:label_next_page), "#", :onclick=>"ownnextpage(#{@offset},#{@company.id},'next'); return false;" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          <tr><td colspan="8" style="text-align: right"><%=t(:text_displaying_licences)%> <b><%= @offset %> - <%= i %> </b><%=t(:text_of)%><b> <%= @total_licences.length %></b></td></tr>
+        <%end%>
+      </table>
+    <%end%>
+  </div>
+</div>

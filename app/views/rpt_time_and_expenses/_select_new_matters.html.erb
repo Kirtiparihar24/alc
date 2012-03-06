@@ -1,0 +1,3 @@
+<% unless @matters.blank? %>
+  <%=select 'report', 'matter_id', @matters.collect{|matter|[matter.clipped_name,matter.id ]},{:selected=> @matter_id,  :include_blank => "All" },{:style => "width:100px;"}%>
+<%end%>

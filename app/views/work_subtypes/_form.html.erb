@@ -1,0 +1,90 @@
+<% remote_form_for(@work_subtype, :loading=>"return disableAllSubmitButtons('buttons_to_disable');", :complete=>"return enableAllSubmitButtons('buttons_to_disable');" ) do |f| %>
+  <div id='error_div'>
+  </div>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%= f.label :name %> <span>*</span></label></td>
+        <td><%= f.text_field :name,:class=>"field size4" %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%= f.label :description %></label></td>
+        <td><%= f.text_area :description ,:cols => 4, :rows => 10,:class=>"field size1" %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_category)%> <span>*</span></label></td>
+        <td>
+          <%if @work_subtype.work_type_id.present?%>
+            <%= custom_select_tag 'category',options_for_select(@categories.collect{|cat| [cat.name, cat.id]},@work_subtype.work_type.category.id),{:prompt => 'Please Select',:onchange => 'getCategoryWorktypes(this.value);'} %>
+          <%else%>
+            <%= custom_select_tag 'category',options_for_select(@categories.collect{|cat| [cat.name, cat.id]}),{:prompt => 'Please Select',:onchange => 'getCategoryWorktypes(this.value);'} %>
+          <%end%>
+        </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%= f.label :work_type_id %> <span>*</span></label></td>
+        <td>
+          <span id="work_type">
+            <%if @work_subtype.work_type_id%>
+              <%= f.select :work_type_id, options_for_select(@work_types.collect{|worktype| [worktype.name, worktype.id]}, @work_subtype.work_type_id), {:include_blank => 'Please Select',:class=>"field size3"} %>
+            <%else%>
+              <%= f.select :work_type_id, options_for_select({'Please Select',''}, @work_subtype.work_type_id) %>
+            <%end%>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <!--this coding was done so that complexity div can be seen even on edit where category is already selected-->
+          <%if @work_subtype.work_type_id.present? %>
+            <% if @work_subtype.work_type.category.has_complexity %> <!-- for edit -->
+              <div id="complexity_div" <%if @work_subtype.work_type.category.has_complexity == false %>style="display: none"<%end%>>
+                <div id="add_complexity_link"><%= add_work_subtype_complexity_link "Add more complexity" %></div>
+                <%= render :partial => "complexity", :collection => @work_subtype.work_subtype_complexities,:locals=>{:from=>"add" } %>
+
+              </div>
+              <div id="no_complexity_div"></div>
+
+            <%else%>
+              <div id="no_complexity_div">
+                <%@work_subtype.work_subtype_complexities.each do |work_subtype_complexity|%>
+                  <%= render :partial => 'no_complexity', :collection => @work_subtype.work_subtype_complexities, :locals=>{:complexity=>work_subtype_complexity}%>
+                <%end%>
+              </div>
+              <div id="complexity_div">
+                <div id="add_complexity_link" style="display:none;"><%= add_work_subtype_complexity_link "Add more complexity" %></div>
+              </div>
+            <% end %>
+          <%else%> <!-- for new -->
+            <div id="no_complexity_div" style="display:none">
+            </div>
+            <div id="complexity_div">
+              <div id="add_complexity_link" style="display:none;"><%= add_work_subtype_complexity_link "Add more complexity" %></div>
+            </div>
+          <%end%>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= f.submit 'Save', :class => 'button buttons_to_disable send_form_btn',:onclick=>"return check_stt_tat_complexity();" %>
+    <%= link_to 'Back', work_subtypes_path , :class => 'button buttons_to_disable send_form_btn ml10'%>
+  </div>
+<% end %>

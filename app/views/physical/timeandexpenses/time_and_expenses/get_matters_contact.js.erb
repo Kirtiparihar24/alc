@@ -1,0 +1,23 @@
+jQuery('#' + <%=params[:time_entry_id]%> + '_contact_ctl').val("<%=@contact.full_name %>");
+jQuery('#' + <%=params[:time_entry_id]%> + '_contact_id').val("<%=@contact.id%>");
+<% exp_entries = (@time_entry.expense_entries.size > 0) ? array_or_string_for_javascript(@time_entry.expense_entries.collect{|i| i.id}) : "0"  %>
+expense_entries = <%=exp_entries%>
+var expense_entries_array = "[";
+//  remove unnecessary ',' for o length
+for ( var i=0, len=expense_entries.length; i < len; ++i ){
+expense_entries_array = expense_entries_array + expense_entries[i] + ",";
+}
+expense_entries_array = expense_entries_array + "]";
+
+jQuery('#'+<%=params[:time_entry_id]%> + '_is_internal').attr('checked', false);
+jQuery('#'+<%=params[:time_entry_id]%> + '_is_internal').attr("onClick", "set_is_billable("+<%=params[:time_entry_id]%>+","+ expense_entries_array+");");
+<%if params[:isBillableSet].nil?%>
+  set_is_billable(<%=params[:time_entry_id]%>, expense_entries);
+<%end%>
+<%  can_modify_entry = check_for_lead_lawyer(@time_entry, @time_entry.employee_user_id) %>
+  
+jQuery('#Te_entry_status_<%=params[:time_entry_id]%>').html("<%=escape_javascript(render(:partial => 'status', :locals => {:can_modify_entry => can_modify_entry, :time_or_expense_entry => @time_entry,:entry_type=>"time_entry"}))%>");
+
+
+
+

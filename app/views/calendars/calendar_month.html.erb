@@ -1,0 +1,83 @@
+<!-- month view -->
+<div class="">
+  <div>
+    <div class="fl title_blue text_orange pt5"><%= "#{calendar_month_name(@month)} #{@year}" %></div>
+    <div class="fr">
+      <% cur_year = (params[:cal_year]==@year ? nil : params[:cal_year]) %>
+      <%= link_to (image_tag "calendar/arrow_left.png", :width=>"22", :height => "22"), "#", :class => "vtip", :title => "Previous Month", :onClick => "update_view('#{calendar_month_calendars_path(:cal_month=>@pre_month, :cal_year=> (@pre_month==12 ? @year-1 : cur_year), :params => @commonparams)}')" %>
+      <%= link_to (image_tag "calendar/arrow_right.png", :width=>"22", :height => "22"), "#", :class => "vtip", :title => "Next Month", :onClick => "update_view('#{calendar_month_calendars_path(:cal_month=>@nxt_month, :cal_year => (@nxt_month==1 ? @year+1 : cur_year), :params => @commonparams)}')" %>
+    </div>
+    <br clear="all" />
+  </div>
+  <div class="bg3">
+    <table class="calender_table" cellSpacing="1" cellPadding="0"  width="100%" >
+      <tbody>
+        <tr>
+          <% 7.times do |i| %><th width="8%"><%= day_name( (@calendar.first_wday+i)%7 ) %></th><% end %>
+        </tr>
+        <tr>
+          <% day = @calendar.startdt
+          while day <= @calendar.enddt %>
+            <td width="14%" align="left" class="<%= day.month==@calendar.month ? '' : 'prvmonth' %><%= ' today' if Time.zone.now.to_date == day %>">
+              <div><%= link_to day.day, calendar_day_calendars_path(:cal_date=>day.to_date) %></div>
+              <% generate_count_for_monthview(day) %>
+              <% counttasks = 0 %>
+              <% if @matter_appointments.size > 0 %>
+                <div id="styling<%= "#{day.day}#{day.month}" %>" class="styling">
+                  <% @matter_appointments.each do |appointmenthash| %>
+                    <% app = appointmenthash[0]%>
+                    <% appointment = appointmenthash[0][:activity]
+                    instance = app[:activity_is_instance]
+                    repeated = appointmenthash[2]
+                    instance_start_date = appointmenthash[3]
+                    instance_end_date = appointmenthash[4]
+                    userclass = @userclass.collect{|cls| cls[0]== appointment.assigned_to_user_id ? " app#{cls[1]}" : "" } %>
+                    <% matter = appointment.attribute_present?("matter_id") ? true : false %>
+                    <% if appointment.assigned_to_user_id == @userid %>
+                      <% if instance %>
+                        <% ex_start_time = appointment.start_date.to_time %>
+                        <% appintmentlink = activity_description_with_hash(app, 1, "newtooltip", "", true, (matter ? "thickboxInstance('#{instance_series_calendars_path(:appointment_id => appointment.id, :height => 120, :width => 250, :matter => matter, :link => (edit_instance_matter_matter_task_path(appointment.matter, appointment, :instance_end_time => appointment.end_date.to_time, :instance_end_date => instance_end_date,:ex_start_time=> ex_start_time, :instance_start_date => instance_start_date, :height => "400", :width => "800")), :series => ("#{edit_matter_activity_calendars_path(:matter_id => appointment.matter_id, :id=>appointment.id, :height => "400", :width=> "800", :cal_action => params[:action])}"))}')" : "thickboxInstance('#{instance_series_calendars_path(:appointment_id => appointment.id, :height => 120, :width => 250, :link => (edit_zimbra_instance_calendars_path(:id => appointment.id, :instance_end_time => appointment.end_date.to_time, :instance_end_date => instance_end_date,:ex_start_time=> ex_start_time, :instance_start_date => instance_start_date, :height => "400", :width => "800")), :series => ("#{edit_activity_calendars_path(:id=>appointment.id, :height => "400", :width=> "800")}"))}')")) %>
+                      <% else %>
+                        <% appintmentlink = activity_description_with_hash(app, 1, "newtooltip", "", false, false) %>
+                      <% end %>
+
+                    <% else %>
+                      <% if matter %>
+                        <% if instance %>
+                          <% ex_start_time = appointment.start_date.to_time %>
+                          <% appintmentlink = activity_description_with_hash(app, 1, "newtooltip", "", true, "thickboxInstance('#{instance_series_calendars_path(:appointment_id => appointment.id, :height => 120, :width => 250, :matter => matter, :link => (edit_instance_matter_matter_task_path(appointment.matter, appointment, :instance_end_time => appointment.end_date.to_time, :instance_end_date => instance_end_date,:ex_start_time=> ex_start_time, :instance_start_date => instance_start_date, :height => "400", :width => "800")), :series => ("#{edit_matter_activity_calendars_path(:matter_id => appointment.matter_id, :id=>appointment.id, :height => "400", :width=> "800", :cal_action => params[:action])}"))}')") %>
+                        <% else %>
+                          <% appintmentlink = activity_description_with_hash(app, 1, "newtooltip", "", false, false) %>
+                        <% end %>
+                      <% else %>
+                        <%if app[:activity].mark_as=="PUB" %>
+                          <% appintmentlink = "#{appointment.name}" %>
+                        <% else %>
+                          <% appintmentlink = "#{appointment.user_name} (Time blocked for appointment)" %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+
+                    <% unless counttasks > 3 %>
+                      <div class="schedule_list<%= userclass %>"><% if repeated %> &raquo;&raquo; <% end %> <%= appintmentlink %></div>
+                    <% else %>
+                      <div class="showdiv schedule_list<%= userclass %>" id="showdiv_<%=appointment.id%><%=day.day%>" style="display: none;">
+                        <% if repeated %> &raquo;&raquo;<% end %> <%= appintmentlink %>
+                      </div>
+                    <% end %>
+
+                    <% counttasks += 1 %>
+                  <% end %>
+                  <% if counttasks==4 %><div class="schedule_more"><%= link_to "More", "#this", :onClick=>"change_styling(this, #{day.day}, #{day.month})", :class=>"morelink" %></div> <% end %>
+                </div>
+              <% end %>
+            </td>
+            <%=raw '</tr><tr>' if day.cwday==@calendar.last_wday and day!=@calendar.enddt %>
+            <% day = day + 1
+          end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- month view -->

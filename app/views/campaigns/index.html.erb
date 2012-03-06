@@ -1,0 +1,19 @@
+<div id="container-1">
+  <div id="report-info">    
+    <h2 class="title_main">
+      <span class="fl">  <%= t(:text_campaigns) %></span>
+      <%= render :partial =>  "layouts/reports_quick_links" %>
+    </h2>
+    <div class="p5">
+      <div class="w100 fix_mb link_blue">
+        <%= raw my_all_radio_button(t(:text_my_campaigns), "getCampaigns('MY','#{params[:letter]}','#{params[:per_page]}','#{@camp_stage}','#{@camp_status}');", t(:text_all_campaigns), "getCampaigns('ALL','#{params[:letter]}','#{params[:per_page]}','#{@camp_stage}', '#{@camp_status}');", params[:mode_type]) %>
+        <div class="fr textR ">
+          <%= link_to '<span class="icon_create_new mr5 fl"></span><span class="fl mr10 icon_name">Create New Campaign</span>', new_campaign_path %></div>
+        <br class="clear" />
+      </div>
+      <%= raw search_with_stages_select_tag("stage", t(:text_stage_filters),@lookup_stages, {:selected=>@camp_stage.to_i}, "filterManageCampaign('#{@mode_type}',this.options[this.selectedIndex].value);", "campaign_sphinx_search") %>
+      <div id="searched_campaigns"><%=render :partial => "searched_campaigns"%></div>
+    </div>
+  </div>
+  <div id="report-content"></div>
+</div>

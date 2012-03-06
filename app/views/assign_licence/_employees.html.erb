@@ -1,0 +1,32 @@
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="17%" align="center" valign="top"><strong><%=t(:text_total_users)%></strong></th>
+      <th width="19%" align="center" valign="top"><strong><%=t(:text_active_users)%></strong></th>
+      <th width="22%" align="center" valign="top"><strong><%=t(:text_total_licence)%></strong><br />
+        (<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</th>
+      <th width="22%" align="center" valign="top"><strong><%=t(:text_licence_consumed)%></strong><br />
+        (<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</th>
+      <th width="20%" align="center" valign="top"><strong><%=t(:text_licence_remaining)%></strong><br />
+        (<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</th>
+    </tr>
+    <tr>
+      <td align="center"><%= employees.size%></td>
+      <td align="center"><%= activeusers.size%></td>
+      <td align="center"><span><%= activepermlicence%></span> / <span><%= activetemplicence%></span></td>
+      <td align="center"><span><%= usedpermlicence%></span> / <span><%= usedtemplicence%></span></td>
+      <td align="center"><span><%= activepermlicence - usedpermlicence %></span> / <span><%= activetemplicence - usedtemplicence%></span></td>
+    </tr>
+  </table>
+</div>
+<%if productlicence.empty?%>
+  <div class="errorCont"><%=t(:text_no_licences_please_buy_licences)%></div>
+<%else%>
+  <%= render :partial => 'assign_licence/showlicence_details', :locals=>{:licences=>licences, :company_id=>company_id}%>
+  <div class="buttons">
+    <%=t(:text_select_users)%>&nbsp;&nbsp;
+    <%= collection_select(:role_assign, :user_id, employees, :id, :full_name, {:prompt => true},{:onchange=>"populateproducts(this.value,#{company_id})",:class=>"field size3"})%>
+    <%= hidden_field_tag 'company_id',company_id%>
+  </div>
+  <div id="productdiv"></div>
+<%end%>

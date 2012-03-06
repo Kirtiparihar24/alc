@@ -1,0 +1,5 @@
+<%unless @matching_opportunities.empty?%>
+  <%@matching_opportunities.each do|result_obj|%>
+    <%=raw ("" + "<span style=display:none>" + result_obj.id.to_s + "</span>" + ( "#{result_obj.name}, Created on- #{result_obj.try(:created_at).to_time.strftime('%m/%d/%y')}, Cont- #{result_obj.contact.try(:full_name) if result_obj.contact}"))  %>
+  <%end%>
+<%end%>

@@ -1,0 +1,78 @@
+.header{ position: running(header) }
+
+.footer{ position: running(footer) }
+
+.bg1{ background-color:#efefef; }
+
+.bg2{ background-color:#ddd; }
+
+body{ font-size:12px; }
+
+@page{
+  size: A4 landscape;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin: 23% 5% 6% 6%;
+  counter-increment: page;
+  orphans:1; widows:2;
+  @top-left{
+  content: element(header);
+  vertical-align: bottom;
+  padding: 3px;
+  margin:10px;
+}
+
+@bottom-left{
+  font-family : Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  content: element(footer);
+  vertical-align: top;
+  padding: 3px;
+}
+
+@bottom-right{
+  font-family : Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  content: "Page " counter(page) " of " counter(pages);
+  vertical-align: top;
+  padding: 3px;
+  text-align: right;
+}
+}
+.report-header{
+  background-color:#efefef;
+  padding:5px 5px 1px 10px;
+  margin-bottom: 20px;
+}
+
+.title_blue{ color:#074d6d;font-size:118.2%; }
+/* BODY CSS */
+body{
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0em;
+}
+
+table{
+  border-spacing: 0;
+  margin-bottom: 20px;
+  -fs-table-paginate: paginate;
+  word-break: break-all;
+  table-layout: fixed;
+
+}
+
+table th{
+  background-color: #E7EEF4;
+}
+
+table th, table td{
+  border: 1px solid #AAA;
+  padding: 5px;
+  display:table-cell;
+  word-wrap:break-word;
+}
+
+table tr{
+  page-break-inside: avoid;
+}

@@ -1,0 +1,10 @@
+<%= hidden_field_tag "display_search" %>
+<div class="column_main mb8" <% if @recycle_bin %> style="display:none;"<% end %>>
+  <%=render :partial =>'document_homes/search',:locals =>{:categories=>@categories,:extension=>@file_ext}%>
+</div>
+<div  class="column_main">
+  <h2 class="title_main"><%if @recycle_bin%><%=link_to(t(:text_public_repository),repositories_path())%> &nbsp; >> &nbsp; Recycle Bin<%else%><%=t(:text_public_repository)%><%end%></h2>
+  <div id="search_results_DIV" class="p5">
+    <div><%= render :partial => "repository", :locals =>{:categories=>@categories, :documenthomes => @documenthomes}%></div>
+  </div>
+</div>

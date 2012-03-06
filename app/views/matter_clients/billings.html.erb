@@ -1,0 +1,72 @@
+<h4><%=t(:text_billing_history)%></h4>
+<div class="module">
+  <h2><span><%=t(:text_billing_details)%></span></h2>
+  <div class="module-table-body">
+    <table class="tablesorter">
+      <thead>
+        <tr>
+          <th width="22%" align="left" ><%=t(:text_bill_no)%></th>
+          <th width="12%" align="center"><%=t(:text_date)%></th>
+          <th width="44%" align="left"><%=t(:text_description)%></th>
+          <th width="22%" align="left"><%=t(:text_amount)%></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%unless @billings.blank?%>
+          <%@billings.each do |billing|%>
+            <tr class="<%=cycle("odd", "")%>">
+              <td width="22%"><%=billing.bill_no%></td>
+              <td width="12%" align="center"><%=livia_date(billing.created_at.to_time)%></td>
+              <td width="44%" align="left"><%=raw truncate_hover(billing.remarks, 40)%></td>
+              <%if billing.matter_billing_status.lvalue == 'Settled'%>
+                <%amt = billing.computed_bill_amount_paid%>
+              <%else%>
+                <%amt = billing.bill_amount%>
+              <%end%>
+              <td width="22%" align="left">$ <%=number_with_lformat(amt)%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr class="odd"> <td colspan="3" align="left"><span class="message"><%=render :partial => 'common/empty'%></span></td></tr>
+        <%end%>
+        <tr class="odd">
+          <td colspan="3" align="right"><%=t(:text_total)%></td>
+          <td align="left">$ <%=number_with_lformat(@matter.total_adjusted_bill_amount)%></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="clear: both"></div>
+  </div>
+</div>
+<div class="module">
+  <h2><span><%=t(:text_payment_details)%></span></h2>
+  <div class="module-table-body">
+    <table width="100%" class="tablesorter">
+      <thead>
+        <tr>
+          <th width="20%" align="center" ><%=t(:text_date)%></th>
+          <th width="40%" align="left"><%=t(:text_description)%></th>
+          <th width="20%" align="left"><%=t(:text_amount)%></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%unless @payments.blank?%>
+          <%@payments.each do |payment|%>
+            <tr class="<%=cycle("odd", "")%>">
+              <td><%=livia_date(payment.created_at.to_time)%></td>
+              <td><%=raw truncate_hover(payment.remarks, 40)%></td>
+              <td align="left">$ <%=number_with_lformat(payment.amount) if payment.amount%></td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr class="odd"> <td colspan="2" align="left"><span class="message"><%=render :partial => 'common/empty'%></span></td></tr>
+        <%end%>
+        <tr class="odd">
+          <td colspan="2" align="right"><%=t(:text_total)%></td>
+          <td width="20%" align="left">$ <%=get_total_payment(@payments)%></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="clear: both"></div>
+  </div>
+</div>

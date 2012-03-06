@@ -1,0 +1,2 @@
+time_stamp="<%=@sticky_note.updated_at.strftime("%m/%d")%><br/><p style='font-size:xx-small'><%=@sticky_note.updated_at.strftime('%H:%M')%></p>";
+jQuery("#time_stamp_<%=@sticky_note.id%>").html(time_stamp);

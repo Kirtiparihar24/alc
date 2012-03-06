@@ -1,0 +1,24 @@
+var billingEntryObj = jQuery('#hidden_expense_row_no_'+<%=@tne_invoice_expense_entry.id%>);
+jQuery('#expenseoverrideamt_' +<%=params[:id]%>).children("span").html("......");
+jQuery('#expensebillingpercent_'+<%=params[:id]%>).children("span").html("......");
+jQuery('#expense_final_billed_amount_'+<%=params[:id]%>).html("<%=number_with_lformat(@billed_amount)%>");
+var billed_amount_obj = jQuery('#te_expense_amount_'+billingEntryObj.val()).children("span");
+ <% if(@billed_amount > 0)%>
+   diff_billed_amount = <%= @billed_amount %>;
+   billed_amount = parseFloat(billed_amount_obj.html().replace(/,/g,'')) + <%= @billed_amount %>;
+   operate = '+';
+ <%else%>
+   billed_amount = parseFloat(billed_amount_obj.html().replace(/,/g,'')) - <%= @previous_final_billed_amount %>;
+   diff_billed_amount = <%= @previous_final_billed_amount %>;
+    operate = '-';
+ <%end%>
+  billed_amount_obj.html(billed_amount);
+  subtotal = jQuery('#tne_invoice_invoice_amt');
+   operate =='+' ? subtotal.val(parseFloat(subtotal.val()) + parseFloat(diff_billed_amount)) : subtotal.val(parseFloat(subtotal.val()) - parseFloat(diff_billed_amount));
+    if(jQuery("#apply_final_discount").is(':checked')){
+        checkDiscount();
+        }else{
+        check_calculations();
+      }
+//jQuery('#error_notice').show();
+//jQuery('#error_notice').html("<%=escape_javascript(render(:partial => 'common/common_flash_message'))%>");

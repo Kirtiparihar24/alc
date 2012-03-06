@@ -1,0 +1,28 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  setting_type: MyString
+  setting_value: MyString
+  company_id: 1
+
+two:
+  user_id: 1
+  setting_type: MyString
+  setting_value: MyString
+  company_id: 1
+
+# == Schema Information
+#
+# Table name: user_settings
+#
+#  id            :integer         not null, primary key
+#  user_id       :integer
+#  setting_type  :string(255)
+#  setting_value :string(255)
+#  company_id    :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#  ref_id        :integer
+#
+

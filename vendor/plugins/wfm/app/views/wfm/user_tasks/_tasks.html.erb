@@ -1,0 +1,253 @@
+<div class="sct">
+  <div class="sct_left">
+    <div class="sct_right">
+      <div class="sct_left">
+        <div class="sct_right">
+          <fieldset>
+            <!--[if !IE]>start table_wrapper<![endif]-->
+            <div class="table_wrapper">
+              <div class="table_wrapper_inner">
+                <table cellpadding="0" cellspacing="0" width="100%" class="tablesorter" id="tasks_index_table">
+                  <thead>
+                    <tr>
+                      <th style="padding-top:10px;" ><%= check_box_tag "toggle" , "toggle", false, :onclick =>"toggleCheckboxes('task',this.checked);" %></th>
+                      <th id="Client" width="15%"><%= link_to 'Client', sort_tasks_by('Client',params) %></th>
+                      <th id="Task" style="width:auto; border-right: 0px !important"><%= link_to 'Task', sort_tasks_by('Task',params) %></th>
+                      <th style="width:auto; "></th>
+                      <th id = "WorkSubType"style="width:auto;" nowrap="nowrap"><%= link_to 'Work Sub Type', sort_tasks_by('Work Sub Type',params) %></th>
+                      <th id ="StartsAt"style="width:auto;" nowrap="nowrap"><%= link_to 'Starts At', sort_tasks_by('Starts At',params) %></th>
+                      <%if is_completed%>
+                        <th id ="CompletedAt"style="width:auto;"><%= link_to 'Completed At', sort_tasks_by('Completed At',params) %></th>
+                      <%else%>
+                        <th id ="DueOn"style="width:auto;" nowrap="nowrap"><%= link_to 'Due On', sort_tasks_by('Due On',params) %></th>
+                      <%end%>
+                      <%if is_team_manager%>
+                        <th id ="AssignedTo"nowrap="nowrap" style="width:auto;"><%= link_to 'Assigned To', sort_tasks_by('Assigned To',params) %></th>
+                        <th nowrap="nowrap" style="width:auto;">Livian's Cluster</th>
+                      <%else%>
+                        <th id="AssignedBy"nowrap="nowrap" style="width:auto;"><%= link_to 'Assigned By', sort_tasks_by('Assigned By',params) %></th>
+                      <%end%>
+                      <th id ="Priority"nowrap="nowrap" style="width:auto;"><%= link_to 'Priority', sort_tasks_by('Priority',params) %>&nbsp;</th>
+                      <th nowrap="nowrap" style="width:auto;">Shared &nbsp;</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% unless @tasks.empty? %>
+                      <%priority_hash=Hash[UserTask::PRIORITIES.map {|x| [x[1], x[0]]}]%>
+                      <% @tasks.each  do |task|%>
+                        <% task_id = task.id %>
+                        <tr class="<%cycle('first','second')%>">
+                          <td>
+                            <%=alert_image('task',task)%>
+                            <%= get_task_type(task) %>
+                            <%=check_box_tag :task_id, task_id,false,:class=>"task" %>
+                          </td>
+                          <td>
+                            <%= task.receiver.full_name%><br />
+                            <i><%=task.receiver.company.name%></i>
+                          </td>
+                          <td style="width:auto; border-right: 0px !important">
+                            <div id="hoverIntent" style="position:relative;">
+                              <span>
+                                <% if !is_completed && edit_task?(task) %>
+                                  <% if task.parent_task && task.parent_task.is_repeat_task? && task.name == task.parent_task.name %>
+                                    <%=link_to(truncate(h(task.name),:length => 45),'#', :onclick=> "tb_show('Open Recurring Task','#{wfm_open_recurring_task_path(task)}?height=150&width=700','');")%>
+                                  <% else %>
+                                    <%=link_to(truncate(h(task.name),:length => 45), edit_wfm_user_task_path(task))%>
+                                  <% end %>
+                                  <% task_url = edit_wfm_user_task_path(task)%>
+                                <% else %>
+                                  <%=link_to(truncate(h(task.name),:length => 45), wfm_user_task_path(task))%>
+                                  <% task_url = wfm_user_task_path(task)%>
+                                <% end %>
+                                <div id="<%= task_id%>" class="task_details" style="display:none; position:absolute; top:35px;">
+                                  <div class="task_details_scroll"><%=task.name%><br/>
+                                    <%comment = task.comments.first rescue ''%>
+                                    <% unless comment.blank? %>
+                                      <b>Latest Comment By <%= comment.user.full_name %> On <%= wfm_date_format(comment.created_at)%> :-</b> <%=comment.comment%></br>
+                                    <%end%>
+                                  </div>
+                                </div>
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <%notify = notification_count(task)%>
+                            <%unless notify.blank?%>
+                              <div style="position:relative;float:right;">
+                                <div style="left:-13px; margin:0px;position:absolute;top:-6px;">
+                                  <a class="spch-bub-inside notify_link" href="<%=task_url%>">
+                                    <span class="point"></span>
+                                    <em><%=notify[1]%></em>
+                                  </a>
+                                </div>
+                              </div>
+                            <%end%>
+                          </td>
+                          <td>
+                            <%=task.work_subtype.name if task.work_subtype%>
+                          </td>
+                          <td>
+                            <%= wfm_date_format(task.start_at) rescue '-'%>
+                          </td>
+                          <td id="date_td">
+                            <%if is_completed%>
+                              <div>
+                                <%= wfm_date_format(task.completed_at) %>
+                              </div>
+                            <%else%>
+                              <div>
+                                <%= wfm_date_format(task.due_at) rescue "-"%>
+                              </div>
+                            <%end%>
+                            <div class="task_due <%= task_id%>" style="display:none;">
+                              <div style="color:#ff0000"><strong>Note Generated Date</strong> <%= wfm_date_format(task.communication.created_at) %> </div>
+                              <div><strong>Note Created By</strong> <span> <%= task.communication.logged_by_with_destroyed.full_name rescue '-' %> </span></div>
+                              <br/>
+                              <div><strong>Task Generated Date</strong> <%= wfm_date_format(task.created_at) %> </div>
+                              <%if is_completed == false%>
+                                <div style="color:#ff0000"><strong>Task Due Date</strong> <%= wfm_date_format(task.due_at) if task.due_at.present?%> </div>
+                              <%end%>
+                              <div><strong>Task Created By</strong> <span> <%= task.logged_by_with_destroyed.full_name rescue '-'%> </span></div>
+                              <div><strong>TAT</strong> <span> <%= task.get_tat rescue '-'%> hrs </span></div>
+                            </div>
+                          </td>
+                          <td>
+                            <%if is_team_manager%>
+                              <%= get_assigned_to('user',task.assigned_to_user_id) %>
+                            <%else%>
+                              <%= get_assigned_by(task.assigned_by_user_id) %>
+                            <%end%>
+                          </td>
+                          <%if is_team_manager%>
+                            <td>
+                              <%= get_assigned_to('clusters',task.assigned_to_user_id) %>
+                            </td>
+                          <%end%>
+                          <td <% if priority_hash[task.priority.to_s].eql?('Urgent')%> style="color:red" <%end%> >
+                            <%=priority_hash[task.priority.to_s]%>
+                          </td>
+                          <td>
+                            <%= task.share_with_client ? 'Yes' : 'No' %>
+                          </td>
+                          <td>
+                            <div style="position:relative">
+                              <div class="action_pad" style="text-align:center" onclick="jQuery('#action_div_task_<%=task_id%>').toggle('slow'); jQuery('.actions').not(jQuery('#action_div_task_<%=task_id%>')).hide('slow');"><%= image_tag("/stylesheets/wfm/layout/site/icon/icon_action.gif", :title=>'Actions', :alt=>'Actions') %></div>
+                              <div id="action_div_task_<%=task_id%>" class="actions list_div" style="display:none; width: 359px;">
+                                <%if !is_completed && edit_task?(task) %>
+                                  <ul>
+                                    <li class="icon_edit">
+                                      <% if task.parent_task && task.parent_task.is_repeat_task? && task.name == task.parent_task.name %>
+                                        <%=link_to 'Edit', '#', :onclick=> "tb_show('Open Recurring Task','#{wfm_open_recurring_task_path(task)}?height=150&width=700','');" %>
+                                      <% else %>
+                                        <%=link_to 'Edit', edit_wfm_user_task_path(task)%>
+                                      <% end %>
+                                    </li>
+                                    <li class="icon_complete_task">
+                                      <%=link_to 'Complete Task',edit_wfm_user_task_path(task,:complete=>'complete')%>
+                                    </li>
+                                    <li class="icon_reassign_task">
+                                      <%=link_to 'Reassign Task','#', :onclick=> "tb_show('Reassign Task','#{reassign_task_wfm_user_task_path(task)}?height=250&width=700','');"%>
+                                    </li>
+                                    <li class="icon_task_histroy">
+                                      <%=link_to 'History','#', :onclick=> "tb_show('Task History','#{task_histroy_wfm_user_task_path(task)}?height=350&width=800','');"%>
+                                    </li>
+                                    <li class="icon_call_recording">
+                                      <span style="color:#406F85;">Call Recording</span>
+                                    </li>
+                                  </ul>
+                                <%else%>
+                                  <ul>
+                                    <li class="icon_edit_disable">Edit</li>
+                                    <li class="icon_complete_task_disable">Complete Task</li>
+                                    <li class="icon_reassign_task_disable">Reassign Task</li>
+                                    <li class="icon_task_histroy">
+                                      <%=link_to 'History','#', :onclick=> "tb_show('Task History','#{task_histroy_wfm_user_task_path(task)}?height=350&width=700','');"%>
+                                    </li>
+                                    <li class="icon_call_recording_disable">Call Recording</li>
+                                  </ul>
+                                <%end%>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      <%end%>
+                    <%end%>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </fieldset>
+          <div class="table_menu" style="margin-bottom:4px;width:310px;">
+            <ul class="left">
+              <li><%=link_to "<span><span>Get Next</span></span>",get_next_task_wfm_user_tasks_path,:class=>"button orange_btn",:style=>"padding: 0;"%></li>
+              <% if !(params[:search] && params[:search][:status].eql?('Completed')) %><li><%=link_to '<span><span>Reassign Tasks</span></span>','#', :onclick=> "reassign_multiple_tasks();",:class=>"button orange_btn",:style=>"padding: 0;" unless @tasks.empty?%></li><% end %>
+              <% if current_user.belongs_to_back_office %><li><%=link_to "<span><span>Import Tasks</span></span>",'#',:onclick=> "tb_show('Task Import','#{import_task_by_file_wfm_user_tasks_path}?height=150&width=800','');",:class=>"button orange_btn",:style=>"padding: 0;"%></li><% end %>
+            </ul>
+          </div>
+          <div class="pagination">
+            <span class="page_no">
+              <%= custom_page_entries_info @tasks %><br/>
+              <span class="pag_list" style="float: left;" ><%= per_page_pegination_links(params,wfm_user_tasks_path) %></span>
+            </span>
+            <ul class="pag_list">
+              <%= will_paginate @tasks, :seperator=>'',:previous_label=> "<li><span class='button light_blue_btn' href='#'><span><span>PREVIOUS</span></span></span></li>", :next_label=> "<li style='float:right; margin-left: 5px;'><span class='button light_blue_btn' href='#'><span><span>NEXT</span></span></span></li>"%>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+  // call the tablesorter plugin
+  jQuery(function(){
+  var id = "<%= params[:order_to].delete(' ') if params[:order_to].present? %>"
+  var type = "<%= params[:order_type] %>"
+  if(type == 'DESC'){
+  jQuery('#'+id).addClass('header headerSortUp');
+  }else if(type == 'ASC'){
+  jQuery('#'+id).addClass('header headerSortDown');
+  }
+  });
+  });
+
+  // for description hover
+  jQuery('#hoverIntent span').hoverIntent({
+  sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
+  interval: 350,   // number = milliseconds of polling interval
+  over: showDescription,  // function = onMouseOver callback (required)
+  timeout: 100,   // number = milliseconds delay before onMouseOut function call
+  out: hideDescription    // function = onMouseOut callback (required)
+  });
+
+  function showDescription()
+  {
+  jQuery(this).children('.task_details').fadeIn();
+  }
+  function hideDescription()
+  {
+  jQuery(this).children('.task_details').fadeOut('fast');
+  }
+
+  // for due_at / completed_at hover
+  jQuery('#date_td div').hoverIntent({
+  sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
+  interval: 350,   // number = milliseconds of polling interval
+  over: showDate,  // function = onMouseOver callback (required)
+  timeout: 100,   // number = milliseconds delay before onMouseOut function call
+  out: hideDate    // function = onMouseOut callback (required)
+  });
+
+  function showDate()
+  {
+  jQuery(this).next('.task_due').fadeIn();
+  }
+  function hideDate()
+  {
+  jQuery(this).next('.task_due').fadeOut('fast');
+  }
+</script>

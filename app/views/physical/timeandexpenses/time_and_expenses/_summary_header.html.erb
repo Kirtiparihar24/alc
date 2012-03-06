@@ -1,0 +1,43 @@
+<div class="box_yellow ">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="entries">
+  <tbody><tr>
+      <th width="15%">
+      <%unless params[:action].eql?('matter_view') || params[:action].eql?('contact_view') || params[:action].eql?('internal') %>
+      <input type="text" id="datepicker_time_entry" name="physical_timeandexpenses_time_entry[time_entry_date]" readOnly = "true" class="tne_date_picker" size="11" value=<%= params[:time_entry_date]? params[:time_entry_date] : Time.zone.now.to_date.strftime('%m/%d/%Y')%> />
+      <%end%>
+      </th>
+    <th width="15%" align="left"><span class="ml10">Time ( Hr / Amount $)</span></th>
+    <th width="20%" align="right">Expenses ( $ )</th>
+    <th width="20%" align="right">Total ( $ )</th>
+    <th width="25%">&nbsp;</th>
+  </tr>
+  <tr>
+    <td width="15%" class="labels">Open</td>
+    <td width="15%" class="data"><span class="ml10"><span id="total_hr_open"><%= @total_hours_open.to_f.fixed_precision(2)%></span> &nbsp;<%=t(:text_hrs)%>/ <span id="total_open_amount"><%= number_with_lformat( @total_amount_open) %></span></span></td>
+    <td width="20%" align="right" class="data"><span id="total_expense_open"><%= number_with_lformat(@total_expenses_open) %></span></td>
+    <td width="20%" align="right" class="data"><span id="grand_total_open"><%= number_with_lformat(@grand_total_open) %></span></td>
+    <td width="25%" class="data">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="15%" class="labels">Approved </td>
+    <td width="15%" class="data"><span class="ml10"><span id="total_hr_approved"><%= @total_hours_approved.to_f.fixed_precision(2)%></span>&nbsp;<%=t(:text_hrs)%> /<span id="total_approved_amount"> <%= number_with_lformat(@total_amount_approved) %></span></span></td>
+    <td width="20%" align="right" class="data"><span id="total_expense_approved"><%= number_with_lformat(@total_expenses_approved) %></span></td>
+    <td width="20%" align="right" class="data"><span id="grand_total_approved"><%= number_with_lformat(@grand_total_approved) %></span></td>
+    <td width="25%" class="data">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="15%" class="labels">Billed</td>
+    <td width="15%" class="data"><span class="ml10"><span id="total_hr_billed"><%= @total_hours_billed.to_f.fixed_precision(2)%></span>&nbsp;<%=t(:text_hrs)%> /<span id="total_billed_amount"><%= number_with_lformat(@total_amount_billed) %></span></span></td>
+    <td width="20%" align="right" class="data"><span id="total_expense_billed"><%= number_with_lformat(@total_expenses_billed) %></span></td>
+    <td width="20%" align="right" class="data"><span id="grand_total_billed"><%= number_with_lformat(@grand_total_billed) %></span></td>
+    <td width="25%" class="data">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="15%" class="total">Total</td>
+    <td width="15%" class="total"><span id="grand_total_hours"><%= @total_hours.to_f.fixed_precision(2)%></span>&nbsp;<%=t(:text_hrs)%> / <span id="grand_total_amount"><%= number_with_lformat(@total_amount) %></span></td>
+    <td width="20%" align="right" class="total"><span id="grand_total_expense"><%= number_with_lformat(@grand_total_expense) %></span></td>
+    <td width="20%" align="right" class="total"><span id="grand_total_all"><%= number_with_lformat(@grand_total) %></span></td>
+    <td width="25%" class="total">&nbsp;</td>
+  </tr>
+</tbody></table>
+</div>

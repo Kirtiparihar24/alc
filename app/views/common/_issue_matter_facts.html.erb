@@ -1,0 +1,31 @@
+<div class="gridDiv">
+  <div class="titleHead">
+    <div class="fl"><%=t(:text_linked_facts)%></div>
+    <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div>
+    <br class="clear"/>
+  </div>
+  <%unless issue_matter_facts.empty?%>
+    <div class="windowForm" >
+      <table cellspacing="0" border="0" align="center" style ="width: 500px">
+        <tr>
+          <th width="85%"><%=t(:text_fact)%></th>
+          <th width="15%"><%=t(:text_material)%></th>
+        </tr>
+        <tbody class="iframeview">
+          <%issue_matter_facts.each do |e|%>
+            <tr>
+              <td width="85%"><%=e.name%></td>
+              <td width="15%"><%=e.material ? "#{t(:text_yes)}" : "#{t(:text_no)}"%></td>
+            </tr>
+          <%end%>
+        <%else%>
+        <td colspan="4">
+          <div class="warningCont m5">
+            <%=t(:text_no_facts_linked_yet)%>
+          </div>
+        </td>
+      <%end%>
+      </tbody>
+    </table>
+  </div>
+</div>

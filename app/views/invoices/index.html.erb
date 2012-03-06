@@ -1,0 +1,28 @@
+<%if current_user.role?:lawfirm_admin%>
+  <% content_for :company_selection do %>
+    <div id="topheadContainer"><div class="title fl"><%= current_user.company_full_name  %></div></div>
+  <%end%>
+<% end %>
+<div class="box-head"><h2 class="left"><%=t(:text_invoices)%></h2></div>
+<% if current_user.role? :livia_admin %>
+  <div class="actionLinks"><%= link_to t(:label_new_invoice_generation), new_invoice_path %></div>
+  <%form_remote_tag :url=>invoices_path,:method=>:get do%>
+    <div class="form">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="11%" align="left" valign="middle"><label><%=t(:text_company)%></label></td>
+          <td width="25%"><%= collection_select(:company, :id, @companies, :id, :name, {:include_blank =>'All'},{:class=>'field size3'}) %></td>
+          <td width="8%" align="left" valign="middle"><label><%=t(:text_month)%></label></td>
+          <td width="26%"><%=select("invoiceMonth","select",[["All","All"],["Jan","1"],["Feb","2"],["Mar","3"],["Apr","4"],["May","5"],["Jun","6"],["Jul","7"],["Aug","8"],["Sep","9"],["Oct","10"],["Nov","11"],["Dec","12"]],{},{:style => "width:100px",:class=>'field size3'})%></td>
+          <td width="9%" align="left" valign="middle"><label><%=t(:text_status)%></label></td>
+          <td width="21%"><%=select("invoiceStatus","select",[["All","All"],["Paid","Paid"],["Not Paid","Not Paid"],["Semi Payment","Semi Payment"],["N/A","N/A"]],{},{:style => "width:100px",:class=>'field size3'})%></td>
+        </tr>
+        <tr><td colspan="6">&nbsp;</td></tr>
+      </table>
+      <div class="buttons">
+        <input type="submit" value="<%=t(:label_show_invoice)%>"  class="button"/>
+      </div>
+    <% end %>
+  <%end%>
+</div>
+<%=render :partial => "show_invoice_records",:locals=>{:invoices=>@invoices}%>

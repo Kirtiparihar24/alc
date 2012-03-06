@@ -1,0 +1,104 @@
+<table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+  <tr>
+    <%if @document_homes.length > 0 %>
+    <%= column_sort_link(t(:text_name),'documents.name',params[:col], '30%', "left", {:mode_type=>params[:mode_type], :mappable_id=>params[:mappable_id], :from=>params[:from], :action=>params[:action], :controller=>params[:controller]}) %>
+    <%= column_sort_link(t(:text_description),'documents.description',params[:col], '30%', "left", {:mode_type=>params[:mode_type], :mappable_id=>params[:mappable_id], :from=>params[:from], :action=>params[:action], :controller=>params[:controller]}) %>
+    <%= column_sort_link(t(:text_size),'data_file_size',params[:col], '30%', "left", {:mode_type=>params[:mode_type], :mappable_id=>params[:mappable_id], :from=>params[:from], :action=>params[:action], :controller=>params[:controller]}) %>
+    <%= column_sort_link(t(:text_date),'document_homes.created_at',params[:col], '30%', "left", {:mode_type=>params[:mode_type], :mappable_id=>params[:mappable_id], :from=>params[:from], :action=>params[:action], :controller=>params[:controller]}) %>
+    <%  else %>
+    <th width="30%" align="left"> <%= t(:text_name) %> </th>
+    <th width="30%" align="left"> <%= t(:text_description) %> </th>
+    <th width="30%" align="left"> <%= t(:text_size) %> </th>
+    <th width="30%" align="left"> <%= t(:text_date) %> </th>
+    <% end %>
+    <th width="1%" align="center"> <%= t(:text_actions) %> </th>
+  </tr>
+  <%if @document_homes.length>0 %>
+    <% @document_homes.each do |document_home| %>
+      <% if document_accesible?(document_home) %>
+        <% check_level = doc_checked_access(document_home, @emp_usr_id) %>
+        <% @doc_count = 1
+        doc=document_home.latest_doc%>
+        <tr class="<%=cycle('bg1','bg2')%>">
+         <td width="20%">
+          <%= get_file_extension(document_home)%><!--to set the image for the extension type -->
+          <%= link_to("#{doc.name}", document_home_path(doc.id))%> </td>
+          <td width="40%"><%=raw(doc.description.present? ? truncate_withscroll(doc.description.try(:titleize),40):'')%></td>
+      <%#=Do Not Change the Locale%>
+          <td width="15%"><span class="comment"><%=number_to_human_size(doc.data_file_size, :separator => ".",:locale=>'us')%></span></td>
+          <td width="15%" align="center"><%=raw livia_date(document_home.created_at)%></td>
+          <td width="10%" align="center">
+            <div class="icon_action mt3"><a href="#"></a></div>
+            <div id="liquid-roundAP" class="tooltip" style="display:none;">
+              <!--Icon table strt here -->
+              <table width="100%" border="1" cellspacing="0" cellpadding="0">
+
+                <%= raw action_pad_top_blue_links({:edit_path => edit_doc_link_document_home_path(document_home,:controller_name=> "#{controller.controller_name}", :type=>'DocumentHome',:height=> "250"),
+                    :edit_modal => true,
+                    :deactivate_path => document_home_path(document_home,:return_path => true,  :return_controller => params[:controller], :return_id=>params[:id],:mappable_id => @mapable.id, :from => params[:from],:current_tab=>params[:current_tab],:start_date=>params[:start_date],:end_date=>params[:end_date],:status => params[:status],:view=>params[:view]),
+                    :comment_path => "NO",
+                    :document_path => "NO",
+                    :history_path =>  params[:matter_id].present?? "#{get_doc_history_matter_document_home_path(params[:matter_id],document_home)}?height=300&width=800" : "#{get_doc_history_document_home_path(document_home.id)}?height=90&width=450",
+                    :history_title => params[:matter_id].present?? "Versions Of Document:" : "History #{doc.name}"
+                  },onclick="return confirm_for_delete_document(this, '', '', '', '#{session[:_csrf_token]}', 'lawyer')")%>
+                <tr>
+                  <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                  <td style="background: #fff;">
+                    <div class="pt5">
+                      <div class="fl pb5"  style="width:165px;">
+                        <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                          <tr>
+                            <td width="20"><div class="icon_download fl"></div></td>
+                            <td nowrap class="ml5"><%= link_to("<span>Download</span>", document_home_path(doc.id))%></td>
+                          </tr>
+                        </table>
+                    </div>
+                    <% if params[:matter_id].present? %>
+                        <div class="fl pb5"  style="width:165px;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                            <tr>
+                              <td width="20"><div class="icon_supercede_document fl"></div></td>
+                              <td nowrap class="ml5"><%if check_level!='2'%><%= link_to("<span>#{t(:label_superseed)}</span>", "#{supercede_or_replace_document_document_home_path(document_home,:return_path => true,:return_id=>params[:id],:mappable_id => @mapable.id, :from => params[:from],:current_tab=>params[:current_tab],:start_date=>params[:start_date],:end_date=>params[:end_date],:status => params[:status],:view=>params[:view],:from_entry=> params[:from_entry],:return_controller => params[:controller],:mappable_id=>params[:mappable_id],:matter_id=>params[:matter_id])}&height=200&width=400", :class => "thickbox", :name => "Upload Document")%><% end %></td>
+                            </tr>
+                          </table>
+                        </div>
+                    <%else%>
+                        <div class="fl pb5"  style="width:165px;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                            <tr>
+                              <td width="20"><div class="icon_supercede_document fl"></div></td>
+                              <td nowrap class="ml5"><%= link_to("<span>#{t(:label_superseed)}</span>", "#{supercede_or_replace_document_document_home_path(document_home,:matter_id => params[:matter_id], :height => 235, :width =>600, :parent_id => params[:parent_id], :from => "common", :mappable_id => @mapable.id, :mapable_type => @mapable.class.name)}", :class => "thickbox", :name => "#{t(:label_superseed)}")%></td>
+
+                            </tr>
+                          </table>
+                        </div>
+                    <%end%>
+                      <div class="fl pb5"  style="width:165px;">
+                        <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                          <tr>
+                            <td width="20"><div class="icon_email fl mr5"></div></td>
+                            <td nowrap class="ml5"><%= raw(generate_send_email_doc_link(doc.id,doc.name)) %></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+
+                  </td>
+                  <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                </tr>
+                <tr>
+                  <td valign="top" class="ap_bottom_curve_left"></td>
+                  <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                  <td valign="top" class="ap_bottom_curve_right"></td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      <%end%>
+    <%end%>
+  <%else%>
+    <tr><td colspan ="5"><%=t(:label_No_documents_uploaded_yet)%></td></tr>
+  <%end%>
+</table>
+<%=render :file =>'common/document_extension'%>

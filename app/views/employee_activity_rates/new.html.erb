@@ -1,0 +1,38 @@
+<%if current_user.role?:lawfirm_admin%>
+  <% content_for :company_selection do %>
+    <div id="topheadContainer"><div class="title fl"><%= @company.name  %></div></div>
+  <%end%>
+<% end %>
+<div class="box-head"><h2><%=t(:text_new_employee_activity_rate)%></h2></div>
+<% form_for(@employee_activity_rate,:html=>{:onsubmit=>"jQuery('#employee_activity_rate_submit').attr('disabled',true)"}) do |f| %>
+  <div class="form">
+    <%if(@employee_activity_rate.errors.length > 0)%>
+      <div class='errorCont'>
+        <%=f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_employee)%><span>*</span></label></td>
+        <td><%= f.select :employee_user_id, @employees, :include_blank=>'Please select',:class=>"field size2"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_activity)%> <span>*</span></label></td>
+        <td width="75%"><%= f.select 'activity_type_id', @emp_activities, :include_blank=>'Please select',:class=>"field size2"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=t(:label_billing_rate)%><span>*</span></label></td>
+        <td><%= f.text_field :billing_rate ,:maxlength=>11,:onblur => "check_rate(this);",:class=>"field size2"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= f.submit t(:text_create), :class=>"button"%>
+    <%= link_to t(:label_cancel), "/rate_cards/index/#{@company.id}", :class=>"button" %>
+  </div>
+  <%= hidden_field_tag :company_id, @company.id%>
+<% end %>

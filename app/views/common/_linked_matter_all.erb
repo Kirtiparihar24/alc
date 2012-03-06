@@ -1,0 +1,107 @@
+<!--
+Modified for the Feature #7512 - Link task risk issue fact - all to all, added by shripad
+single partial will called after clicking on count on index page
+-->
+﻿<div style="margin-top:20px; padding:0;">
+  <% if format_type == "activities" %>
+    <% unless matter_tasks.empty? %>
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <th width="85%" align="left"><%= t(:text_tasks) %></th>
+            <th width="15%" align="left"><%= t(:text_completed) %></th>
+          </tr>
+          <% matter_tasks.each do |e| %>
+            <tr class="bg1">
+              <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_task_path(@matter,e)))%></td>
+              <td align="left"><%= e.completed ? "#{t(:text_yes)}" : "#{t(:text_no)}" %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div class="warningCont m5">  <%= t(:text_no_tasks_linked_yet) %> </div>
+    <% end %>
+  <%end%>
+  <% if format_type == "issues" %>
+    <% unless matter_issues.empty? %>
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <th width="85%" align="left"><%= t(:text_issues) %></th>
+            <th width="15%" align="left"><%= t(:text_key) %></th>
+          </tr>
+          <% matter_issues.each do |e| %>
+            <tr class="bg1">
+              <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_issue_path(@matter,e)))%></td>
+              <td align="left"><%= e.is_key_issue ? "#{t(:text_yes)}" : "#{t(:text_no)}" %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div class="warningCont m5">  <%= t(:text_no_issues_linked_yet) %> </div>
+    <% end %>
+  <%end%>
+  <% if format_type == "facts" %>
+    <% unless matter_facts.empty? %>
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <th width="85%" align="left"><%= t(:text_facts) %></th>
+            <th width="15%" align="left"><%= t(:text_material) %></th>
+          </tr>
+          <% matter_facts.each do |e| %>
+            <tr class="bg1">
+              <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_fact_path(@matter,e)))%></td>
+              <td align="left"><%= e.material ? "#{t(:text_yes)}" : "#{t(:text_no)}" %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div class="warningCont m5">  <%= t(:text_no_facts_linked_yet) %> </div>
+    <% end %>
+  <%end%>
+  <% if format_type == "researches" %>
+    <% unless matter_researches.empty? %>
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <th width="85%" align="left"><%= t(:text_researches) %></th>
+            <th width="15%" align="left"><%= t(:text_internal) %></th>
+          </tr>
+          <% matter_researches.each do |e| %>
+            <tr class="bg1">
+              <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_research_path(@matter,e)))%></td>
+              <td align="left"><%= e.is_internal ? "#{t(:text_yes)}" : "#{t(:text_no)}" %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div class="warningCont m5">  <%= t(:text_no_facts_linked_yet) %> </div>
+    <% end %>
+  <%end%>
+  <% if format_type == "risks" %>
+    <% unless matter_risks.empty? %>
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <th width="85%" align="left"><%= t(:text_risks) %></th>
+            <th width="15%" align="left"><%= t(:text_material) %></th>
+          </tr>
+          <% matter_risks.each do |e| %>
+            <tr class="bg1">
+              <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_risk_path(@matter,e)))%></td>
+              <td align="left"><%= e.is_material ? "#{t(:text_yes)}" : "#{t(:text_no)}" %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    <% else %>
+      <div class="warningCont m5">  <%= t(:text_no_risks_linked_yet) %> </div>
+    <% end %>
+  <%end%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;147</div>

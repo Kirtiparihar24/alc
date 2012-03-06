@@ -1,0 +1,26 @@
+<% index = @index %>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border:0px;float:left;margin-top:6px !important;" class="grayTable">
+  <tr>
+    <td style="width:584px;">
+      <%= text_area("com_notes_entries[#{index}]", "description", {:rows => "1",:cols=>"65",:class=>"textarea"}) %>
+    </td>
+    <td valign="top" width="13%" style="padding-left:142px;">
+      <span id="matter_drop_<%= index%>_span">
+        <input  type="text" id="matter_cnt_<%= index%>" class="all_matter_input" title='Search' value="Search" onclick="this.value=''" size="15" autocomplete="off"  ></input></span>
+      <span id="comm_mtr_<%= index %>_span"></span>
+      <%=link_to_remote(image_tag("/images/download.png",:alt=>"Lists",:class=>"drop_down",:border=>"0",:style=>"margin-top:-16px;margin-left:128px;"), {:url=>{:controller=>'communications',:action=>'get_matter_info',:emp_id=>params[:emp_id],:com_id=>index},:id=>"com_matter_entries[#{index}]",:before=>"jQuery('.ac_results').hide();",:loading=>"jQuery('#comm_loader').show();",:success=>"jQuery('#comm_loader').hide();"})%>
+    </td>
+    <td width="1%"></td>
+    <td valign="top" align="left" width="12%" style="padding-right:52px;">
+      <span id="comm_cnt_<%= index%>_span">
+        <input  type="text" id="contact_cnt_<%=index%>" class="all_contact_input"  value="Search" onclick="this.value=''" title='Search' size="15"   autocomplete="off"  ></input>
+      </span>
+      <span id="contact_drop_<%= index %>_span"></span>
+      <%=link_to_remote(image_tag("/images/download.png",:alt=>"Lists",:class=>"drop_down",:border=>"0",:style=>"margin-top:-16px;margin-left:128px;"), {:url=>{:controller=>'communications',:action=>'get_matter_info',:emp_id=>params[:emp_id],:comm_cnt_id=>index},:id=>"com_contact_entries[#{index}]",:before=>"jQuery('.ac_results').hide();",:loading=>"jQuery('#comm_loader').show();",:success=>"jQuery('#comm_loader').hide();"}) %>
+    </td>
+    <td valign="top" align="left" style="padding-left:11px;">
+      <%= check_box("com_notes_entries[#{index}]", "note_priority") %>
+    </td>
+  <input id="com_notes_entries_<%= index %>_is_actionable" type="hidden" value="true" name="com_notes_entries[<%= index %>][is_actionable]">
+  </tr>
+</table>

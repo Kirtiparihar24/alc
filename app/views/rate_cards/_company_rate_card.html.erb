@@ -1,0 +1,80 @@
+<div class="box-head"><h2><%=t(:text_company_role_rates)%></h2></div>
+<div class="actionLinks"><%= link_to t(:label_new_company_role_rate), new_company_role_rate_path(:id=>@company.id) %></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="49%" align="left"><%=t(:text_role)%></th>
+      <th width="37%" align="left"><%=t(:text_billing_rate)%></th>
+      <th width="14%" align="left"><%=t(:text_actions)%></th>
+    </tr>
+    <% @company_role_rates.each do |company_role_rate| %>
+      <tr>
+        <td align="left"><%= company_role_rate.people_role.lvalue %></td>
+        <td align="left"><%= company_role_rate.billing_rate %></td>
+        <td align="left"><%= link_to(image_tag('/images/livia_portal/icon_edit.gif', {:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_role_rate_path(company_role_rate)) %>
+          <%= link_to(image_tag('/images/livia_portal/icon_reject.gif', {:alt =>"Deactivate", :title=>"Deactivate", :border => 0, :hspace => "0"}), company_role_rate, {:confirm => 'Are you sure?', :method => :delete}) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div class="pagging"></div>
+<div class="mid-box-head"><h2><%=t(:text_employee_rates)%></h2></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="49%" align="left"><%=t(:text_employee)%></th>
+      <th width="37%" align="left"><%=t(:text_billing_rate)%></th>
+      <th width="14%" align="left"><%=t(:text_actions)%></th>
+    </tr>
+    <%  @employee_rates.each do |employee| %>
+      <tr>
+        <td align="left"><%= employee.full_employee_name %></td>
+        <td align="left"><%= employee.billing_rate %></td>
+        <td align="left"><%= link_to(image_tag('/images/livia_portal/icon_edit.gif', {:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), "/rate_cards/edit/#{employee.id}" ) %></td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<div class="pagging"></div>
+<div class="mid-box-head"><h2><%=t(:text_company_activity_rates)%></h2></div>
+<div class="actionLinks"><%= link_to t(:label_new_company_activity_rate), new_company_activity_rate_path %></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="49%" align="left"><%=t(:text_activity)%></th>
+      <th width="37%" align="left"><%=t(:text_billing_rate)%></th>
+      <th width="14%" align="left"><%=t(:text_actions)%></th>
+    </tr>
+    <%  @company_activity_rates.each do |company_activity_rate| %>
+      <tr>
+        <td align="left"><%=companylookup_lvalue company_activity_rate.activity_type_id rescue "-"%></td>
+        <td align="left"><%=company_activity_rate.billing_rate rescue "-"%></td>
+        <td align="left"><%= link_to(image_tag('/images/livia_portal/icon_edit.gif', {:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}),  edit_company_activity_rate_path(company_activity_rate)) %>
+          <%= link_to(image_tag('/images/livia_portal/icon_reject.gif', {:alt =>"Destroy", :title=>"Destroy", :border => 0, :hspace => "0"}), company_activity_rate, {:confirm => 'Are you sure?', :method => :delete}) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div class="pagging"></div>
+<div class="mid-box-head"><h2><%=t(:text_employee_activity_rates)%></h2></div>
+<div class="actionLinks"><%= link_to t(:label_new_employee_activity_rate), "/employee_activity_rates/new/#{@company.id}" %></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="24%" align="left"><%=t(:text_employee)%></th>
+      <th width="25%" align="left"><%=t(:text_activity)%></th>
+      <th width="37%" align="left"><%=t(:text_billing_rate)%></th>
+      <th width="14%" align="left"><%=t(:text_actions)%></th>
+    </tr>
+    <% @employee_activity_rates.each do |employee_activity_rate| %>
+      <tr>
+        <td align="left"><%= get_employee_name employee_activity_rate.employee_user_id %></td>
+        <td align="left"><%= companylookup_lvalue employee_activity_rate.activity_type_id %></td>
+        <td align="left"><%= employee_activity_rate.billing_rate %></td>
+        <td align="left"><%= link_to(image_tag('/images/livia_portal/icon_edit.gif', {:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_employee_activity_rate_path(employee_activity_rate)) %>
+          <%= link_to(image_tag('/images/livia_portal/icon_reject.gif', {:alt =>"Deactivate", :title=>"Deactivate", :border => 0, :hspace => "0"}), employee_activity_rate, {:confirm => 'Are you sure?', :method => :delete}) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div class="pagging"></div>

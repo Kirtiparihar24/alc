@@ -1,0 +1,22 @@
+<div id="topheadContainer"><div class="title fl"> Reset TPIN (<%=@user.username%>) </div></div>
+<div id="reset_password_errors" class ="errorCont" style="display:none"></div>
+<div class="form">
+  <table cellspacing="0" cellpadding="0" width="100%">
+    <tbody>
+      <tr>
+        <td width="25%" align="left" valign="top"><label>TPIN <span>*</span></label></td>
+        <td width="75%"><%= password_field_tag  :tpin,'',:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label>Confirm TPIN <span>*</span></label></td>
+        <td><%= password_field_tag  :confirm_tpin,'',:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="buttons">
+  <input type="button" value="<%=t(:label_reset)%>" onclick="submitTpinReset(<%=@user.id%>);" />
+  <%= link_to(t(:label_cancel), "#",:class=>"button",:onclick=>"tb_remove();")%>
+</div>

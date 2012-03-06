@@ -1,0 +1,24 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  description: MyText
+  work_type_id: 1
+
+two:
+  name: MyString
+  description: MyText
+  work_type_id: 1
+
+# == Schema Information
+#
+# Table name: work_subtypes
+#
+#  id           :integer         not null, primary key
+#  name         :string(255)
+#  description  :text
+#  work_type_id :integer
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+

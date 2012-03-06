@@ -1,0 +1,36 @@
+<% calendar_event = @calendar_event %>
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_my_task)%></div>
+  <div class="gryBox">
+    <!--TABULAR DATA STARTS-->
+    <div class="gridTable">
+      <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <tr>
+          <th><%=t(:text_title)%></th>
+          <th><%=t(:text_description)%></th>
+          <th><%=t(:text_created)%></th>
+        </tr>        
+        <%unless calendar_event.blank? %>
+          <tbody class="scrollY100">
+            <% calendar_event.each do |calendar_event| %>
+              <tr class="<%=cycle("bg1", "bg2")%>">
+                <td>
+                  <%=calendar_event.title.nil? ? '' : calendar_event.title.try(:titleize) %>
+                </td>
+                <td>
+                  <%=  calendar_event.description.nil? ? '' :calendar_event.description.try(:titleize) %>
+                </td>
+                <td>
+                  <%= calendar_event.starts_at.nil? ? '' :calendar_event.starts_at.to_time.strftime('%m/%d/%y') %>
+                </td>
+              </tr>
+            <%end%>
+          </tbody>
+        <%else%>
+          <tr><td colspan="4"><div class="warningCont m5"><%=t(:text_no_data)%></div></td></tr>
+        <%end%>
+      </table>
+    </div>
+    <!--TABULAR DATA ENDS-->
+  </div>
+</div>

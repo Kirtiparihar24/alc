@@ -1,0 +1,4 @@
+<li><%=link_to(t(:text_time_accounted),{:controller => '/rpt_time_and_expenses' , :action => :time_accounted}, :class => "#{@time_accounted}")%></li>
+<li><%=link_to(t(:text_time_billed_p),{:controller => '/rpt_time_and_expenses' , :action => :time_billed },:class => "#{@time_billed}")%></li>
+<li><%=link_to(t(:text_matter_accounting),{:controller => '/rpt_time_and_expenses' , :action => :matter_accounting},:class => "#{@matter_accounting}")%></li>
+<li><%=link_to(t(:text_contact_accounting),{:controller => '/rpt_time_and_expenses' , :action => :contact_accounting},:class => "#{@contact_accounting}")%></li>

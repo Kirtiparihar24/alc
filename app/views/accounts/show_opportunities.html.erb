@@ -1,0 +1,31 @@
+<div id ="ajax_sort">
+  <% unless @account.contacts.empty? %>
+    ﻿<div style="margin-top:20px; padding:0;">
+      <div class="tabular_listing border_gray">
+        <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+          <tr>
+            <%= column_sort_link(t(:text_opportunity),'opportunities.name',params[:col], '20%', "left", {:fetch => "opportunities",:height => params[:height],:width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_contact_name),'contacts.last_name',params[:col], '20%', "left", { :fetch => "opportunities",:height => params[:height],:width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_stage),'lvalue',params[:col], '20%', "left", {  :fetch => "opportunities",:height => params[:height],:width => params[:width], :random => params[:random], :ajax_sort => true,:class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_amt),'amount',params[:col], '20%', "right", { :fetch => "opportunities",:height => params[:height],:width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+            <%= column_sort_link(t(:text_created_at),'created_at',params[:col], '20%', "left", { :fetch => "opportunities",:height => params[:height],:width => params[:width], :random => params[:random], :ajax_sort => true, :class=>"tablesorter"}) %>
+          </tr>
+          <% unless @opportunities.empty? %>
+            <% @opportunities.each do |opportunity| %>
+              <tr class="<%= cycle('bg1','bg2') %>">
+                <td width="20%" align="left"><%= link_to(opportunity.name.try(:titleize),edit_opportunity_path(opportunity,:from=>"accounts")) %></td>
+                <td width="20%" align="left"><%= opportunity.contact.try(:full_name).try(:titleize) %></td>
+                <td width="20%" align="left"><%= opportunity.get_stage %></td>
+                <td width="15%" align="right"><%= ( number_with_lformat(opportunity.amount).to_s ) if opportunity.amount %> </td>
+                <td width="15%" align="center"><%= opportunity.created_at.to_time.strftime('%m/%d/%y')if opportunity.created_at %></td>
+              </tr>
+            <% end %>
+          <% end  %>
+        </table>
+      </div>
+    </div>
+  <% else %>
+    <div class="warningCont m5"> <%= t(:text_no_opportunities_created_yet) %></div>
+  <% end %>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;132</div>
+</div>

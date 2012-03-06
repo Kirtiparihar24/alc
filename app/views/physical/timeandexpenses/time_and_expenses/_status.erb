@@ -1,0 +1,9 @@
+<% if can_modify_entry || is_access_t_and_e?%>
+  <% unless time_or_expense_entry.status.eql?("Billed") %>
+    <%= select_tag "#{entry_type}_#{time_or_expense_entry.id}[status]",options_for_select({"Open" => "Open", "Approved" => "Approved"},time_or_expense_entry.status),{ :onchange=>"change_time_entry_status_in_all_te(#{time_or_expense_entry.id},'#{request.referer}');",:style=>"width:85px"}%>
+  <%else%>
+    <%=t(:text_billed)%>
+  <%end%>
+<%else%>
+  <%=time_or_expense_entry.status%>
+<%end%>

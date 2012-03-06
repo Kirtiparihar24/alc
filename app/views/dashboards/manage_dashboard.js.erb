@@ -1,0 +1,18 @@
+jQuery('#dashboard_check_id').val(<%=@dashboard.id%>)
+jQuery('#charts_div').html("<center> <div id=chart1></div></center>");
+//For managing form data
+jQuery("#show_dash_board_favorite form>#parameters").val("<%=@dashboard.http_parameter_in_favourite_for_params %>");
+jQuery("#show_dash_board_favorite form>#thresholds").val("<%= @dashboard.http_parameter_in_favourite_for_thresholds %>");
+
+function render_chart(type_of_chart){
+  var dataurl = "/dashboards/render_dashboard_xml_file?chart_name="+"<%= @dashboard.dashboard.template_name %>"+"&"+"<%=@dashboard.http_parameter %>";
+  var activity = ""
+  if(type_of_chart == "Column3D.swf" || type_of_chart == "MSColumn3D.swf")
+    activity = new FusionCharts("/FusionCharts/"+type_of_chart, "activity",750,500);
+  else
+    activity = new FusionCharts("/FusionCharts/"+type_of_chart, "activity",500,500);
+  activity.setDataURL(dataurl);
+  activity.render("chart1");
+}
+render_chart("<%= @dashboard.dashboard.type_of_chart %>");
+

@@ -1,0 +1,40 @@
+<!--[if !IE]>start head<![endif]-->
+<div id="head">
+  <!--[if !IE]>start logo and user details<![endif]-->
+  <div id="logo_user_details">
+    <h1 id="logo"><a href="/wfm/notes"></a></h1>
+    <!--[if !IE]>start user details<![endif]-->
+    <div id="user_details">
+      <div id="user_details_menu" class="icon_user_welcome">Welcome <strong><%=current_user.full_name%></strong></div>
+      <div class="fr fs10">
+        <%=link_to(t(:text_change_password),'#',:onclick=> "tb_show('Change Password','#{change_password_user_path(current_user.id)}?height=200&width=400','');") %>&nbsp;|&nbsp;
+        <%#= link_to(t(:text_change_password), change_password_user_path(current_user.id) , :id=> 'faceboxchangepass')%>
+        <%=link_to "Log out",destroy_user_session_path%>
+      </div>
+    </div>
+    <!--[if !IE]>end user details<![endif]-->
+  </div>
+  <!--[if !IE]>end logo end user details<![endif]-->
+  <!--[if !IE]>start menus_wrapper<![endif]-->
+  <div id="menus_wrapper">
+    <div id="main_menu" class="fl">
+      <ul>
+        <li class="disabled_links"><span><span>Home</span></span></li>
+        <li><a href="/wfm/notes" class="<%= ['notes','user_tasks'].include?(controller_name) ? "selected" : ""%>"><span><span>Work Item</span></span></a></li>
+        <%if is_team_manager%>
+        <li><%= link_to "<span><span>Manage Livians</span></span>", wfm_user_work_subtypes_path, :class=>controller_name == 'user_work_subtypes' ? "selected" : ""%></li>
+        <%end%>
+        <%if current_user.service_provider.has_common_pool_or_back_office_access? %>
+          <li><%= link_to "<span><span>Search Lawyer</span></span>", wfm_lawyer_list_path, :class=>controller_name == 'secretaries' ? "selected" : ""%></li>
+        <%end%>
+        <li class="disabled_links"><span><span>Reports &amp; Dashboard</span></span></li>
+        <li class="last disabled_links"><span><span>Repository</span></span></li>
+      </ul>
+      <div id="sec_menu"></div>
+    </div>
+    <div class="help_desk"><%= link_to image_tag("/stylesheets/wfm/layout/site/logo_helpdesk.png"), helpdesk_path, :class => "vtip", :title => "#{t(:text_helpdesk)}" if APP_URLS[:use_helpdesk] %></div>
+    <!--[if !IE]>end menus_wrapper<![endif]-->
+
+  </div>
+  <!--[if !IE]>end head<![endif]-->
+</div>

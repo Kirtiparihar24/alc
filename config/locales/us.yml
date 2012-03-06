@@ -1,0 +1,2869 @@
+---
+us:
+  text_menu_contacts: "Business Contacts"
+  text_menu_accounts: "Accounts"
+  text_menu_opportunity: "Opportunities"
+  text_menu_matter: "Matters"
+  text_menu_edit_matter: "Matter"
+  text_menu_tne: "Time & Expense"
+  text_menu_campaign: "Campaigns"
+  text_menu_billing: "Billing"
+  text_menu_document_manager: "Document Manager"
+  label_Favorites: "Favorites"
+  text_menu_utility: "Utilities"
+  text_menu_communication: "Communication"
+  text_menu_manager: "Manager Portal"
+  text_menu_rnd: "Reports & Dashboards"
+  text_deactivated_contacts: Deactivated Business Contacts
+  label_time_amp_expense: "Time & Expense"
+  text_Billing: Billing
+  text_zimbra_activity: Zimbra Activity
+  text_deactivated_accounts: Deactivated Accounts
+  text_deactivated_opportunities: Deactivated Opportunities
+  text_deactivated_campaigns: Deactivated Campaigns
+  text_menu_activity: "Create Activity"
+  text_menu_repository: "Repository"
+  text_menu_note: "Notes"
+  label_None: None
+  label_opportunity_percentage: Percentage (%)
+  label_Remove_Filter: Remove Filter
+  label_Account: Account
+  label_linked_account: "Link Account"
+  label_Select_contacts_to_be_activated: "Select contacts to be activated"
+  label_Either_Primary_Phone_or_Primary_Email_required : "Either Primary Phone or Primary Email required "
+  label_XLS: "XLS"
+  text_menu_livian_access: "LIVIAN"
+  text_menu_livian_instruction: "LIVIAN"
+  text_menu_access: "Access"
+  label_time_amp_expense: Time & Expense
+  text_menu_instruction: "- Instructions"
+  label_Account: Account
+  text_deactivated_campaigns: Deactivated Campaigns
+  text_deactivated_accounts: Deactivated Accounts
+  text_deactivated_opportunities: Deactivated Opportunities
+  label_view_all_client_docs: "View all clients documents"
+  label_Registered_Number_1_Primary: Registered Number 1(Primary)
+  label_Registered_Number_2: Registered Number 2
+  label_Registered_Number_3: Registered Number 3
+  label_Access_Code: Access Code
+  label_my: My
+  label_Campaigns: Campaigns
+  label_view_all_client_comments: "View all clients comments"
+  label_business_contacts: Business Contacts
+  label_mark_as_done: "Mark as Done"
+  label_Education: "Education"
+  label_Create_New_Account: Create New Account
+  label_Add_Filter: Add Filter
+  label_View_Activated_Accounts: View Activated Accounts
+  label_View_Deactivated_Accounts: View Deactivated Accounts
+  label_Billed: "Billed"
+  label_Matter_Related: "Matter Related"
+  label_Approved: "Approved"
+  label_Add_Filter: Add Filter
+  label_Remove_Filter: Remove Filter
+  label_business_contacts: Business Contacts
+  text_deactivated_contacts: Deactivated Business Contacts
+  label_open: "Open"
+  label_Non_Matter_Related: "Non-Matter Related"
+  label_Int: "Int"
+  label_Action: "Action"
+  label_Final_Amount: "Final Amount"
+  label_information: "Information"
+  label_work: "Work"
+  label_Skype_Account: "Skype Account"
+  label_Required_field: "Required Field"
+  label_Required_fields: "Required Fields"
+  label_No_documents_uploaded_yet: "No Documents Uploaded Yet"
+  label_Current_Contacts: "Current Contacts"
+  label_Start_Date: "Start Date"
+  label_End_Date: "End Date"
+  label_View_Unattended_Responses: "View Unattended Responses"
+  label_View_Suspended_List: "View Suspended List"
+  label_DO_NOT_CONTACT: "DO NOT CONTACT"
+  label_LIST: "LIST"
+  label_Attachment: "Attachment"
+  label_Full_Amount: "Full Amount"
+  label_Status: "Status"
+  label_new: "New"
+  lable_opp: "Opp"
+  label_dur: "Dur"
+  label_time: "Time"
+  label_fm: "Fm"
+  label_m: "M"
+  label_to: "To"
+  label_c: "C"
+  label_h_m: "HH:MM"
+  label_hrs: "Hrs"
+  label_doller: "$"
+  label_Attachment: "Attachment"
+  label_Expenses_Entry_Form: "Expenses - Entry Form"
+  label_expense_amt: "Expense Amt"
+  label_Opportunity: Opportunity
+  label_provide_restrict_matter_access: "Provide / Restrict access to matter"
+  label_ability_to_enforce_version_control: "Ability to enforce version control for a document"
+  label_assign_tasks: " Assign / Reassign tasks"
+  label_check_in_documents_checked_out_by_others: "Check in documents checked out by others"
+  label_Follow_Up_done: "Follow Up Done"
+  label_Follow_Up_date: "Follow Up Date"
+  text_helpdesk: "Helpdesk"
+  label_primary_matter_contact: "Primary Matter Contact"
+  text_toe_documents: "Terms of Engagement Document"
+  label_add_to_business_contacts: "Add to business contacts"
+  label_add_doc: Add Doc
+  label_notes: Notes
+  deactivate_label: "Select Value"
+  label_matter_role: "Matter Role"
+  lable_specify_date: "Specify Date"
+  label_Target_Closing_Date: "Target Closing Date"
+  label_since_inception: "Since Matter inception"
+  label_effective: Effective
+  text_toe_docs: "Terms of Engagement Documents"
+  label_superseed: Supersede
+  label_create_new_version: Create New Version
+  label_accounts: Accounts
+  label_activate: Activate
+  label_matter: "Matter"
+  label_include: "Include"
+  label_activated_employees: "Activated Employees"
+  label_activated_users: "Activated Users"
+  label_active_accounts: "Active Accounts"
+  label_add: Add
+  label_add_budget: "Add Budget"
+  label_add_category: "Add Category"
+  label_add_comment: "Add Comment"
+  label_add_event: "Add event"
+  label_add_expense_entry: "Add Expense Entry"
+  label_add_new: "Add New"
+  label_add_new_employee: "Add New Employee"
+  label_add_new_receipt: "Add New Receipt"
+  label_add_time_entry: "Add Time Entry"
+  label_add_to_campaign: "Add to Campaign"
+  label_add_to_favorite: "Add To Favorite"
+  label_assign: Assign
+  label_users: Users
+  label_lawfirm: Law Firm
+  label_user: User
+  label_livian: LIVIAN
+  label_User_is_not_assigned_to_any_cluster: User Is Not Assigned To Any Cluster
+  label_User_already_assigned_to_clusters: User Already Assigned To Clusters
+  label_Editing_Category: Editing Category
+  label_Categories: Categories
+  label_Editing_Role: Editing Role
+  label_Roles: Roles
+  label_For_WFM: For WFM
+  label_New_Role: New Role
+  label_name: Name
+  label_related_to: Related To
+  label_Has_Complexity: Has Complexity
+  label_New_Category: New Category
+  label_Editing_WorkType: Editing Work Type
+  label_New_WorkType: "New Work Type"
+  label_Work_Subtypes: Work-Subtypes
+  label_worktype: Work Type
+  label_STT: STT
+  label_TAT: TAT
+  label_Complexity_Level: Complexity Level
+  label_Editing_Work_Subtype: Editing Work Subtype
+  label_New_Work_Subtype: New Work Subtype
+  label_assign_secretary: "Assign-Secretary"
+  label_assign_skills: "Assign Skills"
+  label_assigned: Assigned
+  label_back: Back
+  label_back_to_login: "Back to login"
+  label_bill_payment_details: "Invoice Payment Details"
+  label_Remarks: "Remarks"
+  label_Bill_No: "Bill No."
+  lable_Bill_Amount: "Bill Amount"
+  label_buy_licences: "Buy Licenses"
+  label_cancel: Cancel
+  label_category_wise: "Category Wise"
+  label_cdt: CDT
+  label_close: Close
+  label_confirm: Confirm
+  label_contacts: Contacts
+  label_contacts_linked_to_accounts: "Contacts linked to Accounts"
+  label_create: Create
+  label_create_cgc: "Create CGC"
+  label_create_new: "Create New"
+  label_create_opportunity: "Create Opportunity"
+  label_current_accounts: "Current Accounts"
+  label_current_contacts: "Current Contacts"
+  label_deactivate: Deactivate
+  label_deactivated_employees: "Deactivated Employees"
+  label_deactivated_users: "Deactivated Users"
+  label_deactive: Deactive
+  label_delete: Delete
+  label_destroy: Destroy
+  label_document: Document
+  label_History: History
+  label_Creation_Date: Creation Date
+  label_documents: Documents
+  label_done: Done
+  label_Highlights: Highlights
+  label_Scope_of_Work: Scope of Work
+  label_Disclaimers_if_any: Disclaimers, if any
+  label_Client_Obligations_and_Non_Compliance_Impacts: Client Obligations And Non Compliance Impacts
+  label_Minimum_Trigger_Amt: Minimum/Trigger Amt
+  label_Retainer_amt: Retainer Amt
+  label_Additional_Details: Additional Details
+  label_Not_to_Exceed: Not To Exceed
+  label_Agreed_Billing_Rates_and_details: Agreed Billing Rates and details
+  label_edit: Edit
+  label_edt: EDT
+  label_fact: Fact
+  label_facts: Facts
+  label_firm_compliance_master: "Firm Compliance Master"
+  label_forgot_password: "Forgot Password"
+  label_for_client: "For Client"
+  label_generate_invoice: "Generate Invoice"
+  label_go: Go
+  label_home: Home
+  label_import: Import
+  label_inactive_accounts: "Inactive Accounts"
+  label_issue: Issue
+  label_is_it_key_issue: "Is It Key Issue"
+  label_issues: Issues
+  label_ist: IST
+  label_lawfirm_wise: "Per Law firm"
+  label_lawyer_not_verified: "Lawyer Not Verified"
+  label_lawyer_verified: "Lawyer Verified"
+  label_lead_pipeline_chart: "Lead Pipeline chart"
+  label_livia_logo: "LIVIA Logo"
+  label_login: Log In
+  label_logout: Log Out
+  label_manage_access: "Manage Access"
+  label_manage_favorites: "Manage Favorites"
+  label_mark_read: "Mark Read"
+  label_mark_unread: "Mark Unread"
+  label_matter_people: "Matter People"
+  text_matter_reports: "Matter Reports"
+  label_matters: Matters
+  label_change_lead_lawyer: "Change Lead Lawyer"
+  label_my_tasks: "My Tasks"
+  label_new_calendar_event: "New Calendar Event"
+  label_new_category: "New Category"
+  label_new_comment: "New Comment"
+  label_new_company_activity_rate: "New Company Activity Rate"
+  label_new_company_role_rate: "New Company Role Rate"
+  label_new_designation: "New Designation"
+  label_new_employee: "New Employee"
+  label_new_employee_activity_rate: "New Employee Activity Rate"
+  label_new_instructions: "New Instructions"
+  label_new_invoice_generation: "New Invoice Generation"
+  label_new_lookup: "New Lookup"
+  label_new_manager: "New Manager"
+  label_new_module: "New Module"
+  label_new_product: "New Product"
+  label_new_product_dependent: "New Product Dependent"
+  label_new_product_licence: "New Product License"
+  label_new_product_licence_detail: "New Product License Detail"
+  label_new_product_licenecing: "New Product Licensing"
+  label_new_role: "New Role"
+  label_new_secretary: "New Secretary"
+  label_next_page: "Next Page"
+  label_opportunities: Opportunities
+  label_firm_manager: Firm Manager
+  label_matter: Matters
+  label_t_ane_e: Time & Expense
+  label_is_not_assigned_to_any_cluster: Is Not Assigned To Any Cluster.
+  label_Alternative: Alternative
+  label_IM: IM
+  label_yahoo: Yahoo
+  labe_Google: Google
+  label_skype: Skype
+  label_aol: AOL
+  label_Not_implemented_yet: Not Implemented Yet.
+  label_Access: Access
+  label_Domain: Domain
+  label_Port: Port
+  label_Company_Email_Settings: Company Email Settings
+  label_new : New
+  label_SMTP_Settings: SMTP Settings
+  label_Enable_SSL: Enable SSL
+  label_Enable_Starttls_Auto: Enable Starttls Auto
+  label_pay: Pay
+  label_pdt: PDT
+  label_prev_page: "Prev Page"
+  label_recently_added_accounts: "Recently Added Accounts"
+  label_record_receipt: Record Receipt
+  label_remove: Remove
+  label_research: Research
+  label_reset: Reset
+  label_reset_password: "Reset Password"
+  label_risks: Risks
+  label_risk: Risk
+  label_risk_name: Risk Name
+  label_run_report: "Run Report"
+  label_same_as_billing: "Same as Billing"
+  label_save: Save
+  label_save_amp_add_to_other_matter: "Save & Add to other Matter"
+  label_save_amp_exit: "Save & Exit"
+  label_save_first_email: "Save First Email"
+  label_save_opportunity: "Save Opportunity"
+  label_save_reminder_email: "Save Reminder Email"
+  label_search: Search
+  label_select_existing: "Select Existing"
+  label_send: Send
+  label_show: Show
+  label_show_all_matters: "Show All Matters"
+  label_show_invoice: "Show Invoice"
+  label_show_on_home_page: "Show On Home Page"
+  label_sort: Sort
+  label_submit: Submit
+  label_supercede: Supersede
+  label_sync_calendars: "Sync Calendars"
+  label_tasks: Activities
+  label_type: Type
+  label_Created_At: Created At
+  label_unassign: Un-assign
+  label_unassign_secretary: "Un-assign Secretary"
+  label_unassign_skills: "Un-assign Skills"
+  label_update: Update
+  label_update_bill: "Update Bill"
+  label_update_report_name: "Update Report Name"
+  label_upload: Upload
+  label_uploadon: Uploaded On
+  label_upload_logo : "Upload Logo"
+  label_view_active_accounts: "View Active Accounts"
+  label_view_active_contacts: "View Active Contacts"
+  label_view_deactivated_accounts: "View De Activated Accounts"
+  label_view_deactivated_contacts: "View De Activated Contacts"
+  label_view_organization_chart: "View Organization Chart"
+  label_age: "age"
+  text_projected: "Projected"
+  text_received: "Received"
+  text_no_of: "No. Of"
+  text_est: Est
+  text_accounting: "Accounting"
+  text_accounted: "Accounted"
+  text_: "[+]"
+  text_0_0: "0.00"
+  text_0_comments_received: "0 Comments Received"
+  text_0_documents_received: "0 Documents Received"
+  text_0_follow_up_overdue: "0 Follow-up Overdue"
+  text_0_follow_up_today: "0 Follow-up Today"
+  text_0_overdue: "0 Overdue"
+  text_0_today: "0 Today"
+  text_0_upcoming: "0 Upcoming"
+  text_1st_mailed: "1st Mailed"
+  text_1st_mailed_date: "1st Mailed Date"
+  text_2008_yourcompany_com_all_rights_reserved: "© 2008 Yourcompany.com All rights reserved."
+  text_2009_liviaservices_com_all_rights_reserved: "© 2009 Liviaservices.com All rights reserved."
+  text_aborted: "Aborted"
+  text_about_the_company: "About the Company"
+  text_about_the_firm: "About the firm"
+  text_access_rights: "Access Rights"
+  text_create_new_version: Check In Interim Doc as Final- New Version
+  text_wip_replace_doc: Check In Interim Doc as Final- Replace Original
+  text_discard_wip: Discard WIP Document [WIP Document Will Be Lost]
+  text_account: Account
+  text_account_activate: "Account Activate"
+  text_account_change_primary_contact: "Account - Change Primary Contact"
+  text_account_details: "Account details"
+  text_account_history: "Account History:"
+  text_view_livian_work_subtypes: "View Livian Work Subtypes"
+  text_view_livian_worktypes: "View Livian Work Types"
+  text_view_backoffice_work_subtypes: "View Back Office Work Subtypes"
+  text_view_backoffice_worktypes: "View Back Office Work Types"
+  text_view_all_work_subtypes: "View All Work Subtypes"
+  text_view_all_worktypes: "View All Work Types"
+  text_accounts: Accounts
+  text_act: Act
+  text_action: Action
+  text_action_home: Updates
+  text_actions: Actions
+  text_activate: Activate
+  text_activate_attachments: "Activate Attachments"
+  text_active_accounts: "Active Accounts"
+  text_active_clients: "Active clients"
+  text_active_licence: "Active License"
+  text_active_licences: "Active Licenses"
+  text_active_users: "Active Users"
+  text_activity: Activity
+  text_activity_type: "Activity type"
+  text_actual_billing: "Actual Billing"
+  text_add_comment: "Add Comment"
+  text_add_compliance_type: "Add Compliance Type"
+  text_add_contact: "Add Contact"
+  text_add_compliance: "Add Compliance"
+  text_add_contacts_to_campaign: "Add Contacts To Campaign"
+  text_add_existing_employee_as_user: "Add Existing Employee as User"
+  text_add_expense: "Add Expense"
+  text_add_from_existing_contacts: "Add From Existing Contacts"
+  text_add_more_associated_expenses_for_time_entry: "Add More Associated Expenses for Time Entry"
+  text_add_new: "ADD NEW"
+  text_add_new_authority: "Add New Authority"
+  text_add_new_budget_period: "Add new Budget Period"
+  text_add_new_subproduct: "Add new Sub Product"
+  text_add_retainer_receipt: "Add Retainer Receipt"
+  text_additional_details: "Additional Details"
+  text_additional_payment_settled_amount: "Additional Payment/Settled Amt"
+  text_address: Address
+  text_admin_information: "Admin Information"
+  text_ago: ago
+  text_agreed_billing_rates_and_details: "Agreed Billing Rates and details"
+  text_alerts: Alerts
+  text_all: All
+  text_all_accounts: "All Accounts"
+  text_all_campaigns: "All Campaigns"
+  text_all_contacts: "All Contacts"
+  text_all_employees_have_been_included_in_matter_s_law_team: "All employees have been included in matter's law team."
+  text_all_matters: "All matters"
+  text_all_opportunities: "All Opportunities"
+  text_alternate_email: "Alternate Email"
+  text_amount: Amt($)
+  text_amount_billed: "Amt Billed: $"
+  text_amount_paid_settled: "Amt Paid/Settled"
+  text_amount_received: "Amt Received"
+  text_amt: "Amount ($)"
+  text_answer: "Answer:"
+  text_appointment: Appointment
+  text_appointments: Appointments
+  text_are_you_sure_you_want_to_activate_this_account: "Are you sure you want to activate this account?"
+  text_assign_livian: "Assign LIVIAN"
+  text_assign_new_licence: "Assign New License"
+  text_assign_product: "Assign Product"
+  text_assign_to: "Assign To"
+  text_assigned: Assigned
+  text_assigned_livian_s: "Assigned LIVIAN's"
+  text_assigned_modules: "Assigned Modules"
+  text_assigned_product: "Assigned Product"
+  text_assigned_product_licences: "Assigned Product Licenses"
+  text_assigned_secretary: "Assigned Secretary"
+  text_assigned_skills: "Assigned Skills"
+  text_assigned_to: "Assigned To"
+  text_assignee: assignee
+  text_assistants_name: "Assistants Name"
+  text_assistants_phone: "Assistants Phone"
+  text_association_1: "Association #1"
+  text_association_2: "Association #2"
+  text_attach_reference_materials: "Attach Reference Materials"
+  text_attach_forms_and_resouces: "Attach Forms and Resources"
+  text_attachment: Attachment
+  text_attachments: "Attachments:"
+  text_attended_responses: "Attended Responses"
+  text_attendees: Attendees
+  text_author: Author
+  text_author_s: Author(s)
+  text_authority: Authority
+  text_authority_department: Authority/Department
+  text_authorize_net_id: "Authorize .Net ID"
+  text_available_modules: "Available Modules:"
+  text_available_products: "Available Products:"
+  text_average_ageing: "Average Ageing:"
+  text_balance_amount_due: "Balance Amt Due"
+  text_bank_name: "Bank Name:"
+  text_bill: Bill
+  text_bill_amount: "Bill Amt"
+  text_bill_amount_d: "Bill Amt($)"
+  text_bill_full_amount: "Full"
+  text_bill_generation_date: "Bill Generation Date"
+  text_bill_no: "Bill No."
+  text_bill_paid: "Bill Paid:"
+  text_bill_payment_details: "Bill Payment details"
+  text_bill_to_date: "Billed to date ($)"
+  text_billable: Billable
+  text_billable_hours_within_range: "Billable Hours Within Range"
+  text_billed: Billed
+  text_billing: Billing
+  text_billing_adjustments: Adjustments
+  text_billing_address: "Billing Address"
+  text_billing_details: "Billing Details"
+  text_billing_history: "Billing History:"
+  text_billing_rate: "Billing Rate"
+  text_billing_rate_usd: "Billing Rate (USD)"
+  text_billing_retainer: "Billing & Retainer"
+  text_bills_history: "Bills History"
+  text_birth_country: "Birth country"
+  text_birth_date: "Birth Date"
+  text_birthdate: "Birth Date:"
+  text_birthday: "Date of Birth"
+  text_bookmark: Bookmark
+  text_branch: "Branch:"
+  text_branch_name: "Branch Name"
+  text_brief: "Brief:"
+  text_browse: Browse
+  text_budget: "Budget ($)"
+  text_budget_estimation: "Budget Estimation"
+  text_budget_period: "Budget Period"
+  text_budgetcategories: "Budget Categories:"
+  text_business: "Business"
+  text_business_city: "City"
+  text_business_contact_details: "Business Contact Details"
+  text_business_country: "Country"
+  text_business_fax: "Fax"
+  text_business_phone: "Alternate Phone 1"
+  text_business_postal_code: "Zip Code"
+  text_business_state: "State"
+  text_business_street: "Street"
+  text_businessphone2: Alternate Phone 2
+  text_button_to_your_left_to_get_started: "Button To Your Left To Get Started."
+  text_buy_licence: "Buy License"
+  text_by_opp: "By Opp"
+  text_c: "C:"
+  text_calendar: Calendar
+  text_calendar_events: "Calendar Events"
+  text_calendar_settings: "Calendar settings"
+  text_calendarevent: Calendar Event
+  text_camapign_name: "Campaign Name"
+  text_campaign: Campaign
+  text_campaign_contacts: "Campaign Contacts"
+  text_campaign_details: "Campaign Details"
+  label_campaign_name: "Campaign Name"
+  text_campaign_members: "Campaign Members"
+  text_campaign_name: "Campaign Name"
+  text_campaign_responsiveness: "Campaign Responsiveness"
+  text_campaign_revenue: "Campaign Revenue"
+  text_campaign_status: "Campaign Status"
+  text_campaigns: Campaigns
+  text_cancel: Cancel
+  text_case_no: "Case No"
+  text_category: Category
+  text_cdt: CDT
+  text_ceases_from: "Ceases From"
+  text_cgc: CGC
+  text_change_due_date: "Change Due Date"
+  text_change_password: "Password"
+  text_change_status_for_campaign: "Change Status for Campaign"
+  text_change_status_for_contact: "Change Status for Contact"
+  text_change_status_for_opportunity: "Change Stage for Opportunity"
+  text_change_to: "Change to:"
+  text_check_here_to_create_a_matter_for_this_opportunity: "Check here to create a Matter for this Opportunity"
+  text_check_here_to_create_matter_for_this_opportunity: "Check here to create matter for this Opportunity"
+  text_cheque_date: "Check Date:"
+  text_cheque_number: "Check Number:"
+  text_children: Children
+  text_citation: Section/Citation
+  text_city: City
+  text_click: Click
+  text_click_on_the: "Click on the"
+  text_client_messaging: "Client Messages"
+  text_client: Client
+  text_client_communication: "Client Communication"
+  text_client_document: "Client Document"
+  text_client_documents: "Client Documents"
+  text_client_name: "Client name"
+  text_client_obligations_and_likely_impacts_due_to_non_compliance: "Client Obligations and likely impacts due to non-compliance"
+  text_client_contacts: "Client Contacts"
+  text_client_representatives: "Client Representatives"
+  text_client_task: "Client Activity?"
+  text_clients: Clients
+  text_close_date: "Close Date"
+  text_closed_date: "Closed Date"
+  text_closed_lost: "Closed/Lost"
+  text_closed_matters: "Closed Matters"
+  text_closed_won: "Closed/Won"
+  text_closing_date: "Target Closure date"
+  text_closure: Closure
+  text_closure_date: "Closure date"
+  text_comment: "Comment"
+  text_comment_details: Comment/Details
+  text_comments: Comments
+  text_comments_received: "Comments Received"
+  text_commission_payable: "Commission Payable"
+  text_committed: "Committed ($):"
+  text_company: "Company"
+  text_portal_usage_report: "Portal Usage Report"
+  text_company_activity_rates: "Company Activity Rates"
+  text_company_detail: "Company Detail"
+  text_company_licence_details: "Company License Details"
+  text_company_name: "Company Name"
+  text_company_role_rates: "Company Role Rates"
+  text_compliance_sub_type: "Compliance Sub Type"
+  text_complainces_open: "Compliances Open"
+  text_compliance_reference: "Reference"
+  text_complete: Complete
+  text_completed: "Completed"
+  text_completed_action: "Completed Actions"
+  text_completed_matters: "Completed Matters"
+  text_completed_on: "Completed On:"
+  text_completed_tasks: "Completed Tasks"
+  text_completion: Completion
+  text_completion_date: "Completion Date"
+  text_completion_details: "Completion Details"
+  text_compliance: Compliance
+  text_compliance_alerts: "Compliance Alerts"
+  text_compliance_item_status: "Compliance item status"
+  text_compliance_items: "Compliance - Items"
+  text_compliance_items_due_for_current_month: "Compliance Items due for current month"
+  text_compliance_snapshot_dept_january: "Compliance Snapshot (Dept): January"
+  text_compliance_status: "Compliance Status"
+  text_compliance_sub_type: "Compliance Sub Type"
+  text_compliance_type: "Compliance Type"
+  text_compliances: Compliances
+  text_compliances_master: "Compliances Master"
+  text_configure_cgcs: "Configure CGCs"
+  text_confirm_access: "Confirm Access"
+  text_confirm_new_password: "Confirm new password"
+  text_confirm_password: "Confirm Password"
+  text_confirm_your_password: "Confirm your password"
+  text_confrim_your_password: "Confirm your password"
+  text_consumed_licences: "Consumed Licenses"
+  text_contact: Contact
+  text_contact_accounting: "Contact Accounting"
+  text_contact_creation_failed: "Contact creation failed."
+  text_contact_history: "Contact History:"
+  text_contact_information: "Contact Information"
+  text_contact_name: "Contact Name"
+  text_contact_stage: "Contact Stage"
+  text_contact_stages: "Contact Stages"
+  text_campaigns_status: "Campaigns Status"
+  text_campaigns_member_status: "Campaigns Member Status"
+  text_contacts: Contacts
+  text_business_contacts: Business Contacts
+  text_contacts_linked_to_accounts: "Contacts Linked To Accounts"
+  text_copy_2008_livialegal_com_all_rights_reserved: "&copy; 2008 LiviaLegal.com All rights reserved."
+  text_copy_with_contacts: "Copy With Contacts"
+  text_cost: "Cost :"
+  text_country: Country
+  text_court_arbitration_panel_forum: "Court / Arbitration Panel / Forum"
+  text_create_contact: "Create Contact"
+  text_create_event_on_this_calendar: "Create event on this calendar"
+  text_create_from_exisiting: "Create From Existing"
+  text_create_login_account: "Create Login Account"
+  text_create_new: "Create New"
+  text_create_risk: "Create Risk"
+  text_created: Created
+  text_created_at: "Created At"
+  text_created_date: "Created Date"
+  text_created_time: "Created Time"
+  text_creation_date: "Creation Date"
+  text_creator: Creator
+  text_credit: "Credit:"
+  text_retainer_balance: "Retainer Balance:"
+  text_critical: Critical
+  text_current_accounts: "Current Accounts"
+  text_current_contacts: "Current Contacts"
+  text_current_members_of_campaign: "Current Members Of Campaign"
+  text_current_opportunities: "Current Opportunities"
+  text_current_password: "Current Password"
+  text_current_phase: "Current Phase:"
+  text_current_primary_contact: "Current Primary Contact -"
+  text_current_products: "Current Products"
+  text_current_service_provider: "Current Service Provider"
+  text_current_stage: "Current Stage:"
+  text_current_status: "Current Status"
+  text_d: "D (%) :"
+  text_dashboard: Dashboard
+  text_dashboards: Dashboards
+  text_dashboard_list: "Dashboard List"
+  text_dashboard_name_successfully_updated: "Dashboard Name Successfully Updated"
+  text_dashboard_successfully_added_under_my_favorite: "Dashboard Successfully Added under My Favorite"
+  text_date: Date
+  text_date_completed: "Date Completed"
+  text_date_created: "Date Created"
+  text_date_of_first_deal: "Date Of First Deal"
+  text_date_paid: "Date Paid"
+  text_date_time_of_hearing: "Date & Time of hearing"
+  text_day_s: day(s)
+  text_day_s_in: "Day(s) in"
+  text_day_s_left: "Day(s) left"
+  text_day_s_since: "Day(s) since"
+  text_days_before_filing_date: "Days before Filing Date"
+  text_days_took_to_close: "Days took to close"
+  text_deactivate: Deactivate
+  text_deactivated_at: "Deactivated at"
+  text_deactivated_date: "Deactivated Date"
+  text_deactivated_service_providers_list: "Deactivated Service Providers List"
+  text_december: "- December"
+  text_defendant: Defendant
+  text_definition: "Definition"
+  text_delete: Delete
+  text_delete_attachment: "Delete Attachment"
+  text_department: "Department"
+  text_department_employees_chart_for: "Department-Employees Chart for"
+  text_department_name: "Department Name"
+  text_departments: Departments
+  text_departments_chart_for: "Departments Chart for"
+  text_dependant_product: "Dependent Product"
+  text_description: Description
+  text_designation: Designation
+  text_designation_name: "Designation Name"
+  text_designations: Designations
+  text_detailed_category_wise: "Detailed Per Category"
+  text_detailed_matter_wise: "Detailed Per Matter"
+  text_details: Details
+  text_source: Source
+  text_disclaimers_if_any: "Disclaimers, if any"
+  text_discount: Discount
+  text_discount_p: Discount (%)
+  text_discount_override_amt: "Discount (%)/ Override Amt($)"
+  text_display_only_this_calendar: "Display only this calendar"
+  text_displaying_licences: "Displaying Licenses"
+  text_disputed: "Disputed"
+  text_do_not_call: "Do not Contact"
+  text_do_you_want_to_provide_access_to_client: "Do you want to provide access to client?"
+  text_document: Document
+  text_document_description: "Document Description"
+  text_document_name: "Document Name"
+  text_document_source: "Document Source"
+  text_document_submission: "Document Submission"
+  text_documents: Documents
+  text_documents_received: "Documents Received"
+  text_documents_uploaded_by_the_client: "Documents Uploaded by the Client"
+  text_dont_remember: "Do Not Remember"
+  text_download: Download
+  text_download_all_docs: "Download all docs"
+  text_due_date: "Due Date"
+  text_due_date_range: "Due Date Range"
+  text_due_on: "Due On"
+  text_dues: Dues
+  text_dur: Dur
+  text_duration: Duration
+  text_duration_hrs: Duration (hrs)
+  text_duration_months: Duration (Months)
+  text_e_mail: E-mail
+  text_edit_account: "Edit Account"
+  text_edit_budget_period: "Edit Budget Period"
+  text_edit_campaign: "Edit Campaign"
+  text_edit_company_activity_rate: "Edit Company Activity Rate"
+  text_edit_company_role_rate: "Edit Company Role Rate"
+  text_edit_compliance: "Edit Compliance:"
+  text_edit_contact_stage: "Edit Contact Stage"
+  text_edit_contact_stage: "Edit Contact Stage"
+  text_edit_campaign: "Edit Campaign Status"
+  text_edit_department: "Edit Department"
+  text_edit_document: "Edit Document"
+  text_edit_document_source: "Edit Document Source"
+  text_edit_employee: "Edit Employee"
+  text_edit_employee_activity_rate: "Edit Employee Activity Rate"
+  text_edit_employee_rate: "Edit Employee Rate"
+  text_edit_fact: "Edit Fact"
+  text_edit_risk: "Edit Risk"
+  text_edit_issue: "Edit Issue"
+  text_edit_lookup: "Edit Lookup"
+  text_edit_matter: "Edit Matter"
+  text_edit_opportunity: "Edit Opportunity"
+  text_edit_product: "Edit Product"
+  text_edit_report_name: "Edit Report Name"
+  text_edit_research: "Edit Research"
+  text_edit_research_type: "Edit Research Type"
+  text_edit_team_role: "Edit Team Role"
+  text_edit_client_role: "Edit Client Role"
+  text_edit_client_rep_role: "Edit Representative Role"
+  text_edit_other_role: "Edit Other Role"
+  text_edit_retainer_receipt: "Edit Retainer Receipt"
+  text_edit_secretary_access: "Edit Secretary Access"
+  text_edit_source: "Edit Source"
+  text_edit_matter_status: "Edit Status"
+  text_edit_doc_category: "Edit Document Category"
+  text_edit_sub_product: "Edit Sub-Product ("
+  text_edit_time_entry: "Edit Time Entry"
+  text_editing_calendar_event: "Editing Calendar Event"
+  text_editing_product_dependent: "Editing Product Dependent"
+  text_editing_product_licence: "Editing Product License"
+  text_editing_product_licence_detail: "Editing Product License Detail"
+  text_editing_secretary: "Editing Secretary"
+  text_edt: EDT
+  text_education_and_work: "Education and Work"
+  text_either_email_or_phone_should_be_given: "Either Phone or Email should be given"
+  text_either_end_date_or_occurrences_should_be_given: "Either End Date or Occurrences should be given"
+  text_email: Email
+  text_email_id: "Email ID"
+  text_email_reminder_settings: "Email Reminder Settings"
+  text_emails: Emails
+  text_emails_separated_by_or: "Emails Separated by (, or ;)"
+  text_alt_email: "Alternate Email"
+  text_employee: Employee
+  text_employee_activity_rates: "Employee Activity Rates"
+  text_employee_of_this_company: "Employee of this Company"
+  text_employee_rates: "Employee Rates"
+  text_employee_user: "Employee user:"
+  text_employees: Employees
+  text_employees_chart_for: "Employees Chart For"
+  text_end: End
+  text_end_date: "End Date"
+  text_end_section: "End Section"
+  text_end_section_content: "End Section Content"
+  text_end_section_content_bottom: "End Section Content Bottom"
+  text_end_section_content_top: "End Section Content Top"
+  text_end_table_menu: "End Table Menu"
+  text_end_table_wrapper: "End Table Wrapper"
+  text_end_time: "End Time:"
+  text_end_title_wrapper: "End Title Wrapper"
+  text_error_message: "Error Message"
+  text_estimated: Estimated ($)
+  text_estimated_budget: "Estimated Budget"
+  text_estimated_hours: "Estimated Hours"
+  text_et: "ET:"
+  text_every: Every
+  text_existing_document: "Existing Document"
+  text_expected_hours: "Expected Hours"
+  text_expense_amount: "Expense Amt ($)"
+  text_expense_type: "Expense Type"
+  text_expenses_accounted: "Expenses Accounted:"
+  text_expenses_billed: "Expenses Billed:"
+  text_expenses_entry_form: "Expenses - Entry Form"
+  text_expiry_date: "Expiry Date"
+  text_export_to: "Export to"
+  text_extra_information: "Extra Information"
+  text_business_information: "Business Information"
+  text_facebook_account: "Facebook Account"
+  text_fact: Fact
+  text_fact_details: "Fact Details"
+  text_fact_name: "Fact Name"
+  text_facts: Facts
+  text_favorites: Favorites
+  text_fax: Fax
+  text_fax_no: "Fax No"
+  text_feedback_on: "Feedback On:"
+  text_file: File
+  text_file_format: "File Format:"
+  text_file_import: "File Import"
+  text_file_name: "File Name"
+  text_filed_date: "Filed Date"
+  text_filed_on: "Filed On:"
+  text_filed_on_time_mtd: "% Filed on Time (MTD)"
+  text_filed_on_time_ytd: "% Filed on Time (YTD)"
+  text_filing: Filing
+  text_filing_details: "Filing Details"
+  text_filing_documents: "Filing Documents"
+  text_filing_of_compliance: "Filing of Compliance"
+  text_filing_report: "Filing Report"
+  text_filings: Filings
+  text_final: Final
+  text_markup: "Markup (%)"
+  text_final_bill_amount: "Final Bill Amt ($)"
+  text_final_bill_amt: "Final Bill Amt :"
+  text_final_review: "Final Review"
+  text_firm_compliance_master: "Firm Compliance Master"
+  text_first_contact: "First Contacted On"
+  text_first_e_mail_draft: "First E-mail Draft"
+  text_first_filing_date: "First Filing Date"
+  text_first_name: "First Name"
+  text_first_reminder_to_be_sent_on: "First Reminder to be sent on:"
+  text_fixed_rate: "Fixed Rate"
+  text_follow_up: "Follow Up"
+  text_follow_up_date: "Follow-up Date"
+  text_follow_up_done: "Follow-up Done:"
+  text_follow_up_overdue: "Follow-up Overdue"
+  text_follow_up_today: "Follow-up Today"
+  text_following_is_the_list_of_new_licences_purchased: "Following is the list of new licenses purchased"
+  text_following_is_the_list_of_the_modules_being_assigned_to_service_providers: "Following is the list of the modules being assigned to Service Providers"
+  text_following_is_the_list_of_the_modules_being_unassigned_to_service_providers: "Following is the list of the modules being unassigned to Service Providers"
+  text_for_client: "For Client"
+  text_for_closure: "For Closure"
+  text_for_date: "For Date"
+  text_for_more_details_please_visit: "For more details please visit"
+  text_forgot_password: "Forgot Password"
+  text_form_and_resources: "Form and Resources"
+  text_forms_and_resources: "Forms and Resources"
+  text_forum: Forum
+  text_frequency: Frequency
+  text_from: "From:"
+  text_from_period: "From Period"
+  text_from_time: "From Time"
+  text_start_time: "Start Time"
+  text_end_time: "End Time"
+  text_full: Full
+  text_gender: Gender
+  text_generate_report: "Generate Report"
+  text_generated_by: "Generated By"
+  text_generated_on: "Generated On"
+  text_give_access: "Give Access"
+  text_graduate_degrees: "Graduate Degrees"
+  text_graduate_schools: "Graduate Schools"
+  text_grand_total: "Grand Total: $"
+  text_grand_total_duration_hrs: "Grand Total: Duration (hrs) :"
+  text_grand_total_hours_accounted: "Grand Total:  Hours Accounted:"
+  text_grand_total_matter_estimated_hours: "Grand Total: Matter estimated hours :"
+  text_handled_by: "Handled by"
+  text_has_access_of_product: ", has access of product:"
+  text_has_conflict_check_been_completed: "Has Conflict Check been completed?"
+  text_hearing: Hearing
+  text_hello: "Hello,"
+  text_help: Help
+  text_helpdesk: Helpdesk
+  text_here: HERE
+  text_hi: "Hi,"
+  text_highlights: Highlights
+  text_hobby: Hobby
+  text_hour: Hours
+  text_hourly_rate: "Hourly Rate"
+  text_hours: "Hours ="
+  text_hours_accounted: "Hours Accounted :"
+  text_hoursbilled: "Hours Billed :"
+  text_hoursbilledpercent: "% Hours Billed :"
+  text_hrs: Hrs
+  text_impact: "Impact:"
+  text_import_from_file: "Import From File"
+  text_import_type: "Import Type :"
+  text_inactive_accounts: "Inactive Accounts"
+  text_info: "Info:"
+  text_initcampaignsopportunitytoggle1: initCampaignsOpportunityToggle1();
+  text_inprogress: "In Progress"
+  text_instruction: Instruction
+  text_instruction_to_livian: "Instructions to LIVIAN"
+  text_instructions: Instructions
+  text_instructions_to_the_livian: "LIVIAN Instructions"
+  text_instructions_to_the_secretary: "Instructions to the Secretary"
+  text_int: Int.
+  text_internal: "Internal"
+  text_internal_research: "Internal Research"
+  text_internal_work_hours: "Internal Work Hours"
+  text_intitoggleit: intiToggleIt();
+  text_invalid: Invalid
+  text_invoice: Invoice
+  text_invoice_amount: "Invoice Amount"
+  text_invoice_date: "Invoice date:"
+  text_Invoice_Date: "Invoice Date"
+  text_invoice_details: "Invoice Details"
+  text_invoice_end_date: "Invoice End Date"
+  text_invoice_from: "Invoice from:"
+  text_invoice_generated_date: "Invoice Generated Date"
+  text_invoice_generation: "Invoice Generation"
+  text_invoice_no: "Invoice No."
+  text_invoice_retainer: "Invoice & Retainer"
+  text_invoice_start_date: "Invoice Start Date"
+  text_invoices: Invoices
+  text_involved_as_a_lead_lawyer: "Involved As A Lead Lawyer:"
+  text_is_a_cgc: "Is a CGC?"
+  text_is_it_a_key_issue: "Is It A Key Issue"
+  text_is_it_a_subtask: "Is It A Sub Activity?"
+  text_is_it_internal_to_law_firm: "Is It Internal To Law Firm?"
+  text_is_not_serving_to_any_lawyer: "Is Not Serving To Any Lawyer."
+  text_issue: Issue
+  text_issue_name: "Issue Name"
+  text_issues: Issues
+  text_ist: IST
+  text_judge_name: "Judge Name"
+  text_kb: KB)
+  text_key: Key
+  text_languague: Language
+  text_last: Last
+  text_last_mailed_date: "Last Mailed Date"
+  text_last_name: "Last Name"
+  text_last_updated: "Last Updated"
+  text_latest: "Latest:"
+  text_already: "Already"
+  text_law_firm: "Law Firm"
+  text_law_firm_name: "Law Firm Name"
+  text_law_firm_team: "Legal Team"
+  text_lawfirm: Law Firm
+  text_lawfirm_name: "Law Firm Name"
+  text_lawyer: Lawyer
+  text_lawyer_name: "Lawyer Name:"
+  text_lawyer_to_be_assigned: "Lawyer to be Assigned"
+  text_lawyers: ") lawyers."
+  text_lawyers_name: "Lawyers Name"
+  text_lead_lawyer: "Lead Lawyer"
+  text_lead_pipeline: "Lead Pipeline"
+  text_licence_consumed: "License Consumed"
+  text_licence_details_of: "License Details of -"
+  text_licence_details_of_company: "License Details of Company:"
+  text_licence_end_date: "License End Date"
+  text_licence_expiry_date: "License Expiry Date"
+  text_licence_expiry_month: "License Expiry (Month):"
+  text_licence_key: "License Key:"
+  text_licence_remaining: "License Remaining"
+  text_licence_start_date: "License Start Date"
+  text_licence_type: "License Type"
+  text_licences_not_available: "Licenses Not Available."
+  text_linked: Linked
+  text_linked_facts: "Linked Facts"
+  text_linked_in_account: "Linked In Account"
+  text_linked_issue: "Linked Issue"
+  text_linked_issues: "Linked Issues"
+  text_linked_researches: "Linked Research"
+  text_linked_risks: "Linked Risks"
+  text_linked_tasks: "Linked Activities"
+  text_list_of_lawyer_s: "List of Lawyer’s"
+  text_listing_calendar_events: "Listing Calendar Events"
+  text_listing_comments: "Listing Comments"
+  text_listing_company_activity_rates: "Listing company Activity Rates"
+  text_listing_company_role_rates: "Listing Company Role Rates"
+  text_listing_product_dependents: "Listing Product Dependents"
+  text_listing_product_licence_details: "Listing Product License Details"
+  text_listing_product_licences: "Listing Product Licenses"
+  text_listing_secretaries: "Listing Secretaries"
+  text_litigation: Litigation
+  text_litigation_name: "Litigation Name"
+  text_litigation_non_litigation: "Litigation / Non Litigation"
+  text_livia_legal: "LIVIA Legal"
+  text_livian_access: "LIVIAN Access"
+  text_livian_access_control: "LIVIAN Access Control"
+  text_livian_assignment_unassignment: "LIVIAN Assignment/Un Assignment"
+  text_location: Location
+  text_login: Login
+  text_login_at: "Login at:"
+  text_lookup_type: "Lookup Type"
+  text_lookups_list: "Lookups List"
+  text_m: "M:"
+  text_mail: Mail
+  text_mailers: Mailers
+  text_make_a_payment: "Make a Payment"
+  text_make_time_entry: "Make Time Entry"
+  text_manage_billing: "Manage Billing"
+  text_manage_campaigns: "Manage Campaigns"
+  text_manage_livian_privileges: "Manage LIVIAN Privileges"
+  text_manage_opportunities: "Manage Opportunities"
+  text_manage_followup_for_opportunity: "Manage Follow-up For Opportunity"
+  text_closing_date_for_opportunity: "Target Closing Date For Opportunity"
+  text_manager: Manager
+  text_managers_list_for_livians: "Managers List For LIVIANS"
+  text_manual : Manual
+  text_mark_read: "Mark Read"
+  text_mark_unread: "Mark Unread"
+  text_marked_by: "Marked By:"
+  text_marked_on: "Marked On:"
+  text_mass_file_upload_to: "Mass File Upload To"
+  text_material: Material
+  text_material_to: "Material to"
+  text_material_to_matter: "Material To Matter"
+  text_material_to_the_case: "Material To The Case"
+  text_matter: Matter
+  text_matter_accounting: "Matter Accounting"
+  text_matter_billing: "Matter Billing"
+  text_matter_brief: "Matter Brief"
+  text_matter_budget: "Matter Budget"
+  text_matter_calendar: "Matter Calendar"
+  text_matter_client_init_fix_width: "matter_client_init(); fix_width();"
+  text_matter_clients: "Matter Clients:"
+  text_matter_contact: Matter-Contact
+  text_matter_description: "Matter Description"
+  text_matter_distribution: "Matter Distribution"
+  text_matter_documents: "Matter Documents"
+  text_matter_duration_ageing: "Matter Duration & Ageing"
+  text_revenue_by_matter_type: "Revenue By Matter Type"
+  text_matter_estimated_hours: "Matter Estimated Hours:"
+  text_matter_home: "Matter Home"
+  text_matter_id: "Matter ID"
+  text_matter_management: "Matter Management"
+  text_matter_name: "Matter Name"
+  text_matter_start_date: "Matter Start Date"
+  text_matter_task: "Matter Task"
+
+  text_matter_tasks: "Matter Tasks"
+  text_matter_tasks_by_date: "Matter Tasks By Date"
+  text_matter_task_status: "Matter Activity Status"
+  text_matter_tasks_legal_team: "Matter Activities - Legal team"
+  text_matter_time_spent: "Matter Time Spent"
+  text_matter_file_reference: "Matter id"
+  text_matter_title: "Matter Name"
+  text_matter_filing_date: "Matter date"
+  text_matter_patent_ref_id: "Ref id."
+  text_matter_master: "Matter Master"
+  text_matter_type: "Matter Type"
+  text_matters: Matters
+  text_matters_closed: "Matters Closed"
+  text_matters_list: "Matters List"
+  text_matters_open: "Matters Open"
+  text_mediator_arbitrator_judges: "Mediator / Arbitrator / Judges"
+  text_meeting: Meeting
+  text_meeting_date: "Meeting Date"
+  text_member: Member
+  text_member_from: "Member from"
+  text_member_from_to: "Member (From - To)"
+  text_member_till: "Member till"
+  text_message: Message
+  text_min_retainer_fee: "Min. Retainer Fee:"
+  text_mobile: Mobile
+  text_modified_date: "Modified Date"
+  text_module_name: "Module Name"
+  text_modules: Modules
+  text_modules_listing: "Modules Listing"
+  text_month: Month
+  text_month_view: "Month View"
+  text_more_info: "More Info"
+  text_my_accounts: "My Accounts"
+  text_my_calendars: "My Calendars"
+  text_my_campaigns: "My Campaigns"
+  text_my_contacts: "My Contacts"
+  text_my_favorite_dashboard: "My Favorite Dashboard"
+  text_my_favorite_dashboards: "My Favorite Dashboards"
+  text_my_favorite_report: "My Favorite Report"
+  text_my_favorite_reports: "My Favorite Reports"
+  text_my_favorites: "My Favorites"
+  text_favorite: "Favorite"
+  text_my_instructions: "My Instructions"
+  text_my_opportunities: "My Opportunities"
+  text_my_task: "My Task"
+  text_my_workspace: "My Workspace"
+  text_favorite_reports: "Favorite Reports"
+  text_name: Name
+  text_category: "Category"
+  text_name_of_the_client: "Name Of The Client"
+  text_name_of_the_document: "Name Of The Document"
+  text_name_of_the_user: "Name Of The User"
+  text_negotiation: "Negotiation"
+  text_new_accounts: "New Account"
+  text_new_assignment: "New Assignment"
+  text_new_calendar: "New Calendar"
+  text_new_calendar_event: "New Calendar Event"
+  text_new_campaigns: "New Campaigns"
+  text_new_cgc_admin: "New CGC Admin"
+  text_new_client: "New Client"
+  text_new_comment: "New Comment"
+  text_new_comments: "New Comments"
+  text_new_company_activity_rate: "New Company Activity Rate"
+  text_new_company_role_rate: "New Company Role Rate"
+  text_new_contact: "New Contact"
+  text_new_department: "New Department"
+  text_new_designation: "New Designation"
+  text_new_document: "New Document"
+  text_new_employee: "New Employee"
+  text_new_employee_activity_rate: "New Employee Activity Rate"
+  text_new_expenses: "New Expense"
+  text_new_fact: "New Fact"
+  text_new_folder: "New Folder"
+  text_new_instructions: "New Instructions"
+  text_new_issue: "New Issue"
+  text_new_litigation: "New Litigation"
+  text_new_login_has_been_created_for_your_company_employee: "New login has been created for your company employee"
+  text_new_lookup: "New Lookup"
+  text_new_manager: "New Manager"
+  text_new_matter: "New Matter"
+  text_new_message: "New Message"
+  text_new_module: "New Module"
+  text_new_opportunity: "New Opportunity"
+  text_new_password: "New Password"
+  text_new_product: "New Product"
+  text_new_product_dependent: "New Product Dependent"
+  text_new_product_licence_detail: "New Product License Detail"
+  text_new_research: "New Research"
+  text_new_secretary: "New Secretary"
+  text_new_time_associated_expenses: "New Time & Associated Expenses"
+  text_new_time_entry: "New Time Entry"
+  text_new_user: "New User"
+  text_next_call_back_date: "Next Call Back Date"
+  text_nick_name: "Nick Name"
+  text_no: "No"
+  text_not_sure: "Not Sure"
+  text_no_accounts_found: "No Accounts Found"
+  text_no_attended_responses: "No Attended Responses."
+  text_no_billing_details_found: "No Billing Details Found"
+  text_no_bills_found: "No Invoice(s) Found."
+  text_no_campaigns_found: "No Campaigns Found"
+  text_no_campaigns_present: "No Campaigns Present"
+  text_no_client_document_found: "No Client Document Found."
+  text_no_client_document_found_for_the_matter: "No Client Document Found For The Matter:"
+  text_no_completed_matters_found: "No Completed Matters Found"
+  text_no_compliances_found: "No Compliances Found"
+  text_no_contacts_added_yet: "No Contacts Added Yet."
+  text_no_contacts_found: "No Contacts Found"
+  text_no_data: "No Data."
+  text_no_designations: "No Designations"
+  text_no_document_details_present: "No Document Details Present"
+  text_no_document_found: "No Document Found"
+  text_no_document_uploaded_yet: "No Document Uploaded Yet"
+  text_no_facts_found: "No Facts Found"
+  text_no_facts_linked_yet: "No Facts Linked Yet."
+  text_no_favorite_reports_found: "No Favorite Reports Found"
+  text_no_forms_or_resources: "No Forms Or Resources."
+  text_no_generated_invoices: "No Generated Invoices."
+  text_no_hearing_details_present: "No Hearing Details Present"
+  text_no_issues_found: "No Issues Found"
+  text_no_issues_linked_yet: "No Issues Linked Yet."
+  text_no_lawyer_assigned: "No Lawyer Assigned"
+  text_no_lawyer_found: "No Lawyer found"
+  text_no_licences: "No Licenses"
+  text_no_licences_please_buy_licences: "No Licenses, Please Buy Licenses!"
+  text_no_livians_assigned_to_you: "No LIVIANS Assigned To You!"
+  text_no_match_found: "No Match Found"
+  text_no_access: "You Don't Have Access To Data."
+  text_no_matters_found: "No Matters Found"
+  text_no_meeting_details_present: "No Meeting Details Present"
+  text_no_members_present: "No Members Present."
+  text_no_notes_created: "No Notes Created."
+  text_no_of_days_before_the_due_date: "No. Of Days Before The Due Date"
+  text_no_of_lawyers_serving: "No. Of Lawyers Serving"
+  text_no_of_licences: "No. Of Licenses"
+  text_no_of_matters: "No. Of Matters:"
+  text_no_of_tasks: "No. Of Activities"
+  text_no_open_matters_found: "No Open Matters Found"
+  text_no_open_task_found: "No Open Task Found"
+  text_no_opportunities_created_yet: "No Opportunities Created Yet."
+  text_no_opportunities_found: "No Opportunities Found"
+  text_no_opportunities_in_lost_stage: "No Opportunities In Lost Stage"
+  text_no_opportunities_in_this_stage: "No Opportunities In This Stage"
+  text_no_opportunities_in_won_stage: "No Opportunities In Won Stage"
+  text_no_payments: "No Payments."
+  text_no_product_licences_found: "No Product Licenses found."
+  text_no_record_s_found: "No record(s) found."
+  text_no_records: "No Records."
+  text_no_records_found: "No Records Found"
+  text_no_records_found_for: "No Records Found for"
+  text_no_records_found_for_product_licences: "No Records Found for Product Licenses."
+  text_no_records_found_for_subproduct: "No Records Found for Sub Product."
+  text_no_reference_materials: "No Reference Materials."
+  text_no_related_facts_found_to_this_matter: "No Related Facts Found To This Matter"
+  text_no_related_issues_found_to_this_matter: "No Related Issues Found To This Matter"
+  text_no_related_researches_found_to_this_matter: "No Related Researches Found To This Matter"
+  text_no_related_risks_found_to_this_matter: "No Related Risks Found To This Matter"
+  text_no_related_tasks_found_to_this_matter: "No Related Tasks Found To This Matter"
+  text_no_related_activities_found_for_this_document: "No Related Activities Found For This Document"
+  text_no_related_issues_found_for_this_document: "No Related Issues Found For This Document"
+  text_no_related_facts_found_for_this_document: "No Related Facts Found For This Document"
+  text_no_related_researches_found_for_this_document: "No Related Researches Found For This Document"
+  text_no_related_risks_found_for_this_document: "No Related Risks Found For This Document"
+  text_no_related_issues_found_for_this_facts: "No Related Issues Found For This Fact"
+  text_no_related_activites_found_for_this_facts: "No Related Activites Found For This Fact"
+  text_no_related_risks_found_for_this_facts: "No Related Risks Found For This Fact"
+  text_no_related_researches_found_for_this_facts: "No Related Researches Found For This Fact"
+  text_no_related_issues_found_for_this_risks: "No Related Issues Found For This Risk"
+  text_no_related_activities_found_for_this_risks: "No Related Activities Found For This Risk"
+  text_no_related_fact_found_for_this_risks: "No Related Facts Found For This Risk"
+  text_no_related_research_found_for_this_risks: "No Related Researches Found For This Risk"
+  text_no_related_activities_found_for_this_researches: "No Related Activities Found For This Research"
+  text_no_related_issues_found_for_this_researches: "No Related Issues Found For This Research"
+  text_no_related_risks_found_for_researches: "No Related Risks Found For This Research"
+  text_no_related_facts_found_for_this_researches: "No Related Facts Found For This Research"
+  text_no_related_activities_found_for_this_issues: "No Related Activities Found For This Issue"
+  text_no_related_facts_found_for_this_issues: "No Related Facts Found For This Issue"
+  text_no_related_risks_found_for_this_issues: "No Related Risks Found For This Issue"
+  text_no_reporting_department: "No Reporting Department"
+  text_no_researches_found: "No Researches Found"
+  text_no_researches_linked_yet: "No Researches Linked Yet."
+  text_no_retainers_found: "No Retainers Found."
+  text_no_risks_found: "No Risks Found"
+  text_no_risks_linked_yet: "No Risks Linked Yet."
+  text_no_subfolders_created_yet: "No Subfolders Created Yet"
+  text_no_subfolders_or_files_present: "No Subfolders Or Files Present"
+  text_no_suspended_members: "No Suspended Members."
+  text_no_task_created: "No Task Created."
+  text_no_tasks_found: "No Tasks Found"
+  text_no_tasks_found_for_the_matter: "No Tasks Found For The Matter:"
+  text_no_tasks_linked_yet: "No Tasks Linked Yet."
+  text_no_unattended_responses: "No Unattended Responses."
+  text_no_users: "No Users"
+  text_non_litigation: "Non Litigation"
+  text_non_litigation_name: "Non Litigation Name"
+  text_not_privileged: "Not Privileged"
+  text_note: Note
+  text_note_a_new_version_will_be_created_for_this_document: "Note: - A New Version Will Be Created For This Document."
+  text_note_all_members_of_your_law_firm_will_have_access_to_this_document: "Note:- All Members Of Your Law Firm Will Have Access To This Document"
+  text_note_details: "Note Details"
+  text_note_document_will_be_accessible_to_selected_team_members: "Note:- Document Will Be Accessible To Selected Team Members"
+  text_note_only_you_and_your_client_will_have_access_to_this_document: "Note:- Only You And Your Client Will Have Access To This Document"
+  text_note_only_you_will_have_access_to_this_document: "Note:- Only The Owner Of This Document Will Have Access To It"
+  text_note_all_matter_team_members_will_have_access_to_this_document: "Note:- All Matter Team Members Will Have Access To This Document"
+  text_notes: "# Notes"
+  text_notes_created_time: "Notes Created Time"
+  text_notes_tasks_summary: "Notes/Tasks Summary"
+  text_notifications: Notifications
+  text_number_of_active_users: "Number of active users"
+  text_number_of_licences: "Number of Licenses"
+  text_oa: "OA ($) :"
+  text_of: " of "
+  text_oldest_note: "Oldest Note"
+  text_oldest_task: "Oldest Task"
+  text_open_bills: "Open Invoice"
+  text_open_matters: "Open matters"
+  text_open_opportunities: "Open Opportunities"
+  text_open_opp: "Open Opp"
+  text_opportunity_followups: "Opportunity Follow-ups"
+  text_opportunities: Opportunities
+  text_opportunities_Follow_Ups: "Opportunities Follow-Ups"
+  text_opportunities_open: "Opportunities Open"
+  text_opportunities_sources: "Opportunities Sources"
+  text_opportunities_status: "Opportunities Status"
+  text_opportunity: Opportunity
+  text_opportunity_date: "Opportunity Date"
+  text_opportunity_pipeline: "Opportunity Pipeline"
+  text_opportunity_ref: "Opportunity Ref"
+  text_opportunity_status: "Opportunity Status"
+  text_opposing_legal_team: "Opposing Legal Team"
+  text_opposing_party_contacts: "Opposing Party Contacts"
+  text_optional: Optional
+  text_or: or
+  text_other_appointment: "Other Appointment"
+  text_other_related_parties: "Other Related Parties"
+  text_other_task: "Other Task"
+  text_others: Others
+  text_others_1: "Other 1"
+  text_others_2: "Other 2"
+  text_others_3: "Other 3"
+  text_others_4: "Other 4"
+  text_others_5: "Other 5"
+  text_others_6: "Other 6"
+  text_outstanding_actions: "Outstanding Actions"
+  text_outstanding_tasks: "Outstanding Tasks"
+  text_overdue: Overdue
+  text_overdue_tasks: "Overdue Tasks"
+  text_override: Override
+  text_override_amount: "Override Amt"
+  text_override_amt: "Override Amt"
+  text_override_rate_hr: "Override rate($/hr) :"
+  text_own_file_name: "Own File Name"
+  text_owner: Owner
+  text_owner_first_name: "Owner's First Name"
+  text_owner_last_name: "Owner's Last Name"
+  text_owner_email: "Owner's Email"
+  text_paid_to_date: "Paid to date ($)"
+  text_parent: "Parent:"
+  text_parent_account: "Parent Account"
+  text_parent_fact: "Parent Fact"
+  text_parent_issue: "Parent Issue"
+  text_parent_product: "Parent Product"
+  text_parent_product_name: "Parent Product Name:"
+  text_parent_products: "Parent Products:"
+  text_parent_research: "Parent Research"
+  text_partners_birthday: "Partners Birthday"
+  text_partners_name: "Partners Name"
+  text_password: Password
+  text_past_month: "Past Month"
+  text_pay: Pay
+  text_payment: Payment
+  text_payment_date: "Payment Date"
+  text_payment_detail: "Payment Detail"
+  text_payment_details: "Payment Details"
+  text_payment_mode: "Payment Mode"
+  text_payment_settled_amount: "Payment/Settled Amt"
+  text_payments: Payments
+  text_paypal_account_id: "PayPal Account ID :"
+  text_pdt: PDT
+  text_people_amp_legal_team: "People & Legal Team"
+  text_period: Period
+  text_permanent: Permanent
+  text_permanent_temporary: "Permanent / Temporary"
+  text_personal_information: "Personal Information"
+  text_phase: Phase
+  text_phone: Phone
+  text_phone_1: "Phone 1"
+  text_phone_2: "Phone 2"
+  text_phone_no: "Phone No."
+  text_plaintiff: Plaintiff
+  text_planned: "Planned"
+  text_please_confirm_whether_you_want_to_delete_or_deactivate_the_attachment: "Please Confirm Whether You Want To Delete Or Deactivate The Attachment"
+  text_please_confirm_your_password: "Please Confirm Your Password"
+  text_please_enter_a_search_term_to_continue: "Please Enter a Search Term To Continue."
+  text_please_select: "Please select"
+  text_practice_area: "Practice Area"
+  text_pre_sales_billing: "Pre-Sales Billing"
+  text_preference: Preference
+  text_preferences: Preferences
+  text_preliminary: Preliminary
+  text_preliminary_secondary: "Preliminary / Secondary"
+  text_previous_filings_for: "Previous Filings for ("
+  text_filings_history_for: "Filing History for"
+  text_price: Price
+  text_price_per_licence: "Price per License ($)"
+  text_primary_contact: "Primary contact"
+  text_primary_issue: "Primary Issue"
+  text_primary_matter_proceeding: "Primary Matter / Proceeding"
+  text_print: Print
+  text_priority: Priority
+  text_private: Private
+  text_privilege: Privilege
+  text_privileged: Privileged
+  text_prob: "Prob (%)"
+  text_probability: "Probability"
+  text_product: Product
+  text_cluster: Cluster
+  text_product_assigned_details: "Product Assigned Details"
+  text_product_assignments: "Product Assignments"
+  text_product_configuration: "Product Configuration"
+  text_product_details: "Product Details"
+  text_product_licence: "Product License"
+  text_product_licences: "Product Licenses"
+  text_product_licencing: "Product Licensing"
+  text_product_master: "Product Master"
+  text_product_name: "Product Name"
+  text_product_pricing: "Product Pricing"
+  text_product_purchase_date: "Product Purchase Date"
+  text_products: "Products:"
+  text_products_configuration: "Products Configuration"
+  text_products_listing: "Products Listing"
+  text_professional_expertise: "Professional Expertise"
+  text_progress: Progress
+  text_project_estimated_hours: "Project Estimated Hours"
+  text_project_hours_remaining_within_range: "Project Hours Remaining Within Range"
+  text_project_name_code: "Project Name / Code"
+  text_projected_hours_remaining_within_range: "Projected Hours Remaining Within Range:"
+  text_proposal: "Proposal"
+  text_prospects: "Prospects"
+  text_protected: Protected
+  text_provide_services_to_following: ", Provide Services To Following("
+  text_public: Public
+  text_matter_view: Matter View
+  text_public_repository: "Public Repository"
+  text_qty: Qty
+  text_raquo: "&raquo;"
+  text_rate_card: "Rate Card"
+  text_rate: Rate
+  text_rate_of: "Rate of"
+  text_rating: Rating
+  text_read_comments: "Read Comments"
+  text_reason: "Reason :"
+  text_reason_for_stage_change: "Reason For Stage Change"
+  text_receipt: Receipt
+  text_received_till_date: "Received Till Date:"
+  text_recently_added_accounts: "Recently Added Accounts"
+  text_recently_added_contacts: "Recently Added Contacts"
+  text_records: Records
+  text_ref_id: "Ref ID"
+  text_reference: "Reference"
+  text_reference_materials: "Reference Materials"
+  text_reference_type: "Reference Type:"
+  text_references: References
+  text_referred_by: "Referred By"
+  text_related_issues: "Related Issues"
+  text_related_tasks: "Related Tasks"
+  text_religion: Religion
+  text_remarks: "Remarks:"
+  text_reminder: Reminder
+  text_reminder_date: "Reminder Date"
+  text_reminder_e_mail_draft: "Reminder E-mail Draft"
+  text_reminder_frequency: "Reminder Frequency"
+  text_reminder_settings: "Reminder Settings"
+  text_reminder_settings_for: "Reminder Settings for"
+  text_reminder_sucessfully_sent: "Reminder Successfully Sent."
+  text_repeat: Repeat
+  text_replace_existing: "Replace Existing"
+  text_replace_receipt: "Replace Receipt"
+  text_report: "Report:"
+  text_report_name: "Report Name"
+  text_report_name_successfully_updated: "Report Name Successfully Updated"
+  text_report_successfully_added_under_my_favorite: "Report Successfully Added under My Favorite"
+  text_reporting_to: "Reporting To"
+  text_reporting_to_department: "Reporting To Department"
+  text_reports: Reports
+  text_reports_to: "Reports to"
+  text_required_field: "Required field"
+  text_research: Research
+  text_research_name: "Research Name"
+  text_research_type: "Research Type"
+  text_team_role: "Team Role"
+  text_client_role: "Client Role"
+  text_client_rep_role: "Representative Role"
+  text_other_role: "Other Role"
+  text_researches: Research
+  text_reset_password: "Reset Password ("
+  text_resolution: Resolution
+  text_resolution_date: "Resolution Date"
+  text_resolved: Resolved
+  text_resolved_at: "Resolved at"
+  text_responded_date: "Responded Date :"
+  text_responded: "Responded"
+  text_response: Response
+  text_response_date: "Response Date"
+  text_response_reviews: "Response Reviews"
+  text_responsibility: Responsibility
+  text_retainer_invoice_receipts: "Retainer / Invoice Receipts"
+  text_retainer_credit_balance: "Retainer Credit Balance"
+  text_amt_available_for_invoice_payment_or_settlement: "Amount Available for Invoice Payment/Settlement"
+  text_retainer_fee: "Retainer Fee:"
+  text_retainer_fees: "Retainer Fees"
+  flash_matter_retainer_updated_failed: "Retainer Fees Update Failed"
+  text_risk: Risk
+  text_risk_details: "Risk Details"
+  text_risks: Risks
+  text_role: Role
+  text_roles: Roles
+  text_root_folder: "Root Folder"
+  text_s: "'s"
+  text_s_contacts_stages: "'s Contacts Stages"
+  text_s_litigation: "'s Litigation"
+  text_s_no: S.No.
+  text_s_non_litigation: "'s Non Litigation"
+  text_s_research_types: "'s Research Types"
+  text_s_team_roles: "'s Team Roles"
+  text_s_client_roles: "'s Client Roles"
+  text_s_other_roles: "'s Client Roles"
+  text_s_client_rep_roles: "'s Representative Roles"
+  text_s_sources: "'s Sources"
+  text_s_matter_status: "'s Matter Status"
+  text_s_doc_category: "'s Document Category"
+  text_s_time_entry_type: "'s Time Entry Type"
+  text_s_time_expense_type: "'s Time Expense Type"
+  text_sales_related_details: "Sales Related Details"
+  text_sales_representative: "Sales Representative"
+  text_sales_representative_type: "Sales Representative Type"
+  text_salutation: Salutation
+  text_same_as_billing_address: "Same as Billing Address"
+  text_schedule: Schedule
+  text_scope_of_work: "Scope of Work"
+  text_search: "Search"
+  text_search_by_author_amp_source: "Search by Author & Source"
+  text_search_by_creator_amp_privilege: "Search by Creator & Privilege"
+  text_search_by_creator: 'Search by Creator'
+  text_search_by_creator_amp_category: "Search by Creator & Category"
+  text_search_result: "Search Result"
+  text_secondary: Secondary
+  text_secretary_detail: "Secretary Detail"
+  text_secretary_name: "Secretary Name"
+  text_section_citation: Section/Citation
+  text_security_question: "Security Question:"
+  text_select: "Select"
+  text_select_a_campaign: "Parent Campaign"
+  text_select_a_file: "Select A File:"
+  text_select_account: "Select Account:"
+  text_select_all: "Select All"
+  text_select_cgcs: "Select CGCs:"
+  text_select_company: "Select Company:"
+  text_select_contact: "Select Contact:"
+  text_select_date: "Select Date:"
+  text_select_employee: "Select Employee"
+  text_select_existing: "Select Existing"
+  text_select_lawyer: "Select Lawyer:"
+  text_select_licence: "Select License:"
+  text_select_licence_type: "Select License Type:"
+  text_select_livian: "Select LIVIAN"
+  text_select_lookup_type: "Select Lookup-type:"
+  text_select_matter: "Select Matter:"
+  text_select_parent_department: "Select Parent Department:"
+  text_select_parent_task: "Select Parent activity"
+  text_select_product: "Select Product:"
+  text_select_secretary: "Select Secretary:"
+  text_select_the_contacts_to_activate_with_this_account: "Select The Contacts To Activate With This Account"
+  text_select_user: "Select User:"
+  text_select_users: "Select Users:"
+  text_select_view: "Select View"
+  text_selective_view: "Selective View"
+  text_send_reminder: "Send Reminder"
+  text_sending_reminder_failed: "Sending Reminder Failed."
+  text_service_provider_name: "Service Provider Name"
+  text_service_providers_list: "Service Providers List"
+  text_settled_bills: "Settled Invoice"
+  text_share_this_calendar: "Share this calendar"
+  text_share_with_client: "Share with Client"
+  text_shipping_address: "Shipping Address"
+  text_show_all: "Show All"
+  text_show_sub_product: "Show Sub-Product"
+  text_signature_on_mail: "Signature (On Mail)"
+  text_size: Size
+  text_skill_asignment: "Skill Assignment"
+  text_sl: SL
+  text_sl_no: "Sl no"
+  text_sorry_no_contacts_found: "Sorry! No Contacts Found"
+  text_source: Source
+  text_doc_category: Document Category
+  text_specify_date: "Specify Date"
+  text_specify_new_role: "Specify New Role"
+  text_specify_your_role: "Specify Your Role"
+  text_spouse_birthday: "Spouse Birthday"
+  text_spouse_name: "Spouse Name"
+  text_st: "ST :"
+  text_stage: Stage
+  text_stage_name: "Stage Name"
+  text_stage_filters: "Stage Filters"
+  text_start: Start
+  text_start_date: "Start Date"
+  text_start_month: "Start Month"
+  text_start_section: "Start Section"
+  text_start_section_content: "Start Section Content"
+  text_start_section_content_bottom: "Start Section Content Bottom"
+  text_start_section_content_top: "Start Section Content Top"
+  text_start_table_menu: "Start Table Menu"
+  text_start_table_wrapper: "Start Table Wrapper"
+  #text_start_time: "Start Time:"
+  text_start_title_wrapper: "Start Title Wrapper"
+  text_state: State
+  text_status: Status
+  text_street: Street
+  text_sub_matters: "Sub Matters:"
+  text_sub_product: Sub-Product
+  text_sub_type: "Sub Type"
+  text_subject: Subject
+  text_subproduct_name: "Sub Product Name"
+  text_subroducts: "Sub Products:"
+  text_subtype: Subtype
+  text_successful_message: "Successful Message"
+  text_summarize_by: "Summarize By"
+  text_summary: "Summary"
+  text_summary_january: "Summary: January"
+  text_supercede_or_replace_document: "Supersede Or Replace Document"
+  text_superseed: Supersede
+  text_supervisors_email: "Supervisors Email"
+  text_supervisors_phone_number: "Supervisors Phone Number"
+  text_supervisors_title: "Supervisors Name"
+  text_support: Support
+  text_suspended_list: "Suspended List"
+  text_system: System
+  text_t_e: T/E
+  text_target: Target
+  text_target_resolution_date: "Target Resolution Date"
+  text_task: Activities
+  text_task_created_time: "Task Created Time"
+  text_task_deadline_date: "Activity Deadline Date"
+  text_task_name: "Task Name"
+  text_task_status: "Activity Status"
+  text_task_type: "Activity Type"
+  text_tasks: "Tasks"
+  #-----------------Added by Pratik---------
+  text_activities: "Activities"
+  text_view_all_open_activities: "View All Open Activities"
+  text_activity_name: "Activity Name"
+  text_to_do_task: "Task"
+  text_schedule_task: "Appointment"
+  text_appointment_name: "Appointment Name"
+  text_activity: Activity
+  label_new_document_path: "New Document Path"
+  label_please_select_destination_folder: "Please Select Destination Folder"
+  label_move: "Move"
+  #-----------------------------------------
+  text_all_tasks: "All Tasks"
+  text_telephone: "Telephone:"
+  text_temporary: Temporary
+  text_temporary_licence_limit: "Temporary License Limit"
+  text_terms_of_engagement: "Terms Of Engagement"
+  text_thank_you_for_your_response: "Thank You For Your Response!"
+  text_the_admin_login_details_are: "The Admin Login Details Are:"
+  text_the_case: "The Case"
+  text_the_compliance_item_has_been_marked_as_completed: "The Compliance Item Has Been Marked As “Completed”."
+  text_the_user_login_details_are: "The User Login Details Are:"
+  text_time: Time
+  text_time_accounted: "Time Accounted"
+  text_time_amp_expense_entry: "Time & Exp Entry"
+  text_time_and_expense: "Time and Expense"
+  text_time_and_expense_entries: "Time and Expense(s)"
+  text_time_and_expense_calendar_view: "Time and Expense: Calendar View"
+  text_time_and_expense_entries_for: "Time And Expense Entries For"
+  text_time_and_expense_entries_for_contact: "Time And Expense Entries For Contact \""
+  text_time_and_expense_entries_for_internal_work: "Time And Expense Entries For Internal Work"
+  text_time_and_expense_entries_for_matter: "Time And Expense Entries For Matter \""
+  text_time_and_expense_internal_work_hours: "Time And Expense: Internal"
+  text_time_and_expense_matter_billing: "Time And Expense: Matter Related"
+  text_time_and_expense_pre_sales_billing: "Time and Expense: Non-Matter Related"
+  text_time_and_expenses: "Time and Expenses"
+  text_time_billed: "Time Billed"
+  text_time_entry_type: "Time Entry Type"
+  text_time_expense_entry_date_between: "Time/ Expense Entry Date Between:"
+  text_time_expense_type: "Time Expense Type"
+  text_time_hh_mm: "Time (HH:MM)"
+  text_timezones: Time zones
+  text_title: Title
+  text_to: "To"
+  text_to_do: "To do"
+  text_to_do_date: "To Do Date"
+  text_to_do_s: "To Do's"
+  text_to_know_more_details_relating_to_the_compliance_please_contact_the_legal: "To Know More Details Relating To The Compliance Please Contact The Legal"
+  text_to_period: "To Period"
+  text_to_respond_or_copy_this_to_your_address_bar: "To Respond Or Copy This To Your Address Bar"
+  text_to_time: "To Time"
+  text_today: Today
+  text_total: Total
+  text_total_adjusted_invoice_amount: "Total Adjusted Invoice Amt:"
+  text_total_amount: "Total Amt"
+  text_total_invoice_amount: "Total Invoice Amt:"
+  text_total_campaigns_open: "Total Campaigns Open"
+  text_total_cost: "Total Cost"
+  text_total_employees: "Total Employees"
+  text_total_hours_accounted_last_week: "Total Hours Accounted Last Week"
+  text_total_licence: "Total License"
+  text_total_price: "Total Price ($)"
+  text_total_records: "Total Records"
+  text_total_record: "Total Record"
+  text_total_unused_amount: "Total Unused Amt:"
+  text_total_used_amount: "Total Used Amt:"
+  text_total_users: "Total Users"
+  text_transaction_key: "Transaction Key"
+  text_twitter_account: "Twitter Account"
+  text_type: Type
+  text_type_of_document_extension: "Type of document extension"
+  text_unassign_livian: "Un-assign LIVIAN"
+  text_unassigned: Unassigned
+  text_unassigned_modules: "Unassigned Modules"
+  text_unassigned_secretary: "Unassigned Secretary"
+  text_unassigned_skills: "Unassigned Skills"
+  text_unattended_responses: "Unattended Responses"
+  text_undergraduate_schools: "Undergraduate Schools"
+  text_undisputed: Undisputed
+  text_unread_comments: "Unread Comments"
+  text_unusage_cost: "Un usage Cost"
+  text_unused_days: "Unused Days"
+  text_upcoming: Upcoming
+  text_upcoming_tasks: "Upcoming Tasks"
+  text_update_bill: "Update Bill"
+  text_update_portal_access_for_this_user: "Update Portal Access For This User"
+  text_update_user_company: "Update User (Company:"
+  text_upload: "Upload"
+  text_upload_date: "Upload Date"
+  text_upload_document: "Upload document"
+  text_upload_document_link: "Upload Document / Link"
+  text_uploaded_by: "Uploaded by"
+  text_uploaded_on: "Uploaded On"
+  text_urgent: Urgent
+  text_usage_cost: "Usage Cost"
+  text_use_from_date: "Use From Date"
+  text_used_days: "Used Days"
+  text_user: User
+  text_user_details: "User Details"
+  text_user_id: "User Id :"
+  text_user_name: "User Name"
+  text_userlist: User list
+  text_username: Username
+  text_users: Users
+  text_value: Value
+  text_var_activitytypes: "var activitytypes="
+  text_var_expensetypes: "var expensetypes="
+  text_var_status: "var status ="
+  text_var_timeout: "var timeout="
+  text_venue: Venue
+  text_verifying_data_for: "Verifying Data For"
+  text_versions_of_document: "Versions Of Document:"
+  text_views: Views
+  text_warning_message: "Warning Message"
+  text_was_marked_completed: "(Marked Completed)"
+  text_website: Website
+  text_week: Week
+  text_what_do_you_want_to_search: "What Do You Want To Search?"
+  text_when_was_it_created: "When Was It Created?"
+  text_while_day: "while day"
+  text_who_all_are_responsible: "Who All Are Responsible"
+  text_within_the_last_week: "Within The Last Week"
+  text_within_the_past_year: "Within The Past Year"
+  text_www_liviaservices_com: www.liviaservices.com
+  text_year_graduated: "Year Graduated"
+  text_yes: "Yes"
+  text_you_don_t_have_required_permission_to_access_this_page: "You Don't Have Required Permission To Access This Page."
+  text_you_have: "You have"
+  text_your_calender_entries: "Your Calendar Entries:"
+  text_your_task_entries: "Your Task Entries:"
+  text_yyyy_mm_dd: (yyyy-mm-dd)
+  text_zip_code: "Zip Code"
+  text_zipcode: Zip code
+  text_uploaded: "Uploaded"
+  text_back: "Back"
+  text_home: "Home"
+  text_mail: "Mail"
+  text_time_n_expense: "Time & Expense"
+  text_reports_n_dashboard: "Reports & Dashboard"
+  text_sync_appointments: "Sync Appointments"
+
+
+  #added by komal
+  text_edit: "Edit"
+  text_end_after: "End After"
+  text_end_by: "End By"
+  text_update: "Update"
+  text_create_new: "Create New"
+  text_change_primary_contact: "Change Primary Contact"
+  text_view_active_opportunities: "View Active Opportunities"
+  text_view_deactivated_opportunities: "View Deactivated Opportunities"
+  text_view_opportunities: "View Opportunities"
+  text_create_opportunity: "Create Opportunity"
+  text_account: "Account"
+  text_remove: "Remove"
+  text_change_name: "Change Name"
+  text_button: "Button"
+  text_hidden: "Hidden"
+  text_add_to_favorite: "Add To Favorite"
+  text_deactivated_references: "Deactivated References"
+  text_add: "Add"
+  text_deactivated_forms: "Deactivated Forms"
+  text_occurrence: "Occurrence(S)"
+  text_open_items: "Open Items"
+  text_attach: "Attach"
+  text_compliance_items: "Compliance Items"
+  text_compliance_master: "Compliance Master"
+  text_csv: "CSV"
+  text_login: "Login"
+  text_logout: "Logout"
+  text_timetracker: "Time Tracker"
+  text_add_new_company: "Add New Company"
+  text_add_new_secretary: "Add New LIVIAN"
+  text_view_deactivated_secretaries: "View Deactivated LIVIANS"
+  text_edit_access: "Edit Access"
+  text_add_new_client: "Add New Client"
+  text_compliance_definition: "Compliance Definition"
+  text_compliance_department: "Department"
+  text_email: "Email"
+  label_lower_threshold: "Lower Threshold"
+  label_cluster_no: "Cluster No"
+  label_upper_threshold: "Upper Threshold"
+  flash_not_blank: "Cannot Be Blank"
+  flash_select_your_role: "Select Your Role"
+  flash_contact_status_error: "Error Occurred While Converting The Status"
+  flash_contact_has_been_deactivated: "Contact Has Been De-Activated"
+  flash_account_has_been_deactivated: "Account Has Been De-Activated"
+  flash_opportunity_has_been_deactivated: "Opportunity Has Been De-Activated"
+  flash_cannot_greaterthan_15mb: "Size Should Be Between 1 Kb - 15 Mb"
+  flash_session: "Your Session Has Expired. Please Login Again."
+  flash_logged_out: "You Have Been Logged Out. Thank You For Using LIVIA!"
+  flash_application_session_expired: "This Session Has Expired Since You Have Logged In Elsewhere."
+  flash_application_session: "Your Session Has Expired. Please Login Again."
+  flash_application_must_logged_out: "You Must Be Logged Out To Access This Page."
+  flash_attachments_error: "Document Not Found.!"
+  flash_already_loggedin: "Already Logged In."
+  flash_welcome: "Welcome To LIVIA!"
+  flash_invalid_user: "Invalid Username Or Password"
+  flash_authentications_already_loggedin: "You Are Already Logged In Somewhere. To Login Please Enter Password And Click On 'End All Sessions'. Kindly Note That All Unsaved Data Will Be Lost."
+  flash_budget_period: "Cannot Be Added For More Than One Year Ahead."
+  flash_testmail: "Test Email Sent"
+  flash_campaigns_first_mail: "First Email Sent To All Campaign Members With Status New Of This Campaign"
+  flash_campaigns_reminder_mail: "Reminder Email Sent To All Campaign Members With Status Contacted Of This Campaign"
+  flash_campaigns_first_mail_saved: "First Email Saved"
+  flash_campaigns_reminder_mail_saved: "Reminder Email Saved"
+  flash_campaigns_updated: "Campaign Updated Successfully."
+  flash_campaigns_deactivated: "Campaign De-activated Successfully."
+  flash_comments_before_submitting: "Please Enter A Message Before Submitting"
+  flash_task_error: "Error Editing The Task. Task Type Invalid."
+  flash_task_type: "Please Select Task Type."
+  flash_companies_cgc_created: "Cgc Admin Successfully Created."
+  flash_company_role_rate_created: "Company Role Rate Successfully Created."
+  flash_company_role_rate_updated: "Company Role Rate Successfully Updated."
+  flash_update: "Updated Successfully"
+  flash_processing_error: "Error While Processing"
+  flash_no_document_selected: "No Document Selected"
+  flash_no_licences: "No Licenses Present!"
+  flash_password: "Password should be of minimum 8 characters with at least 1 character in the lower case, 1 character in the upper case, 1 number and 1 special character"
+  flash_user_added: "User Successfully Added."
+  flash_create_employee: "Please Create Employee!"
+  flash_DB_error: "DB Error - User/Employee Not Identified"
+  flash_thanks_message: "Thank You For Your Response..!"
+  flash_invoice_deleted: "Invoice Deleted Successfully"
+  flash_invoice_cannot_deleted: "This Invoice Cannot Be Deleted As There Is Already Payment For This Invoice."
+  flash_select_fields: "Please Select All Mandatory Fields"
+  flash_invoice_date: "Invoice Start Date Should Be Less Than Invoice End Date"
+  flash_enter_category: "Please Enter Category"
+  flash_enter_password: "Please Enter Password"
+  flash_wrong_password: "Wrong Password Entered"
+  flash_category_exist: "Category already exists"
+  flash_budgetcategory_error: "There Are Entries Against The Selected Category."
+  flash_matter_task_error: "Could Not Complete The Matter Task: There Are Some Open Child Tasks For This Matter Task."
+  flash_matter_open_error: "Could Not Complete The Matter: There Are Some Open Child Matters For This Matter."
+  flash_matter_incomplete_error: "Could Not Complete The Matter: There Are Some Incomplete Tasks In The Matter."
+  flash_report_favourite_error: "Error Occurred While Updating Report Name"
+  flash_was_successful: "Successfully"
+  flash_status_change_reason: "Please Enter The Reason For Status Change"
+  flash_logged_in_to_access: "You Must Be Logged In To Access This Page"
+  flash_password_change_successfully: "Your Password Changed Successfully. Please Login With New Password."
+  flash_not_found: "Not Found."
+  text_activated: "Activated"
+  text_deactivated: "De-Activated"
+  text_updated: "Updated"
+  text_budgetperiod: "Budget Period"
+  text_superseeded: "Superseded"
+  text_checked_in: "Checked In"
+  text_checked_out: "Checked Out"
+  flash_access_denied: "Access Denied"
+  flash_not_available: "Is Not Available."
+  flash_cannot_blank: "Cannot Be Blank"
+  text_licences: "Licenses"
+  text_added: "Added"
+  text_lawfirmadmin: "Law firm Admin"
+  text_entered: "Entered"
+  text_retainer: "Retainer"
+  text_budgetcategory: "Budget Category"
+  text_matter_fact: "Matter Fact"
+  text_matter_issue: "Matter Issue"
+  text_matter_people: "Matter People"
+  text_matter_research: "Matter Research"
+  text_matter_risk: "Matter Risk"
+  text_matter_task: "Matter Activity"
+  text_termcondition: "Terms Condition"
+  text_retainer_fees: "Retainer Fees"
+  text_matter: "Matter"
+  text_payment_record: "Payment Record"
+  text_product_dependent: "Product Dependent"
+  text_product_licence: "Product License"
+  text_role: "Role"
+  text_edit_designation: "Edit Designation"
+  text_saved: "Saved"
+  error_please_select_a_contact: "Please Select A Contact"
+  error_document_name_cant_be_blank: "Document Name Cannot Be Blank"
+  text_notes_were: "Notes Were"
+  text_note_was: "Note"
+  text_instructions_were: "Instructions Were"
+  text_instruction_was: "Instruction"
+  flash_notes_error: "Error While Assigning The Notes. Please Enter All Details"
+  flash_instructions_error: "Error While Assigning The Instructions. Please Enter All Details"
+  text_company: "Company"
+  text_cgc_admin: "CGC Admin"
+  text_compliance: "Compliance"
+  text_attachment: "Attachment"
+  text_lookup: "Lookup"
+  text_department_login: "Department And Login"
+  flash_no_livian_assigned: "Currently No LIVIAN Assigned. Please Contact Admin For More Details"
+  flash_new_task_from_queue: "Fetched A New Task From Queue"
+  warning_task_not_found: "No Tasks Found That Match The Skill Set."
+  flash_end_date_start_date: "End Date Should Be Greater Than Start Date."
+  flash_enter_date: "Please Enter Start Date And End Date."
+  flash_select_contact: "Please Select A Contact From Contacts List."
+  flash_select_matter: "Please Select A Matter From Matters List."
+  text_time_entry: "Time Entry"
+  text_expense_entry: "Expense Entry"
+  text_new_expense_entry: "New Expense Entry"
+  flash_check_start_end_time: "Please Check Details For Start Time Or End Time And Actual Duration."
+  flash_end_time_format: "Please Enter End Time Details In The Format HH:MM."
+  flash_valid_time_format: "Please Enter Valid Time Details In The Format HH:MM"
+  flash_start_time_format: "Please Enter Start Time Details In The Format HH:MM"
+  flash_enter_valid_rate: "Please Enter Valid Rate."
+  flash_enter_valid_expense_amt: "Please Enter Valid Expense Amount."
+  flash_application_error: "Access Denied."
+  label_user_name: "User Name"
+  label_user: "User"
+  label_e_mail: "E-mail"
+  label_password: "Password"
+  label_remember_me: "Remember Me"
+  label_end_all_sessions: "End All Sessions"
+  label_create_from_exisiting: "Create From Existing"
+  label_select_a_campaign: "Select a Campaign"
+  label_copy_with_contacts: "Copy With Contacts"
+  label_status: "Status"
+  label_New_Matter: "New Matter"
+  label_owner: "Owner"
+  label_start_date: "Start Date"
+  label_end_date: "End Date"
+  text_personal_information: "Personal Information"
+  label_signature_on_mail: "Signature (on Mail)"
+  label_email: "Email"
+  label_subject: "Subject"
+  label_first_e_mail_draft: "First E-mail Draft"
+  label_current_stage: "Current stage:"
+  label_current_status: "Current status:"
+  label_change_to: "Change to:"
+  label_reason: "Reason:"
+  label_opportunity: "Opportunity"
+  label_stage: "Stage"
+  label_closure_date: "Target Closure date"
+  label_probability: "Probability"
+  label_amount: "Amt($)"
+  label_assigned_to: "Assigned To"
+  label_source: "Source"
+  label_contact: "Contact"
+  label_Same_as_Billing: "Same As Billing"
+  label_Select_All: "Select All"
+  text_add_contact: "Add Contact"
+  text_save: "Save"
+  text_save_n_exit: "Save & Exit"
+  text_create: "Create"
+  text_rename: "Rename"
+  text_import: "Import"
+  text_upload_csv_format: "Upload File Format (CSV)"
+  text_upload_xls_format: "Upload File Format (XLS)"
+  text_view_active_campaigns: "View Active Campaigns"
+  text_view_deactivated_campaigns: "View Deactivated Campaigns"
+  text_send_test_e_mail: "Send Test E-mail"
+  text_send_first_e_mail: "Send First E-Mail"
+  text_settlement_date : "Settlement Date"
+  send_remainder_e_mail: "Send Reminder E-Mail"
+  text_submit: "Submit"
+  text_open: "Open"
+  text_html: "HTML"
+  text_pdf: "PDF"
+  text_parent_matter: "Parent Matter"
+  text_new_category: "New Category"
+  text_upload_doc: "Upload Doc"
+  text_closed: "Closed"
+  text_preliminary_b_secondary: "Primary/<br />Secondary"
+  text_complete_date: "Complete Date"
+  text_assign: "Assign"
+  text_save_n_add_associated_expense: "Save & Add Associated Expense"
+  text_opportunity_source: "Opportunity Source"
+  text_open_opportunity: "Open Opportunity"
+  text_time_billed_p: "Time Billed %"
+  text_full_view: "Full View"
+  text_compliance_item_status_report: "Compliance Item Status Report"
+  text_secretary_s_tasks: "Secretary's Tasks"
+  text_add_document: "Add Document"
+  text_calender: "Calendar"
+  text_task_details: "Task Details"
+  text_creator_name: "Creator Name"
+  text_agenda: "Agenda"
+  text_copy_to_my_calender: "Copy to my Calendar"
+  text_copy: "Copy"
+  text_task_detail: "Task Detail"
+  text_basic_modal_dialog: "Basic Modal Dialog"
+  text_get_next: "Get Next"
+  text_select_notes_to_assign: "Select Notes To Assign"
+  text_select_task_to_assign: "Select Task To Assign"
+  text_remember_me: "Remember Me"
+  text_end_all_sessions: "End All Sessions"
+  text_view_campaigns: "View Campaigns"
+  text_create_campaign: "Create Campaign"
+  text_total_b_responses: "Total<br/>Responses"
+  text_unattended_b_responses: "Unattended<br/>Responses"
+  text_value_d: "Value($)"
+  text_acc: "Acc"
+  text_new: "New"
+  text_edit_category: "Edit Category"
+  text_for_matter: "For Matter"
+  text_create_sub_matter: "Create Sub Matter"
+  text_notifier_text_one: "A Request To Reset Your Password Has Been Made. If You Did Not Make This Request, Simply Ignore This Email. If You Did Make This Request Just Click The Link Below:"
+  text_notifier_text_two: "If The Above Url Does Not Work Try Copying And Pasting It Into Your Browser. If You Continue To Have Problem Please Feel Free To Contact Us."
+  text_plain: "Plain"
+  text_complete_task: "Complete Task"
+  text_current_selection: "Current Selection"
+  flash_workspace_folder_created: "Folder successfully created."
+  flash_workspace_failed_to_upload: "Failed To Upload"
+  flash_workspace_uploaded: "Files Uploaded Successfully"
+  flash_user_confirm_password_unmatched: "Password And Confirm Password Don’t Match."
+  flash_user_password_unchanged: "Your Password Hasn't Been Changed."
+  flash_cannot_blank: "Cannot Be Blank."
+  text_secretary: "Secretary"
+  text_folder: "Folder"
+  text_a_file_to: "A File To"
+  text_successful: "Successful"
+  text_signup: "Signup"
+  text_welcome_to_livia: "Welcome to LIVIA!"
+  text_your: "Your"
+  text_has_been: "Has Been"
+  text_changed: "Changed"
+  text_please: "Please"
+  text_login_again: "Login Again"
+  text_specify: "Specify"
+  text_valid: "Valid"
+  text_current: "Current"
+  text_operation: "Operation"
+  text_not: "Not"
+  text_permitted: "Permitted"
+  text_module: "Module"
+  text_deleted: "Deleted"
+  text_reset: "Reset"
+  text_was: "Was"
+  text_successfully: "Successfully"
+  text_dont_match: "Don't Match"
+  text_passwords: "Passwords"
+  text_error: "Error"
+  text_add_new_department: "Add New Department"
+  label_first_name: "First Name"
+  label_middle_name: "Middle Name"
+  label_last_name: "Last Name"
+  label_contact_first_name: "First Name"
+  label_contact_last_name: "Last Name"
+  label_contact_middle_name: "Middle Name"
+  label_phone: "Phone"
+  label_email: "Email"
+  label_nick_name: "Nick Name"
+  label_preference: "Note"
+  label_salutation: "Salutation"
+  label_name: "Name"
+  label_description: "Description"
+  label_tag: "Tag"
+  label_cost: "Cost"
+  label_subroducts: "Sub Products:"
+  label_parent_products: "Parent Products:"
+  label_category: "Category"
+  label_sub_category: "Sub Category:"
+  label_module: "Module:"
+  label_report: "Report:"
+  label_upload: "Upload"
+  label_privileged: Privileged
+  label_not_privileged: "Not Privileged"
+  label_activity_type: "Activity Type"
+  label_main_sub: Main/ Sub
+  label_duration_hrs: "Duration (hrs)"
+  label_rate_hr: "Rate ($/hr)"
+  label_start_time: "Start Time"
+  label_end_time: "End Time"
+  label_override_rate_hr: "Override Rate ($/hr)"
+  label_billable: "Billable"
+  label_internal: "Internal"
+  label_attachment: "Attachment"
+  label_date: "Date"
+  label_page: LL
+  label_Matter_Activities: "Matter Activities"
+  label_status: "Status"
+  label_notes: "Notes"
+  label_urgent: "Urgent"
+  label_more_info: "More Info"
+  label_task_type: "Task Type"
+  label_temporary_licence_limit: "Temporary License Limit"
+  label_is_a_cgc: "Is a CGC?"
+  label_languague: "Language"
+  label_own_file_name: "Own File Name"
+  label_street: "Street"
+  label_city: "City"
+  label_state: State
+  label_zip_code: "Zip Code"
+  label_country: "Country"
+  label_alternate_email: "Alternate Email"
+  label_mobile: "Mobile"
+  label_fax: "Fax"
+  label_fax_no: "Fax No"
+  label_phone_no: "Phone No"
+  label_closure: "Closure"
+  label_follow_up: "Follow Up"
+  label_amt: "Amt ($)"
+  label_follow_up_done: "Follow Up Done:"
+  label_estimated_hours: "Estimated Hours"
+  label_target_resolution_date: "Target Resolution Date"
+  label_resolved: "Resolved"
+  label_resolved_at: "Resolved At"
+  label_resolution: "Resolution"
+  label_Select_from_Existing: "Select From Existing"
+  label_Provide_Matter_Access: "Provide Matter Access"
+  label_Primary_Matter_Contact: "Primary Matter Contact"
+  label_Personal_Information: "Personal Information"
+  label_camapign_name: "Campaign Name"
+  label_address: "Address"
+  label_email_id: "Email ID"
+  label_practice_area: "Practice Area"
+  label_confirm_access: "Confirm Access"
+  label_primary_contact: "Primary Contact"
+  label_role: "Role"
+  label_company_name: "Company Name"
+  label_give_access: "Give Access"
+  label_law_firm: "Law Firm"
+  label_estimated_hours: "Estimated Hours"
+  label_zipcode: Zip code
+  label_transaction_key: "Transaction Key"
+  label_authorize_net_id: "Authorize .Net ID"
+  label_bill_generation_date: "Bill Generation Date"
+  label_commission_payable: "Commission Payable"
+  label_about_the_company: "About the Company"
+  label_sales_representative_type: "Sales Representative Type"
+  label_confirm_password: "Confirm Password"
+  label_sales_representative: "Sales Representative"
+  label_related_tasks: "Related Tasks"
+  label_linked_risks: "Linked Risks"
+  label_linked: "Linked"
+  label_linked_tasks: "Linked Tasks"
+  label_linked_facts: "Linked Facts"
+  label_linked_issues: "Linked Issues"
+  label_section_citation: "Section/Citation"
+  label_internal_research: "Internal Research"
+  label_type: "Type"
+  label_parent_research: "Parent Research"
+  label_research_name: "Research Name"
+  label_share_with_client: "Share with Client"
+  label_has_conflict_check_been_completed: "Conflict Check"
+  label_specify_your_role: "Specify Your Role"
+  label_lead_lawyer: "Lead Lawyer"
+  label_matter_type: "Matter Type"
+  label_phase: "Phase"
+  label_doc_category: "Document Category"
+  label_case_no: "Case No."
+  label_court_arbitration_panel_forum: "Court / Arbitration Panel / Forum"
+  label_mediator_arbitrator_judges: "Mediator / Arbitrator / Judges"
+  label_defendant: "Defendant"
+  label_plaintiff: "Plaintiff"
+  label_non_litigation: "Non Litigation"
+  label_litigation_non_litigation: "Litigation / Non Litigation"
+  label_matter_description: "Matter Description"
+  label_primary_matter_proceeding: "Parent Matter"
+  label_ref_id: "Reference ID"
+  label_matter_id: "Matter ID"
+  label_is_it_internal_to_law_firm: "Internal to Law Firm"
+  label_matter_brief: "Matter Brief"
+  label_matter_name: "Matter Name"
+  label_matter_date: "Matter Inception Date"
+  label_issue_name: "Issue Name"
+  label_issue: "Issue"
+
+  label_parent_issue: "Parent Issue"
+  label_preliminary_secondary: "Primary / Secondary"
+  label_preliminary: "Primary"
+  label_secondary: "Secondary"
+  label_is_it_a_key_issue: "Is It A Key Issue"
+  label_linked_researches: "Linked Researches"
+  label_do_you_want_to_provide_access_to_client: "Do You Want To Provide Access To Client?"
+  label_author_s: "Author(s)"
+  label_privilege: "Privilege"
+  label_bookmark: "Bookmark"
+  label_enforce_version_change: 'Enforce Version Change'
+  label_rating: "Rating"
+  label_account: "Account"
+  label_reason: "Reason"
+  label_current_stage: "Current Stage"
+  label_change_to: "Change To"
+  label_current_primary_contact: "Current Primary Contact -"
+  label_phone_1: "Phone 1"
+  label_parent_account: "Parent Account"
+  label_phone_2: "Phone 2"
+  label_website: "Website"
+  label_title: "Title"
+  label_department: "Department"
+  label_company: "Company"
+  label_comment: "Comment"
+  label_details: "Details"
+  label_End_Time: "End Time"
+  label_Start_Time: "Start Time"
+  label_Size: Size
+  label_matterial_to_matter: "Material To Matter"
+  label_related_issues: "Related Issues"
+  label_comments: "Comments"
+  label_total: "Total"
+  label_primary: "Primary"
+  label_No_comments_found: "No Comments Found"
+  label_Uploaded_On: "Uploaded On"
+  label_No_documents_found: "No Documents Found"
+  label_No_client_documents_found: No Client Documents Found
+  label_reports_to: "Reports To"
+  label_about_the_firm: "About The Firm"
+  label_select_company: "Select Company:"
+  label_time_entry_type: "Time Entry Type"
+  label_stage_name: "Stage Name"
+  label_status_name: "Status Name"
+  label_time_expense_type: "Time Expense Type"
+  label_litigation_name: "Litigation Name"
+  label_non_litigation_name: "Non Litigation Name"
+  label_rating_type: "Rating Type"
+  label_lead_status_type: "Lead Status Type"
+  label_research_type: "Research Type"
+  label_team_role: "Team Role"
+  label_client_role: "Client Role"
+  label_other_role: "Other Role"
+  label_client_rep_role: "Representative Role"
+  label_value: Value
+  label_dashboard_name: "Dashboard Name"
+  label_select_parent_department: "Select Parent Department:"
+  label_document_name: "Document Name"
+  label_new_document: "New document"
+  label_new_version: "Create New Version"
+  label_replace_existing: "Replace Existing"
+  label_client_document: "Client Document"
+  label_existing_document: "Existing Document"
+  label_employee: "Employee"
+  label_activity: "Activity"
+  label_final_bill: "Final Bill"
+  label_billing_rate: "Billing Rate"
+  label_select_employee: "Select Employee"
+  label_import_type: "Import Type:"
+  label_file_format: "File Format:"
+  label_file: File
+  label_file_type: File Type
+  label_select_a_file: "Select A File:"
+  label_name_of_the_document: "Name Of The Document"
+  label_type_of_document_extension: "Type Of Document Extension"
+  label_type_of_document_category: "Type Of Document Category"
+  label_secretary_name: "Secretary Name"
+  label_lawyer_to_be_assigned: "Lawyer To Be Assigned"
+  label_has_access_of_product: "Has Access Of Product:"
+  label_select_lawyer: "Select Lawyer:"
+  label_modules: "Modules"
+  label_unassigned_secretary: "Unassigned Secretary"
+  label_assigned_secretary: "Assigned Secretary"
+  label_unassigned_modules: "Unassigned Modules"
+  label_assigned_modules: "Assigned Modules"
+  label_select_user: "Select User:"
+  label_provide_services_to_following: ", Provide Services To Following("
+  label_fact_name: "Fact Name"
+  label_parent_fact: "Parent Fact"
+  label_Select_Employee: "Select Employee"
+  label_No_Livians_to_Unassign: "No LIVIANS to Un-assign!"
+  label_No_Lawfirm_Users_to_Unassign: "No Law firm Users to Un-assign!"
+  label_Cluster_Users: "Cluster Users"
+  label_No_Users_assigned_to_this_cluster: "No Users Assigned To This Cluster!"
+  label_Edit_Cluster: "Edit Cluster"
+  label_cluster: "Cluster"
+  label_New_Cluster: "New Cluster"
+  label_fact_details: "Fact Details"
+  label_material_to_the_case: "Material To The Case"
+  label_Personal_Information: "Personal Information"
+  label_Activities_risks: "Activities / Risks"
+  label_Actions: "Actions"
+  label_Activities: "Activities"
+  label_main_sub: "Main / Sub"
+  label_material: "Material"
+  label_critical: "Critical"
+  label_related_issues: "Related issues"
+  label_material_to_matter: "Material To Matter"
+  label_risk_details: "Risk Details"
+  label_member_from: "Member From"
+  label_member: "Member (From - To)"
+  label_member_till: "Member To"
+  label_document_submission: "Document Submission"
+  label_hearing: "Hearing"
+  label_meeting: "Meeting"
+  label_other_appointment: "Other Appointment"
+  label_other_task: "Other Task"
+  label_appointment: "Appointment"
+  label_to_do: "To Do"
+  label_fixed_rate: "Fixed Rate"
+  label_retainer_fees: "Retainer fees"
+  label_hourly_rate: "Hourly Rate"
+  label_additional_details: "Additional Details"
+  label_not_to_exceed: "Not to Exceed"
+  label_client: "Client"
+  label_opposing_party_contacts: "Opposing Party Contacts"
+  label_check_here_to_create_a_matter_for_this_opportunity: "Check Here To Create A Matter For This Opportunity"
+  label_reason_for_stage_change: "Reason For Stage Change"
+  label_check_here_to_create_matter_for_this_opportunity: "Check Here To Create Matter For This Opportunity"
+  label_note: "Note"
+  label_my_opportunities: "My Opportunities"
+  label_all_opportunities: "All Opportunities"
+  label_payment_mode: "Payment Mode"
+  label_payment_date: "Payment Date"
+  label_cheque_number: "Check Number:"
+  label_cheque_date: "Check Date:"
+  label_bank_name: "Bank Name:"
+  label_branch_name: "Branch Name"
+  label_paypal_account_id: "PayPal Account ID :"
+  label_search: "Search"
+  label_select_secretary: "Select Secretary:"
+  label_unassigned_skills: "Unassigned Skills"
+  label_assigned_skills: "Assigned Skills"
+  label_birthdate: "Birth Date"
+  label_designation: "Designation"
+  label_security_question: "Security Question:"
+  label_answer: "Answer:"
+  label_product_name: "Product Name"
+  label_report_name: "Report Name"
+  label_subproduct_name: "Sub product Name"
+  label_module_name: "Module Name"
+  label_creator: "Creator"
+  label_access_rights: "Access Rights"
+  label_author: "Author"
+  label_document: "Document"
+  label_Calendar_view: "Calendar View"
+  label_Approve_T_E_Entry: "View Entries"
+  label_file_name: "File Name"
+  text_reminder_setting: "Reminder Setting"
+  label_campaign_details: "Campaign Details"
+  text_to_livians: "to LIVIANS"
+  text_workspace: "Workspace"
+  text_document_repository: "Document Repository"
+  text_go: "Go"
+  my_lead_matters: "My Lead Matters"
+  my_matters: "My Matters"
+  all_matters: "All Matters"
+  text_livia_admins: "Livia Admins"
+  text_manager_portal: "Manager Portal"
+  text_username: "Username"
+  text_communication: "Communication"
+  pay_mandatory_fill: "Please Fill All Mandatory Details"
+  text_and: "And"
+  text_out_of_range: "Out Of Range!"
+  text_is: "Is"
+  text_are: "Are"
+  flash_please_enter_valid_duration_value: "Please Enter Valid Duration Value"
+  flash_Document_size_cannot_be_more_than_1GB: "Document Size Cannot Be More Than 1 GB."
+  flash_valid_time: "Please Enter Valid Start Time Or End Time."
+  flash_password_changed: "Your Password Changed Successfully. Please Login With New Password."
+  flash_logged_in_to_access: "You Must Be Logged In To Access This Page."
+  flash_logged_out_lawyer: "Logged Out Of The Lawyer Session"
+  flash_status_change: "Please Enter The Reason For Status Change"
+  flash_couldnt_upload: "Couldn’t Upload Or Resize The Image File You Specified."
+  flash_comment_failed: "Add Comment Failed."
+  text_subproducts: "Sub Products"
+  text_convert_to_opportunity: "Convert To Opportunity"
+  text_communications: "Communications"
+  text_create_login_for_owner: "Create Login for the Owner of the Department"
+  text_checked_out_by: "Checked Out By"
+  text_check_out: "Check Out"
+  text_check_in: "Check In"
+  text_check: "Check"
+  text_update_dashbaord_name: "Update Dashboard Name"
+  text_name_of_the_department: "Name Of The Department"
+  text_parent_department: "Parent Department"
+  label_security_answer: "Security Answer"
+  label_user_employees: "User/Employees"
+  text_web_internal_rss: "Web Internal RSS"
+  text_workspace: "Workspace"
+  text_favorites_reports: "Favorite Reports"
+  text_hr_doller: "Hrs($)"
+  text_livian: "LIVIAN"
+  text_in: "In"
+  text_found: "Found"
+  text_primary: "Primary"
+  text_other: "Other"
+
+  #-------------------------------------------------------------------
+  text_personal_details: "Personal Details"
+  text_additional_documents_upload: "Additional Document's Upload"
+  text_firm_details: "Firm Details"
+  text_upload_logo: "Upload Logo"
+  text_setup: "Setup"
+  text_privileges: "Privileges"
+  text_subsidary: "Subsidiary"
+  text_management: "Management"
+  text_set_time_zone: "Set Time Zone"
+  text_change: "Change"
+  text_tpin: "TPIN"
+  text_general: "General"
+  text_write_up : "Write Up"
+  text_export : "Export"
+  text_quick_books: "Quick Books"
+  text_data_integration: "Data Integration"
+  text_account_payable: "Account Payable"
+  label_approve_time_and_expense_for_the_matter: "Approve Time And Expense Entries For The Matter"
+  label_enter_sequence_no: "Enter Sequence No."
+  label_sequence_no_format_seperator: "Sequence No. Format Separator"
+  label_select_sequence_no_format: "Select Sequence No. Format"
+  label_selected_sequence_no_format: "Selected Sequence No. Format"
+  text_renamed: "Renamed"
+
+  tne_billing: "Billing Percent Must Be Between 0 To 100"
+  phone_length_error: "Phone Number Should Not Exceed 15 Characters"
+  label_replace_doc: "Replace"
+  changed_and_signedout: 'Your Password Has Been Changed. Please Login Again'
+  forgot_password_for_blocked_user_part1: "Your user account has been blocked. Please use the link sent to your registered email id"
+  forgot_password_for_blocked_user_part2: "to reset your password. Kindly contact the administrator if you need any help."
+  blocked_due_to_multiple_unsuccessful_attempts_part1: "Your user account has been blocked due to multiple unsuccessful attempts. A link to reset your password has been sent your email id"
+  blocked_due_to_multiple_unsuccessful_attempts_part2: ". Kindly contact the administrator if you need any help. "
+  forgot_password_msg: "If you have forgotten your password then please use the “forgot password” link."
+
+   #trust account module yml start from here
+
+  text_financial_accounts: "Trust Accounts"
+  text_financial_account: "Trust Account"
+  text_financial_account_name: "Name"
+  text_financial_account_bank_name: "Bank Name"
+  text_financial_account_account_no: "Account No"
+  text_financial_account_routing_no: "Routing No"
+  text_financial_account_address: "Address"
+  text_financial_account_description: "Description"
+  text_financial_account_financial_account_type: "Trust Account Type"
+  text_financial_account_matter: "Matter"
+  text_financial_account_contact_or_client: "Contact/Client"
+  text_financial_account_balance: "Balance"
+  text_financial_account_client_view: "Client View"
+  text_financial_account_detail_page: "Trust Account Details"
+  text_financial_account_record_receipt: "Record Receipt"
+  text_financial_account_payment: "Record Payment"
+  text_financial_account_update_payment: "Update Payment"
+  text_financial_account_transfer: "Transfer Between A/c"
+  text_financial_account_back: "Back"
+  text_financial_account_advanced_filter: "Advance Filter"
+  text_hide: "Hide"
+  text_details: "Details"
+  text_financial_account_bank_status: "Bank Status"
+  text_financial_account_approval_status: "Approval Status"
+  text_financial_account_amount_received: "Amount Received"
+  text_financial_account_date_received: "Date Received"
+  text_financial_account_payer: "Payer"
+  text_financial_account_reference_no: "Reference No"
+  text_financial_transaction_status: "Transaction Status"
+  text_financial_account_ac_from: "Financial A/c From"
+  text_financial_account_ac_to: "Financial A/c To"
+  text_financial_account_available_amount: "Available Amount"
+  text_financial_account_amount_paid: "Amount Paid / Settled ($)"
+  text_financial_account_date_or_settled: "Date Paid / Settled"
+  text_financial_account_payee: "Payee"
+  text_financial_account_checke_or_receipt: "Cheque / Receipt No"
+  text_financial_account_approved_status: "Approved Status"
+  text_financial_account_approved_by: "Approved By"
+  text_financial_account_select_invoice: "Select Invoice"
+  text_financial_account_inv_billed_amt: "Invoice Billed Amount:"
+  text_financial_account_inv_paid_amt: "Invoice Paid Amount:"
+  text_financial_account_ac: "A/cNo:"
+  text_financial_account_transfer_between_bank_acs: "Transfer between Bank/Acs"
+  text_financial_account_transfer_update_between_bank_acs: "Update Transfer between Bank/Acs"
+  
+  activerecord:
+    models:
+      contact: "Contact"
+    attributes:
+          contact:
+            first_name: "First Name"
+            email: "Email"
+            phone: "Phone"
+          account:
+            name: "Account Name"
+          opportunity:
+            name: "Opportunity"
+          company:
+            name: "Name"
+            billingdate: "Billing Date"
+          matter:
+            name: "Matter Name"
+          matter_billing:
+            bill_pay_date: "Bill Pay Date"
+            bill_no: "Bill No."
+          matter_retainer:
+            date: "Date"
+          matter_research:
+            name: "Research Name"
+          matter_fact:
+            name: "Fact Name"
+          matter_issue:
+            name: "Issue Name"
+            assigned_to_matter_people_id: "Assigned To"
+            target_resolution_date: "Target Resolution Date"
+          matter_task:
+            name: "Task Name"
+            assigned_to_matter_people_id: "Assigned To"
+            start_date: "Start Date"
+            end_date: "End Date"
+          campaign:
+             name: "Campaign Name"
+             start_and_end_dates: "Start And End Dates"
+             reason_added: "Reason Added"
+          compliance:
+             definition: "Definition"
+             type_id: "Type Id"
+             start_date: "Start Date"
+             frequency: "Frequency"
+             authority_id: "Authority Id"
+             compliance_department_id: "Compliance Department Id"
+             emails: "Emails"
+          document:
+             name: "Name"
+          product:
+             name: "Name"
+             cost: "Cost"
+          budget_category_amt:
+             estimated_amt: "Estimated Amt"
+          budget_period:
+             from_period: "From Period"
+             to_period: "To Period"
+          compliance_item:
+             primary_status: "Primary Status"
+             filed_date: "Filed Date"
+             filed_remarks: "Filed Remarks"
+             completed_date: "Completed Date"
+             completed_remarks: "Completed Remarks"
+          compliance_department:
+              name: "Name"
+              company_id: "Company Id"
+              owner_first_name: "Owner First Name"
+              owner_last_name: "Owner Last Name"
+              owner_email: "Owner Email"
+          report_favourite:
+              report_name: "Report Name"
+          activity_type:
+              lvalue: "Lvalue"
+          expense_entry:
+              expense_amount: "Expense Amt"
+              description: "Description"
+          campaign_member:
+              company_id: "Company Id"
+              first_name: "First Name"
+
+    errors:
+      template:
+        header: "%{count} Errors Prohibited This %{model} From Being Saved"
+        # The variable: Count Is Also Available
+        body: "There Were Problems With The Following Fields:"
+      messages:
+        taken: "Has Already Been Taken"
+        record_invalid: "Validation Failed: %{errors}"
+      full_messages:
+        account_name_already_taken_msg: "Account Name Has Already Been Taken"
+        first_name: "Please Specify %{attribute}"
+        email_msg: "Please Specify Either Phone No. Or Email"
+        email_format: "Please Specify A Valid Email Address."
+        account_contact_msg: "This Account Is Already Present In The System"
+        already_system: "This %{model} Is Already Present In The System"
+        opp_contact: "Please Fill Contact Details"
+        closer_date: "Closure Date Cannot Be Prior To Created Date"
+        closer_today: "Closure Date Cannot Be Prior To Creation Date"
+        next_callback_date: "Next Call Back Date Cannot Be Prior To The First Contacted Date"
+        date_of_first_deal: "	Date Of First Deal Cannot Be Prior To The First Contacted Date"
+        follow_up_date: "Follow Up Date Cannot Be Prior To The Opportunity Creation Date"
+        matter_inception_date: "Matter Inception Date Cannot Be Greater Than The Present Date"
+        start_date_todo: "Start Date Cannot Be Lesser Than Matter Inception Date"
+        end_date_todo: "Due Date Cannot Be Lesser Than Start Date"
+        time_entry_date: "The Time Entry Date Cannot  Be Lesser Than The Matter Inception Date"
+        target_resolution_date: "Target Resolution Date Cannot Be Lesser Than The Matter Inception Date"
+        resolved_at_target: "Resolved At Date Cannot Be Greater Than The Target Resolution Date"
+        resolved_at_issue: "Resolved At Date Cannot Be Lesser Than Issue Creation Date"
+        resolved_at_inception: "Resolved At Date Cannot Be Lesser Than The Matter Inception Date"
+        bill_pay_date: "Bill Pay Date Cannot Be Less Than Matter Inception Date"
+        retainer_date: "Retainer Date Cannot Be Less Than Matter Inception Date"
+        user_name_taken: "This Username Has Been Already Taken."
+        please_select_contact: "Please Select or Create a Contact"
+        bill_amount_invalid: "Invoice Amount Is Invalid"
+        bill_payment_invalid: "Bill Payment Amount Is Invalid"
+        amount_invalid: "%{attribute} Is Invalid"
+        add_reason: "Please Specify A Valid Reason."
+        primary_contact: "Please Specify A Primary Contact."
+        responsiblety_blank: "Responsibility Cannot Be Blank"
+        name_blank: "Name Cannot Be Blank"
+        name_already: "A Member With The Same Name Already Present In The System"
+        phone_already: "A Member With The Same Phone Number Already Present In The System"
+        email_already: "A Member With The Same E-Mail Id Already Present In The System"
+        member_start_date: "Member From Date Cannot Be Blank"
+        start_date_before_matter_date: "Member From Date Cannot Be Before Matter Date"
+        end_date_before_start_date: "Member To Date Cannot Be Less Than Member From Date"
+        camp_name: "Please Specify Campaign Name."
+        camp_unique: "Please Enter A Different Name"
+        camp_existing: "Please Select Parent Campaign"
+        tne_blank: "Type Cannot Be Empty"
+        compliance_def: "Please Specify A %{attribute}"
+        reference_def: "Please Specify A %{attribute}"
+        compliance_type: "Please Specify A Type."
+        compliance_start_date: "Please Specify %{attribute} ."
+        compliance_frequency: "Please Specify The %{attribute} ."
+        compliance_authority: "Please Specify An Authority."
+        compliance_department: "Please Specify A Department."
+        compliance_email: "You Have To Provide One Or More %{attribute} ."
+        doc_name: "Please Enter A Document Name"
+        prod_name: "Please Enter Product Name"
+        prod_cost: "Please Enter Product Price."
+        filed_date_error: "Filed Date Cannot Be Later Than Closed Date"
+        filed_document_error: "You Have To Upload At Least One Filing Document"
+        completion_doc_error: "You Have To Upload At Least One Completion Document"
+        compliance_marked_error: "This Compliance Already Marked Filed, Cannot Make Further Updates Against Filed Status"
+        custom_frequency_error: "Please Enter Appropriate Frequency Of Filing"
+        email_error: "The List Of Emails Is Not Valid"
+        filing_ceases_date: "First Filing Date Cannot Be Later Than Ceases From Date"
+        report_name: "Please Specify %{attribute}"
+        tne_billing: "Billing Percent Must Be Between 0 To 100"
+        tne_valid_time: "Please Enter Valid Start Time Or End Time Or Duration."
+        doc_select: "Select A Document"
+        document_name: "Enter A Document Name"
+        camp_status_change: "Please Specify A Valid Reason For Status Change."
+        camp_date: "Please Make Sure The Campaign End Date Is After The Start Date."
+        camp_member: "This Member Is Already Present In The Campaign"
+        opp_reason: "Please Specify A Valid Reason."
+        already_member: "This Member Is Already Present In The Campaign"
+        phone_error: "Please Specify Valid Phone Number"
+        fax_error: "Please Specify Valid Fax Number"
+        business_fax_error: "Please Specify Valid Business Fax Number"
+        supervisors_phone_error: "Please Specify Valid Supervisors Phone Number"
+        assistants_phone_error:  "Please Specify Valid Assistants Phone Number"
+        same_phone: "Phone1 And Phone2 Cannot Be Same"
+        supervisor_phone_same: "Supervisors Phone And Assistants Phone Cannot Be Same"
+        mobile_error: "Please Specify Valid Mobile Number"
+        title_msg: "Matter Name Cannot Be Blank"
+        account_name_msg: "Account Name Cannot Be Blank"
+        opp_name_msg: "Opportunity Name Cannot Be Blank"
+        matter_id_msg: "Matter ID Has Already Been Taken"
+        contact_invalid_msg: "Contact Is Invalid"
+        actual_duration_msg: "Duration Cannot Be Blank"
+        description_msg: "Description Cannot Be Blank"
+        actual_duration_num_msg: "Actual Duration Not A Number"
+        actual_duration_less_then_msg: "Duration Cannot Be Blank And Should Be Between 0.01 To 24.00"
+        rate_range_message: "Rate should be between 0.01 and 9999.99"
+        actual_bill_rate_msg: "Actual Bill Rate Cannot Be Blank"
+        billing_percent_msg: "Billing Percent Cannot Be Negative"
+        billing_percent_blank_msg: "Discount Cannot Be Blank"
+        billable_should_be_checked: "Billable should be checked"
+        final_billed_amount_blank_msg: "Override Amount Cannot Be Blank"
+        name_blank: "%{attribute} Cannot Be Blank"
+        end_date_blank: "%{attribute} Cannot Be Blank"
+        due_date_blank: "Due Date Cannot Be Blank"
+        start_date_blank: "%{attribute} Cannot Be Blank"
+        assigned_to_blank: "%{attribute} Cannot Be Blank"
+        target_resolution_blank:  "%{attribute} Cannot Be Blank"
+        bill_no_blank:  "Invoice No Cannot Be Blank"
+        bill_no_unique: "Invoice No Has Already Been Taken"
+        bill_amount_blank: "Invoice Amount Cannot Be Blank"
+        bill_pay_date_blank:  "%{attribute} Cannot Be Blank"
+        amount_blank: "Amount Cannot Be Blank"
+        date_blank: "%{attribute} Cannot Be Blank"
+        designation_already_exist: "Designation Already Exists!"
+        record_invalid: "Record Not Found."
+        setting_value_numerical: "Please Specify Valid Days in Number (S)"
+        upcomming_setting_value_blank: "Please Enter No Of Days"
+        phone_length_error: "Phone Number Should Not Exceed 15 Characters"
+        label_replace_doc: "Replace"
+        changed_and_signedout: 'Your Password Has Been Changed. Please Login Again'
+        primary_tax_rate: 'Please Enter Primary Tax Rate'
+        secondary_tax_rate: 'Please Enter Secondary Tax Rate'
+        primary_tax_rate_numerical: "Please Specify Valid Primary Tax Rate in Number (S)"
+        secondary_tax_rate_numerical: "Please Specify Valid Secondary Tax Rate in Number (S)"
+        title_contact_msg: "Primary Matter Contact Cannot Be Blank"
+        setting_value_blank: "Email Id Cannot Be Blank"
+        setting_value_uniquee: "This Email Id Has Already Taken"
+        setting_value_format: "Invalid Email Id"
+
+
+      models:
+        contact:
+         attributes:
+          email:
+           email_msg: "Please Specify Either Phone No. Or Email"
+           already_system: "This %{model} Is Already Present In The System"
+          first_name:
+           already_system: "This %{model} Is Already Present In The System"
+           first_name: "Please Specify %{attribute}"
+           too_long: "Is Too Long It Should Not Exceed 64 Char."
+        compliance_marked_error: "This Compliance Already Marked Filed, Cannot Make Further Updates Against Filed Status"
+        physical/timeandexpenses/expense_entry:
+         attributes:
+          expense_amount:
+           blank: "Cannot Be Blank."
+           not_a_number: "Is Not A Number."
+           greater_than: "Should Be Greater Than 0."
+           less_than: "Should Be Less Than 999999999"
+          billing_percent:
+           greater_than: "Should Be Greater Than 0."
+          description:
+           blank: "Cannot Be Blank."
+#        user_setting:
+#         attributes:
+          setting_value:
+           blank: "Cannot Be Blank."
+        opportunity:
+         attributes:
+          amount:
+           not_a_number: "Is Not A Number."
+          name:
+           too_long: "Is Too Long It Should Not Exceed 64 Char."
+        employee_favorite:
+          attributes:
+            name:
+              blank: "Cannot Be Blank."
+              taken: "Has Already Been Taken"
+            url:
+              blank: "Cannot Be Blank."
+              taken: "Has Already Been Taken"
+        matter_fact:
+          attributes:
+            name:
+              blank: "Cannot Be Blank"
+        campaign_member:
+          attributes:
+            email:
+              blank: "Cannot Be Blank"
+            first_name:
+              blank: "Cannot Be Blank"
+        matter_task:
+          attributes:
+            name:
+             too_long: "Is Too Long(Maximum Is 255 Characters)"
+        tne_invoice_expense_entry:
+         attributes:
+          expense_amount:
+           blank: "Cannot Be Blank."
+           not_a_number: "Is Not A Number."
+           greater_than: "Should Be Greater Than 0."
+           less_than: "Should Be Less Than 999999999"
+          billing_percent:
+           greater_than: "Should Be Greater Than 0."
+          description:
+           blank: "Cannot Be Blank."
+          is_billable:
+           blank: "Should be Checked."
+        user:
+         attributes:
+          email:
+           blank: "Cannot Be Blank."
+          password:
+           blank: "Cannot Be Blank."
+        financial_account:
+          attributes:
+            name:
+             blank: "Cannot Be Blank."
+            bank_name:
+             blank: "Cannot Be Blank."
+            address:
+             blank: "Cannot Be Blank."
+            description:
+             blank: "Cannot Be Blank."
+            account_no:
+             should_be_numeric: "Should Be Numeric"
+        financial_account:
+          attributes:
+            amount:
+              numeric_greater_than_zero: " should be numeric / greater than Zero"
+            transaction_date:
+              blank: "Cannot Be Blank."
+            payer:
+              blank: "Cannot Be Blank."
+            details:
+              blank: "Cannot Be Blank."
+ # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
+
+  datetime:
+
+    distance_in_words:
+
+      half_a_minute: "Half A Minute"
+
+      less_than_x_seconds: "Less Than %{count} Seconds"
+
+      x_seconds: "%{count} Seconds"
+
+      less_than_x_minutes: "Less Than %{count} Minutes"
+
+      x_minutes: "%{count} Minutes"
+
+      about_x_hours: "About %{count} Hours"
+
+      x_days: "%{count} Days"
+
+      about_x_months: "About %{count} Months"
+
+      x_months: "%{count} Months"
+
+      about_x_years: "About %{count} Years"
+
+      over_x_years: "Over %{count} Years"
+
+      almost_x_years: "Almost %{count} Years"
+
+    prompts:
+
+      year: "Year"
+
+      month: "Month"
+
+      day: "Day"
+
+      hour: "Hour"
+
+      minute: "Minute"
+
+      second: "Seconds"
+
+
+
+  number:
+
+    format:
+
+      precision: 2
+
+      separator: ','
+
+      delimiter: '.'
+
+    currency:
+
+      format:
+
+        unit: '$'
+
+        format: '%n %u'
+
+        separator:
+
+        delimiter:
+
+        precision:
+
+    percentage:
+
+      format:
+
+        delimiter: ""
+
+    precision:
+
+      format:
+
+        delimiter: ""
+
+    human:
+
+      format:
+
+        delimiter: ""
+
+        precision: 1
+
+      storage_units:
+
+        format: "%n %u"
+
+        units:
+
+          byte: "Bytes"
+
+          kb: "KB"
+
+          mb: "MB"
+
+          gb: "GB"
+
+          tb: "TB"
+  devise:
+    sessions:
+      link: 'Log in'
+      signed_in: 'Signed In Successfully.'
+      signed_out: 'Signed Out Successfully.'
+      unauthenticated: 'You Need To Sign In Or Sign Up Before Continuing.'
+      unconfirmed: 'You Have To Confirm Your Account Before Continuing.'
+      locked: 'Your Account Is Locked.'
+      invalid: 'Invalid Email Or Password.'
+      invalid_token: 'Invalid Authentication Token.'
+      timeout: 'Your Session Expired, Please Sign In Again To Continue.'
+      inactive: 'Your Account Was Not Activated Yet.'
+      changed_and_signedout: 'Your Password Has Been Changed. Please login again'
+    passwords:
+      link: 'Forgot Password?'
+      send_instructions: 'You Will Receive An Email With Instructions About How To Reset Your Password In A Few Minutes.'
+      updated: 'Your Password Was Changed Successfully. You are now signed in.'
+    confirmations:
+      link: "Didn't Receive Confirmation Instructions?"
+      send_instructions: 'You Will Receive An Email With Instructions About How To Confirm Your Account In A Few Minutes.'
+      confirmed: 'Your Account Was Successfully Confirmed. You are now signed in.'
+    registrations:
+      link: 'Sign up'
+      signed_up: 'You Have Signed Up Successfully. If Enabled, A Confirmation Was Sent To Your E-Mail.'
+      updated: 'You Updated Your Account Successfully.'
+      destroyed: 'Bye! Your Account Was Successfully Cancelled. We Hope To See You Again Soon.'
+      send_instructions: 'You Will Receive An Email With Instructions About How To Unlock Your Account In A Few Minutes.'
+      unlocked: 'Your Account Was Successfully Unlocked. You Are Now Signed In.'
+    unlocks:
+      link: "Didn't Receive Unlock Instructions?"
+    mailer:
+      confirmation_instructions: 'Confirmation Instructions'
+      reset_password_instructions: 'reset Password Instructions'
+      unlock_instructions: 'Unlock Instructions'

@@ -1,0 +1,65 @@
+<div class="mid-box-head"> <h2>Full suite</h2></div>
+<% company_id = @company.id 
+user_id = @user.id
+for pld in @productlicences.uniq 
+  subproduct_array = SubproductAssignment.get_all_subproduct_ids(@user.id,pld.id).subproduct_ids %>
+  <div class="table">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th width="54%" align="left"><%= t(:text_sub_product) %></th>
+        <th width="46%" align="left" ><%= t(:text_action) %></th>
+      </tr>
+      <% parent_ids = pld.product.subproducts.find(:all,:conditions => ["parent_id is not null"]).collect(&:parent_id)
+      pld.product.subproducts.find(:all,:conditions => ["parent_id is null"]).each do |sub|
+        sub_id = sub.id %>
+        <tr>
+          <% if parent_ids.include?(sub_id) %>
+            <td>
+              <span style="cursor:pointer;" id="<%= sub_id %>_plus" onclick="javascript:expand_collapse_div_details(<%= sub_id %>, '<%= sub_id %>_subproduct', 'minus', 'plus')" title="Click to view detail"><%= image_tag('/images/icon_plus.gif',:alt=>"Plus", :border => 0, :hspace => "0")%></span>
+              <span style="display: none; cursor:pointer;" id="<%= sub_id %>_minus" onclick="javascript:expand_collapse_div_details(<%= sub_id %>, '<%= sub_id %>_subproduct', 'plus', 'minus')" title="Click to hide detail"> <%= image_tag('/images/icon_minus.gif',:alt=>"Minus", :border => 0, :hspace => "0")%></span>
+              <%= sub.name %>
+            </td>
+          <% else %>
+            <td align="left"> <%= sub.name %> </td>
+          <% end %>
+          <td align="left">
+            <% if subproduct_array.include?(sub_id) %>
+              <%=link_to t(:label_unassign),"#",:onclick =>"unassign_reassign_subproduct(#{pld.id}, #{sub_id}, #{user_id}, #{company_id},'', '/employees/unassignsubproduct');" %>
+            <% else %>
+              <%=link_to t(:label_assign),"#",:onclick =>"unassign_reassign_subproduct(#{pld.id}, #{sub_id}, #{user_id}, #{company_id}, '', '/employees/reassignsubproduct');" %>
+            <% end %>
+          </td>
+        </tr>
+        <tr style="display: none;" id="<%=sub_id%>_subproduct">
+          <td colspan="5">
+            <table width="90%" border="1" cellpadding="0" cellspacing="0">
+              <tr>
+                <th width="60%" align="left"><%=t(:text_sub_product)%></th>
+                <th width="30%" align="left" ><%=t(:text_action)%></th>
+              </tr>
+              <% subproducts = pld.product.subproducts.find(:all,:conditions => ["parent_id = ?", sub_id])
+              subproducts.each do |sub_product|%>
+                <tr>
+                  <td align="left"><%=sub_product.name%></td>
+                  <td align="left">
+                    <%if subproduct_array.include?(sub_id)
+                      if subproduct_array.include?(sub_product.id) %>
+                        <%= link_to t(:label_unassign),"#",:onclick =>"unassign_reassign_subproduct(#{pld.id}, #{sub_product.id}, #{user_id}, #{company_id}, #{sub_id}, '/employees/unassignsubproduct');" %>
+                      <% else %>
+                        <%= link_to t(:label_assign),"#",:onclick =>"unassign_reassign_subproduct(#{pld.id}, #{sub_product.id}, #{user_id}, #{company_id}, #{sub_id}, '/employees/reassignsubproduct');" %>
+                      <% end
+                    else %>
+                      Please assign <%= sub.name %>, then you can assign this sub product
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </td>
+        </tr>
+      <% end
+    end %>
+  </table>
+</div>
+<div class="buttons"><%= link_to t(:label_back), showusers_companies_path+"/#{company_id}", :class => "button" %></div>
+<div id="subproductdiv"></div> 

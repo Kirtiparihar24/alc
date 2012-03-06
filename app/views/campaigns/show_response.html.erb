@@ -1,0 +1,45 @@
+<div class="gridDiv">
+  <div class="form_table" style="width:280px;">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+      <tr>
+        <td valign="top" colspan="2" class="pl10 txtL">
+          <%unless @campaign_response.contact_id.blank?%>
+            <b><%=t(:text_from)%></b>
+            <%= @campaign_response.contact.try(:full_name).try(:titleize)%>
+          <%end%>
+        </td>
+        <td><%= spacer%></td>
+        <td valign="top" colspan="2" class="pl10 txtL bdrRight ">
+          <%unless @campaign_response.responded_date.blank?%>
+            <b><%=t(:text_responded_date)%></b>
+            <%= @campaign_response.responded_date.to_date%>
+          <%end%>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="4" class="pl10 txtL">
+          <b><%=t(:text_last_mailed_date)%></b>
+          <%= @campaign_response.get_last_mailed_date%>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="4" class="pl10 txtL">
+          <b><%=t(:text_response)%></b>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="4" class="pl10 txtL">
+          <div class="pl10 txtL gryBoxLight">
+            <%= @campaign_response.response%>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" colspan="4" class="txtC">
+          <%= link_to(t(:text_convert_to_opportunity), "/campaigns/create_opportunity/#{@campaign_response.id}" , :class => 'button', :style=>'font-size:11px;')%>
+          <input type="button" class="button" value="<%=t(:label_cancel)%>"  style="font-size:11px;" onclick="parent.tb_remove();return false" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

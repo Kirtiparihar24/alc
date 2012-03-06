@@ -1,0 +1,113 @@
+<%= hidden_field_tag :login_sign_in_count, current_user.sign_in_count %> <!-- added for disabling hotkeys while users first login-->
+<% if is_liviaadmin || current_user.role?('manager') || current_user.role?('lawfirm_admin')%>
+  <div id="top">
+    <div class="logo"></div>
+    <div id="top-navigation"> Welcome <strong><%= is_liviaadmin ? "Administrator" : current_user.name.try(:capitalize) %></strong><span>|</span> <%=link_to t(:label_logout),destroy_user_session_path%> </div>
+  </div>
+<% else %>
+  <div id="header-div" style="position:relative;">
+    <div><h1><%=home_logo_link%></h1></div>
+    <div class="header_nav">
+      <table align="right">
+        <tr>
+          <td>
+            <div class="contact_number_div_header fr">(214) 269-8570 </div>
+            <br class="clear"/>
+            <%= get_verfied_lawyer_time_zone  %>
+          </td>
+          <td valign="top">
+            <% if current_user.role?:lawyer%>
+              <div class="link_blue lh18">
+                <a href="/manage_secretary/livian_access?height=auto&width=440" class="thickbox" name="LIVIAN access"><strong><%= t(:text_menu_livian_access)%></strong> <%= t(:text_menu_access)%></a>&nbsp;&nbsp;
+                <a href="#" onclick="tb_show('LIVIAN Instructions','<%=raw url_for "/application/new_instructions" %>?&height=230&width=820','','absolute')"><strong><%= t(:text_menu_livian_instruction)%></strong> <%= t(:text_menu_instruction)%></a>
+              </div>
+            <%end%>
+          </td>
+          <td rowspan="3">
+            <div class="welcomeUser">
+              <span class="icon_user fl"></span>&nbsp;
+              <% if is_secretary_or_team_manager?%>
+                <span style="color:#c56405;">
+                  <%if session[:sp_session]%>
+                    <%=h get_verfied_lawyer_name.titleize %>
+                  <%end%>
+                </span>
+              <%elsif show_selected_lawyer && @sp_session%>
+                <span style="color:#c56405;"><%=h @sp_session.assignment.user.try(:full_name).titleize %></span>
+              <%elsif current_user.end_user%>
+                <span style="color:#c56405;"><%=h current_user.end_user.try(:full_name).titleize %></span>
+              <%end%>
+              <br />
+              <span class="text10">
+                <%if current_user%>
+                  <% clicked = is_secretary_or_team_manager? ? "" : "return timer_warning();"%>
+                  <%= link_to_unless_current(t(:label_logout),destroy_user_session_path, :onclick => clicked) do
+                    link_to(t(:label_login), new_user_session_path)
+                  end%>
+                </span>
+                <div style="display:none;" id="coming_settings" class="coming_soon">
+                  <div id="main">
+                    <div id="link"><a href="#coming_settings" onclick="jQuery('#coming_settings').hide();"> [X]&nbsp;</a></div>
+                    <br /><b>Work In Progress</b>
+                    <br /><br /><br />
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <br class="clear" />
+        <div class="textR header_link">
+          <table align="right" cellpadding="2" cellspacing="2">
+            <tr>
+              <td valign="top" ><a href="<%= root_path %>"><span class="icon_home fl"></span></a></td>
+              <td valign="top"><%= home_link %></td>
+              <%if show_header_tabs%>
+                <%if can? :manage, :zimbra_mail %>
+                  <td valign="top"><%=link_to '<span class="icon_mail fl" ></span>',zimbra_mail_index_path %></td>
+                  <td valign="top"><%=link_to(t(:text_mail),zimbra_mail_index_path,:class =>controller.controller_name.eql?('zimbra_mail')? 'mr10 ml3 active' : 'mr10 ml3')%></td>
+                <%end%>
+                <td valign="top"><%=link_to '<span class="icon_calender_link fl" ></span>',calendars_path %></td>
+                <td valign="top"><%= link_to t(:text_calendar), calendars_path,:class => controller.controller_name.eql?('calendars')?'mr10 ml3 active':'mr10 ml3', :name =>"Calendar" %></td>
+                <td valign="top"> <%=link_to '<span class="icon_activity fl"></span>', create_activity_calendars_path(:height =>"360", :width=>"900"), :class=> "thickbox", :name => "New Activity"%></td>
+                <td valign="top"> <%= link_to t(:text_menu_activity), create_activity_calendars_path(:height =>"360", :width=>"900"), :class=> "thickbox mr10 ml3", :name => "New Activity" %></td>
+                <td valign="top"> <%=link_to '<span class="icon_documentmanager fl"></span>', document_managers_path %></td>
+                <td valign="top"> <%= link_to (t(:text_menu_document_manager)), document_managers_path, :class=> controller.controller_name.eql?('document_managers')? 'mr10 ml3 active' : 'mr10 ml3'%></td>
+                <td valign="top"></td>
+                <td valign="top"></td>
+                <% if can? :manage, :repository %>
+                  <td valign="top"><%= link_to "<span class='icon_repository fl'></span>", repositories_path %></td>
+                  <td valign="top"><%= link_to(t(:text_menu_repository), repositories_path,:class => controller.controller_name.eql?('repositories')? 'mr10 ml3 active' : 'mr10 ml3')%> </td>
+                <% end %>
+                <% if can? :manage, :utilities%>
+                  <td valign="top"><%= link_to "<span class='icon_utility fl'></span>", utilities_path %></td>
+                  <td valign="top">
+                    <%= link_to(truncate(t(:text_menu_utility), :length => 20), utilities_path, :class => controller.controller_name.eql?('utilities')? 'mr10 ml3 active' : 'mr10 ml3')%>
+                  </td>
+                <% end %>
+                <% if (can? :manage, StickyNote) && (current_user.role? :lawyer)%>
+                  <td valign="top">
+                    <%= link_to "<span class='icon_sticky_note fl'><div style='position:relative; left:0; top:0; margin:0; padding:0;'><div id='note_count' align='center' style='position:absolute; font-size:9px; color:#FFFFFF; margin:-8px 0 0 8px; *margin:-8px 0 0 -4px; padding:1px 0 0 0;display:#{@note_count=='' ? 'none' : 'block'}' class='icon_notecount'>#{@note_count}</div></div></span>",
+                      "#", :onclick=> "setFlagForStickyNote(true);" , :id => "sticky_notes_icon_link"%>
+                    &nbsp;</td>
+                  <td valign="top"><%= link_to t(:text_menu_note), "#", :onclick=> "setFlagForStickyNote(true);", :class => "ml8", :id => "sticky_notes_header_link" %></td>
+                <%else%>
+                  <td valign="top" colspan="2"></td>
+                <%end%>
+              <%end%>
+            </tr>
+          </table>
+        </div>
+        <% if (can? :manage, StickyNote) && (current_user.role? :lawyer)%>
+          <div id="sticky_note">
+            <%cache "sticky_notes_#{current_user.id}",:expires_in => 1.day  do %>
+              <%=render :partial =>'sticky_notes/note'%>
+            <%end%>
+          </div>
+        <%end%>
+      </div>
+    <%end%>
+    <br class="clear" />
+  </div>
+
+<% end %>

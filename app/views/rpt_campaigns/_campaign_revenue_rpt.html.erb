@@ -1,0 +1,21 @@
+<% @widths_hash = {"Campaign" => "20%","Status" => "10%","Opportunity closed" => "20%","Value" => "10%","Owner" => "10%"}%>
+<div class="w100">
+  <%unless @data.blank? %>
+    <div class="title_blue fl"><%= pluralize_record(@data.length,'Record',1)%> </div>
+  <% end %>
+  <div class="fr  textR">
+    <%=raw(generate_send_email_rpt_link("campaign_revenue_rpt")) unless params[:load_popup]%>
+    <%= raw(generate_rpt_fav_link("Campaign")) unless params[:load_popup]%>
+    <%= raw(generate_reports_links("campaign_revenue_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<%unless @data.blank? %>
+  <div class="mt5">
+    <%= render :partial => 'rpt_partials/list_col_array', :locals => {:col => @data} %>
+  </div>
+  <div class="title_blue fl"><%= pluralize_record(@data.length,'Record',1)%> </div>
+<%else%>
+  <div class="title_blue fl"><%= pluralize_record((@data.length rescue 0),'Record',1)%></div>
+<%end%>
+<br class="clear" />

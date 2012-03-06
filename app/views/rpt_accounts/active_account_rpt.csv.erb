@@ -1,0 +1,9 @@
+<%=@header_opts[:r_name]%>
+<%=@conditions[:table_name]%>
+
+<%=@table_headers.join(",")%>
+<%-@data.each do |data|-%>
+<%=data.join(",")%>
+<%-end-%>
+
+<%="Total Records = #{@data.length}"%>

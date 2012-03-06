@@ -1,0 +1,2 @@
+module CompanyRoleRatesHelper
+end

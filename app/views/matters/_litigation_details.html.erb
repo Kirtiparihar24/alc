@@ -1,0 +1,23 @@
+<h1><%=t(:text_new_litigation)%></h1>
+
+<% form_for(@litigation) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :forum %><br />
+    <%= f.text_field :forum %>
+  </p>
+  <p>
+    <%= f.label :case_number %><br />
+    <%= f.text_field :case_number %>
+  </p>
+  <p>
+    <%= f.label :hearing_before %><br />
+    <%= f.text_field :hearing_before %>
+  </p>
+  <p>
+    <%= f.submit t(:text_create) %>
+  </p>
+<% end %>
+
+<%= link_to t(:label_back), litigations_path %>

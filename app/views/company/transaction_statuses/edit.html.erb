@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">Edit Transaction Status</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%  remote_form_for(:transaction_status,@transaction_status_type, :url => company_transaction_status_path(@company,@transaction_status_type),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+   <%= render :partial=>"company/form", :locals => {:f => f, :modelclass => "transaction_statuses",
+    :select_modal_text => "Transaction Status", :modal_text => "Transaction Status",
+    :all_modal_values => @company.transaction_statuses.collect{|ts|[ts.lvalue]}.uniq } %>
+<%end%>
+<br class="clear"/>

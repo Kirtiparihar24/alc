@@ -1,0 +1,9 @@
+jQuery('#' + <%=params[:id]%> + '_contact_ctl').val("<%=@contact.try(:full_name) %>");
+jQuery('#' + <%=params[:id]%> + '_expense_contact_id').val("<%=@contact.try(:id)%>");
+jQuery('#' + <%=params[:id]%> + '_is_internal').attr('checked', false);
+jQuery('#' + <%=params[:id]%> + '_is_internal').attr('disabled', false);
+
+if (jQuery('#' + <%=params[:id]%> + '_nonuser').attr('checked')) {
+  jQuery('#' + <%=params[:id]%> + '_matterPeople').html("<%=escape_javascript(render(:partial => 'select_matter_people', :locals => {:entry_id => params[:id],:form => "tne_invoice"}) )%>")
+}
+jQuery('#' + <%= params[:id] %> + '_expense_entry_employee_user_id').html("<%= @html_options_str  %>");

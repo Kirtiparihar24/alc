@@ -1,0 +1,45 @@
+<div id="home_matter_tasks">
+  <div>    
+      <%if opps_type.eql?('upcoming')%>
+        <div class="mt5 ">
+          <%form_remote_tag :url=>"home/update_user_setting", :onsubmit =>"return validate_setting_value();" do%>
+            <%=hidden_field_tag 'setting_id', upcoming_opportunity.id%>
+            <div id="upcoming_opps" style="display : none"></div>
+            <div  id="upcoming_opps_loader" style="display:none;" align="center"><img src='/images/loading.gif' /></div>
+            Upcoming Opportunities For Next <%=text_field_tag 'setting_value',upcoming_opportunity.setting_value, :maxlength => 2, :width => '90px'%> days
+            <%= submit_tag "Update", :class=>'linknormal', :onclick =>("return disableAllSubmitButtons('linknoramal'); jQuery('#upcoming_opps_loader').show()") %>
+          <%end%>
+          <br class="clear"/>
+        </div>
+      <%end%>
+    <div class="tabular_listing border_gray">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+        <tr>
+          <th align="left"><%= t(:text_opportunity) %></th>
+          <th align="left"><%= t(:text_contact) %></th>
+          <th align="center"><%= t(:text_follow_up_date) %></th>
+        </tr>
+        <% opps.each do |e| %>
+          <tr class="<%= cycle('bg1','bg2') %>" id="follow_up_date_<%=e.id%>">
+            <td align="left"><%= raw(truncate_hover_link_with_created_at(e.name,e.created_at.strftime('%m/%d/%y'),15,edit_opportunity_path(e))) %></td>
+            <td align="left"><%= contact_hover_link(e.contact) if e.contact %></td>
+            <td align="center" id="loader1_<%= e.id%>"
+            <%if e.follow_up%>
+              <%follow_up_time=e.try(:follow_up)? e.follow_up.strftime("%I:%M %p"):'00:00 PM'%>
+              <%=raw livia_date_time_effect(e.follow_up.to_date, follow_up_time)%>
+              <%if e.follow_up <= Time.zone.now.to_date %>
+                <%=link_to(image_tag("/images/livia_portal/icon_tickmark.png",:hspace => 0, :border => 0, :title => "Follow-up Done", :alt => "Follow-up Done"),'#',:onclick=>"clear_follow_up_date_home(#{e.id})")%>
+              <%end%>
+            <%end%>
+          </td>
+        </tr>
+      <% end %>
+      <% if opps.blank? %>
+        <td colspan="7"><div  class="warningCont m5"><%=  t(:text_no_opportunities_found) %></div></td>
+      <%end%>
+    </table>    
+  </div>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;125</div>
+</div>
+

@@ -1,0 +1,164 @@
+<%=stylesheet_link_tag 'uploadify' %>
+<%=javascript_include_tag "swfobject", "jquery.uploadify.v2.1.4" %>
+<script type="text/javascript" src="/javascripts/jquery/jquery.uploadify.v2.1.4.min.js"></script>
+<div class="gridDiv"><div id="loading"></div>
+  <%index=0%>
+  <div class="message_error_div" style="display:none" id="error_upper_div">
+
+  </div>
+  <div class="mt3 gridTable">
+    <table cellspacing="1" width="100%" cellpadding="0" class="tableBg">
+      <tr>
+        <td align="left" width="24%"><%=t(:text_instructions)%> <span class="alert_message">*</span></td>
+        <td align="left"><%= text_area_tag 'note[description]', nil, :rows=>2, :cols=>33%></td>
+      </tr>
+      <tr>
+        <td align="left"><%=t(:text_matter)%></td>
+        <td align="left">
+          <span id="popup_mtr_<%=index%>_span"><%=custom_select_tag "note[matter_id]", options_for_select(@matters),{:include_blank => true },{ :onchange=>"getMattersContacts('#{index}','#popup_mtr_#{index}_span','#popup_cnt_#{index}_span',this.value,'');" , :style=>"width:224px;"}%></span>
+        </td>
+      </tr>
+      <tr>
+        <td align="left"><%=t(:text_contact)%></td>
+        <td align="left"><span id="popup_cnt_<%=index%>_span"><%=custom_select_tag 'note[contact_id]', options_for_select(@contacts),{:include_blank => true },{ :onchange=>"getMattersContacts('#{index}','#popup_mtr_#{index}_span','#popup_cnt_#{index}_span','',this.value);", :style=>"width:224px;"}%></span></td>
+      </tr>
+      <tr>
+        <td align="left" colspan="2">
+          <input type="file" name="files" id="files"/> Click <b>Browse</b> to select file(s) for upload.
+        </td>
+      </tr>
+      <tr>
+        <td align="left">
+          <div id="fileQueueBox">
+            <div id="fileQueue"></div>
+          </div>
+        </td>
+      </tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr>
+        <td align="center" colspan="2">
+          <input id="submit" class="button" type="button" value="Submit" name="save" onclick="return create_note();"></input>&nbsp;
+          <input id="Login2" class="button" type="button" value="Cancel" onclick="tb_remove();"></input>&nbsp;
+        </td>
+      </tr>
+    </table>
+  </div>
+</div><br/>
+<div class="mandatory mt12">
+  <pre>
+      Note :Total mass upload limit is 100 mb with a limit on individual file size of 50 mb.
+
+      Files will be scheduled for upload as per sequence specified.Incase a file size exceeds the individual limit or increases the overall limit, the system will pick the
+      next file in the sequence selected.
+  </pre>
+</div>
+<script type="text/javascript">
+  var complete_count = 0
+  var error_count = 0
+  var max_size =0
+  var upload_count =0
+  var note_id
+  function create_note() {
+    disable_button();
+    var url = "/physical/clientservices/home";
+    jQuery.post(url,
+    {
+      'note[description]' : jQuery('#note_description').val(),
+      'note[matter_id]' : jQuery('#note_matter_id').val(),
+      'note[contact_id]' : jQuery('#note_contact_id').val()
+    },
+    function(data) {
+      note_id = data;
+      if(data.match(/^\d+$/) != null){
+        if(jQuery('#fileQueue').is(':empty')==true){
+          tb_remove();
+          window.location.reload();
+        }
+        else{
+          validate_upload();
+        }
+      }else{
+        show_error_msg('nameerror',data,'message_error_div');
+        enableAllSubmitButtons('button');
+        return false;
+      }
+    });
+  }
+  function validate_upload(){
+    set_form_parameters();
+    disable_button();
+    jQuery('#TB_closeWindowButton').unbind('click');
+    javascript:jQuery('#files').uploadifyUpload();
+  }
+  function disable_button(){
+    jQuery('#TB_closeWindowButton').attr("disabled", "true");
+    jQuery('#TB_closeAjaxWindow').unbind('click');
+    jQuery('#submit').val('Please wait...');
+    jQuery('#submit').attr("disabled", "true");
+    jQuery('#Login2').attr("disabled", "true");
+  }
+  jQuery(document).ready(function() {
+    jQuery("#files").uploadify({
+      'uploader'       : '/swf/uploadify.swf',
+      'script'         : '/physical/clientservices/home/upload_documents',
+      'cancelImg'      : '/images/cancel.png',
+      'queueID'        : 'fileQueue',
+      'auto'           : false,
+      'multi'          : true,
+      'buttonImg'      : '/images/browse_button.png',
+      'wmode'          : 'transparent',
+      'width'          : 86,
+      'height'	       : 24,
+      'queueSizeLimit' : 999,
+      'sizeLimit'      : '<%=@max_upload_size%>',
+      'onSelect'       : function(event,ID,fileObj){
+        max_size = max_size + fileObj.size
+        if (max_size>'<%=@max_upload_size%>'){
+          alert('Maximum Upload Limit Exceeded');
+          max_size = max_size-fileObj.size
+          return false;
+        }
+        if (fileObj.size <= 0 || fileObj.size > '<%=@max_upload_size/2%>'){
+          alert('Upload File size should be between is 0KB-50MB.');
+          return false;
+        }
+        upload_count = upload_count + 1;
+      },
+      'onCancel'       :function(){
+        upload_count = upload_count - 1;
+      },
+      'onComplete'     :function(){
+        complete_count  = complete_count  + 1
+      },
+      'scriptData'	 : {
+        'current_user_id' : '<%=current_user.id%>',
+        'service_provider_employee_mappings_count' : '<%=current_user.service_provider_employee_mappings.count%>',
+        'employee_user_id': '<%=get_employee_user_id%>',
+        'company_id' : '<%=get_company_id%>',
+        'authenticity_token' : '<%= form_authenticity_token if protect_against_forgery? %>'
+      },
+      'onAllComplete'  : function(i,j){
+        window.location.href = '/physical/clientservices/home'
+      },
+      'onError'	 : function (event, queueID ,fileObj, errorObj) {
+        var msg;
+        if (errorObj.info == 404) {
+          alert('Could not find upload script. Use a relative path.');
+          alert('Could not find upload script.');
+        }
+        jQuery("#fileUpload" + queueID).fadeOut(250, function() {  jQuery("#fileUpload" + queueID).remove()});
+        error_count =error_count + 1
+        return false;
+      }
+    });
+    jQuery('#TB_overlay').unbind('click');
+  });
+  function set_form_parameters(){
+    jQuery('#files').uploadifySettings('scriptData',{
+      'note_id'          :note_id,
+      'note[description]' : jQuery('#note_description').val(),
+      'note[matter_id]' : jQuery('#note_matter_id').val(),
+      'note[contact_id]' : jQuery('#note_contact_id').val()
+    });
+  }
+</script>

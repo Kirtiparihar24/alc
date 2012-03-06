@@ -1,0 +1,71 @@
+<div class="mt5">
+  <div class="w100">
+    <% unless @data.blank? %>
+      <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record', 1) %></div>
+    <%end%>
+    <div class="fr  textR">
+      <%=raw(generate_send_email_rpt_link("recent_contact_rpt")) unless params[:load_popup]%>
+      <%= raw(generate_rpt_fav_link("Contact")) unless params[:load_popup]%>
+      <%= raw(generate_reports_links("recent_contact_rpt")) %>
+    </div>
+    <br class="clear" />
+  </div>
+  <!--Tabular container div @start here -->
+  <% unless @data.blank? %>
+    <div class="tabular_listing">
+      <table width="100%" cellpadding="1" cellspacing="1">
+        <thead>
+          <tr>
+            <% index = @table_headers.index("Rating")
+            created = @table_headers.index("Created")
+            @table_headers.each do |header| %>
+              <%if (header=="Created")%>
+                <%align='center'%>
+              <%else%>
+                <%align='left'%>
+              <%end%>
+              <th align="<%=align%>" width="<%= @widths_hash[header] if @widths_hash %>"><%= header %></th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @data.each do |contact| %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <% contact.each_with_index do |e,i|
+                if i == index  %>
+                  <td>
+                    <div class="w50p txtC">
+                      <% if e && @format == 'pdf' %>
+                        <%= e.to_s %>
+                      <% end %>
+                      <% e.times do %>
+                        <span class="icon_star_full fl"></span>
+                      <%end%>
+                      <%(3-e).times do%>
+                        <span class="icon_star_empty fl"></span>
+                      <%end%>
+                    </div>
+                  </td>
+                <% else %>
+                  <td<%= " align='center'" if i==created %>>
+                    <%=  if e && @format == 'pdf'
+                      e.to_s
+                    else
+                    truncate_hover(e, 30) rescue "-"
+                    end%>
+                  </td>
+                <% end
+              end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!--Tabular container div #ends here -->
+  </div>
+  <div class="title_blue fl"><%= pluralize_record(@data.length , 'Record', 1) %></div>
+  <br class="clear" />
+<% else %>
+  <div class="title_blue fl"><%= pluralize_record((@data.length rescue 0), 'Record', 1) %></div>
+<% end %>
+<br class="clear" />

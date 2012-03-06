@@ -1,0 +1,11 @@
+<div id="comboinputtoggle">  
+  <% if controller.action_name!="new" %>
+    <% if params[:contact] && params[:contact].has_key?(:first_name) %>
+      <%= render :partial=>'/common/newcontact',:locals=>{:obj=>obj} %>
+    <% else %>
+      <%= render :partial => '/common/existingcontact', :locals => {:width => "24%"} %>
+    <% end %>
+  <% else %>
+    <%= render :partial => '/common/existingcontact', :locals => {:width => "24%"} %>
+  <% end %>
+</div>

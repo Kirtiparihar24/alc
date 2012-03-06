@@ -1,0 +1,30 @@
+<div style="text-align:center;">
+  <!--Tabular container div @start here -->
+  <div class="tabular_listing">
+    <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+      <tr>
+        <th width="25%" align="left"><%=t(:label_title)%></th>
+        <th width="20%" align="left"><%=t(:label_user)%></th>
+        <th width="35%" align="left"><%=t(:label_details)%></th>
+        <th width="12%" align="center"><%=t(:text_date)%></th>
+        <th width="4%"  align="center"><strong>Document</strong></th>
+      </tr>
+    <%@history.each do |history|%>
+      <tr class="<%= cycle('bg1','bg2')%>">
+        <%if history.title!='Comment' %>
+          <td align="left"><%= raw truncate_hover(history.title, 20) %></td>
+          <td align="left"><%= raw truncate_hover(history.user.try(:full_name).try(:titleize), 20) %></td>
+          <td align="left"><%= raw(truncate_hover(history.comment, 35)) %></td>
+          <td align="center"><%= livia_date(history.created_at) %></td>
+        <%end%>
+        <td align="center">
+          <% unless history.document.nil? %>
+            <%= link_to "<span class='icon_download fl ' style='margin:5px;'></span>", document_home_path(history.document.id)%>
+          <%end%>
+        </td>
+      </tr>
+    <%end%>
+    </table>
+  </div>
+</div>
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;61 </div>

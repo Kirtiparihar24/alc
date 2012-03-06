@@ -1,0 +1,34 @@
+<div class="mt20">
+  <div id="fav_nameerror"></div>
+  <% form_remote_tag :url => {:controller=>'physical/clientservices/home',:action => :add_to_favourite} ,:method=>:post do  -%>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class=""form_table>
+      <tr>
+        <td width="30%">Name<span class="alert_message">*</span></td>
+        <td><%=text_field_tag :fav_name %><%=hidden_field_tag :fav_url%></td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <%=submit_tag 'Save' ,:onclick=>"loader.appendTo('#add_fav_loader_container');return validate_name_fav();"%>
+          <input type="submit" value="Cancel" onclick="jQuery('#fav_name').val('');jQuery('#fav_nameerror').html('');parent.tb_remove();return false"/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="mandatory" style="text-align:left"><span class="alert_message">*</span><%= t(:text_required_field) %></div>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+  <div id="add_fav_loader_container"></div>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;114</div>
+<script type="javascript/text">
+  jQuery(document).ready(function(){
+    jQuery('#fav_name').val('');
+  });
+
+</script>

@@ -1,0 +1,35 @@
+
+<div id="messages-box">
+  <a class="CloseImg" title="Close" onclick ="jQuery('#messages-box').slideToggle();"></a>
+  <ul id="messages">
+    <% if @notifications.size > 0%>
+      <% @notifications.each do |notify| %>
+        <%message = notify.notification_type == "Communication" ? notify.notification.description : notify.notification.name rescue ''%>
+        <li id ="notification_<%=notify.id%>" class="new notify" style="cursor:pointer;background-color:<%=  notify.is_read == true ? '#F5F5F5' : ''%>">
+          <a href="#" class="notify_link" onclick="upload_notifications(this,'<%=notify.id%>','');return false;">
+            <span class="sender"><%=notify.title%></span>
+            <span class="description"><%=truncate(h(message) ,:length => 20)%></span> <span class="date"><%=time_ago_in_words(notify.created_at,true)%></span>
+          </a>
+        </li>
+      <%end%>
+      <li id="last"><a id="all-messages" href="#" onclick ="find_more_notifications('<%=@notifications.size + 3%>');return false; ">View More <span id="unreaded"></span> </a></li>
+    </ul>
+  <%else%>
+    <li class="new" style="cursor:pointer;">
+      <span class="sender">No Notification</span>
+    </li>
+  <%end%>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+  jQuery(document).ready(function() {
+    jQuery('.notify_link, #message-count, #all-messages').click(function(event)
+    {
+      event.stopImmediatePropagation();
+
+    });
+  });
+
+</script>
+

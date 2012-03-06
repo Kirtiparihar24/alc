@@ -1,0 +1,48 @@
+<table align="left" class="w18">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="cs_val_check<%=@selected_charts["get_campaign_responsiveness"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["get_campaign_responsiveness"][1]%>);" type="checkbox" <%=@selected_charts["get_campaign_responsiveness"][0]%> name="charts[<%=@selected_charts["get_campaign_responsiveness"][1]%>]" value="<%=@checked_charts["get_campaign_responsiveness"] ? @checked_charts["get_campaign_responsiveness"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=get_campaign_responsiveness&height=500&width=600' class="thickbox preview" title="<%= t(:text_campaign) %> Response" name="<%= t(:text_campaign) %> Response" id="/images/charts/big_7.jpg"><img class="border_gray" src="/images/charts/get_campaign_responsiveness.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="get_campaign_responsiveness" href='/dashboards/dashboard_show?chart_name=get_campaign_responsiveness&height=500&width=600' class="thickbox" title="<%= t(:text_campaign) %> Response" name="<%= t(:text_campaign) %> Response">Campaign Response&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="cs_val_check<%=@selected_charts["get_campaign_response_value"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["get_campaign_response_value"][1]%>);" type="checkbox" <%=@selected_charts["get_campaign_response_value"][0]%> name="charts[<%=@selected_charts["get_campaign_response_value"][1]%>]" value="<%=@checked_charts["get_campaign_response_value"] ? @checked_charts["get_campaign_response_value"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=get_campaign_response_value&height=500&width=600' class="thickbox preview" title="<%=  t(:text_campaign) %> Response - Value" name="<%= t(:text_campaign) %> Response - Value" id="/images/charts/big_8.jpg"><img class="border_gray" src="/images/charts/get_campaign_response_value.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="get_campaign_response_value" href='/dashboards/dashboard_show?chart_name=get_campaign_response_value&height=500&width=600' class="thickbox" title="<%= t(:text_campaign) %> Response - Value" name="<%= t(:text_campaign) %> Response - Value">Campaign Response - Value&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>
+<table align="left" class="ml15 w18">
+  <tr>
+    <td align="center" valign="top">
+      <input class ="val_check" id="cs_val_check<%=@selected_charts["active_inactive_accounts"][1]%>" onclick="validate_checkbox_onclick(this.id,<%=@selected_charts["active_inactive_accounts"][1]%>);" type="checkbox" <%=@selected_charts["active_inactive_accounts"][0]%> name="charts[<%=@selected_charts["active_inactive_accounts"][1]%>]" value="<%=@checked_charts["active_inactive_accounts"] ? @checked_charts["active_inactive_accounts"] : ''%>" />
+    </td>
+    <td align="left" valign="top">
+      <a href='/dashboards/dashboard_show?chart_name=active_inactive_accounts&height=500&width=600' class="thickbox preview" title="Accounts - Active & InActive" name="<%= t(:label_accounts) %> - Active & InActive" id="/images/charts/big_10.jpg" ><img class="border_gray" src="/images/charts/active_inactive_accounts.jpg" alt="gallery thumbnail" border="0" /></a>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td valign="top">
+        <a id="active_inactive_accounts" href='/dashboards/dashboard_show?chart_name=active_inactive_accounts&height=500&width=600' class="thickbox" title="<%= t(:label_accounts) %> - Active & InActive" name="<%= t(:label_accounts) %> - Active & InActive"><%= t(:label_accounts) %> - Active & InActive&nbsp; &nbsp;&nbsp;</a>
+    </td>
+  </tr>
+</table>

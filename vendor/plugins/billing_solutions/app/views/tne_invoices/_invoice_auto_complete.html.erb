@@ -1,0 +1,11 @@
+<%unless result.empty?%>
+    <%result.each do |obj|%>
+      <% unless obj.blank? %>
+        <%if cancelled && mode_type !="client"%>
+           <%= "#{obj.invoice_no}"  +", " + "#{obj.matter.try(:matter_no)}" +"," + "#{obj.matter.try(:name)}" +", " + ( "#{obj.matter.contact.try(:last_name)} #{obj.matter.contact.try(:first_name) } #{obj.matter.contact.try(:middle_name)}") %>
+        <%else%>
+          <%= (mode_type=="client") ? obj.invoice_no : "#{obj.bill_no}" +", " + "#{obj.matter.try(:matter_no)}" +"," + "#{obj.matter.name}" +", " + ( "#{obj.matter.contact.last_name} #{obj.matter.contact.first_name} #{obj.matter.contact.middle_name}") %>
+        <% end %>
+      <% end %>
+    <%end%>
+<%end%>

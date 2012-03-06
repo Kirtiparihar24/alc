@@ -1,0 +1,43 @@
+<% @edit_mode = ["edit", "update"].include?(controller.action_name) %>
+<% form_for([@matter,@matter_people_client],:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+  <div id="nameerror" style="display:none"> <div class='errorCont'>  </div> </div>
+  ﻿<div style="text-align:center;margin-top:20px;">
+    <table width="350" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+      <% unless is_matter_people_lead_lawyer?(@matter, @matter_people_client) %>
+        <%= f.hidden_field :people_type, :value => 'client' %>
+        <tr>
+          <td width="110" align="left"><label><%= t(:label_name) %><span class="alert_message">*</span></label></td>
+          <td width="169" align="left">
+            <%= f.collection_select :employee_user_id, @employees, :user_id, :full_name,
+              {:include_blank => "-----Select-----"},
+              {:disabled => @edit_mode} %>
+          </td>
+        </tr>
+        <tr>
+          <td align="left"><%= t(:label_role) %></td>
+          <td align="left">
+            <%= f.collection_select("role", current_company.client_roles.reject {|e| e.lvalue.eql?('Lead Lawyer') || e.lvalue.eql?('Matter Client')}, :id, :lvalue) %>
+          </td>
+        </tr>
+      <% end %>
+      <% if false %>
+        <tr>
+          <td align="left"><label><%= t(:label_give_access) %></label></td>
+          <td align="left"><%= f.check_box :access, :checked => !@edit_mode || @matter_people_client.end_date.nil?, :onclick => "set_matter_people_end_date(this);" %></td>
+        </tr>
+      <% end %>
+      <%= render :partial => "start_end_dates", :locals => {:matter_people => f} %>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">
+          <%= f.submit t(:text_save),:class=>'matters', :onclick => "return validate_field('matter_people_employee_user_id','Name cannot be blank');" %>
+          <input type="button" class="matters" id="Login2" value="Cancel" onclick="parent.tb_remove();disableAllSubmitButtons('matters');" />
+        </td>
+      </tr>
+    </table>
+  </div>
+<% end %>

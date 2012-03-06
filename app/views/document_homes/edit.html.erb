@@ -1,0 +1,709 @@
+<!-- Modified for the Feature #7512 - Link task risk issue fact - all to all
+Added by Shripad
+Modifications are just remove litigation and non-litigation check -->
+<% selected_employee = get_employee_user_id %>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    /* Sanjay Verma - Please do not remove this */
+    vertical_tabs_toggle();
+    search_display_none();    
+  });
+</script>
+<div>
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <div class="tabs-container-tabs tabular_listing tabs-container tabs-hide" style="display: block;">
+      <% form_for([@matter,@document_home]) do |f| %>
+        <%  fields_for 'document_home[document_attributes]', @document do |d|%>
+          <%document=@document_home.latest_doc%>
+          <% if @document_home.errors.length >0 %>
+            <div class='errorCont'>
+              <%= error_messages_for(@document_home,@document)%>
+              <div class="clear"></div>
+              <%= flash[:error]%>
+            </div>
+          <%end%>
+          <div class="form_table">
+            <table width="100%">
+              <tbody>
+                <tr>
+                  <td width="76%">
+                    <%=render :partial => "matters/matter_contact_account"%>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="seperator_dotted_hori"></div>
+            <table style="margin: 0pt auto;" width="100%" border="0" cellpadding="3" cellspacing="3">
+              <tbody><tr>
+                  <td width="203" align="left"><label><%=  t(:label_document)  %><span class="alert_message">*</span></label></td>
+                  <td width="743" align="left"><%=  link_to(document.data_file_name,document_home_path(document.id))  %></td>
+                </tr>
+                <tr>
+                  <td align="left"><label><%= t(:label_name) %> <span class="alert_message">*</span></label></td>
+                  <td align="left"><%=  d.text_field :name,:id=>'name', :value => document.name  %></td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_bookmark) %></td>
+                  <td align="left"><%=d.check_box :bookmark, :checked => document.bookmark  %></td>
+                </tr>
+                <tr>
+                  <td align="left"><label><%= t(:label_type)%></label></td>
+                  <td align="left"><%= d.collection_select :doc_type_id,current_company.document_types,:id,:alvalue,
+                      { :selected => document.doc_type_id, :include_blank => "-----Select-----" },
+                      { :class=>"widthSelectBox",
+                      :onChange => ""}%>
+                  </td>
+                </tr>
+
+                <%if @matter.is_litigation %>
+                  <tr>
+                    <td align="left"><label><%= t(:label_phase) %></label></td>
+                    <td align="left"><%= d.collection_select("phase_id", @company.phases, :id, :alvalue, {:selected=>document.phase_id}) %></td>
+                  </tr>
+                <%end %>
+                <tr>
+                  <td align="left"><%= t(:label_privilege) %></td>
+                  <td align="left"><%=d.collection_select("privilege", @company.matter_privileges, :id, :alvalue, {:selected=>document.privilege.to_i}) %></td>
+                </tr>
+                <tr>
+                  <td align="left"><%="#{t(:label_document)} #{t(:label_tag)}"%></td>
+                  <td align="left"><%= f.text_area :tag_array, :cols=>"40", :rows=> '3', :value => @document_home.tag_list  %></td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_description) %></td>
+                  <td align="left"><%= d.text_area :description, :cols=>"40", :rows=> '3', :value => document.description  %></td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_author_s) %></td>
+                  <td align="left"><%=  d.text_field :author, :value => document.author   %></td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_source) %></td>
+                  <td align="left"> <%selected = !document.doc_source.nil? ? document.doc_source.id : "" %>
+                    <%= d.collection_select :doc_source_id, @company.doc_sources,:id,:alvalue,{:include_blank => '-- select --',:selected=>selected} %>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" valign="top"><%= t(:label_enforce_version_change) %></td>
+                  <td align="left" valign="top" class="pt5"><%= f.check_box :enforce_version_change, :disabled=> !((@emp_user_id == @matter.employee_user_id) || (@team_member && @team_member.can_enforce_version_control? || is_access_matter?))%> (Only lead lawyer and legal team member having privilege can enforce version change)</td>
+                </tr>
+                <%if(is_access_matter? ||  @matter.employee_user_id==@emp_user_id || @emp_user_id==document.created_by_user_id || (@team_member && @team_member.can_view_client_docs?) || @document_home.owner_user_id==@emp_user_id)%>
+                  <tr>
+                    <td align="left">&nbsp;</td>
+                    <td align="left"><table width="65%" border="0">
+                        <% secretary = current_user.role?(:secretary) %>
+                        <% disble_access = ((@document_home.owner_user_id !=selected_employee && @matter.employee_user_id !=selected_employee && !is_access_matter?)) ? true : false %>
+                        <tbody><tr>
+                            <td width="7%" align="left"><%= radio_button_tag(:access_control,:private, @document_home.access_rights==1 ? true : false ,:onclick => "check_document_access_rights(false, false, false, '#{t(:text_note_only_you_will_have_access_to_this_document)}','private', '#{selected_employee}', '#{secretary}','edit','#{@document_home.owner_user_id}', '#{@document_home.access_rights}');", :disabled => disble_access) %></td>
+                            <td width="13%"><%= t(:text_private) %></td>
+                            <td width="7%"><%=radio_button_tag(:access_control,:selective, @document_home.access_rights==4 ? true : false ,:onclick => "check_document_access_rights(true, false, false, '#{t(:text_note_document_will_be_accessible_to_selected_team_members)}','select', '#{selected_employee}', '#{secretary}','edit','#{@document_home.owner_user_id}', '#{@document_home.access_rights}');", :disabled => disble_access) %></td>
+                            <td width="16%"><%= t(:text_select_view) %></td>
+                            <td width="7%"><%=radio_button_tag(:access_control,:matter_view, @document_home.access_rights==3 ? true : false ,:onclick => "check_document_access_rights(false, false, false, '#{t(:text_note_all_matter_team_members_will_have_access_to_this_document)}','other', '#{selected_employee}', '#{secretary}','edit','#{@document_home.owner_user_id}', '#{@document_home.access_rights}');", :disabled => disble_access) %></td>
+                            <td width="24%"><%=t(:text_matter_view)%></td>
+                            <td width="7%"><%= radio_button_tag(:access_control,:public, @document_home.access_rights==2 ? true : false ,:onclick => "check_document_access_rights(false, true, false, '#{t(:text_note_all_members_of_your_law_firm_will_have_access_to_this_document)}','other', '#{selected_employee}', '#{secretary}','edit','#{@document_home.owner_user_id}', '#{@document_home.access_rights}');", :disabled => disble_access) %></td>
+                            <td width="19%"><%= t(:text_public) %></td>
+                          </tr>
+                          <tr>
+                            <td colspan="6" id="help_message"> <% if @document_home.access_rights == 1  %>
+                                <%= t(:text_note_only_you_will_have_access_to_this_document) %>
+                              <% elsif @document_home.access_rights == 2  %>
+                                <%= t(:text_note_all_members_of_your_law_firm_will_have_access_to_this_document) %>
+                              <% elsif @document_home.access_rights == 4  %>
+                                <%= t(:text_note_document_will_be_accessible_to_selected_team_members) %>
+                              <% elsif @document_home.access_rights == 3  %>
+                                <%=t(:text_note_all_matter_team_members_will_have_access_to_this_document)%>
+
+                              <%end%> </td>
+                          </tr>
+                          <tr  id="selective" style="<% if @document_home.access_rights !=4%>display:none<%end%>">
+                            <td colspan="6">
+                              <% unless @matter_peoples.nil? or @matter_peoples.empty? %>
+                                <table width="100%" border="0">
+                                  <tbody>
+                                    <% @matter_peoples.each do|mi| %>
+                                      <% name =  mi.assignee.try(:full_name) %>
+                                      <tr>
+                                        <td width="10%" align="left" name="<%= mi.employee_user_id %>"><%= check_box_tag 'document_home[matter_people_ids][]', mi.id, @document_people_array.include?(mi.id),{:class=> "check",:disabled=> (mi.employee_user_id == @matter.employee_user_id || disble_access || (selected_employee==@matter.employee_user_id ? mi.employee_user_id==@document_home.owner_user_id : false)), :checked => (@emp_user_id==mi.employee_user_id || mi.employee_user_id == @matter.employee_user_id), :onClick=>"check_owner(this, '#{mi.employee_user_id}', '#{name}')" } %></td>
+                                        <td width="90%"><label><%= name %></label></td>
+                                      </tr>
+
+                                    <% end %>
+                                  <% end %>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr  id="check_box" style="<% if @document_home.access_rights !=2%>display:none<%end%>">
+                            <td align="right">
+                              <%=check_box_tag 'document_home[repo_update]',true,@document_home.repo_update,{:class=> "check"}%></td>
+                            <td colspan="6">
+                              Show updates in public repository
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Owner</td>
+                    <% disble = (@document_home.owner_user_id!=selected_employee) ? {:disabled => true} : {} %>
+                    <% owner_id = @document_home.owner_user_id%>
+                    <% matter_people=@matter_peoples.select{|mp| mp.employee_user_id==owner_id} %>
+                    <%if matter_people.count==0%>
+                      <% @matter_peoples << MatterPeople.find_with_deleted(:first ,:conditions=>["employee_user_id=?",owner_id]) %>
+                    <%end%>
+                    <td><%= f.select :owner_user_id, @matter_peoples.collect{|p| [p.assignee.try(:full_name), p.employee_user_id] }, {:selected => @document_home.owner_user_id}, disble %></td>
+                  </tr>
+
+                  <tr>
+                    <td align="left"><%= t(:label_do_you_want_to_provide_access_to_client) %></td>
+                    <td valign="top" align="left"><%= check_box_tag 'document_home[client_access]','1', @document_contact_array.include?(@matter.contact_id),:class=> "checkBox1" %></td>
+                  </tr>
+                <%end%>
+                <tr>
+                  <td align="left"> <%= t(:label_activity )%> / <%= t(:label_issues )%> / <%= t(:label_facts )%> / <%= t(:label_risks )%> / <%= t(:label_research) %></td>
+                  <td align="left"><div id="verticaltabs" align="left" style="width:95%">
+                      <ul>
+                        <% if task_available? %><li class="selected"><a href="javascript:void(0);" class="tabs"><%= t(:label_activity )%></a></li><%end%>
+                        <% if issue_available? %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_issues )%></a></li><%end%>
+                        <% if fact_available? %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_facts )%></a></li><%end%>
+                        <% if risk_available? %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_risks )%></a></li><%end%>
+                        <% if research_available? %><li><a href="javascript:void(0);" class="tabs"><%= t(:label_research) %></a></li><%end%>
+                      </ul>
+                      <% if task_available? %>
+                        <div style="display: block;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                            <tbody>
+                              <% unless @matter_tasks_checked.nil? or @matter_tasks_checked.empty? %>
+                                <%
+                                mtask_lenth=@matter_tasks_checked.size
+                                i=0
+                                j=0
+                                @matter_tasks_checked.each do|mt| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_task_ids][]', mt.id,  @document_task_array.include?(mt.id)  %> </td>
+                                    <td width="23%"><%= truncate_hover(h(mt.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==mtask_lenth-1)%>
+                                    <%if(j==0)
+                                      cspan=6
+                                    elsif(j==1)
+                                      cspan=4
+                                    elsif(j==2)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_activities_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                          <table width="100%">
+                            <tr>
+                              <td align="right" ><a href="#" id="linkToggle1">View All</a></td>
+                            </tr>
+                          </table>
+                          <table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list1">
+                            <tbody>
+                              <%  unless @matter_tasks_not_checked.nil? or @matter_tasks_not_checked.empty?
+                                mtask_lenth=@matter_tasks_not_checked.size
+                                i=0
+                                j=0
+                                @matter_tasks_not_checked.each do|mt| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_task_ids][]', mt.id,  @document_task_array.include?(mt.id)  %> </td>
+                                    <td width="23%" align="left"><%= truncate_hover(h(mt.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==mtask_lenth-1)%>
+                                    <%if(j==0)
+                                      cspan=6
+                                    elsif(j==1)
+                                      cspan=4
+                                    elsif(j==2)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_activities_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                        </div>
+                      <%end%>
+                      <% if issue_available? %>
+                        <div style="display: none;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                            <tbody>
+                              <% unless @matter_issues_checked.nil? or @matter_issues_checked.empty? %>
+                                <%
+                                matterIssue_lenth=@matter_issues_checked.size
+                                i=0
+                                j=0
+                                @matter_issues_checked.each do|mi| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_issue_ids][]', mi.id, @document_issue_array.include?(mi.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mi.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterIssue_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_issues_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                          <table width="100%">
+                            <tr>
+                              <td align="right" ><a href="#" id="linkToggle2">View All</a></td>
+                            </tr>
+                          </table>
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list2">
+                            <tbody>
+
+                              <% unless @matter_issues_not_checked.nil? or @matter_issues_not_checked.empty? %>
+                                <%
+                                matterIssue_lenth=@matter_issues_not_checked.size
+                                i=0
+                                j=0
+
+                                @matter_issues_not_checked.each do|mi| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_issue_ids][]', mi.id, @document_issue_array.include?(mi.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mi.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterIssue_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_issues_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                        </div>
+                      <%end%>
+                      <% if fact_available? %>
+                        <div style="display: none;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                            <tbody>
+                              <% unless @matter_facts_checked.nil? or @matter_facts_checked.empty? %>
+                                <%
+                                matterFacts_lenth=@matter_facts_checked.size
+                                i=0
+                                j=0
+                                @matter_facts_checked.each do|mf| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_fact_ids][]', mf.id, @document_fact_array.include?(mf.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mf.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterFacts_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_facts_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                          <table width="100%">
+                            <tr>
+                              <td align="right" ><a href="#" id="linkToggle3">View All</a></td>
+                            </tr>
+                          </table>
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list3">
+                            <tbody>
+                              <% unless @matter_facts_not_checked.nil? or @matter_facts_not_checked.empty? %>
+                                <%
+                                matterFacts_lenth=@matter_facts_not_checked.size
+                                i=0
+                                j=0
+                                @matter_facts_not_checked.each do|mf| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_fact_ids][]', mf.id, @document_fact_array.include?(mf.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mf.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterFacts_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_facts_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                        </div>
+                      <%end%>
+                      <% if risk_available? %>
+                        <div style="display: none;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                            <tbody>
+                              <% unless @matter_risks_checked.nil? or @matter_risks_checked.empty? %>
+                                <%
+                                matterRisks_lenth=@matter_risks_checked.size
+                                i=0
+                                j=0
+                                @matter_risks_checked.each do|mr| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_risk_ids][]', mr.id, @document_risk_array.include?(mr.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mr.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterRisks_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_risks_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                          <table width="100%">
+                            <tr>
+                              <td align="right" ><a href="#" id="linkToggle4">View All</a></td>
+                            </tr>
+                          </table>
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list4">
+                            <tbody>
+                              <% unless @matter_risks_not_checked.nil? or @matter_risks_not_checked.empty? %>
+                                <%
+                                matterRisks_lenth=@matter_risks_not_checked.size
+                                i=0
+                                j=0
+                                @matter_risks_not_checked.each do|mr| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_risk_ids][]', mr.id, @document_risk_array.include?(mr.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mr.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterRisks_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_risks_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+                          </table>
+                        </div>
+                      <%end%>
+                      <% if research_available? %>
+                        <div style="display: none;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                            <tbody>
+                              <% unless  @matter_researches_checked.nil? or  @matter_researches_checked.empty? %>
+                                <%
+                                matterResearchess_lenth= @matter_researches_checked.size
+                                i=0
+                                j=0
+                                @matter_researches_checked.each do|mre| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_research_ids][]', mre.id, @document_research_array.include?(mre.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mre.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterResearchess_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_researches_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+
+                          </table>
+                          <table width="100%">
+                            <tr>
+                              <td align="right" ><a href="#" id="linkToggle5">View All</a></td>
+                            </tr>
+                          </table>
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" style="border-top: 1px solid #CECECE; padding-top: 15px;" id="matter_task_list5">
+                            <tbody>
+                              <% unless@matter_researches_not_checked.nil? or @matter_researches_not_checked.empty? %>
+                                <%
+                                matterResearchess_lenth=@matter_researches_not_checked.size
+                                i=0
+                                j=0
+                                @matter_researches_not_checked.each do|mre| %>
+                                  <%if(i==0)%>
+                                    <tr>
+                                    <%end%>
+                                    <%if(j==4)%>
+                                    <tr>
+                                    <%end%>
+                                    <td width="2%"><%= check_box_tag 'document_home[matter_research_ids][]', mre.id, @document_research_array.include?(mre.id), :class=> "check" %></td>
+                                    <td width="23%"><%= truncate_hover(h(mre.name), 25) %></td>
+                                    <%
+                                    j=j+1
+                                    if(j==4)%>
+                                    </tr>
+                                    <%j=0 end%>
+                                  <%if(i==matterResearchess_lenth-1)%>
+                                    <%if(j==1)
+                                      cspan=6
+                                    elsif(j==2)
+                                      cspan=4
+                                    elsif(j==3)
+                                      cspan=2
+                                    end
+                                  %>
+                                  <td colspan="<%=cspan%>"></td>
+                                  </tr>
+                                <%end%>
+                                <%
+                                i=i+1
+                              end
+                              j=0
+                              i=0
+                            %>
+                            <%else%>
+                              <tr>
+                                <td colspan="2"><%= t(:text_no_related_researches_found_for_this_document) %></td>
+                              </tr>
+                            <%end%>
+                            </tbody>
+
+                          </table>
+                        </div>
+                      <%end%>
+                    </div>
+                  </td>
+                </tr>
+                <tr align="right">
+                  <td>&nbsp;</td>
+                  <td align="left" style="padding-left: 210px;">
+                    <%=f.submit t(:label_save), :name=>"save", :disable_with => "Please wait ..."%>
+                    <%=f.submit t(:label_save_amp_exit), :name=>"save_exit", :disable_with => "Please wait ..."%>
+                    <%=f.submit t(:text_cancel), :name => "cancel", :onclick => "window.location='#{matter_document_homes_path(@matter)}';return false;" %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <%end%>
+      <%end%>
+      <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery('#name').focus();
+  jQuery(document).ready(function(){
+    check_if_selective();
+  });
+</script>
+<%# Need refactoring %>

@@ -1,0 +1,24 @@
+<tr>
+  <td width="48%" align="right"><%=f.label :first_name, t(:label_first_name)%></td>
+  <td width="52%"><%=f.text_field :first_name%></td>
+</tr>
+<tr>
+  <td align="right" valign="top"><%=f.label :last_name, t(:label_last_name)%></td>
+  <td><%=f.text_field :last_name%></td>
+</tr>
+<tr>
+  <td align="right" valign="top"><%=f.label :birthdate, t(:label_birthdate)%></td>
+  <td><%=f.text_field :birthdate , :class => "date_picker", :onclick=>"livia_datepicker(this);", :size=> "10"%><%=t(:text_yyyy_mm_dd)%></td>
+</tr>
+<tr>
+  <td align="right" valign="top"><%=f.label :security_question, t(:label_security_question)%></td>
+  <td><%=f.text_field :security_question%></td>
+</tr>
+<tr>
+  <td align="right" valign="top"><%=f.label(:security_answer, t(:label_security_answer))%></td>
+  <td><%=f.text_field :security_answer%></td>
+</tr>
+<tr>
+  <td align="right" valign="top"><%=f.label(:billing_rate, t(:label_billing_rate))%></td>
+  <td><%=f.text_field :billing_rate%></td>
+</tr>

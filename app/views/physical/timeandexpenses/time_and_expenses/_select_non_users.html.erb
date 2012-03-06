@@ -1,0 +1,2 @@
+<td width="15%" valign="top"><label>Matter People</label></td>
+<td width="35%" valign="top"><%=select_tag 'physical_timeandexpenses_time_entry[matter_people_id]', options_for_select(@matter_people_others.collect{|mp|[ mp.rep_full_name,mp.id ]})%></td>

@@ -1,0 +1,28 @@
+<div class="gryBox">
+  <div class="p5 gridTable">
+    <table width="100%" border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <th width="30%"  style="text-align: center" ><%=t(:text_company)%></th>
+        <th width="30%"  style="text-align: center" ><%=t(:text_lawyer)%></th>
+        <th width="30%"  style="text-align: center" ><%=t(:text_priority)%></th>
+      </tr>
+      <%unless @users.blank? %>
+        <%@users.each do |user|%>
+          <tr>
+            <td class="textBlack11Height10L" ><%=user.company.name%></td>
+            <td class="textBlack11Height10L" ><%=user.full_name%></td>
+            <td class="textBlack11Height10L" ><%=collection_select :priority, user.id, @priority_types,:lvalue, :alvalue,{:include_blank => 'Null'},{:class=>"dropbox",:style=>"width:121px;"}%></td>
+          </tr>
+        <%end%>
+      <%else%>
+        <tr >
+          <td colspan="3">
+            <div class="warningCont m5">
+              Cluster doesn't contains any lawyer...
+            </div>
+          </td>
+        </tr>
+      <%end%>
+    </table>
+  </div>
+</div>

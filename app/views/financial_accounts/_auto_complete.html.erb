@@ -1,0 +1,7 @@
+<% unless search_results.empty? %>
+    <% search_results.each do|result_obj| %>
+      <% if result_obj !=nil %>
+        <span id="<%= result_obj.id %>" account_id="<%= result_obj.account.id if result_obj.class.name == 'Matter' && result_obj.account %>" account_name="<%= result_obj.account.name if result_obj.class.name =='Matter' && result_obj.account %>" style="display: none;"><%= result_obj.id -%></span> <%= result_obj.name %>
+      <% end %>
+    <% end %>
+<% end %>

@@ -1,0 +1,36 @@
+<div id="expenseamount_<%=expense_entry.id%>" align="right"><span ><%= number_with_lformat(expense_entry.expense_amount)%></span></div>
+<div class="w100" id="expense_entry_billing_options_<%=expense_entry.id%>" style="display:<%= expense_entry.is_billable ? '' : 'none' %>">
+  <%= hidden_field_tag "hidden_billing_adjustment",expense_entry.final_expense_amount,:id=>"hidden_billing_adjustment_expense#{expense_entry.id}",:name=>expense_entry.billing_method_type%>
+  <%= hidden_field_tag "hidden_billing_full_amount",expense_entry.expense_amount,:id=>"hidden_billing_full_amount_#{expense_entry.id}",:name=>expense_entry.billing_method_type%>
+  <%
+  onblur_method="" if is_open
+  case  expense_entry.billing_method_type
+  when 1
+    adjustment = expense_entry.final_expense_amount
+  when 3
+    adjustment = expense_entry.final_expense_amount
+    onblur_method ="updateTimeUtilities(this,'expense_entries','set_expense_entry_billing_amount',#{expense_entry.id})" if is_open
+  when 2
+    adjustment = expense_entry.billing_percent
+    onblur_method ="updateTimeUtilities(this,'expense_entries','set_expense_entry_billing_percent',#{expense_entry.id})" if is_open
+  when 4
+    adjustment = expense_entry.markup
+    onblur_method ="updateTimeUtilities(this,'expense_entries','set_expense_entry_markup',#{expense_entry.id})" if is_open
+  end %>
+  <table id="<%=expense_entry%>_adjustment_table"width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td width="82%"></td>
+        <td align="right" width="18%" style="padding-right:7px;"></td>
+      </tr>
+      <tr>
+        <td width="82%" align="left" style="margin:0;padding:0">
+          <%=dynamic_select("#{expense_entry.id}[expense_entry]","billing_method_type",'expense_entries',{:selected=>expense_entry.billing_method_type},{:class=>"w75select expense_entry_inline_edit", :disabled=> !is_open})%>
+        </td>
+        <td width="18%" align="right" style="margin:0;padding:0;">
+          <%= text_field_tag "show_full_amount", '',:size => 8 ,:maxlength=>5,:id=>"#{expense_entry.id}_show_amount", :value=>number_with_lformat(adjustment), :disabled=> !is_open,:style=>"text-align: right;",:onkeypress=>"if(event.keyCode==13){return false}",:onblur=>onblur_method%>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

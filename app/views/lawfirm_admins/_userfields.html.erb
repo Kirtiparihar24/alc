@@ -1,0 +1,20 @@
+<div>
+<% fields_for(@user) do |u|%>
+<p>
+  <%=u.label :username, t(:label_user_name)%>
+  <%=u.text_field :username%>
+</p>
+<p>
+  <%=u.label :password, t(:label_password)%>
+  <%=u.password_field :password%>
+</p>
+<p>
+  <%=u.label :password_confirmation, t(:label_confirm_password)%>
+  <%=u.password_field :password_confirmation%>
+</p>
+<p>
+  <label><%=t(:label_role)%></label>
+  <%=collection_select :user_role,:role_id,@roles,:id, :name,{:include_blank => 'Please select'}%>
+</p>
+<%end%>
+</div>

@@ -1,0 +1,88 @@
+<script type='text/javascript' src='http://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+  google.load('visualization', '1', {packages:['orgchart']});
+  google.setOnLoadCallback(drawOrgChart);
+  google.setOnLoadCallback(drawEmpChart);
+  google.setOnLoadCallback(drawOrgEmpChart);
+<%
+orgmap = ''
+empmap = ''
+orgempmap = ''
+i = 0
+@orgdata.each do
+  key1 = @orgdata[i][0].to_s
+  par1 = @orgdata[i][1].to_s
+  tool1 = @orgdata[i][2].to_s
+  orgmap = orgmap + "[" + key1 + ",'" + par1 + "','" + tool1 + "'],";
+  i += 1
+end
+orgmap = orgmap.chop!
+
+i=0
+@empdata.each do
+  key = @empdata[i][0].to_s
+  par = @empdata[i][1].to_s
+  tool = @empdata[i][2].to_s
+  empmap = empmap + "[" + key + ",'" + par + "','" + tool + "'],";
+  i += 1
+end
+empmap = empmap.chop!
+
+i=0
+@orgempdata.each do
+  key2 = @orgempdata[i][0].to_s
+  par2 = @orgempdata[i][1].to_s
+  tool2 = @orgempdata[i][2].to_s
+  orgempmap = orgempmap + "[" + key2 + ",'" + par2 + "','" + tool2 + "'],";
+  i += 1
+end
+orgempmap = orgempmap.chop!
+
+%>
+  function drawOrgChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'Manager');
+    data.addColumn('string', 'ToolTip');
+    data.addRows([<%=raw orgmap%>]);
+    var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+    chart.draw(data, {allowHtml:true,size:'small',allowCollapse:true});
+  }
+  function drawEmpChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'Manager');
+    data.addColumn('string', 'ToolTip');
+    data.addRows([<%=raw empmap%>]);
+    var chart = new google.visualization.OrgChart(document.getElementById('emp_div'));
+    chart.draw(data, {allowHtml:true,size:'small',allowCollapse:true});
+  }
+  function drawOrgEmpChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Name');
+    data.addColumn('string', 'Manager');
+    data.addColumn('string', 'ToolTip');
+    data.addRows([<%=raw orgempmap%>]);
+    var chart = new google.visualization.OrgChart(document.getElementById('orgemp_div'));
+    chart.draw(data, {allowHtml:true,size:'small',allowCollapse:true});
+  }
+</script>
+<% content_for :company_selection do %>
+  <div id="topheadContainer"><div class="title fl">View Organization Chart</div></div>
+<% end %>
+<div class="box-head"><h2><%=t(:text_departments_chart_for)%> <%= @company.name %></h2></div>
+<div class="pagging"></div>
+<div id="chart_div"></div>
+<div id="cl"></div>
+<div class="pagging"></div>
+<div class="box-head"><h2><%=t(:text_employees_chart_for)%> <%= @company.name %></h2></div>
+<div class="pagging"></div>
+<div id="emp_div"></div>
+<div id="cl"></div>
+<div class="pagging"></div>
+<div class="box-head"><h2><%=t(:text_department_employees_chart_for)%> <%= @company.name %></h2></div>
+<div class="pagging"></div>
+<div id="orgemp_div"></div>
+<div id="cl"></div>
+<div class="pagging"></div>
+<div class="buttons"><%=link_to t(:label_back),request.headers['HTTP_REFERER'], :class => "button"%> </div>

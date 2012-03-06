@@ -1,0 +1,13 @@
+<%=@r_name%>
+
+<%-@total_data.each do |label,data|-%>
+<%="#{(label == "" or !label) ? "None" : label} (#{data.length} Records),,,#{@conditions[label][0]},#{@conditions[label][1]}"%>
+<%=@table_headers.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+
+<%-end-%>
+<%="Total Records = #{@conditions[:col_length]},Total Amount= #{@conditions[:amount]}"%>
+

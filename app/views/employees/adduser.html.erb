@@ -1,0 +1,60 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer"><div class="title fl"><%= @company.name unless session[:company_id].blank? %></div></div>
+  <%end%>
+<% end %>
+<br class="clear" />
+<div class="box-head"><h2><%=t(:text_add_existing_employee_as_user)%></h2></div>
+<%form_for @user ,:url => {:action => 'createuser',:company_id=>@company.id}do |u| %>
+  <%if(@user.errors.length > 0)%>
+    <div class='errorCont'>
+      <%=u.error_messages %>
+      <div class="clear"></div>
+    </div>
+  <%end%>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_select_employee)%><span>*</span></label></td>
+        <td width="75%">
+          <%=select :employee, :id, @employees.collect{|emp| [emp.full_employee_name,emp.id] },{:include_blank => 'Please Select'}, {:class => "field size3"} %>
+          <%= link_to t(:label_add_new_employee), new_company_employee_path(@company)%>
+        </td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :username, t(:label_user_name)%><span>*</span></label></td>
+        <td><%=u.text_field :username, :class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :password, "Password"%> <span>*</span></label></td>
+        <td><%=u.password_field :password, :class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :password_confirmation, t(:label_confirm_password)%><span>*</span></label></td>
+        <td><%=u.password_field :password_confirmation,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%=u.label :alt_email, t(:label_alternate_email)%><span>*</span></label></td>
+        <td><%=u.text_field :alt_email,:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%= u.label :time_zone, "Time Zone" %></label></td>
+        <td><%= u.time_zone_select :time_zone, nil,:default => "Pacific Time (US & Canada)",:style=>{:width=>20},:class=>"field size3" %></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%=u.submit t(:text_save), :class=>"button"%>
+    <%if current_user.role?(:livia_admin)%>
+      <%=link_to t(:label_back), showusers_companies_path+"/#{@company.id}",:class=>"button"%>
+    <%else%>
+      <%=link_to t(:label_back), lawfirm_admins_url,:class=>"button"%>
+    <%end%>
+  </div>
+<% end %>

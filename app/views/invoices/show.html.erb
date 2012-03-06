@@ -1,0 +1,70 @@
+<div class="box-head"><h2 class="left"><%=t(:text_invoice_details)%></h2></div>
+<div class="table">
+  <table align="center" width="100%" cellspacing="0" cellpadding="3" border="0">
+    <tbody>
+      <tr>
+        <td width="25%"><strong><%=t(:text_company_name)%></strong></td>
+        <td><%=@invoice.company.name%></td>
+      </tr>
+      <tr>
+        <td><strong><%=t(:text_invoice_date)%></strong></td>
+        <td><%=livia_date(@invoice.invoice_date)%></td>
+      </tr>
+      <tr>
+        <td><strong><%=t(:text_invoice_from)%></strong></td>
+        <td><%=livia_date(@invoice.invoice_from_date)%>&nbsp;to&nbsp;<%=livia_date(@invoice.invoice_to_date)%></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="actionLinks"><%=t(:text_export_to)%>
+    <%=link_to(t(:text_pdf) , {:action => "show" , :format => 'pdf'} , {:popup => true})%>&nbsp;|
+    <%=link_to(t(:text_csv) , {:action => "show" , :format => 'csv'} , {:popup => true})%>
+  </div>
+  <div id="payments" class="table">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <%unless @emp_bill_records.blank?%>
+        <tr><td colspan="7" align="right" class="pr5"><%=will_paginate @emp_bill_records%><%=raw page_entries_info @emp_bill_records %></td></tr>
+        <tr><td colspan="7"><br/></td></tr>
+      <%end%>
+      <tr>
+        <th  style="width:25%;"><%=t(:text_product)%></th>
+        <th  style="width:25%;"><%=t(:text_product_purchase_date)%></th>
+        <th  style="width:25%;"><%=t(:text_no_of_licences)%></th>
+        <th  style="width:10%;"><%=t(:text_price)%></th>
+        <th  style="text-align: right; width:13%;"><%=t(:text_total_amount)%></th>
+        <th  style="width:2%;"></th>
+      </tr>
+      <%if @emp_bill_records.blank? %>
+        <%assets = controller.controller_name%>
+        <%asset = assets.singularize%>
+        <tr><td colspan="6"><div class="warningCont m5"><%=t(:text_no_records_found)%></div></td></tr>
+      <% else %>
+        <% @emp_bill_records.each do |record| %>
+          <tr class="<%=cycle("bg1", "bg2")%>">
+            <td style="width:25%;"><%= record.product.name %></td>
+            <td style="width:25%;"><%= livia_date(record.product_purchase_date) %></td>
+            <td style="width:25%;"><%= record[:count].to_int %></td>
+            <td style="width:10%;"><%= record[:cost] %></td>
+            <td style="text-align: right; width:13%;"><%= record[:total_amount] %></td>
+            <td style="width:2%;"></td>
+          </tr>
+        <%end%>
+        <tr><td colspan="6" align="right"><%=t(:text_total_amount)%> <%= @opts[:total_amount] %></td></tr>
+        <tr><td colspan="6">&nbsp;</td></tr>
+        <tr><td colspan="6" align="right" class="pr5"><%=will_paginate @emp_bill_records%><%=raw page_entries_info @emp_bill_records %></td></tr>
+        <tr><td colspan="6">&nbsp;</td></tr>
+      <%end%>
+    </table>
+  </div>
+  <br/>
+  <%unless @emp_bill_records.blank? %>
+    <% unless @payments.blank? %>
+      <%=render :partial => "/payments/show_payment_records",:locals=>{:invoice_id=>@invoice_id, :payments=>@payments}%>
+    <% end %>
+    <%if @invoice_status.to_s != "Paid" && @invoice_status.to_s != "N/A"%>
+      <div><a href="javascript:display_div('#enable_payment')"  class="linkbutton" ><%=t(:text_make_a_payment)%></a></div>
+    <% end %>
+    <div id="enable_payment" style="display: none"><%=render :partial => "/payments/form_for_payment",:locals=>{:invoice_id=>@invoice_id}%></div>
+  <% end %>
+</div>  
+<div class="buttons"><%= link_to t(:label_back), {:action => 'index'}, :class => "button" %></div>

@@ -1,0 +1,37 @@
+<script type="text/javascript">  
+  var matter_id = jQuery("#matter_id").val();
+  var create_task_url = '/matter_tasks/create_matter_task_form'
+  function submit_form() {
+    var note_id = jQuery("#note_id").val();
+    create_task_thickbox('Create Task',create_task_url,note_id,matter_id);
+  }
+</script>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div style="margin-top:20px;">
+  <%= hidden_field_tag 'note_id',params[:id]%>
+  <table width="100%">
+    <tr>
+      <td><label>Select Matter</label></td>
+      <td><%=collection_select("matter","id", @team_matters, :id, :clipped_name, {}, {:style=>"width:150px", :onchange => "matter_id = this.value;"})%></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <div class="buttonSub_div">
+          <%= submit_tag "Create", :id => "matter_select_submit", :onclick=>"submit_form(); disabling_btns();"%>
+          <input type="submit" value="Cancel" onclick="parent.tb_remove(); return false" class="button" />
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<br />
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;13</div>
+<script type="text/javascript" >
+  // Need to removed to JS File
+  function disabling_btns(){
+    jQuery('#matter_select_submit').val('Please wait...');
+    jQuery('#matter_select_submit').attr("disabled", "disabled");
+    jQuery('#matter_id').attr("disabled", "disabled");
+    jQuery('#loader').show();
+  }
+</script>

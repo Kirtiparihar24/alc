@@ -1,0 +1,16 @@
+<ul class="jqueryFileTree" style="display: none;">
+  <%if  @all_folders.length > 0%>
+    <% @all_folders.each do |folder| %>
+      <li class="directory collapsed">
+        <% count = folder.children.count %>
+        <% if count  > 0 %>
+          <a href="#" rel="<%= folder.id%>/" onclick="GetFoldersListMatter('<%=folder.id%>','<%= params.has_key?(:update_list) ? false : true %>',this,'<%= @matter.id %>');return false;" style="width:auto"><span class="icon_expand_folder mr5 mt3 fl" ></span><%= escape_javascript(h(folder.name)) %></a>
+        <% else %>
+          <a href="#" rel="<%= folder.id%>/" onclick="GetFoldersListMatter('<%=folder.id%>','<%= params.has_key?(:update_list) ? false : true %>',this,'<%= @matter.id %>');return false;" style="width:auto"><span class="icon_folder_01 mr5 mt3 fl" ></span><%= escape_javascript(h(folder.name)) %></a>
+        <% end%>
+      </li>
+    <%end%>
+  <%else%>
+    <li class="collapsed"><i>No Subfolders Present</i></li>
+  <%end%>
+</ul>

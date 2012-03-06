@@ -1,0 +1,85 @@
+.calender{width:90%; border: 1px solid #596269; text-align:center; margin:0px auto;}
+.calender  table {
+	margin:0px auto;
+}
+.calender table th{
+	background:url(../images/livia_calendar/cal_h1_bg.jpg) repeat-x left bottom;
+	font-size:18px;
+	font-weight:normal;
+	line-height:25px;
+	height:100%;
+	vertical-align:top;
+	border-bottom:1px solid #636363;
+	}
+.calender table th a{color:#FFF; text-decoration:none;}
+.calender table th img, .calender table th img{border:none; margin:0px 20px;}
+.calender table th.weekC, .calender table td.weekC
+	{
+	background:#828b9a url(../images/livia_calendar/cal_h1_bg.jpg) repeat-x left bottom;
+	color:#FFF;
+	font-size:18px;
+	font-weight:bold;
+	padding:1px;
+	line-height:28px;
+	text-align:center;
+	border:1px solid #636363;
+	border-top:none;
+	border-right:none;
+	Width:17%;
+	}
+.calender table td.weekC{background:#828b9a url(../images/livia_calendar/cal_h1_bg.jpg) repeat-x left top;}
+.calender table th.bgh2
+	{
+	background: url(../images/livia_calendar/cal_h2_bg.jpg) repeat-x left top;
+	}
+.calender table th h1
+	{
+	background:#f1f1f1 url(../images/livia_calendar/cal_h2_bg.jpg) repeat-x left bottom;
+	font-size:22px;
+  line-height:45px;
+	padding:0; margin:0;
+	border:none;
+	}
+.calender table th h1 span{margin:0 0 0 18%;}
+.calender table th h1 span a{color:#383f49; text-decoration:none;}
+.calender table td{
+	background:#e5eefb url(../images/livia_calendar/cal_td_hover_bg.gif) repeat-x left bottom;
+	height:78px;
+	font-size:18px;
+	font-weight:bold;
+	text-align:center;
+	border:1px solid #636363;
+	border-top:none;
+	border-right:none;
+	vertical-align:top;
+	Width:8.5%;
+	}
+.calender table td:hover{background:#cad3de url(../images/livia_calendar/cal_td_bg.gif) repeat-x left bottom;}
+.calender table td.weekC:hover{background:#828b9a;}
+.calender table td a{color: #383f49; text-decoration:none; line-height:35px;}
+.calender table td.hide a{ color:#969a9d;}
+.calender table td.today{
+	background:#1d9ee4 url(../images/livia_calendar/cal_td_today_bg.gif) repeat-x left bottom;
+	color: #FFFFFF;
+	font-size:18px;
+	font-weight:bold;
+	text-align:center;
+	border:1px solid #2e3444;
+	}
+.calender table td.today a{color:#ffffff;} 
+.calender table td .time, .calender table th h1 .rightDiv .time{  color:#1d568f; font-size:11px; font-weight:bold; text-align:center; padding:0; margin:0 0 0 5px; line-height:normal;}
+.calender table td .billed, .calender table th h1 .rightDiv .billed{ color:#075668; font-size:11px; font-weight:bold; text-align:center; padding:0; margin:0 0 0 5px; line-height:normal;}
+.calender table td.weekC .time{color:#FFFFFF; text-align:left;  }
+.calender table td.weekC .billed{color:#FFFFFF ; text-align:left;  }
+.calender table td.today .time, .calender table td.today .billed{color:#ffffff;}
+.calender table th h1 .rightDiv .time , .calender table th h1 .rightDiv .billed{font-size:11px; font-weight:bold; text-align:right; padding:0; margin:0; line-height:14px;}
+.calender table th .rightDiv
+	{
+	font-size:12px;
+	font-weight:bold;
+	line-height:18px;
+	color:#2e8be6;
+	text-align:right;
+	margin:0 5px 0 0;  
+	}
+

@@ -1,0 +1,12 @@
+<%if current_user.role?:livia_admin%>
+  <div id="topheadContainer">
+    <div class="title fl"><%= @company.name unless session[:company_id].blank?%></div>
+    <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+      <% if @type.present? %>
+        <%=collection_select :company,:id, @companies,:id,:name_type,{:include_blank => 'Please Select',:selected=>session[:company_id].blank? ?nil:session[:company_id].to_i}, {:onchange=>"list_company_utility(this.value, '#{@type}')" ,:class=>"field size3"}%>
+      <%else%>
+        <%=collection_select :employee,:company_id,@companies,:id,:name_type,{:include_blank => 'Please select', :selected=> session[:company_id].blank? ? nil : session[:company_id].to_i},{:onChange => "fetch_records_for_company(this.value, '#{params[:action]}')", :class=>"field size3"}%>
+      <% end %>
+    </div>
+  </div>
+<%end%>

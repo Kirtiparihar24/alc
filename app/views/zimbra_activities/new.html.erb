@@ -1,0 +1,92 @@
+<h1>New zimbra_activity</h1>
+
+<% form_for(@zimbra_activity) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :category %><br />
+    <%= f.text_field :category %>
+  </p>
+  <p>
+    <%= f.label :zimbra_folder_location %><br />
+    <%= f.text_field :zimbra_folder_location %>
+  </p>
+  <p>
+    <%= f.label :assigned_to_user_id %><br />
+    <%= f.text_field :assigned_to_user_id %>
+  </p>
+  <p>
+    <%= f.label :zimbra_id %><br />
+    <%= f.text_field :zimbra_id %>
+  </p>
+  <p>
+    <%= f.label :zimbra_status %><br />
+    <%= f.check_box :zimbra_status %>
+  </p>
+  <p>
+    <%= f.label :reminder %><br />
+    <%= f.text_field :reminder %>
+  </p>
+  <p>
+    <%= f.label :location %><br />
+    <%= f.text_area :location %>
+  </p>
+  <p>
+    <%= f.label :attendees_email %><br />
+    <%= f.text_area :attendees_email %>
+  </p>
+  <p>
+    <%= f.label :response %><br />
+    <%= f.check_box :response %>
+  </p>
+  <p>
+    <%= f.label :notify %><br />
+    <%= f.check_box :notify %>
+  </p>
+  <p>
+    <%= f.label :show_as %><br />
+    <%= f.text_field :show_as %>
+  </p>
+  <p>
+    <%= f.label :mark_as %><br />
+    <%= f.text_field :mark_as %>
+  </p>
+  <p>
+    <%= f.label :start_date %><br />
+    <%= f.datetime_select :start_date %>
+  </p>
+  <p>
+    <%= f.label :end_date %><br />
+    <%= f.datetime_select :end_date %>
+  </p>
+  <p>
+    <%= f.label :all_day %><br />
+    <%= f.check_box :all_day %>
+  </p>
+  <p>
+    <%= f.label :exception_status %><br />
+    <%= f.check_box :exception_status %>
+  </p>
+  <p>
+    <%= f.label :exception_parent_id %><br />
+    <%= f.text_field :exception_parent_id %>
+  </p>
+  <p>
+    <%= f.label :exception_start_date %><br />
+    <%= f.datetime_select :exception_start_date %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', zimbra_activities_path %>
+  <%# Need to check this view if in use %>

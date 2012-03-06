@@ -1,0 +1,36 @@
+<% prd_id = ''
+product_dependent ||= [] %>
+<div class="mid-box-head"><h2 class="left">Product Pricing</h2></div>
+<div class="form">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="31%" align="left" valign="top"><%=t(:text_product)%></th>
+      <th width="22%" align="left" valign="top"><%=t(:text_qty)%></th>
+      <th width="22%" align="left" valign="top"><%=t(:text_price_per_licence)%></th>
+      <th width="25%" align="left" valign="top"><%=t(:text_total_price)%></th>
+    </tr>
+    <tr><td colspan="4"></td></tr>
+    <%total = 0%>
+    <%product_dependent.each do |depprd| %>
+      <%total += depprd[0].cost %>
+      <tr>
+        <td align="left" valign="top"><strong><%= depprd[0].name %></strong><%= !depprd[1].nil? ? " (#{depprd[1].to_s})" : ''  %></td>
+        <td align="left" valign="top"><%= text_field_tag "product_licence_#{depprd[0].id}[qty]", 1, :size => "1",:class=>"field size2" %></td>
+        <td align="left" valign="top"><%= text_field_tag "product_licence_#{depprd[0].id}[price]", depprd[0].cost, :size => "2",:class=>"field size2" %></td>
+        <td align="left" valign="top"><%= text_field_tag "product_licence_#{depprd[0].id}[cost]", depprd[0].cost, :size => "2", :readonly => true %> <%= button_to_function t(:label_update), "update_product_price(#{depprd[0].id})", :class => 'button' %>
+        </td>
+      </tr>
+      <tr class="bg2">
+        <td colspan="4">
+          <%=t(:text_info)%>&nbsp;<%= depprd[0].description %>
+          <% prd_id = prd_id + "," + depprd[0].id.to_s %>
+        </td>
+      </tr>
+    <%end%>
+    <tr><td colspan="4">&nbsp;<%= hidden_field_tag "product_licence_id", prd_id%></td></tr>
+    <tr>
+      <td colspan="3" align="right"><strong><%=t(:text_total)%></strong></td>
+      <td><%= text_field_tag "product_licence[total]", total, :size => "2", :readonly => true %></td>
+    </tr>
+  </table>
+</div>

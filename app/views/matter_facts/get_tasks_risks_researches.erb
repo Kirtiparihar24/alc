@@ -1,0 +1,42 @@
+<!--
+Added for the Feature #7512 - Link task risk issue fact - all to all
+Added by Shripad
+Used of this page is for mapping activites, risks, researches from action pad
+-->
+
+<div style="text-align:center;margin-top:10px;">
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <!--Tabular container div @start here -->
+  <% unless @col.empty? %>
+    <% form_for :matter_fact,@matter_fact,:url=>{:controller => "matter_facts" ,:action => :assign_tasks_risks_researches,:matter_id => @matter.id,:id => @matter_fact.id},:html =>{:method => :post, :onsubmit => "return disableWithPleaseWait('issue_linkage', true, '')" } do |f| %>
+      <%= hidden_field_tag "dynamic_ids",params[:col_type_ids]  %>
+      <div class="tabular_listing">
+        <table width="100%" cellpadding="1" cellspacing="1" class="form_table" style="border-collapse: separate;">
+          <tr>
+            <th width="80%" align="left"><%=params[:label]%></th>
+            <th width="15%" align="left"><%=params[:label]=="Activities" ? "Critical" : (params[:label]=="Risk" ? "Is Material" : "Is Internal" )%></th>
+            <th width="5%" align="left">&nbsp;</th>
+          </tr>
+          <%
+          method = params[:label]=="Activities" ? "critical" : (params[:label]=="Risk" ? "is_material" :  "is_internal")
+          @col.each do |e|
+          %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td align="left"><%= truncate_hover(e.name, 70) %></td>
+              <td align="left"><%=e.send(method) ? "Yes" : "No"%></td>
+              <td align="left"><%= check_box_tag "matter_fact[#{params[:col_type_ids]}][]", e.id, @col_ids.include?(e.id) %></td>
+              <%=hidden_field_tag :col_typ, @label%>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <br class="clear"/>
+      <%= f.submit "Link" , :id => "issue_linkage", :class=> "button", :onclick => " return checkloader();"%>
+      <input type="button" class="matters" id="Login2" value="Cancel" onclick="tb_remove();disableAllSubmitButtons('matters');" />
+    <%end%>
+  <% else %>
+    <div class="warningCont m5">No <%=@label.pluralize%> found for this matter</div>
+  <% end %>
+  <!--Tabular container div #ends here -->
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;53 </div>

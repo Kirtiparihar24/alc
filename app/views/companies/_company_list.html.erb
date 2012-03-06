@@ -1,0 +1,9 @@
+<div class="small-nav"> <a href="#">Dashboard</a> <span>&gt;</span> Current Articles </div>
+<div id="topheadContainer">
+  <div class="title fl"><%= @company.name if @company%> </div>
+  <%if current_user.role?:livia_admin%>
+    <div id="searchContainer" class="fr"> Select Company :
+      <%=collection_select :company,:id,@companies,:id,:name_type,{:include_blank => 'Please Select',:selected=>session[:company_id].blank? ?nil:session[:company_id].to_i}, {:onchange=>"update_page_with_company(this.value, '#{matter_documents_companies_path}')" ,:class=>"field size3"}%>
+    </div>
+  <%end%>
+</div>

@@ -1,0 +1,35 @@
+<div id="billed_amount_<%=saved_entry.id%>" align="right"><span ><%= livia_amount(saved_entry.calculate_billed_amount)%></span></div>
+<div class="w100" id="billing_options_for_entry_<%=saved_entry.id%>" style="display:<%= saved_entry.is_billable ? '' : 'none' %>">
+  <%
+  onblur_method = ""
+  case  saved_entry.billing_method_type
+  when 1
+    adjustment = saved_entry.calculate_billed_amount
+  when 2
+    adjustment = saved_entry.billing_percent
+    onblur_method ="updateTimeUtilities(this,'time_entries','set_time_entry_billing_percent',#{saved_entry.id})" if is_open
+  when 3
+    adjustment = saved_entry.final_billed_amount
+    onblur_method ="updateTimeUtilities(this,'time_entries','set_time_entry_billing_amount',#{saved_entry.id})" if is_open
+  when 4
+    adjustment = saved_entry.markup
+  end %>  
+  <%= hidden_field_tag "hidden_billing_adjustment",saved_entry.final_billed_amount,:id=>"hidden_billing_adjustment_#{saved_entry.id}",:name=>saved_entry.billing_method_type%>
+  <%= hidden_field_tag "hidden_billing_full_amount",saved_entry.calculate_billed_amount,:id=>"hidden_billing_full_amount_#{saved_entry.id}",:name=>saved_entry.billing_method_type%>
+  <table id="<%=saved_entry%>_adjustment_table"width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td></td>
+        <td align="right"></td>
+      </tr>
+      <tr>
+        <td width="82%" align="left" style="margin:0;padding:0">
+          <%=dynamic_select("#{saved_entry.id}[saved_entry]","billing_method_type",'time_entries',{:selected=>saved_entry.billing_method_type},{:class=>"w75select time_entry_inline_edit", :disabled=> !is_open })%>
+        </td>
+        <td width="18%" align="right" style="margin:0;padding:0;">
+          <%= text_field_tag "show_full_amount", '',:size => 8 ,:maxlength=>5,:id=>"#{saved_entry.id}_show_amount", :value=>number_with_lformat(adjustment),:disabled=> !is_open ,:style=>"text-align: right;",:onkeypress=>"if(event.keyCode==13){return false}",:onblur=> is_open ? onblur_method : "" %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

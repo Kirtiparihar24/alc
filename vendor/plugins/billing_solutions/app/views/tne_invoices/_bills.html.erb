@@ -1,0 +1,32 @@
+<table width="100%" cellspacing="1" cellpadding="1" class="border_gray" id="invoice_table">
+  <tr id="invoice_heading">
+    <%view=params[:mode_type].eql?('client') ? 'presales' : 'postsales'%>
+    <%= column_sort_link('Type', "type", params[:col], "5%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link(t(:text_invoice_no), "bill_no", params[:col], "11%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link('Matter ID', "matters.matter_no", params[:col], "10%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link('Matter', "matters.name", params[:col], "16%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link(t(:text_contact), "contacts.last_name", params[:col], "15%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link(t(:text_invoice_amount), "bill_amount", params[:col], "11%", "right", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <th width="14%" align="right">Balance</th>
+    <%= column_sort_link('Invoice Date', "bill_pay_date", params[:col], "6%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link('Due Date', "bill_due_date", params[:col], "6%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link('Status', "company_lookups.alvalue", params[:col], "6%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=> params[:letter], :per_page => params[:per_page]}) %>
+    <%unless params[:status]=='Settled'%>
+      <th width="5%">Actions</th>
+    <%end%>
+  </tr>
+  <% unless result.empty? %>
+    <% result.each do |bill| %>
+      <tr class="<%= cycle('bg1','bg2') %>" id ="bill_<%=bill.id%>">
+        <%= render :partial=>"bill_row" ,:locals=>{:bill => bill, :view=>view} %>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="9">
+        <div class="warningCont m5"><%= t(:text_no_bills_found) %> </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<div class="mandatory mt12 mb8">&nbsp;<div class="icon_manual" style="display:inline;padding-right:16px;padding-bottom:5px;"></div>:- <%= t(:text_manual)%>, <div class="icon_system" style="display: inline; padding-right: 16px;padding-bottom:5px;"></div>:- <%= t(:text_system)%></div>

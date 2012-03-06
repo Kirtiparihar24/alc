@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl">New Task Type</div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:task_type,@task_types, :url => company_task_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f, :modelclass => "task_types",
+    :select_modal_text => "Task Type", :modal_text => "Task Type",
+    :all_modal_values => @company.task_types.collect{|task|[task.lvalue]}.uniq } %>
+<%end%>
+<br class="clear"/>

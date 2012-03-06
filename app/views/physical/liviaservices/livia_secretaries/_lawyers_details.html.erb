@@ -1,0 +1,26 @@
+<div class="col1">
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_list_of_lawyer_s)%></div>
+    <div class="gryBox">
+      <div class="txtC p5">
+        <input class="textBoxNew w120" size="16" id="lawyer_search_query" title="Search" />
+        <a href="#" onClick="return searchLawyer();"><img src="/images/icon_sml_search.gif" border="0" align="bottom" alt="<%=t(:label_search)%>" title="<%=t(:label_search)%>" /></a></div>
+      <div>
+        <div>
+          <ul class="userList" id="searched_lawyers">
+            <%if @service_provider_employee_mappings.length == 0%>
+              <li class="warningCont m5"><%=t(:text_no_lawyer_assigned)%></li>
+            <% else %>
+              <%@service_provider_employee_mappings.each do |assignment|%>
+                <li class="<%= cycle("bg1", "bg2") -%>">
+                  <%= link_to(assignment.user.try(:full_name),{:controller=>"/physical/liviaservices/verification/#{assignment.id}"},:id=>"faceboxlawdet")%>
+                </li>
+              <%end%>
+            <%end%>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <br class="clear" />
+  </div>
+</div>

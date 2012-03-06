@@ -1,0 +1,2 @@
+module Company::TaskTypesHelper
+end

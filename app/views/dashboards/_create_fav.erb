@@ -1,0 +1,17 @@
+<div class="mt2 bg1 border_gray p4">
+  <h3 class="title_gray"><%= t(:text_add_to_favorite) %></h3>
+  <div id="nameerror" style="display:none"></div>
+  <% form_remote_tag :url => {:action => :create_favourite} ,:method=>:post do  -%>
+    <%= hidden_field_tag "id",params[:id] %>
+  <table width="100%">
+    <tr>
+      <td width="20%"><label><%=t(:label_dashboard_name)%><span class="alert_message">*</span></label></td>
+      <td width="37%"><%=text_field_tag "favorite_title", "", :maxlength => 60 %></td>
+      <td width="38%">
+        <%= submit_tag t(:label_add_to_favorite), :class=>"button",:onclick=>"return validate_dashboard_name();" %>
+        <input type=button value="Cancel" class="button" onclick="jQuery.facebox.close()" />
+        </td>
+    </tr>
+  </table>
+  <% end %>
+</div>

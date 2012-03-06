@@ -1,0 +1,42 @@
+<div id="sidebar">
+  <div class="box">
+    <div class="box-head">
+      <h2>Application Form</h2>
+    </div>
+    <div class="box-content">
+      <div class="side-nav">
+        <ul>
+          <% utility_type = @type %>
+          <%matterview = (utility_type.ends_with?("task_types") || utility_type.ends_with?("appointment_types") || utility_type.ends_with?("roles") || utility_type.eql?("matter_statuses") || utility_type.eql?("matter_fact_types"))%>
+          <%if matterview %>
+            <li><%= link_to "Client Roles", manage_company_utilities_path('client_roles'), :class => "#{"selected" if utility_type.eql?('client_roles')}" %></li>
+            <li><%= link_to "Team Roles", manage_company_utilities_path(:type=>'team_roles',:linkage=>'matter_peoples'), :class => "#{"selected" if utility_type.eql?('team_roles')}" %></li>
+            <li><%= link_to "Matter Status", manage_company_utilities_path('matter_statuses'), :class => "#{"selected" if utility_type.eql?('matter_statuses')}" %></li>
+            <li><%= link_to "Matter Fact Type", manage_company_utilities_path(:type=>'matter_fact_types',:linkage=>'matter_fact_types'), :class => "#{"selected" if utility_type.eql?('matter_fact_types')}" %></li>
+          <%else%>
+            <li><%= link_to "Contact Stages", manage_company_utilities_path(:type=>'contact_stages',:linkage=>'contacts'), :class => "#{"selected" if utility_type.eql?('contact_stages')}" %></li>
+            <li><%= link_to "Matter Privileges", manage_company_utilities_path('matter_privileges'), :class => "#{"selected" if utility_type.eql?('matter_privileges')}" %></li>
+            <li><%= link_to "Opportunity Stage Types", manage_company_utilities_path('opportunity_stage_types'), :class => "#{"selected" if utility_type.eql?('opportunity_stage_types')}" %></li>
+            <li><%= link_to "Source", manage_company_utilities_path('company_sources',:linkage=>'contacts-opportunities'), :class => "#{"selected" if utility_type.eql?('company_sources')}" %></li>
+            <li><%= link_to "Phase", manage_company_utilities_path(:type=>'phases',:linkage=>'matters-documents-matter_tasks'), :class => "#{"selected" if utility_type.eql?('phases')}" %></li>
+            <li><%= link_to "Litigation", manage_company_utilities_path(:type=>'liti_types',:linkage=>'matters'), :class => "#{"selected" if utility_type.eql?('liti_types')}" %></li>
+            <li><%= link_to "Non Litigation", manage_company_utilities_path(:type=>'nonliti_types',:linkage=>'matters'), :class => "#{"selected" if utility_type.eql?('nonliti_types')}" %></li>
+            <li><%= link_to "Document/Matter Fact Sources", manage_company_utilities_path(:type=>'doc_sources',:linkage=>'documents-matter_facts'), :class => "#{"selected" if utility_type.eql?('doc_sources')}" %></li>
+            <li><%= link_to "Activity Types", manage_company_utilities_path(:type=>'company_activity_types',:linkage=>'time_entries-matter_tasks-employee_activity_rates'), :class => "#{"selected" if utility_type.eql?('company_activity_types')}" %></li>
+            <li><%= link_to "Expense Types", manage_company_utilities_path(:type=>'expense_types',:linkage=>'time_expenses'), :class => "#{"selected" if utility_type.eql?('expense_types')}" %></li>
+            <li><%= link_to "Research Types", manage_company_utilities_path(:type=>'research_types',:linkage=>'matter_researches'), :class => "#{"selected" if utility_type.eql?('research_types')}" %></li>
+            <li><%= link_to "Rating Type", manage_company_utilities_path('rating_type'), :class => "#{"selected" if utility_type.eql?('rating_type')}" %></li>
+            <li><%= link_to "Campaign Member Status Type", manage_company_utilities_path('campaign_member_status_types'), :class => "#{"selected" if utility_type.eql?('campaign_member_status_types')}" %></li>
+            <li><%= link_to "Campaign Status Type", manage_company_utilities_path('campaign_status_types'), :class => "#{"selected" if utility_type.eql?('campaign_status_types')}" %></li>
+            <li><%= link_to "Document Type", manage_company_utilities_path(:type=>'document_types',:linkage=>'documents-links'), :class => "#{"selected" if utility_type.eql?('document_types')}" %></li>
+            <li><%= link_to "Salutation Type", manage_company_utilities_path(:type=>'salutation_types',:linkage=>'contacts'), :class => "#{"selected" if utility_type.eql?('salutation_types')}" %></li>
+            <li><%= link_to "Invoice Status", manage_company_utilities_path('tne_invoice_statuses'), :class => "#{"selected" if utility_type.eql?('tne_invoice_statuses')}" %></li>
+            <li><%= link_to "Trust Type", manage_company_utilities_path('trust_types',:linkage=>'trust_types'), :class => "#{"selected" if utility_type.eql?('trust_types')}" %></li>
+            <li><%= link_to "Approval Status", manage_company_utilities_path('approval_statuses'), :class => "#{"selected" if utility_type.eql?('approval_statuses')}" %></li>
+            <li><%= link_to "Transaction Status", manage_company_utilities_path('transaction_statuses'), :class => "#{"selected" if utility_type.eql?('transaction_statuses')}" %></li>
+		 <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

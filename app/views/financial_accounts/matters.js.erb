@@ -1,0 +1,7 @@
+jQuery('#financial_account_matter_sphinx_search').val('');
+jQuery('#financial_account_matter_id').val("");
+<% if @matters.size > 0 %>
+  jQuery('#is_matter_list').val("yes");
+<% end %>
+jQuery('#financial_account_matter_sphinx_search').hide();
+jQuery('#matter_search_div').html("<%=escape_javascript(render(:partial => 'select_matters'))%>");

@@ -1,0 +1,1 @@
+<%= select 'work_subtype','work_type_id', options_for_select(@work_types.collect{ |worktype| [worktype.name, worktype.id]}), {:include_blank => 'Please Select'} %>

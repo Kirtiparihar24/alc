@@ -1,0 +1,1 @@
+jQuery('<%=@form_span_id%>').html("<%=escape_javascript(render(:partial => 'select_new_matters', :locals => {:matters => @matters, :matter_id => @matter_id, :form_contact_field => @form_contact_field}))%>")

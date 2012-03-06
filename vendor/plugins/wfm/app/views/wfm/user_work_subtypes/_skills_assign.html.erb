@@ -1,0 +1,67 @@
+<div class="row">
+  <label><%= get_category_name %> Work Types:</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" >
+      &nbsp;
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <label>&nbsp;</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" >
+      <%for fowt in @front_office_worktypes%>
+      <span onclick="toggle_work_subtypes_span('<%=fowt.id%>')">
+        <img alt="plus" src="/images/icon_plus.gif" id="<%=fowt.id%>_worktype_plus"/>
+        <img alt="plus" src="/images/icon_minus.gif" id="<%=fowt.id%>_worktype_minus" style="display: none;"/>
+        <%=fowt.name%>
+      </span><br/>
+      <span id="work_type_<%=fowt.id%>_work_subtypes" style="display: none;">
+        <%unless fowt.work_subtypes.blank?%>
+          <span style="margin-left: 10px;">
+            <%= check_box_tag "work_type_"+fowt.id.to_s+"_work_subtype" , "work_type_"+fowt.id.to_s+"_work_subtype", false, :onclick =>"toggleCheckboxes('work_type_'+#{fowt.id.to_s}+'_work_subtype',this.checked);"%> Select All
+          </span><br/>
+        <%end%>
+        <%for work_subtype in fowt.work_subtypes %>
+          <span style="margin-left: 10px;">
+            <%=check_box_tag "work_subtype_ids[]", work_subtype.id, @work_subtypes.include?(work_subtype), :class=>"work_type_"+fowt.id.to_s+"_work_subtype"%>&nbsp;<%=work_subtype.name%>
+          </span><br/>
+        <%end%>
+      </span><br/>
+      <%end%>
+    </span>
+  </div>
+</div>
+
+<div class="row" >
+  <label>Back Office Work Types:</label>
+  <div class="inputs">
+    &nbsp;
+  </div>
+</div>
+
+<div class="row">
+  <label>&nbsp;</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" >
+      <%for bowt in @back_office_worktypes%>
+        <span onclick="toggle_work_subtypes_span('<%=bowt.id%>')">
+          <img alt="plus" src="/images/icon_plus.gif" id="<%=bowt.id%>_worktype_plus"/>
+          <img alt="plus" src="/images/icon_minus.gif" id="<%=bowt.id%>_worktype_minus" style="display: none;"/>
+          <%=bowt.name%>
+        </span><br/>
+        <span id="work_type_<%=bowt.id%>_work_subtypes" style="display: none;">
+          <%unless bowt.work_subtypes.blank?%>
+            <span style="margin-left: 10px;">
+              <%= check_box_tag "work_type_"+bowt.id.to_s+"_work_subtype" , "work_type_"+bowt.id.to_s+"_work_subtype", false, :onclick =>"toggleCheckboxes('work_type_'+#{bowt.id.to_s}+'_work_subtype',this.checked);"%> Select All
+            </span><br/>
+          <%end%>
+          <%for work_subtype in bowt.work_subtypes %>
+            <span style="margin-left: 10px;"><%=check_box_tag "work_subtype_ids[]", work_subtype.id, @work_subtypes.include?(work_subtype), :class=>"work_type_"+bowt.id.to_s+"_work_subtype"%>&nbsp;<%=work_subtype.name%></span><br/>
+          <%end%>
+        </span><br/>
+      <%end%>
+    </span>
+  </div>
+</div>

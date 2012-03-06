@@ -1,0 +1,54 @@
+<%if @valid%>
+  <div class="section_content">
+    <% remote_form_for :note, :before=>'loader.appendTo("#loader_img");',:url=>assign_multiple_notes_wfm_notes_path, :html=>{:class=>"search_form general_form"}, :loading=>"return disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable','Assign');" do |f| %>
+      <%=hidden_field_tag :note_ids, @note_ids.join(',')%>
+      <div id="modal_new_task_errors" class=""></div>
+      <div id="loader_img"></div>
+        <div class="forms">
+          <div class="row">
+            <table border="0" width="100%" style="float:left;">
+              <tr>
+                <th>Note</th><th>Assigned To</th>
+              </tr>
+              <% @notes.each do |note| %>
+                <tr>
+                  <td><%= truncate(h(note.description),:length => 50) %>
+                  </td>
+                  <td><%= note.assigned_to.full_name if note.assigned_to %></td>
+                </tr>
+              <% end %>
+            </table>
+          </div>
+          <div class="row"></div>
+          <div class="row">
+            <div class="fl w21"><input class="radio" name="user_type" value="ClusterUsers" type="radio" onclick="update_assign_note_user_select('cluster_users','<%=@note_ids.join(',')%>');" checked/><span class="radio_text" style="float:right;">Cluster Users</span></div>
+            <div class="fl ml8" style="width:26%;"><input class="radio" name="user_type" value="CommonPoolAgent" type="radio"  onclick="update_assign_note_user_select('cpa','<%=@note_ids.join(',')%>');"/><span class="radio_text" style="padding:0 33px 0 0;float:right;">Common Pool Agent</span></div>
+            <div class="fl ml8" style="width:26%;"><input class="radio" name="user_type" value="BackOfficeAgent" type="radio"  onclick="update_assign_note_user_select('back_office_user','<%=@note_ids.join(',')%>');"/><span class="radio_text" style="padding:0 33px 0 0;float:right;">BO Agent</span></div>
+          </div>
+          <div class="row">
+            <label>User <span id="mandatory">*</span> </label>
+              <span class="input_wrapper blank" id="users_select">
+                <%=custom_select_tag 'note[assigned_to_user_id]', options_for_select(@livian_users,{:selected=>current_user.id,:disabled=>""}), {:prompt=>"Please Select"}%>
+              </span>
+          </div>
+          <div class="row">
+            <label>Comment <span id="mandatory">*</span> </label>
+            <span class="input_wrapper textarea_wrapper">
+              <textarea name="comment" cols="10" rows="8" class="text "></textarea>
+            </span>
+          </div>
+          <div class="button_div">
+            <span class="button send_form_btn buttons_to_disable"><span><span id="button_pressed">Assign</span></span><input type="submit" name=""/></span>
+            <span class="button send_form_btn ml10 buttons_to_disable" onclick="tb_remove();"><span><span>Cancel</span></span><input type="button" name=""/></span>
+            <br class="clear" />
+          </div>
+        </div>
+    <%end%>
+  </div>
+<%end%>
+<script type="text/javascript">
+  <% unless @valid %>
+      tb_remove();
+      alert("Please select notes from same cluster.");
+  <%end%>
+</script>

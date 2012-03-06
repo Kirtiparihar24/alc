@@ -1,0 +1,47 @@
+<div class="calenderDiv_tabular">
+  <table width="100%" cellpadding="0" cellspacing="0" class="calenderDiv_tabular">
+    <tr>
+      <% unless matter_or_people %><th width="27%" align="left">Matter Name </th><% end %>
+      <th width="35%" align="left">Task Name</th>
+      <% if matter_or_people %><th width="27%" align="left">Assign To</th><% end %>
+      <th width="8%" align="center" class="date">Start Date</th>
+      <th width="8%" align="center" class="date">Due Date</th>
+      <th width="8%" align="center">Completion Date</th>
+      <th width="9%" align="left">Status</th>
+      <th width="5%" align="center"> </th>
+    </tr>    
+  </table>
+  <table width="100%" cellpadding="0" cellspacing="1" class="calenderDiv_tabular">
+    <% if !col.blank? && col.size>0 %>
+      <% col.each_with_index do |app, index| %>
+        <% activity = app[:activity] %>
+        <%matterid, mattername, assignedto = activity.attribute_present?("matter_id"), nil, nil %>
+        <%if matterid%>
+          <% mattername = app[:activity_matter_name] unless matter_or_people %>
+          <% assignedto = activity.lawyer_name.blank? ? activity.assigned_to_name : activity.lawyer_name %>
+          <% status = matter_task_completion_status(activity) %>
+        <%else%>
+          <% assignedto = activity.user_name %>
+          <% status = activities_completion_status(activity) %>
+        <%end%>
+        <% has_access = action_pad_and_link_blocking(activity)%>
+        <tr class="<%= cycle('bg7', 'bg8') %>">
+          <% unless matter_or_people %><td width="27%"> <%= h(mattername) %></td><% end %>
+          <td width="35%"><%= CGI.unescape(activity_description_with_hash(app, 1, "newtooltip", false, false, false)) %></td>
+          <% if matter_or_people %><td width="27%"><%= h(assignedto) %></td><% end %>
+          <td width="8%" align="center"><%= activity.start_date.to_date %></td>
+          <td width="8%" align="center"><%= activity.end_date.to_date %></td>
+          <td width="8%" align="left"> </td>
+          <td width="9%" align="left"> <%= status %></td>
+          <% if has_access[0] %>
+            <td width="5%" align="center"> <%= task_action_pad(activity, matterid) if has_access[2] %></td>
+          <% else %>
+            <td width="5%" align="center"></td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="7" class="bg7">No Data Found </td></tr>
+    <% end %>
+  </table>
+</div>

@@ -1,0 +1,32 @@
+<div class="box_title">Custom Fields</div>
+<div class="cust_fields_text"> Click on the Copy Button against the Names to copy the tags</div>
+<div class="liquid-1">     
+  <div class="label-box cmpgn_custm">
+   
+    <span>Personal Details</span>
+
+    <ul class="li-breather" style ="list-style:none;">
+      <li><label>Salutation</label> <%= clippy("{{contact.salutation}}") %></li>
+      <li><label>First Name</label> <%= clippy("{{contact.first_name}}") %></li>
+      <li><label>Middle Name</label> <%= clippy("{{contact.middle_name}}") %></li>
+      <li><label>Last Name</label> <%= clippy("{{contact.last_name}}") %></li>
+      <li><label>Nickname</label> <%= clippy("{{contact.nickname}}") %></li>
+      <li><label>Title</label> <%= clippy("{{contact.title}}") %></li>
+
+      <span>Personal Address</span>
+      <li><label>Street</label> <%= clippy("{{persnl_add.street}}") %></li>
+      <li><label>City</label> <%= clippy("{{persnl_add.city}}") %></li>
+      <li><label>State</label> <%= clippy("{{persnl_add.state}}") %></li>
+      <li><label>Zip</label> <%= clippy("{{persnl_add.zipcode}}") %></li>
+      <li><label>Country</label> <%= clippy("{{persnl_add.country}}") %></li>
+
+      <span>Company Details</span>
+      <li><label>Company Name</label> <%= clippy("{{company.name}}") %></li>
+      <li><label>Street</label> <%= clippy("{{company_add.street}}") %></li>
+      <li><label>City</label> <%= clippy("{{company_add.city}}") %></li>
+      <li><label>State</label> <%= clippy("{{company_add.state}}") %></li>
+      <li><label>Zip</label> <%= clippy("{{company_add.zipcode}}") %></li>
+      <li><label>Country</label> <%= clippy("{{company_add.country}}") %></li>
+    </ul>
+  </div>
+</div>

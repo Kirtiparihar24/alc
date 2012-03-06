@@ -1,0 +1,99 @@
+<% controller_name =  controller.controller_name %>
+<% text_name =  controller_name.eql?("document_homes") ? @matter.name : controller.controller_name.capitalize %>
+<div class=" w100">
+  <h2 class="title_main" id="toggle_busi_cont_detail_toggle">
+    <div class="fl">Quick Search</div>
+    <div class="fr pt7"></div>
+  </h2>
+  <div class='message_error_div' id="notice" style="display: none;">
+    Please enter manditory fields.
+  </div>
+  <div id="search" class="w100 pt5 pb5" >
+    <div align="center">
+      <span class="heading"><%=t(:label_search)%> <span class="alert_message">*</span></span>
+      <span>
+        <%= text_field_tag :text_search, "#{text_name}", :size => "40", :class=>'textgray' %>
+        <%=hidden_field_tag 'mapable', params[:selected_node]%>
+      </span>
+      <span>
+        <%= link_to(image_tag('../../images/zoom_icon.png', {:alt =>"Search",:id=>"search_buton_leftside", :title=>"Search",:style=>"margin-bottom:-6px;",:onClick=>"search(this,'');", :border => 0, :hspace => "0"}), '#') %>
+      </span>
+      <div class="advance_search_link pl10" style="display:inline"><%= link_to "Advance Search", document_managers_path(:from => "#{controller.controller_name}", :category=>params[:category_type]), :id =>"advance_search" %></div>
+    </div>
+  </div>
+</div>
+<br class="clear"/>
+<script type="text/javascript" language="javascript">  
+  var from
+  var matter_id
+  jQuery(document).ready(function() {
+    from = "<%= controller_name %>"
+    matter_id = "<%= @matter.id if @matter.present?%>"
+    var textval,selectedval
+    jQuery("#text_search").click(function() {
+      selectedval = "<%=text_name%>";
+      textval =jQuery.trim(this.value);
+      if ( textval == selectedval ){
+        this.value = "";
+      }
+      jQuery(this).removeClass('textgray');
+    }).blur(function(){
+      if(this.value==""){
+        jQuery(this).addClass('textgray');
+        this.value = "<%=text_name%>";
+      }
+    });
+  });
+
+  jQuery('a#advance_search').live("click",function(){
+    if (jQuery('#text_search').attr("class")!="textgray"){
+      var value = jQuery('#text_search').val();
+      this.href+= "&contextual="+value;
+    }
+    <%if controller_name.eql?("document_homes")%>
+      this.href+= "&matter_id=<%=@matter.try(:id)%>"
+    <%end%>
+  });
+
+  // Need to removed to JS File
+  function search(link,url){
+    if (jQuery('#text_search').val()=='' || jQuery('#text_search').attr("class")=="textgray"){
+      jQuery('#notice').fadeIn('slow').animate({
+        opacity: 1.0
+      }, 6000)
+      .fadeOut('slow');
+      enable_search();
+      return false;
+    }
+    var loader = '/images/loading.gif'
+    jQuery(link).attr("src",loader);
+    if(validate_search_date())
+    {
+      disableAllSubmitButtons('button');
+      jQuery(this).val('Please wait..');
+  
+      var path_url =''
+      if(typeof(url) != 'undefined' && url.length<=0){
+        path_url= '<%=search_document_document_homes_path()%>';
+      }else{
+        path_url = url
+      }
+
+      if (matter_id!=''){
+        path_url=path_url + "?matter_id=" + matter_id
+      }
+      jQuery.get(
+      path_url, {
+        'name' : jQuery('#text_search').val(),
+        'from' :from
+      },
+      function (data) {
+        jQuery('#search_results_DIV').html(data);
+        jQuery("#search_buton_leftside").attr("src",'/images/zoom_icon.png');
+        new_tool_tip();
+        LiviaTooltipAP();
+      }
+    );
+    }
+  }
+</script>

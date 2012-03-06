@@ -1,0 +1,9 @@
+<%if @matching_matters && @matching_matters.size > 0%>
+    <%@matching_matters.each do|result_obj|%>
+      <%if result_obj %>
+        <%=raw ("" + "<span style=display:none>" + result_obj.id.to_s + "</span>" + "#{result_obj.name}") %>
+      <%end%>
+    <%end%>
+ <%else%>
+   <%=raw ("" + "<span style=display:none>" + "" + "</span>" + "No result found") %>
+<%end%>

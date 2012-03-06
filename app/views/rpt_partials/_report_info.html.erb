@@ -1,0 +1,7 @@
+<br class="clear" />
+<div class="lh18 bg1 p5 report-header">
+  <p><strong><%=t(:text_law_firm_name)%> :</strong> <%=@header_opts[:l_firm]%></p>
+  <p><strong><%=t(:text_report_name)%> :</strong> <%=@header_opts[:r_name]%></p>
+  <p><strong><%=t(:text_generated_by)%> :</strong> <%=@header_opts[:lawyer]%></p>
+  <p><strong><%=t(:text_generated_on)%> :</strong> <%=Time.zone.now.in_time_zone(@current_user.time_zone).strftime('%m/%d/%y %H:%M:%S')%></p>
+</div>

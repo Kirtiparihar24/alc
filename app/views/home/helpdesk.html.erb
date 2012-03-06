@@ -1,0 +1,9 @@
+<div class="column_main p5">
+  <div class="tabular_listing">
+    <%if APP_URLS[:use_helpdesk]%>
+      <iframe id="helpdesk_frame" name="livia_portal" src = "<%= APP_URLS[:helpdesk_url] + "/single_signon?t=#{@token}&id=#{@helpdesk_user_id}&key=#{APP_URLS[:livia_portal_key]}"%>"  width="100%" height="700">
+        <p>Your browser does not support iframes.</p>
+      </iframe>
+    <%end%>
+  </div>
+</div>

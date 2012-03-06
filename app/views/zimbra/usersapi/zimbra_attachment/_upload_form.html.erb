@@ -1,0 +1,96 @@
+<%=stylesheet_link_tag "cgc_css/style_livia.css"%>
+<%=raw(javascript_include_tag "jquery/jquery-1.7.1.min.js","application.js")%>
+ <%=raw(javascript_include_tag "jquery/jquery.bgiframe.min.js")%>
+ <%=raw(javascript_include_tag "jquery/jquery.ajaxQueue.js")%>
+<%=raw(javascript_include_tag "jquery/jquery.autocomplete.js")%>
+<%=stylesheet_link_tag "jquery.autocomplete.css"%>
+<script type="text/javascript">
+  jQuery.noConflict();
+  jQuery(document).ready(function(){
+    initAutoComplete();
+  });
+  jQuery(document).ready(function() {
+    jQuery('.flashmsg')
+    .fadeIn('slow')
+    .animate({
+      opacity: 1.0
+    }, 8000)
+    .fadeOut('slow', function() {
+      jQuery('.flashmsg').remove();
+    });
+  });
+</script>
+<div style="background-color:#B5D4EF; overflow: hidden; height:99.8%; ">
+  <%if flash[:notice].present? %>
+    <div id="notice" class="flashmsg" style="color:#000; background:#b5d8a7; border:1px solid #549839; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;">
+      <%= flash[:notice] %><% flash.discard %>
+    </div>
+  <%end%>
+  <%if flash[:error].present? %>
+    <div  class="flashmsg" style="color:#000; background:#db7979; border:1px solid #cd0a0a; text-align:left; font-size:11px; font-weight:bold; padding:5px; margin-bottom:5px;">
+      <%= flash[:error] %><% flash.discard %>
+    </div>
+  <%end%>
+  <%form_tag :url=>{:action=>action_name},:method=>:put,:multipart=>true do %>
+    <%=hidden_field_tag 'file_name', params[:file_name]%>
+    <%=hidden_field_tag 'msg_id', (params[:msg_id] || params[:id])%>
+    <%=hidden_field_tag 'user_email_id', params[:user_email_id]%>
+    <%=hidden_field_tag 'upload_to',params[:upload_to]%>
+    <%=hidden_field_tag 'part', params[:part]%>
+    <%=hidden_field_tag 'description', params[:description]%>
+    <%=hidden_field_tag 'from', params[:from]%>
+    <%=hidden_field_tag 'to', params[:to]%>
+    <%=hidden_field_tag 'subject', params[:subject]%>
+    <%=hidden_field_tag 'msg_date', params[:msg_date]%>
+    <table style="width:100%; font-size:11px">
+      <tr>
+        <td align="right"><label><%=t(:label_file_name)%></label>&nbsp;</td>
+        <td ><div>&nbsp;<%=params[:file_name]%></div></td>
+      </tr>
+      <tr>
+        <td align="right"><label> <%=t(:label_search)%> <%=params[:upload_to].singularize%></label>&nbsp;</td>
+        <td>
+          <%=raw zimbra_search_box(params[:upload_to]) %>
+        </td>
+      </tr>
+      <%if params[:link_zimlet]%>
+        <tr>
+          <td align="right"><label><%=t(:label_description)%></label>&nbsp;</td>
+          <td><%=raw attachment_description_box(params[:upload_to]) %></td>
+        </tr>
+      <%end%>
+      <tr>
+        <td></td>
+        <td><%=submit_tag 'upload', :onclick => "validate_presence_of_upload('#{params[:upload_to]}');"%></td>
+      </tr>
+    </table>
+
+  <%end-%>
+</div>
+<script type="text/javascript">
+  // Need to removed to JS File
+  function validate_presence_of_upload(upload_to){
+    switch (upload_to){
+      case "opportunities":
+        if(jQuery.trim(jQuery('#_opportunity_ctl').val()) == '' ||jQuery('#_opportunity_ctl').val() == 'Search Existing'){
+          jQuery('#_opportunityid').val("");
+        }
+      case "contacts":
+        if(jQuery.trim(jQuery('#_contact_ctl').val()) == '' ||jQuery('#_contact_ctl').val() == 'Search Existing'){
+          jQuery('#_contactid').val("")
+        }
+      case "accounts":
+        if(jQuery.trim(jQuery('#_account_ctl').val()) == '' ||jQuery('#_account_ctl').val() == 'Search Existing'){
+          jQuery('#_accountid').val("");
+        }
+      case "campaigns":
+        if(jQuery.trim(jQuery('#_campaign_ctl').val()) == '' ||jQuery('#_campaign_ctl').val() == 'Search Existing'){
+          jQuery('#_campaignid').val("")
+        }
+      case "matters":
+        if(jQuery.trim(jQuery('#_matter_ctl').val()) == '' ||jQuery('#_matter_ctl').val() == 'Search Existing'){
+          jQuery('#_matterid').val("")
+        }
+    }
+  }
+</script>

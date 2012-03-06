@@ -1,0 +1,196 @@
+<div id="hide_search_results" class="border_gray mb10">
+  <%
+  accessaccount = can? :manage, Account
+  accesscontact = can? :manage, Contact
+  accesscampaign = can? :manage, Campaign
+  accessopportunity = can? :manage, Opportunity
+  accessmatter = can? :manage, Matter %>
+  <h2 class="title_main"><div class="fl"><%= t(:text_search_result) %></div><div class="fr"><a href="#" onclick="jQuery('#hide_search_results').hide();"> <%= image_tag "livia_portal/icon_close.gif" %> </a></div><br class="clear" /></h2>
+  <div class="tabular_listing p5">    
+    <% collapse_all = (@accounts.length > 0 or @contacts.length > 0 or @campaigns.length > 0 or @opportunities.length > 0 or @matters.length > 0) %>
+    <% if accessaccount || accesscontact || accesscampaign || accessopportunity || accessmatter %>
+      <% if collapse_all %>
+         <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>            
+            <%if accesscontact %><th width="20%" align="left"><%= t(:text_business_contacts) %></th><%end%>
+            <%if accessaccount %><th width="20%" align="left"><%= t(:text_accounts) %></th><%end%>
+            <%if accessopportunity %><th width="20%" align="left"><%= t(:text_opportunities) %></th><%end%>
+            <%if accessmatter %><th width="20%" align="left"><%= t(:text_matters) %></th><%end%>
+            <%if accesscampaign %><th width="20%" align="left"><%= t(:text_campaigns) %></th><%end%>
+          </tr>
+          <tr>            
+            <%if accesscontact %>
+            <td width="20%" align="left" valign="top" style="padding:0">
+                <% if @contacts.length>0 %>
+              <div class="scrollY100">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <% @contacts.each do |contact| %>
+                    <%  if contact %>
+                      <tr class="<%=cycle("bg1","bg2")%>">
+                        <td><%= link_to(h(contact.name), edit_contact_path(contact))%></td>
+                      </tr>
+                      <% end %>
+                    <%end%>
+                    <% (5-@contacts.length).times do %>
+                    <%end%>
+                  </table>
+              </div>
+                <%else%>
+                  <div class="warningCont">
+                    <%=t(:text_no_match_found)%>
+                  </div>
+                <%end%>
+            </td>
+            <%end%>
+            <%if accessaccount %>
+            <td width="20%" align="left" valign="top" style="padding:0">
+                <% if @accounts.length>0 %>
+                <div class="scrollY100">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <% @accounts.each do |account| %>
+                    <%  if account %>
+                      <tr class="<%=cycle("bg1","bg2")%>">
+                        <td><%= link_to(h(account.name), edit_account_path(account))%></td>
+                      </tr>
+                    <% end %>
+                    <%end%>
+                    <% (5-@accounts.length).times do %>
+                      <tr><td> &nbsp; </td></tr>
+                    <%end%>
+                  </table>
+                  </div>
+                <%else%>
+                  <div class='warningCont'>
+                    <%=t(:text_no_match_found)%>
+                  </div>
+                <%end%>
+            </td>
+            <%end%>            
+            <%if accessopportunity %>
+            <td width="20%" align="left" valign="top" style="padding:0">
+                <% if @opportunities.length>0 %>
+              <div class="scrollY100">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <% @opportunities.each do |opportunity| %>
+                    <% if opportunity %>
+                      <tr class="<%=cycle("bg1","bg2")%>">
+                        <td><%= link_to(h(opportunity.name), edit_opportunity_path(opportunity)) %></td>
+                      </tr>
+                    <%end%>
+                    <%end%>
+                    <% (5-@opportunities.length).times do %>
+                      <tr>
+                        <td> &nbsp; </td>
+                      </tr>
+                    <%end%>
+                  </table>
+              </div>
+                <%else%>
+                  <div class='warningCont m5'>
+                    <%=t(:text_no_match_found)%>
+                  </div>
+                <%end%>
+            </td>
+            <%end%>
+            <%if accessmatter %>
+            <td width="20%" align="left" valign="top" style="padding:0">
+                <% if @matters.length>0 %>
+              <div class="scrollY100">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <% @matters.each do |matter| %>
+                    <% if matter %>
+                      <tr class="<%=cycle("bg1","bg2")%>">
+                        <td><%= link_to (truncate_hover(matter.name,40)), edit_matter_path(matter)  %></td>
+                                     
+                      </tr>
+                    <%end%>
+                    <%end%>
+
+                    <% (5-@matters.length).times do %>
+                      <tr>
+                        <td> &nbsp; </td>
+                      </tr>
+                    <%end%>
+                  </table>
+              </div>
+                <%else%>
+                  <div class='warningCont m5'>
+                    <%=t(:text_no_match_found)%>
+                  </div>
+                <%end%>
+            </td>
+            <%end%>
+            <%if accesscampaign %>
+            <td width="20%" align="left" valign="top" style="padding:0">
+                <% if @campaigns.length>0 %>
+              <div class="scrollY100">
+                  <table width="100%" cellpadding="0" cellspacing="0">
+                    <% @campaigns.each do |campaign| %>
+                    <% if campaign %>
+                      <tr class="<%=cycle("bg1","bg2")%>">
+                        <td><%= link_to(h(campaign.name), edit_campaign_path(campaign, :tabindex =>6)) %></td>
+                      </tr>
+                    <% end %>
+                    <%end%>
+                    <% (5-@campaigns.length).times do %>
+                      <tr>
+                        <td> &nbsp; </td>
+                      </tr>
+                    <%end%>
+                  </table>
+              </div>
+                <%else%>
+                  <div class='warningCont m5'>
+                    <%=t(:text_no_match_found)%>
+                  </div>
+                <%end%>
+            </td>
+            <%end%>
+          </tr>
+        </table>
+      <%else%>
+        <div class='warningCont'>
+          <%=t(:text_no_record_s_found)%>
+        </div>
+      <%end%>
+    <%else%>
+      <div class='warningCont'>
+        <%=t(:text_no_access)%>
+      </div>
+    <%end%>
+  </div>
+</div>
+
+<%#collapse_all = @accounts.length > 0 || @contacts.length > 0 || @campaigns.length > 0 || @opportunities.length > 0%>
+<%if collapse_all%>
+  <script language="javascript" type="text/javascript">
+    var a = parseInt(jQuery("#alerts_toggle_count").val());
+    var b = parseInt(jQuery("#dashboard_toggle_count").val());
+    var c = parseInt(jQuery("#task_summary_toggle_count").val());
+    if (a % 2 == 1) {jQuery("#alerts_div").toggle();jQuery(".toggle_alerts").toggle();a += 1;}
+    if (b % 2 == 1) {jQuery("#dashboard_div").toggle();jQuery(".toggle_dashboard").toggle();b += 1;}
+    if (c % 2 == 1) {jQuery("#task_summary_div").toggle();jQuery(".toggle_task_summary").toggle(); c += 1;}
+    jQuery("#alerts_toggle_count").val(a);
+    jQuery("#dashboard_toggle_count").val(b);
+    jQuery("#task_summary_toggle_count").val(c);
+    /*alert(
+    "A: " + a + "\n" +
+    "B: " + b + "\n" +
+    "C: " + c + "\n"
+    );*/
+
+    function reopenTheDashboards() {
+      var a = parseInt(jQuery("#alerts_toggle_count").val());
+      var b = parseInt(jQuery("#dashboard_toggle_count").val());
+      var c = parseInt(jQuery("#task_summary_toggle_count").val());
+      if (a % 2 == 0 && b % 2 == 0 && c % 2 == 0) {
+        jQuery("#alerts_div").toggle();jQuery(".toggle_alerts").toggle();a += 1;
+        jQuery("#dashboard_div").toggle();jQuery(".toggle_dashboard").toggle();b += 1;
+        jQuery("#task_summary_div").toggle();jQuery(".toggle_task_summary").toggle(); c += 1;
+      }
+      jQuery("#alerts_toggle_count").val(a);
+      jQuery("#dashboard_toggle_count").val(b);
+      jQuery("#task_summary_toggle_count").val(c);
+    }
+  </script>
+<%end%>

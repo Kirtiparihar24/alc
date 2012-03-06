@@ -1,0 +1,6 @@
+<form action="/matters/change_lead" method="post">
+  <input type="radio" name="r1" value="delete" />
+  <input type="radio" name="r1" value="role_change" />
+  <%=f.select( "role", Setting.matter_people_roles)%>
+  <input type="submit" value="<%=t(:label_done)%>">
+</form>

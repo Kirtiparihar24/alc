@@ -1,0 +1,8 @@
+<div class="gridDiv">
+  <div class="titleHead"><%= @company.name.try(:titleize) %>'s Prospect Status Types</div>
+  <div class="gryBox ">
+    <div id="list">
+      <%= render :partial =>"list" %>
+    </div>
+  </div>
+</div>

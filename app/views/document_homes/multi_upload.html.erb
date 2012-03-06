@@ -1,0 +1,371 @@
+<%=stylesheet_link_tag 'uploadify' %>
+<%=javascript_include_tag "swfobject" %>
+<script type="text/javascript" src="/javascripts/jquery/jquery.uploadify.v2.1.4.min.js"></script>
+<% selected_employee = get_employee_user_id %>
+<div>
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <!--Edit Matter Starts-->
+    <div class="tabs-container-tabs tabular_listing tabs-container tabs-hide" style="display: block;">
+      <div class="gridDiv">
+        <div class="message_error_div" style="display:none" id="error_upper_div">
+          Please Select File(s) to Upload.
+        </div>
+        <div class="mt3 gridTable">
+          <table cellspacing="1" width="100%" cellpadding="0" class="tableBg">
+            <tr>
+              <td align="left" colspan ="6">
+               <input type="file" name="files" id="files"/>Click Browse to select document(s) for upload.
+              </td>
+              <td colspan="4"></td>
+            </tr>
+            <tr>
+              <td align="left"  colspan ="6" >
+                <div id="fileQueueBox"  style="overflow-y:auto;height:auto;">
+                  <div id="fileQueue"></div>
+                </div>
+              </td>
+            </tr>
+            <tr></tr>
+            <tr>
+            <table style="margin: 0pt auto;" width="100%"  cellspacing="0" cellpadding="0" border="0" class="form_table pt5">
+              <tbody>
+                <tr>
+                  <td width="203" align="left"></td>
+                  <td width="743" align="left">
+                    <%= hidden_field_tag('document_home[matter_task_ids][]', @linked[:task])  %>
+                    <%= hidden_field_tag('document_home[matter_fact_ids][]', @linked[:fact])  %>
+                    <%= hidden_field_tag('document_home[matter_risk_ids][]', @linked[:risk])  %>
+                    <%= hidden_field_tag('document_home[matter_research_ids][]', @linked[:research])  %>
+                    <%= hidden_field_tag('document_home[matter_issue_ids][]', @linked[:issue])  %>
+                    <%= hidden_field_tag('return_path', @return_path) unless @return_path.nil?  %>
+                    <%= hidden_field_tag :mapable_type, :value =>@mapable_type  %>
+                    <%= hidden_field_tag :mapable_id, :value =>@mapable_id  %></td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_bookmark) %></td>
+                  <td align="left"><%= check_box_tag :bookmark ,'bookmark',false, :onchange => "set_parameters();" %></td>
+                </tr>
+                <tr>
+                  <td align="left"><label><%= t(:label_type)%></label></td>
+                  <td align="left">
+                    <%=select_tag 'doc_type_id', options_for_select(current_company.document_types.collect{|doc_type| [doc_type.alvalue,doc_type.id]}),:class=>"widthSelectBox",:id=>"document_home_document_attributes_doc_type_id", :onchange => "set_parameters();"%>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_privilege) %></td>
+                  <td align="left">
+                    <%=select_tag 'privilege', options_for_select(@company.matter_privileges.collect{|mp| [mp.alvalue,mp.id]}),:class=>"widthSelectBox",:id=>"document_home_document_attributes_privilege", :onchange => "set_parameters();"%>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left" valign="top"><%= t(:label_enforce_version_change) %></td>
+                  <td align="left" valign="top" class="pt5"><%= check_box_tag :enforce_version_change, :disabled=> !(@emp_user_id == @matter.employee_user_id || (@team_member && @team_member.can_enforce_version_control?) )%> (Only lead lawyer and legal team member having privilege can enforce version change)</td>
+                </tr>
+                <% unless @matter.matter_category.eql?('non-litigation') %>
+                  <tr>
+                    <td align="left"><label><%= t(:label_phase) %></label></td>
+                    <td align="left">
+                      <%=select_tag 'phase_id', options_for_select(@company.phases.collect{|phase| [phase.alvalue,phase.id]}),:class=>"widthSelectBox",:id=>"phase_id", :onchange => "set_parameters();"%>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td align="left">&nbsp;</td>
+                  <td align="left">
+                    <table width="65%" border="0">
+                      <tbody>                        
+                        <tr>
+                          <% secretary = current_user.role?(:secretary) %>
+                          <td width="7%" align="left"><%= radio_button_tag(:access_control,:private,false,:onchange=>'set_parameters()',:onclick => "showaccessdetails(false,false);jQuery('#document_home_client_access').attr('disabled',false);jQuery('#help_message').text('Note:-Only you will have access to this document'); check_owner_and_people_access('private', '#{selected_employee}', '#{secretary}','new', '0', '0'); set_parameters();set_flag(false);") %></td>
+                          <td width="13%"><%= t(:text_private) %></td>
+                          <td width="7%"><%=radio_button_tag(:access_control,:selective,false,:onclick => "showaccessdetails(true,false);jQuery('#document_home_client_access').attr('disabled',false);jQuery('#help_message').text('Note:-Document will be accessible to you and selected team members'); check_owner_and_people_access('select', '#{selected_employee}', '#{secretary}','new', '0', '0'); set_parameters();set_flag(false);"); %></td>
+                          <td width="16%"><%= t(:text_select_view) %></td>
+                          <td width="7%"><%=radio_button_tag(:access_control,:matter_view,true,:onclick => "showaccessdetails(false,false);jQuery('#document_home_client_access').attr('disabled',false);jQuery('#help_message').text('Note:-All matter team members will have access to this document'); check_owner_and_people_access('other', '#{selected_employee}', '#{secretary}','new', '0', '0'); set_parameters();set_flag(true);") %></td>
+                          <td width="24%"><%=t(:text_matter_view)%></td>
+                          <td width="7%"><%= radio_button_tag(:access_control,:public,false,:onclick => "showaccessdetails(false,true);jQuery('#document_home_client_access').attr('disabled',false);jQuery('#help_message').text('Note:-All members of your law firm will have access to this document'); check_owner_and_people_access('other', '#{selected_employee}', '#{secretary}','new', '0', '0'); set_parameters();set_flag(false);") %></td>
+                          <td width="19%"><%= t(:text_public) %></td>
+                        </tr>
+                        <tr >
+                          <td colspan="8" id="help_message">   <%= t(:text_note_only_you_will_have_access_to_this_document) %></td>
+                        </tr>
+                        <tr id="selective" style="display:none">
+                          <td colspan="8">
+                            <table width="100%" border="0">
+                              <tbody>
+                                <% unless @matter_peoples.nil? or @matter_peoples.empty? %>
+                                  <% @matter_peoples.each do |mi| %>
+                                    <% name =  mi.assignee.try(:full_name) %>
+                                    <tr>
+                                      <% disabled = (mi.employee_user_id==@emp_user_id ||mi.employee_user_id==@matter.employee_user_id)%>
+                                      <td width="10%" align="left" name="<%= mi.employee_user_id %>">
+                                        <%= check_box_tag 'document_home[matter_people_ids][]', mi.id,{},{:class=> "check", :disabled=> disabled, :onClick=>"check_owner(this, '#{mi.employee_user_id}', '#{name}');set_parameters();"} %>
+                                      </td>
+                                      <td width="90%"><%= name %></td>
+                                    </tr>
+                                  <%end%>
+                                <%end%>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr id="check_box" style="display:none"><td  colspan="8">
+                            <table width="100%" border="0">
+                              <tbody>
+                                <tr>
+                                  <td width="10%" align="left">  <%=check_box_tag 'document_home[repo_update]',true,false,{:class=> "check", :onChange=>'set_parameters();'}%></td>
+                                  <td width="90%">Show updates in public repository</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Owner</td>
+                  <% disble = secretary ? {:disabled => true} : {} %>
+                  <%= hidden_field_tag('document_home[owner_user_id]', selected_employee) if secretary %>
+                  <td>
+                    <%=select_tag 'owner_user_id', options_for_select(@matter_peoples.collect{|p| [p.assignee.try(:full_name), p.employee_user_id]}),:class=>"widthSelectBox",:id=>"document_home_owner_user_id", :onchange => "set_parameters();"%>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="left"><%= t(:label_do_you_want_to_provide_access_to_client) %></td>
+                  <td valign="top" align="left"><%=  check_box_tag :document_home_client_access ,'document_home_client_access',false,:onChange =>'set_parameters();' %>
+                  </td>
+                </tr>
+                <tr align="right">
+                  <td valign="top" align="left"><%= "#{t(:label_tag)}"  %></td>
+                  <td align="left">
+                    <%=text_area_tag :tag_array,nil,:id=>'document_home_tag_array',:cols => "40", :rows => '3', :onchange => "set_parameters();" %>
+                  </td>
+                </tr>
+                <tr align="right">
+                  <td valign="top" align="left"><%= t(:label_description) %></td>
+                  <td align="left">
+                    <%=text_area_tag :description,nil,:id=>'document_home_document_attributes_description',:cols => "40", :rows => '3', :onchange => "set_parameters();" %>
+                  </td>
+                </tr>
+                <tr align="right">
+                  <td align="left"><%= t(:label_author_s) %></td>
+                  <td align="left"><%=  text_field_tag :author,nil,:id=>'document_home_document_attributes_author', :size => "40",:onchange => "set_parameters();"  %><%#=  d.text_field :author, :size => "40" %></td>
+                </tr>
+                <tr align="right">
+                  <td align="left"><%= t(:label_source) %></td>
+                  <td align="left">
+                    <%=select_tag 'doc_source_id', options_for_select(@company.doc_sources.collect{|ds| [ds.alvalue,ds.id]}),:class=>"widthSelectBox",:id=>"document_home_document_attributes_doc_source_id",:include_blank=>true,:onchange => "set_parameters();"%>
+                  </td>
+                </tr>
+                <tr align="right">
+                  <td>&nbsp;</td>
+                  <td align="left">&nbsp;</td>
+                </tr>
+                <tr align="right">
+                  <td colspan="2" align="center">
+                    <input id="upload" class="button" type="button" value="Upload" onclick="validate();"></input>&nbsp;
+                    <input id="reset" class="button" type="button" value="Reset" onclick="javascript:jQuery('#files').uploadifyClearQueue();"></input>
+                    <% unless @return_path.nil? %>
+                      <input type="submit" id="cancel" value="<%= t(:text_cancel) %>" onclick="window.location='<%=@return_path%>';return false;"/>
+                    <% else %>
+                      <input type="submit" id="cancel" value="<%= t(:text_cancel) %>" onclick="window.location='<%=matter_document_homes_path(@matter,:mapable_id => @matter.id,:mapable_type=>'Matter')%>';return false;"/>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="mandatory"><span class="alert_message">*</span>Required field </div>
+    </div>
+    <!--Edit Matter Ends-->
+  </div>
+</div>
+<script type="text/javascript">
+  // Here is Original javascript functions responsible for dynamic multiple upload provided by Uploadify. : Pratik AJ 27-4-2011
+  // Events mention defined here are customized to our requirement.
+  // Default action performed by this events are there in juery.uploadify.v2.1.4.min.js file.
+  var complete_count = 0
+  var error_count = 0
+  var max_size =0
+  var upload_count =0
+  var flag =true
+  function validate(){
+    if (flag==true){
+      jQuery("#access_control_matter_view").trigger('click');
+    }
+    if (upload_count==0){
+      jQuery('#error_upper_div')
+      .fadeIn('slow')
+      .animate({
+        opacity: 1.0
+      }, 2000)
+      .fadeOut('slow');
+    }else{
+      disable_button();
+      jQuery('#TB_closeWindowButton').unbind('click');
+      javascript:jQuery('#files').uploadifyUpload();
+    }
+  }
+  
+  function set_flag(matter_view){
+    if (matter_view==true){
+      flag=true;
+    }else if(matter_view==false){
+      flag=false;
+    }
+  }
+  
+  function disable_button(){
+    jQuery('#TB_closeWindowButton').attr("disabled", "true");
+    jQuery('#TB_closeAjaxWindow').unbind('click');
+    jQuery('#upload').val('Please wait...');
+    jQuery('#upload').attr("disabled", "true");
+    jQuery('#reset').attr("disabled", "true");
+    jQuery('.button').css('color', 'gray');
+  }
+
+  jQuery(document).ready(function() {
+
+    jQuery("#files").uploadify({
+      'uploader'       : '/swf/uploadify.swf',
+      //'script'         : '/repositories/do_the_multi_upload',
+      'script'         : '/document_homes/create_multiple',
+      'cancelImg'      : '/images/cancel.png',
+      'queueID'        : 'fileQueue',
+      'auto'           : false,
+      'multi'          : true,
+      'buttonImg'      : '/images/browse_button.png',
+      'wmode'          : 'transparent',
+      'width'          : 86,
+      'height'	       : 24,
+      'queueSizeLimit' : 999,
+      'sizeLimit'      : '<%=@max_upload_size%>',
+      'scriptData':  {
+        "document_home[document_attributes][category_id]" : jQuery('#document_home_document_attributes_category_id').val(),
+        "document_home[document_attributes][privilege]" : jQuery('#document_home_document_attributes_privilege').val(),
+        "document_home[document_attributes][description]" : jQuery('#document_home_document_attributes_description').val(),
+        "document_home[document_attributes][author]" : jQuery('#document_home_document_attributes_author').val(),
+        "document_home[document_attributes][doc_source_id]" : jQuery('#document_home_document_attributes_doc_source_id').val(),
+        "document_home[document_attributes][bookmark]" : jQuery('#bookmark').attr('checked'),
+        "document_home[client_access]" : jQuery('#document_home_client_access').attr('checked'),
+        "document_home[matter_task_ids][]":'<%=@linked[:task]%>',
+        "document_home[matter_fact_ids][]":'<%=@linked[:fact]%>',
+        "document_home[matter_risk_ids][]":'<%=@linked[:risk]%>',
+        "document_home[matter_research_ids][]":'<%=@linked[:research]%>',
+        "document_home[matter_issue_ids][]":'<%=@linked[:issue]%>',
+        "document_home[folder_id]":'<%=params[:parent_id]%>',
+        "return_path":'<%=@return_path unless @return_path.nil?%>',
+        "mapable_type":'<%=@mapable_type%>',
+        "mapable_id":'<%=@mapable_id%>',
+        "current_user_id": '<%=current_user.id%>',
+        "employee_user_id": '<%=get_employee_user_id%>',
+        "company_id": '<%=get_company_id%>',
+        "matter_id": '<%=@matter.id%>'
+      },
+      'onSelect'       : function(event,ID,fileObj){
+        max_size = max_size + fileObj.size
+        if (max_size>'<%=@max_upload_size%>'){
+          alert('Maximum Upload Limit Exceeded');
+          max_size = max_size-fileObj.size
+          return false;
+        }
+        if (fileObj.size <= 0 || fileObj.size > '<%=@max_upload_size/2%>'){
+          alert('Upload File size should be between is 0KB-50MB.');
+          return false;
+        }
+        upload_count = upload_count + 1;
+      },
+      'onCancel'       :function(){
+        upload_count = upload_count - 1;
+      },
+      'onComplete'     :function(){
+        complete_count  = complete_count  + 1
+      },
+      // custom data to send to script
+      'onAllComplete'  : function(i,j){
+         if (<%=params[:parent_id].blank?%>) {
+          window.location.href ="<%=folder_list_matter_document_homes_path%>?&flash="+complete_count
+        }
+        else
+        {
+         window.location.href ="<%=folder_list_matter_document_homes_path(:id=>params[:parent_id])%>&flash="+complete_count
+        }
+       
+      },
+      'onError'	 : function (event, queueID ,fileObj, errorObj) {
+        var msg;
+        if (errorObj.info == 404) {
+          alert('Could not find upload script. Use a relative path.');
+          alert('Could not find upload script.');
+        }
+        jQuery("#fileUpload" + queueID).fadeOut(250, function() {  jQuery("#fileUpload" + queueID).remove()});
+        error_count =error_count + 1
+        return false;
+      }
+    });
+    jQuery('#TB_overlay').unbind('click');
+    flag = true;
+  });
+
+  function set_parameters(){
+    var client_access =0
+    var access_right
+    if (jQuery('#access_control_private').attr('checked')== true){
+      access_right =jQuery('#access_control_private').val();
+    }
+    else if(jQuery('#access_control_selective').attr('checked')== true)
+    {
+      access_right =jQuery('#access_control_selective').val();
+    }
+    else if(jQuery('#access_control_matter_view').attr('checked')== true)
+    {
+      access_right =jQuery('#access_control_matter_view').val();
+    }
+    else if(jQuery('#access_control_public').attr('checked')== true)
+    {
+      access_right =jQuery('#access_control_public').val();
+    }
+    var matter_people_ids = []
+    jQuery('#selective :input[type=checkbox]').each(function(){
+      if(jQuery(this).attr('checked')){
+        matter_people_ids.push(this.value);
+      }
+    });
+    if (jQuery('#document_home_client_access').attr('checked')){
+      client_access = 1;
+    }
+    jQuery('#files').uploadifySettings('scriptData',{
+      'document_home[document_attributes][doc_type_id]' : jQuery('#document_home_document_attributes_doc_type_id').val(),
+      'document_home[document_attributes][privilege]' : jQuery('#document_home_document_attributes_privilege').val(),
+      "document_home[document_attributes][description]" : jQuery('#document_home_document_attributes_description').val(),
+      "document_home[document_attributes][author]" : jQuery('#document_home_document_attributes_author').val(),
+      "document_home[document_attributes][doc_source_id]" : jQuery('#document_home_document_attributes_doc_source_id').val(),
+      "document_home[document_attributes][bookmark]" : jQuery('#bookmark').attr('checked'),
+      "document_home[client_access]" : client_access,
+      'access_control': access_right,
+      'document_home[repo_update]' : jQuery('#document_home_repo_update').val(),
+      'document_home[owner_user_id]' : jQuery('#document_home_owner_user_id').val(),
+      'document_home[tag_array]' : jQuery('#document_home_tag_array').val(),
+      'document_home[matter_people_ids][]' : matter_people_ids,
+      "document_home[matter_task_ids][]":'<%=@linked[:task]%>',
+      "document_home[matter_fact_ids][]":'<%=@linked[:fact]%>',
+      "document_home[matter_risk_ids][]":'<%=@linked[:risk]%>',
+      "document_home[matter_research_ids][]":'<%=@linked[:research]%>',
+      "document_home[matter_issue_ids][]":'<%=@linked[:issue]%>',
+      "document_home[folder_id]":'<%=params[:parent_id]%>',
+      "return_path":'<%=@return_path unless @return_path.nil?%>',
+      "mapable_type":'<%=@mapable_type%>',
+      "mapable_id":'<%=@mapable_id%>',
+      "current_user_id": '<%=current_user.id%>',
+      "employee_user_id": '<%=get_employee_user_id%>',
+      "company_id": '<%=get_company_id%>',
+      "matter_id": '<%=@matter.id%>'
+    });
+  }
+  // see http://www.uploadify.com/documentation/ for more options! %>
+</script>

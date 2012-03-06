@@ -1,0 +1,37 @@
+<div class="w100">
+  <% unless @total_data.blank? %>
+    <% if params[:get_records].eql?("Detail")%>
+      <div class="title_blue fl"><%= t(:text_total_records) %>  = <%= @conditions[:total_length] %> </div>
+    <% else %>
+      <div class="title_blue fl"><%= t(:text_total_records) %>  = <%= @conditions[:total_length] %> </div>
+    <%end%>
+  <% end %>
+  <div class="fr  textR pt5">
+    <%=raw(generate_send_email_rpt_link("revenue_by_matter_type_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("Matter")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("revenue_by_matter_type_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<% unless @total_data.blank? %>
+  <% @total_data.each do |label, col| %>
+    <div class="mt5">
+      <% if params[:get_records].eql?("Detail")%>
+        <div class="title_blue"><%= "#{label} (#{pluralize_record(col.length , 'Record',0)})" %></div>
+      <% end %>
+      <%= render :partial => 'rpt_partials/list_col_array_with_index', :locals => {:col => col} %>
+    </div>
+    <% if params[:get_records].eql?("Detail")%>
+      <div class="title_blue fl">Total Amount:&nbsp;<%=livia_amount(@conditions[label][1])%>,&nbsp;Total Received:&nbsp;<%=livia_amount(@conditions[label][2])%>,&nbsp;Total Discount:&nbsp;<%=livia_amount(@conditions[label][3])%>,&nbsp;&nbsp;Total Outstanding:&nbsp;<%=livia_amount(@conditions[label][4])%></div>
+      <br class="clear" />
+      <%reset_cycle%>
+    <%end%>
+  <% end %>
+  <div class="title_blue fl"> Grand Total Amount:&nbsp;<%=livia_amount(@conditions[:grand_total][0])%>,&nbsp;Grand Total Received:&nbsp;<%=livia_amount(@conditions[:grand_total][1])%>,&nbsp;Grand Total Discount:&nbsp;<%=livia_amount(@conditions[:grand_total][2])%>,&nbsp;Grand Total Outstanding:&nbsp;<%=livia_amount(@conditions[:grand_total][3])%></div>
+  <br class="clear" />
+  <div class="title_blue"><%= pluralize_record(@conditions[:total_length] , 'Record',1)%></div>
+  <br class="clear" />
+<% else %>
+  <div class="title_blue fl"><%= pluralize_record((@conditions[:total_length] rescue 0), 'Record',1)%></div>
+<% end %>
+<br class="clear" />

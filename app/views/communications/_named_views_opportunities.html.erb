@@ -1,0 +1,48 @@
+<% opportunities = @opportunities %>
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_opportunities)%></div>
+  <div class="gryBox">
+    <!--TABULAR DATA STARTS-->
+    <div class="gridTable">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>          
+          <th><%=t(:text_stage)%></th>
+          <th width="12%"><%=t(:text_opportunity)%></th>
+          <th width="11%"><%=t(:text_contact)%></th>
+          <th width="11%"><%=t(:text_account)%></th>
+          <!--th width="11%"><a href="#"><%=t(:text_assigned_to)%></a> <img src="../images/livia_portal/sort_desc.png" alt="<%=t(:label_sort)%>" title="<%=t(:label_sort)%>" /></th-->
+          <th><%=t(:text_assigned_to)%></th>          
+          <th><%=t(:text_prob)%></th>          
+          <th><%=t(:text_amount)%></th>          
+          <th><%=t(:text_closing_date)%></th>          
+          <th><%=t(:text_created)%></th>          
+        </tr>        
+        <%unless opportunities.blank? %>
+          <% opportunities.each do |opportunity| %>
+            <tr class="<%=cycle("bg1", "bg2")%>">
+              <td width="70"><%=opportunity.stage.nil?? "":lookup_lvalue(opportunity.stage)%></td>
+              <td width="12%"><%=link_to(opportunity.name, edit_opportunity_path(:id=>opportunity.id))%><%#=link_to(opportunity.name,{:controller=>"opportunities/show/#{opportunity.id}"},:rel=>"facebox")%></td>
+              <td width="11%"><%=opportunity.contact.nil? ? '':opportunity.contact.try(:full_name)%></td>
+              <td width="11%"><%=opportunity.contact.nil? ? '':opportunity.contact.get_account_name%></td>
+              <td width="11%"><%=opportunity.get_assigned_to.nil? ? '':opportunity.get_assigned_to %></td>
+              <td width="10%" class="txtC"><%=opportunity.probability.nil? ? '':opportunity.probability%></td>
+              <td width="8%" class="txtR"><%=opportunity.amount.nil? ? '':opportunity.amount%></td>
+              <td width="85" ><%=opportunity.closes_on.nil? ? '':opportunity.closes_on.to_time.strftime('%m/%d/%y')%></td>
+              <td width="60"><%=opportunity.created_at.nil? ? '': opportunity.created_at.to_time.strftime('%m/%d/%y')%></td>
+            </tr>
+          <%end%>
+          <%unless opportunities.empty?%>
+            <tr>
+              <td colspan="9" align="right" class="pr5">
+              </td>
+            </tr>
+          <%end%>
+        <%else%>
+          <tr><td colspan="9"><div class="warningCont m5"><%=t(:text_no_data)%></div></td></tr>
+        <%end%>
+      </table>
+    </div>
+    <!--TABULAR DATA ENDS-->
+  </div>
+</div>
+<!--CONTENT STARTS-->

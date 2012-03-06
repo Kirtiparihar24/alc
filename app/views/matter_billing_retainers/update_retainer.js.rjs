@@ -1,0 +1,13 @@
+if @retainer.errors.count > 0
+  errors = "<ul>" + @retainer.errors.full_messages.collect {|e| "<li>" + e + "</li>"}.join(" ") + "</ul>"
+  page << "show_error_msg('matter_retainer_errors','#{errors}','message_error_div')"
+  page << "jQuery('#loader').hide()"
+  page << "jQuery('#save_retainer').val('Save')"
+  page << "jQuery('#save_retainer').removeAttr('disabled')"
+else
+  page.call("tb_remove")
+  page.replace_html  "display_summary", :partial=>"summary", :locals => {:bills => @bills, :retainers => @retainers}
+  page.replace_html  "display_retainers" , :partial => "retainers" ,:locals => {:retainers =>  @matter.matter_retainers}
+  page << "jQuery('.main_containt').prepend(\"<div class=\\\"message_sucess_div\\\" id=\\\"notice\\\" style=\\\"opacity: 1\;\\\"> <span class=\\\"icon_message_sucess fl mlr8 mt5\\\"><\/span> <ul class=\\\"mt5 mb5 ml40\\\"> <li style=\\\"text-align: left\;\\\">#{t(:text_retainer)}  #{t(:flash_was_successful)}  #{t(:text_updated)} </li> </li> </ul> </div>  <script type=\\\"text/javascript\\\"> common_flash_message\\\(\\\)\; <\/script>\")"
+end
+

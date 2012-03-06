@@ -1,0 +1,45 @@
+<div class="calenderDiv">
+  <div class="mt5 mb5">
+    <h3 class="fl">Date- <%= @cal_date.strftime("%d, %B %Y") %></h3>
+    <div class="fr">
+      <%= link_to (image_tag "calendar/arrow_left.png", :width=>"22", :height => "22"), "#", :class => "vtip", :title => "Previous Day", :onClick => "update_view('#{calendar_day_calendars_path(:cal_date=>(@cal_date-1), :params => @commonparams)}')" %>
+      <%= link_to (image_tag "calendar/arrow_right.png", :width=>"22", :height => "22"), "#", :class => "vtip", :title => "Next Day", :onClick => "update_view('#{calendar_day_calendars_path(:cal_date=>(@cal_date+1), :params => @commonparams)}')" %>
+    </div>
+    <br class="clear" />
+  </div>
+  <table cellpadding="0" cellspacing="0" class="bg_white" width="100%">
+    <%= render "task_todos" %>
+    <tr><td height="2" style="background-color: #2b2b2b" colspan="2"></td></tr>
+    <tr>
+      <td colspan="2">
+        <div>          
+          <div class="scrollY400">
+            <div style="width: 100%;">
+              <table cellspacing="0" cellpadding="0" border="0" width="100%" class="calenderView">
+                <tbody>
+                  <tr>
+                    <td height="60px" width="30" valign="top" rowspan="2">
+                      <% 24.times do |i| %>
+                        <% time = week_time_tracking(i)  %>
+                        <div <% if time=="8am" %>id="eightam"<% end %> class="appointment_time">
+                          <%= time %>
+                        </div>
+                      <% end %>
+                    </td>
+                    <% @eachdate = @cal_date %>
+                    <td valign="top"><%= render :partial => "appointment_hour" %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery(".scrollY400").scrollTo( jQuery('#eightam'), 800 );
+  });
+</script>

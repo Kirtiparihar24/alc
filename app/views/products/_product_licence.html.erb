@@ -1,0 +1,54 @@
+<% products_blank = @products.blank? %>
+<div class="mt5">
+  <div class="gridDiv">
+    <div id="dashboard_toggle" class="titleHead">
+      <div class="fl"><%=t(:text_product_licencing)%></div>
+      <br class="clear"/>
+    </div>
+    <div>
+      <div class="gryBox">
+        <div class="textBrwn11 fr "><%= link_to t(:label_buy_licences), new_product_licence_path %></div>
+        <div class="p5 gridTable">
+          <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+            <tbody>
+               <%unless product_blank%>
+              <tr><td colspan="4" align="right" class="pr5"><%=will_paginate  @product, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info  @product %></td></tr>
+              <tr><td colspan="4"><br/></td></tr>
+            <%end%>
+              <tr>
+                <th width="50%"><%=t(:text_name)%></th>
+                <th width="40%"><%=t(:text_no_of_licences)%></th>
+                <th width="40%" colspan="3"><%=t(:text_action)%></th>
+              </tr>
+              <%unless products_blank %>
+                <tr >
+                  <td colspan="3">
+                    <div class="warningCont m5">
+                      <%=t(:text_no_records_found_for_product_licences)%>
+                    </div>
+                  </td>
+                </tr>
+              <% else %>
+                <% @products.each do |licence| %>
+                  <tr class="<%=cycle("bg1", "bg2")%>">
+                    <td  width="50%">
+                      <%= licence.name ? licence.name : "-" %>
+                    </td>
+                    <td width="40%"><%= licence.product_licences.count %></td>
+                    <td width="40%" colspan="3">
+                      <%=raw product_licence_action_links(licence)%>
+                    </td>
+                  </tr>
+                <%end%>
+                <tr><td colspan="4"><br/></td></tr>
+                <tr><td colspan="4" align="right" class="pr5"><%=will_paginate  @product,  :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>'%><%=raw custom_page_entries_info  @product %></td></tr>
+                <tr><td colspan="4"><br/></td></tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+        <br class="clear"/>
+      </div>
+    </div>
+  </div>
+</div>

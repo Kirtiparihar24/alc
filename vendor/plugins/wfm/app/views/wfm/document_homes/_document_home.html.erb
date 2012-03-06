@@ -1,0 +1,43 @@
+<table width="100%" cellpadding="1" cellspacing="1">
+      <tr>
+        <th width="20%" align="left"> <%= t(:text_name) %></th>
+        <th width="20%" align="left"> <%= t(:text_description) %> </th>
+        <th width="20%" align="left"> <%= t(:text_uploaded_by) %> </th>
+        <th width="15%" align="left"> Size </th>
+        <th width="15%" > <%= t(:text_uploaded_on) %></th>
+        <th width="10%" align="center"> <%= t(:text_actions) %> </th>
+      </tr>
+  <% if is_secretary_or_team_manager? %>
+    <%for document_home in document_homes%>
+      <% doc=document_home.latest_doc%>
+      <tr class="<%=cycle('bg1','bg2')%>">
+        <td width="20%"><%=doc.name%></td>
+
+       
+        <td width="20%"><%=raw(truncate_withscroll(doc.description.try(:titleize),40)) if doc.description %></td>
+        <td width="20%"><%= current_user.full_name %></td>
+        <td width="10%"><span class="comment"><%=number_to_human_size(doc.data_file_size, :separator => ".",:locale=>"us")%></span></td>
+        <td width="20%"><%=raw wfm_date_format(document_home.created_at)%></td>
+        <td width="10%" align="center">
+          <%=link_to image_tag("../stylesheets/wfm/layout/site/icon/icon_document_download.png", :title=>"Download", :alt=>"Download"), download_document_wfm_user_task_path(doc.id)%>
+        </td>
+      </tr>
+    <%end%>
+  <%else%>
+      <%for document_home in document_homes%>
+      <% doc=document_home.latest_doc%>
+      <% if doc.share_with_client %>
+        <tr class="<%=cycle('bg1','bg2')%>">
+          <td width="20%"><%=doc.name%></td>
+           <td width="20%"><%=raw(truncate_withscroll(doc.description.try(:titleize),40)) if doc.description %></td>
+            <td  width="20%"><%= current_user.full_name %></td>
+          <td width="10%"><span class="comment"><%=number_to_human_size(doc.data_file_size, :separator => ".",:precision=>2,:locale=>"us")%></span></td>
+          <td width="20%"><%=raw wfm_date_format(document_home.created_at)%></td>
+          <td width="10%" align="center">
+            <%=link_to image_tag("../stylesheets/wfm/layout/site/icon/icon_document_download.png", :title=>"Download", :alt=>"Download"), download_document_wfm_user_task_path(doc.id)%>
+          </td>
+        </tr>
+      <%end%>
+    <%end%>
+  <%end%>
+</table>

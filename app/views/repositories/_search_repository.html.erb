@@ -1,0 +1,118 @@
+<div class="column_main">
+  <h2 class="title_main" id="toggle_busi_cont_detail_toggle">
+    <div class="fl"><%=t(:text_search)%></div>
+    <div class="fr pt7"><%=image_tag("/images/icon_small_plus.png", :width => 12, :height => 12,:id=>"plusminusicon",:title=>"Display Search",:name =>"Display Search",:onclick=>"var search='false'; search_toggle(search);") %></div>
+  </h2>
+  <div class="p5" id="toggle_busi_cont_detail_div" style="display:none">
+    <div id="repositorySearch" class="p5">
+      <table class="form_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+          <tr>
+            <td valign="top" width="15%" align="left"><label><%=t(:label_name_of_the_document)%></label></td>
+            <td valign="top" width="35%" align="left"><input id="document_name" type="text"/></td>
+            <td width="1%">&nbsp;</td>
+            <td valign="top" width="15%" align="left"><label><%="#{t(:label_document)} #{t(:label_description)}"%></label></td>
+            <td valign="top" width="34%" align="left"><input id="document_description" type="text"/></td>
+          </tr>
+          <tr>
+            <td valign="top" width="15%" align="left"><label><%="#{t(:label_document)} #{t(:label_tag)}"%></label></td>
+            <td valign="top" width="35%" align="left"><input id="document_tags" type="text"/></td>
+            <td width="1%">&nbsp;</td>
+            <td valign="top" width="15%" align="left"><label><%=t(:label_type_of_document_extension)%></label></td>
+            <td valign="top" width="34%" align="left"> <%=select '','document_extension', @file_ext, :include_blank=>""%></td>
+          </tr>
+          <tr>
+            <td valign="top" width="15%" align="left" colspan="2"><strong><%=t(:text_search_by_creator_amp_privilege)%></strong></td>
+            <td width="1%">&nbsp;</td>
+            <td valign="top" width="15%" align="left">&nbsp;</td>
+            <td valign="top" width="34%" align="left">&nbsp;</td>
+          </tr>
+          <tr>
+            <td valign="top" width="15%" align="left"><label>Uploaded By</label></td>
+            <td valign="top" width="35%" align="left"><input id="search_document_creator" type="text"/></td>
+            <td width="1%">&nbsp;</td>
+            <td class="pt5 pb5" valign="top" width="15%" align="left"><strong><%=t(:text_when_was_it_created)%></strong></td>
+            <td valign="top" width="34%" align="left" style="padding:0; margin:0;">
+              <table border="0" cellpadding="0" cellspacing="0" align="left" >
+                <tbody>
+                  <tr>
+                    <td valign="middle"><input onclick="disable_date();" value="1" name="search_date" class="check" type="radio" checked="checked"/></td>
+                    <td><label><%=t(:text_dont_remember)%></label></td>
+                    <td valign="middle"><input onclick="disable_date();" value="2" name="search_date" class="check" type="radio"/></td>
+                    <td><label><%=t(:text_within_the_last_week)%></label></td>
+                  </tr>
+                  <tr>
+                    <td><input onclick="disable_date();" value="3" name="search_date" class="check" type="radio"/></td>
+                    <td><label><%=t(:text_past_month)%></label></td>
+                    <td><input onclick="disable_date();" value="4" name="search_date" class="check" type="radio"/></td>
+                    <td><label><%=t(:text_within_the_past_year)%></label></td>
+                  </tr>
+                  <tr>
+                    <td><input onclick="enable_date();" id="search_date" value="5" name="search_date" class="check" type="radio"/></td>
+                    <td><label><%=t(:text_specify_date)%></label></td>
+                    <td></td>
+                    <td>
+                      <select id="search_date_type" class="option_left">
+                        <option selected="selected"><%=t(:text_modified_date)%></option>
+                        <option><%=t(:text_created_date)%></option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td colspan="3"><label> <%=t(:text_from)%></label>&nbsp;<input size="10"  class="date date_picker" readonly="true" name="" id="search_from_date" disabled="disabled" type="text"/>&nbsp;&nbsp;<label><%=t(:text_to)%></label>&nbsp;<input size="10"  class="date date_picker" readonly="true" id="search_to_date" disabled="disabled" type="text"/></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="buttonSub_div">
+        <input type="submit"   value="<%=t(:label_search)%>" class="button" id="search_buton_leftside"/>
+        <input type="button" class="button" value="<%=t(:label_reset)%>" onclick="resetForm('repositorySearch');jQuery('#document_name').focus();jQuery('#search_date_type').val('<%=t(:text_modified_date)%>');"/>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" language="javascript">
+  jQuery(document).ready(function() {
+    jQuery('.ui-datepicker-trigger').attr('disabled', true); 
+    var search='<%=params[:display_search]%>' ;
+    search_toggle(search);
+    search_date_enable_disable();
+  });
+  // Need to removed to JS File
+  jQuery('#search_buton_leftside').click(function() {
+    if(validate_search_date()){
+      disableAllSubmitButtons('button');
+      jQuery(this).val('Please wait..');
+      var path_url= '<%=search_document_repositories_path()%>';
+      jQuery.get(
+      path_url , {
+        "document_description" : jQuery('#document_description').val(),
+        "document_tags"  : jQuery('#document_tags').val(),
+        'name' : jQuery('#document_name').val(),
+        'creator' : jQuery('#search_creator').val(),
+        'access_rights' : get_privilege,
+        'source' : jQuery('#_search_source').val(),
+        'author' : jQuery('#search_author').val(),
+        'creator': jQuery('#search_document_creator').val(),
+        'extension' : jQuery('#_document_extension').val(),
+        'date' : jQuery('input[name=search_date]:checked').val(),
+        'date_type' : jQuery('#search_date_type').val(),
+        'date_from' : jQuery('#search_from_date').val(),
+        'date_to' : jQuery('#search_to_date').val(),
+        'category' : jQuery('#_document_category').val()
+      },
+      function(data) {
+        jQuery('#search_results_DIV').html(data);
+        enableAllSubmitButtons('button');
+        jQuery('#search_buton_leftside').val('<%=t(:label_search)%>');
+        new_tool_tip();
+        LiviaTooltipAP();
+      });
+    }
+  });
+</script>

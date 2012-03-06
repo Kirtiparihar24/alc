@@ -1,0 +1,88 @@
+
+<div id="page">
+  <div class="inner">
+    <!--[if !IE]>start section<![endif]-->
+    <div class="section table_section">
+      <!--[if !IE]>start title wrapper<![endif]-->
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Skills</span></span>", wfm_user_work_subtypes_path, :class=>'active'%></li>
+          <li><%=link_to "<span><span>Priorities</span></span>", wfm_manage_priorities_path %></li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <!--[if !IE]>end title wrapper<![endif]-->
+      <!--[if !IE]>start section content<![endif]-->
+      <div class="section_content">
+        <!--[if !IE]>start section content top<![endif]-->
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <div id="skills_spinner"></div>
+                  <!--<div>
+                    <span class="button send_form_btn buttons_to_disable" style="text-align: right; float: right;"><%=link_to "<span><span>Skills By Lawyers</span></span>", wfm_user_work_subtypes_path,:style=>"color:#ffffff;"%></span>
+                  </div>-->
+                  <fieldset>
+                    <div class="table_wrapper">
+                      <div class="table_wrapper_inner">
+                        <% form_tag :controller => 'user_work_subtypes', :action => 'update_skills' do%>
+                          
+                          <table cellpadding="0" cellspacing="0" width="100%" class="tablesorter" id="notes_index_table">
+                            <thead>
+                              <tr>
+                                <th style="padding-top:10px;" rowspan="0" width="14%">Livians</th>
+                                <th nowrap="nowrap" style="text-align:center;width:430px;" align="center"><%= get_category_name %> Skills</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% @cluster_livians.each do |livian| %>
+                                <tr class="<%cycle('first','second')%>">
+                                  <td style="padding-top:10px;"><%= livian.full_name %></td>
+                                  <td style="padding-top:10px;" height="30">
+                                    <div style="margin-right:10px; float: left; width:120px;"><input type="checkbox" name="select_all" value="" onclick="toggleCheckboxes('livian_work_subtypes_<%=livian.id%>',this.checked);"/> Select All</div>
+                                    <br class="clear" />
+                                    <div style="float:left">
+                                      <% @livian_work_subtypes.each do |work_subtype| %>
+                                        <div style="margin-right:20px; float: left; width:auto; line-height: 23px;">
+                                          <%= check_box_tag "livian_skill_mappings[]","#{livian.id}-#{work_subtype.id}" ,get_livian_users_work_subtype_ids(livian).include?(work_subtype.id), :class=>"livian_work_subtypes_#{livian.id}"%> <%= work_subtype.name %>
+                                        </div>
+                                      <% end %>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% end %>
+                              <tr><td colspan="3" style="text-align:center;"><div class="button_div">
+                                    <span class="button send_form_btn buttons_to_disable"><span><span>Update Skills</span></span><input type="submit" name=""/></span>
+                                  </div>
+                                </td></tr>
+                              <tr>
+                                <td colspan="4" align="right"><span class="button send_form_btn buttons_to_disable" style="text-align: right; float: right;"><%=link_to "<span><span>BackOffice Skills</span></span>", skills_by_backoffice_agents_wfm_user_work_subtypes_path,:style=>"color:#ffffff;"%></span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        <% end %>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--[if !IE]>end section content top<![endif]-->
+        <!--[if !IE]>start section content bottom<![endif]-->
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+        <!--[if !IE]>end section content bottom<![endif]-->
+
+      </div>
+      <!--[if !IE]>end section content<![endif]-->
+    </div>
+    <!--[if !IE]>end section<![endif]-->
+
+  </div>
+</div>
+<!--[if !IE]>end page<![endif]-->
+

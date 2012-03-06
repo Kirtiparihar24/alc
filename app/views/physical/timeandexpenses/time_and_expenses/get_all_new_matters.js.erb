@@ -1,0 +1,24 @@
+if(<%=@matters.size > 0 ? true : false%>){
+    jQuery('#001_matterSearch').hide();
+    jQuery('#physical_timeandexpenses_time_entry_matter_id').parent().hide();
+    jQuery('#physical_timeandexpenses_time_entry_matter_id').remove();
+    jQuery('#matters_div').html("<%=escape_javascript(render(:partial => 'select_new_matters', :locals => {:matters => @matters, :matter_id => @matter_id}))%>");
+    jQuery('#matters_div').show();
+}
+else{
+    jQuery('#physical_timeandexpenses_time_entry_matter_id').val('');
+    jQuery('#matters_div').hide();
+    jQuery('#001_matterSearch').show();
+    jQuery('#_matter_ctl').show();
+    jQuery('#_matter_ctl').val('No Matters');
+    
+}
+jQuery('#physical_timeandexpenses_time_entry_employee_user_id').html("<%= @html_options_str  %>");
+jQuery('#physical_timeandexpenses_time_entry_is_internal').attr('disabled', false);
+jQuery('#physical_timeandexpenses_time_entry_is_internal').attr('checked', false);
+jQuery('#physical_timeandexpenses_time_entry_is_billable').attr('disabled', false);
+if(jQuery('#nonuser').attr('checked')) {
+  jQuery('#physical_timeandexpenses_time_entry_actual_activity_rate').val("0.00");
+}else{
+  jQuery('#physical_timeandexpenses_time_entry_actual_activity_rate').val("<%= @activity_rate  %>");
+}//end if

@@ -1,0 +1,206 @@
+<script type="text/javascript"> 
+  var noRole = "no";
+  var open_activities = true;
+  var open_issues = true;
+  var other_documents = true;
+  var for_private = "";
+  // Need to removed to JS File
+  function wouldYouChecked(val) {
+    jQuery("#private_document").hide();
+    if (val == "yes") {
+      jQuery("#role").show();
+      jQuery("#open_activity").hide();
+      jQuery("#open_issues").hide();
+      jQuery("#document").hide();
+    } else {
+      jQuery("#role").hide();
+      jQuery("#lawyer_new_role").val('');
+    }
+  }
+
+  function noRoleChecked(val){
+    noRole = val;
+  }
+  
+  function roleChange(val){
+    if (val != ""){
+      jQuery("#no_role").hide();
+    }
+  }
+
+  function leadLawyerChange(old_id, new_id){
+    old_id = parseInt(old_id);
+    new_id = parseInt(new_id);
+    if (old_id != new_id){
+      jQuery("#no_change").hide();
+      jQuery("#would_you").show();
+      jQuery("#role").show();
+      jQuery("#open_activity").hide();
+      jQuery("#open_issues").hide();
+      jQuery("#document").hide();
+      jQuery("#private_document").hide();
+      jQuery("#lawyer_new_role").val("");
+      jQuery("#would_you_radio_yes").attr("checked", "checked");
+      jQuery("#open_activity_radio_yes").attr("checked", "checked");
+      jQuery("#open_issues_radio_yes").attr("checked", "checked");
+      jQuery("#all_document_radio_yes").attr("checked", "checked");
+      open_activities = true;
+      open_issues = true;
+      other_documents = true;
+    }else{
+      jQuery("#would_you").hide();
+      jQuery("#would_you_radio_no").attr("checked", "checked");
+      
+      jQuery("#open_activity").hide();
+      jQuery("#open_activity_radio_no").attr("checked", "checked");
+      open_activities = false;
+      jQuery("#role").hide();
+      jQuery("#lawyer_new_role").val("");
+    }
+  }
+
+  function changeLeadLawyer(){
+    if (jQuery("#would_you_radio_yes").attr('checked') == "checked" && jQuery("#new_lead_lawyer").val() == ""){
+      alert('Please select new lead lawyer');
+      return false;
+    }else if(jQuery("#would_you_radio_yes").attr('checked')== "checked" && jQuery("#lawyer_new_role").val()== ""){
+      alert('Please select your role');
+      return false;
+    }else if(jQuery("#would_you_radio_no").attr('checked')== "checked"){
+      jQuery("#lawyer_new_role").remove();
+    }
+    var private_document_ids = []
+    jQuery('input[name=private_document\\[\\]]').each(function (){
+      if (this.checked){
+        private_document_ids.push(this.value);
+      }
+    });
+    if (private_document_ids.length == 0 && jQuery('#private_document_radio_transfer_ownership').is(':checked')){
+      alert('Please Select atleast one document.')
+    }else{
+      jQuery('#change_lead_button').val("Please wait ...");
+      jQuery('#change_lead_button').attr("disabled", "true");
+      jQuery('#cancel_button').attr("disabled", "true");
+      var new_lead_lawyer = jQuery("#new_lead_lawyer").val();
+      var url = "<%= change_lead_lawyer_matter_path(@matter)%>";
+      jQuery.post(url,{
+        "matter_id" : <%= @matter.id%>,
+        "new_lead_lawyer" : new_lead_lawyer,
+        "new_lead_role"   : jQuery("#lawyer_new_role").val(),
+        "for_private"     : for_private,
+        "private_document_ids" :private_document_ids,
+        "open_issues": open_issues,
+        "open_activities" : open_activities,
+        "other_documents" : other_documents
+      },
+      function(data){
+        if (data == "home"){
+          window.location = "<%=matters_path%>";
+        }else if(data == "edit"){
+          window.location ="<%= edit_matter_path(@matter)%>"
+        }
+      });
+    }
+  }
+
+function doneClicked(){
+    if (jQuery("#new_lead_lawyer").val() == ""){tb_remove();return;}
+    if (jQuery("#new_lead_lawyer").val() != jQuery("#last_lead_lawyer").val()) {
+      if (jQuery("#would_you_radio_no").attr('checked') == "checked"){
+        jQuery("#open_activity").show();
+        jQuery("#open_issues").show();
+        jQuery("#document").show();
+        jQuery("#private_document").show();
+      }else{
+        jQuery("#open_activity").hide();
+        jQuery("#open_issues").hide();
+        jQuery("#document").hide();
+        jQuery("#private_document").hide();
+        changeLeadLawyer();
+      }
+    }else{
+      // UNREACHABLE CODE!!
+      jQuery("#no_change").show();
+    }
+  }
+</script>
+<div class="gridDiv">
+  <div id ="flash_notice" style="display:none;"></div>
+  <%= render :partial => "matters/matter_tabs" %>
+  <div class="tabs-container-tabs xtabs-hide tabular_listing tabs-container" id="fragment-9" style="min-width: 0px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tbody>
+        <tr>
+          <td width="76%">
+            <%= render :partial => "matters/matter_contact_account" %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="seperator_dotted_hori"></div>
+    <div class="p5">
+      <div class="gryBox">
+        <div>
+          <%= t(:label_lead_lawyer) %> <%= collection_select("new", :lead_lawyer, @elligible_lawyers, :id, :get_name, {:include_blank => "---Select---", :selected => @matter.employee_user_id}, {:onchange => "leadLawyerChange(#{@matter.employee_user_id}, this.value);"}) %>
+          <%= hidden_field_tag :last_lead_lawyer, @matter.employee_user_id %>
+        </div>
+        <div id="would_you" style="display: none;" class="ptb10">
+          Would you like to continue to be a part of matter team?<br />
+          <table cellspacing="0" cellpadding="0" border="0" width="70">
+            <tr>
+              <td width="5"><%= radio_button_tag :would_you_radio, "yes",true, {:onclick => "wouldYouChecked(this.value);", :style => "padding:0;margin:4px 0 0 0"}%></td>
+              <td width="35">Yes</td>
+              <td width="5"><%=radio_button_tag :would_you_radio, "no",false, {:onclick => "wouldYouChecked(this.value);doneClicked();", :style=>"padding:0;margin:4px 0 0 0"}%></td>
+              <td width="35">No</td>
+            </tr>
+          </table>
+        </div>
+        <div id="role" style="display: none;">
+          Select a new role for yourself
+          <%= collection_select("lawyer","new_role", @available_roles,:id,:alvalue,{:onchange => "roleChange(this.value);"}) %>
+        </div>
+        <% if @open_activities.count > 0 %>
+          <div id="open_activity" style="display: none;" class="ptb10">
+            <p>
+              You have <%= @open_activities.count %> open activities in this matter.
+              (You can change the status and responsibility of individual activities by editing the same in the ‘”Activities section”)<br/>
+              Do you want to assign all your open activities to the new lead lawyer?
+            </p>
+            <table cellspacing="0" cellpadding="0" border="0" width="70">
+              <tr>
+                <td width="5"><%= radio_button_tag :open_activity_radio, "yes",true, {:onclick => "open_activities=true;", :style=>"padding:0;margin:4px 0 0 0"}%></td>
+                <td width="35">Yes</td>
+                <td width="5"><%= radio_button_tag :open_activity_radio, "no",false, {:onclick => "open_activities=false;", :style=>"padding:0;margin:4px 0 0 0"}%></td>
+                <td width="35">No</td>
+              </tr>
+            </table>
+          </div>
+        <% end %>
+        <% if  @open_issues.count > 0 %>
+          <div id="open_issues" style="display: none;" class="ptb10">
+            <p>
+              There are <%= @open_issues.count %> open issues that are assigned to you.
+              (You can change the status and responsibility of individual Issues by editing the same in the ‘”Issues” section)<br/>
+              Do you want to assign these issues to the new lead lawyer?
+            </p>
+            <table cellspacing="0" cellpadding="0" border="0" width="70">
+              <tr>
+                <td width="5"><%= radio_button_tag :open_issues_radio, "yes",true, {:onclick => "open_issues=true", :style=>"padding:0;margin:4px 0 0 0"} %></td>
+                <td width="35">Yes</td>
+                <td width="5"><%= radio_button_tag :open_issues_radio, "no",false,{:onclick => "open_issues=false", :style=>"padding:0;margin:4px 0 0 0"} %></td>
+                <td width="35">No</td>
+              </tr>
+            </table>
+          </div>
+        <% end %>
+        <div id="all_documents">
+          <%= render :partial => 'matters/all_documents' %>
+        </div>
+        <div align="center" class="ptb10">
+          <input id="change_lead_button" type="button" value="Done" class="button" onclick="changeLeadLawyer();" />&nbsp;
+          <input id="cancel_button" type="button" value="Cancel" class="button" onclick="window.location ='<%= edit_matter_path(@matter)%>'" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

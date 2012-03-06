@@ -1,0 +1,126 @@
+<%=raw(javascript_include_tag 'highcharts.js','FusionCharts.js','FusionChartsExportComponent.js')%>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery(".scrollable").scrollable();
+    <%if current_user.sign_in_count <= 2%>
+      tb_remove();
+      jQuery("#change_pswd").trigger('click');
+      jQuery('#TB_overlay').unbind('click');
+    <%end%>
+
+  });
+</script>
+<%=link_to("Ask Password Change", change_password_user_path(current_user.id,:height=>200,:width=>430,:first_login => true), :id => "change_pswd",:class =>"thickbox", :title => "Change Password", :style => "display:none;" )%>
+<div id="searched_common" class="xmb4"></div>
+<div>
+  <div class="fl w77 dashbard_left">
+    <div class="column_main">
+      <h2 class="title_main">Quick Links</h2>
+      <div class="p5">
+        <div class="scrollable">
+          <div class="items">
+            <div>
+              <table border="0" cellspacing="6" cellpadding="0" class="link_blue textsize10">
+                <tr>
+                  <td class="icon_gray_placeholder textC" valign="top">
+                    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                      <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="<%= calendars_path %>" class ="vtip" title="Calendar"><%=image_tag("calendar_task.png")%></a></td></tr>
+                      <tr><td valign="top"><a href="<%= calendars_path %>" > <%=t(:text_calendar)%> </a></td></tr>
+                    </table>
+                  </td>
+                  <td class="icon_gray_placeholder textC" valign="top">
+                    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                      <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="<%= create_activity_calendars_path(:height =>"360", :width=>"900") %>" class ="vtip thickbox" title="New Activity" name="New Activity"><%=image_tag("icon_calender.png")%></a></td></tr>
+                      <tr><td valign="top"><a href="<%= create_activity_calendars_path(:height =>"350", :width=>"900" ) %>" class="thickbox" name ="New Activity">New Activity</a></td></tr>
+                    </table>                    
+                  </td>
+                  <td class="icon_gray_placeholder textC" valign="top">
+                    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                      <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="<%= zimbra_mail_index_path(:app=>"contact") %>" class="vtip" title="Zimbra Contacts"><%=image_tag("icon_contacts.png")%></a></td></tr>
+                      <tr><td valign="top"><a href="<%= zimbra_mail_index_path(:app=>"contacts") %>" "Contacts"> Zimbra Contacts </a></td></tr>
+                    </table>
+                  </td>
+                 
+                  <%if can?(:manage,:time_and_expense)%>
+                    <td class="icon_gray_placeholder textC" valign="top">
+                      <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                        <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="<%= physical_timeandexpenses_new_time_entry_path %>?height=325&width=970" class="thickbox vtip" title="<%=t(:text_new_time_entry)%>" name="<%=t(:text_new_time_entry)%>"><%=image_tag("icon_time_expense.png")%></a></td></tr>
+                        <tr><td valign="top"><a href="<%= physical_timeandexpenses_new_time_entry_path %>?height=325&width=1020" class="thickbox" name="<%=t(:text_new_time_entry)%>"><%=t(:text_new_time_entry)%></a></td></tr>
+                      </table>
+                    </td>
+                    <td class="icon_gray_placeholder textC" valign="top">
+                      <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                        <%if @ipad_req%>
+                          <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="<%= physical_timeandexpenses_add_expense_entry_home_path %>?height=355&width=1000" class="thickbox vtip" title="<%= t(:text_expense_entry) %>" name="<%= t(:text_new_expenses) %>"><%=image_tag("icon-expenseentry.png")%></a></td> </tr>
+                          <tr><td valign="top"><a href="<%= physical_timeandexpenses_add_expense_entry_home_path %>?height=350&width=1000" class="thickbox" name="<%= t(:text_expense_entry) %>"><%= t(:text_new_expenses) %></a></td> </tr>
+                        <%else%>
+                          <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="<%= physical_timeandexpenses_add_expense_entry_home_path %>?height=355&width=1200" class="thickbox vtip" title="New <%= t(:text_expense_entry) %>" name="<%= t(:text_new_expenses) %> Entry"><%=image_tag("icon-expenseentry.png")%></a></td> </tr>
+                          <tr><td valign="top"><a href="<%= physical_timeandexpenses_add_expense_entry_home_path %>?height=350&width=1210" class="thickbox " name="New <%= t(:text_expense_entry) %>"><%= t(:text_new_expenses) %> Entry</a></td> </tr>
+                        <%end%>
+                      </table>
+                    </td>
+                  <%end%>
+                  <td class="icon_gray_placeholder textC" valign="top">
+                    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                      <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="/dashboards/fav_dashboard?height=430&width=650" class="thickbox vtip" title="<%= t(:text_my_favorite_dashboards) %>" name="<%= t(:text_my_favorite_dashboards) %>"><%=image_tag("Icon_favoriteDashboard.png")%></a></td> </tr>
+                      <tr><td valign="top"><a href="/dashboards/fav_dashboard?height=430&width=650" class="thickbox " name="<%= t(:text_my_favorite_dashboards) %>"> <%= t(:text_favorite) %> <%= t(:text_dashboards) %></a></td> </tr>
+                    </table>
+                  </td>
+                  <td class="icon_gray_placeholder textC" valign="top">
+                    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+                      <tr><td style="height:24px; line-height:24px; padding-top:3px" valign="middle"><a href="/company_reports/fav_reports?height=350&width=600&load_popup=true" class="thickbox vtip" title="<%=t(:text_my_favorite_reports)%>" name="<%=t(:text_my_favorite_reports)%>"><%=image_tag("icon_FavoriteReports.png")%></a> </td></tr>
+                      <tr><td valign="top"><a href="/company_reports/fav_reports?height=350&width=600&load_popup=true" class="thickbox " name="<%=t(:text_my_favorite_reports)%>"> <%= t(:text_favorite) %> <%= t(:text_reports) %></a> </td></tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="column_main mt12">
+      <%=render :partial => "alerts", :locals => {:user_setting => @usersetting, :upcoming_opportunity => @upcomingopportunity } %>
+    </div>
+    <div class="column_main mt12">
+      <h2 class="title_main"><%=t(:text_dashboards)%> <span style="float:right;font-size:11px;"> <a class="p5 link_blue" onclick="window.location = '<%= ENV['HOST_NAME'].to_s + '/dashboards/all_category?show_all_dashboards=true'%>' ">Manage Dashboards</a></span></h2>
+      <div class="w100 ptb5lr8">
+        <% @home_page_dashboards.each do |item|%>
+          <div class="fl ml5 mt10 mb10 textC">
+            <div class="border_gray chart" id="chart_<%=item.id %>" data-chart-type ="<%= item.type_of_chart %>"  data-chart-id= "<%= item.id%>"></div>
+            <br class="clear"/>
+            <span class="link_blue lh18">
+              <%=link_to("Full View",{:controller=>'/physical/clientservices/home',:action=>"display_full_view_of_dashboard", :dashboard_chart_id=>item.id,:type_of_chart=>item.type_of_chart, :height=>"480", :width => "540",:keepThis=>true},{:class=>"thickbox vtip",:title=>"#{item.chart_name}",:name=>"#{item.chart_name}"}) unless @home_page_dashboards.blank?%>
+            </span>
+          </div>
+        <% end %>
+        <br class="clear" />
+      </div>
+    </div>
+  </div>
+  <div id="fav_list_div"><%= render :partial=>'favourites'%></div>
+  <br class="clear" />
+</div>
+<%= render :partial => "task_summary" %>
+<br class="clear" />
+<script type="text/javascript">
+/* AJAX For Rendering Dashboard */
+function render_dashboard(){ 
+ jQuery(".chart").each(function(i,v){
+   var dashboard_id = jQuery(this).attr('data-chart-id');
+   var type_of_chart = jQuery(this).attr('data-chart-type');
+   jQuery.ajax({
+       type: "GET",
+       url: "/physical/clientservices/home/render_fusion_chart?dashboard_chart_id="+dashboard_id,
+       dataType: 'text',
+       success: function(xml){
+       var act = new FusionCharts("/FusionCharts/"+type_of_chart, "activity", 292, 230);
+        act.setDataXML(xml);
+        act.render("chart_"+dashboard_id);
+      }
+    });
+  })
+}
+render_dashboard();
+</script>

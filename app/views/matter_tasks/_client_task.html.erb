@@ -1,0 +1,30 @@
+<div id="client_task_type_select_div" <%unless @matter_task.client_task%> style="display:none;"<%end%>>
+  <div class="w40 fl"><p><label>&nbsp;<!--SHOW/HIDE DIV--></label></p></div>
+  <div class="showHide fl" >
+    <p>      
+      <%=select_tag("matter_task[client_task_type]", options_for_select(MatterClientTaskDetail::TASK_TYPES))%>
+      <span style="color:#c00;font-size:11px;float:left !important;margin-left:-2px;">*</span>
+    </p>
+    <br class="clear" />
+  </div>
+  <br class="clear" /><br class="clear" />
+</div>
+<% if @matter_task.client_task && !@matter_task.client_task_type.blank?
+  task_type = @matter_task.client_task_type  
+  @doc_name = @matter_task.client_task_doc_name
+  @doc_desc = @matter_task.client_task_doc_desc
+end %>
+<div id="client_task_div">
+  <%if !task_type.nil? && task_type.eql?("Document Submission")%>
+    <%=render :partial => "matter_tasks/#{task_type.downcase.split.join('_')}"%>
+  <%end%>
+</div>
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function() {
+    matter_client_task_observers(<%=@matter.id%>);
+    <%unless task_type.nil?%>
+    var type = "<%=task_type%>";
+    jQuery("#matter_task_client_task_type").val(type);    
+    <%end%>
+  });
+</script>

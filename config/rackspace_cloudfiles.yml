@@ -1,0 +1,15 @@
+development:
+#  container: private_dev
+  container: private_dev
+  username: livia
+  api_key: d979402a1f4a19cea0f2e62b6bfddc19
+
+test:
+  container: pcdemo_test
+  username: 
+  api_key: 
+
+production:
+  container: pcdemo_production
+  username: 
+  api_key: 

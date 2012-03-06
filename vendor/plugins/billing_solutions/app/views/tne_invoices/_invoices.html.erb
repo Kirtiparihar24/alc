@@ -1,0 +1,123 @@
+<table width="100%" cellspacing="1" cellpadding="1" class="border_gray">
+  <tr>
+    <!--<th width="10%" align="left">Type</th>-->
+    <%= column_sort_link('Type', "type", params[:col], "10%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link(t(:text_invoice_no), "invoice_no", params[:col], "15%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <% unless params[:mode_type]=="client" || params[:type]=="client" %>
+      <%= column_sort_link('Matter ID', "matters.matter_no", params[:col], "10%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+      <%= column_sort_link('Matter', "matters.name", params[:col], "22%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%end%>
+    <%= column_sort_link(t(:text_contact), "contacts.name", params[:col], "25%", "left", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link(t(:text_invoice_amount), "final_invoice_amt", params[:col], "10%", "right", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <th width="10%" align="right">Balance</th>
+    <%= column_sort_link('Invoice Date', "invoice_date", params[:col], "8%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%= column_sort_link('Due Date', "invoice_due_date", params[:col], "8%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%unless params[:status].to_i==@cancelstatus.id%>
+      <%= column_sort_link('Status', "billing_status", params[:col], "6%", "center", {:mode_type => params[:mode_type], :status => params[:status], :action => "index", :letter=>params[:letter], :per_page => params[:per_page]}) %>
+    <%end%>
+    <%unless params[:status]=='Settled'%>
+      <th width="5%">Actions</th>
+    <%end%>
+  </tr>
+  <% unless result.blank? %>
+    <% result.each do |tne_invoice| %>
+      <% unless tne_invoice.blank? %>
+        <tr class="<%= cycle("bg1","bg2") %>">
+          <td align="center"><div class="icon_system vtip" name="<%= t(:text_system)%>" title="<%=  t(:text_system)%>"></div></td>
+          <% cancelledbill = tne_invoice.tne_invoice_status.lvalue=="Cancelled" %>
+          <td><%= cancelledbill ? tne_invoice.invoice_no : (link_to tne_invoice.invoice_no,edit_tne_invoice_path(:id=>tne_invoice.id,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status])) %></td>
+          <% unless params[:mode_type]=="client" || params[:type]=="client" %>
+            <td><%= change_matter_id(tne_invoice.matter) rescue "" %></td>
+            <td><%= truncate_withscroll(tne_invoice.matter.name,90)  rescue ""%></td>
+          <%end%>
+          <td><%= tne_invoice.matter.contact.name rescue ""%> <%= tne_invoice.contact.name  rescue ""%> </td>
+          <td align="right"><%= number_with_lformat(tne_invoice.final_invoice_amt) %></td>
+          <%unless params[:status]=='Settled'%>
+            <td align="right"><%= livia_amount(tne_invoice.final_invoice_amt) %></td>
+          <%end%>
+          <td align="center"><%= tne_invoice.invoice_date %></td>
+          <td align="center"><%= tne_invoice.invoice_due_date %></td>
+          <%unless params[:status].to_i==@cancelstatus.id%><td align="left"><%= tne_invoice.tne_invoice_status.alvalue.try(:titleize) %></td><%end%>
+          <%unless params[:status]=='Settled'%>
+            <td align="center">
+              <div class="icon_action mt3"><a href="#"></a></div>
+              <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                <!--Icon table strt here -->
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                  <%= action_pad_top_blue_links({:edit_path=> cancelledbill ? "NO" : edit_tne_invoice_path(tne_invoice,:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status],:per_page=>params[:per_page],:page=>params[:page]),
+                      :deactivate_path=>"NO",
+                      :comment_path=>"NO",
+                      :document_path=>"NO",
+                      :history_path=>"#{history_comments_path(:id=>tne_invoice.id,:commentable_type=>'TneInvoice',:height=>150,:width=>600)}",
+                      :history_title => "Invoice History #{tne_invoice.invoice_no}"}) %>
+                  <tr>
+                    <td class="ap_middle_left"><div class="ap_pixel"></div></td>
+                    <td style="background: #fff;">
+                      <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                        <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                        <tr>
+                          <td align="left" valign="middle" width="7%"><div class="ap_child_action"></div></td>
+                          <td align="left" valign="middle" width="40%"> <%= cancelledbill ? "<span class='action_pad_inactive'>Change Status</span>" : (link_to "Change Status", change_status_tne_invoice_path(tne_invoice, :height => 200, :width=>350, :automate => true,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:q=>params[:q],:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status]), :class=>"thickbox",  :name => "Change Status") %> </td>
+                          <td align="left" valign="middle" width="7%"><div class="ap_child_action"></div></td>
+                          <td align="left" valign="middle" width="40%"><%= cancelledbill ? "<span class='action_pad_inactive'>Regenerate Invoice</span>" : (link_to "Regenerate Invoice", regenerate_tne_invoice_path(tne_invoice,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:q=>params[:q],:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status]),:confirm=>"This will discard all changes you have made to individual T&E entries while generating tne_invoice. Are you sure to proceed?") %></td>
+                        </tr>
+                        <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                        <tr>
+                          <td width="7%" align="left" valign="middle"><img src="/images/icon_child_action.png" width="15" height="14" /></td>
+                          <td width="40%" align="left" valign="middle" nowrap><%= "<span class='action_pad_inactive'>#{t(:label_record_receipt)}</span>" %></td>
+                          <% actionpad = true %>
+                          <% bill_doc =  tne_invoice.comments.first.document_homes.last if (tne_invoice.comments.present? && tne_invoice.comments.first.document_homes.last) %>
+                          <% bill_doc_xls = (tne_invoice.comments.first.document_homes.first if (tne_invoice.comments.present? && tne_invoice.comments.first.document_homes.first)) %>
+                          <%unless bill_doc.nil?%>
+                            <td width="7%" align="left" valign="middle"><img src="/images/icon_child_action.png" width="15" height="14" /></td>
+                            <td width="40%" align="left" valign="middle">
+                              <%if cancelledbill %>
+                                <%="<span class='action_pad_inactive'>Download Invoice</span>" %>
+                              <%else%>
+                                <span class="fl mr5">Download </span>
+                                <%= link_to "<span class='icon_pdf fl mr5'></span>", document_home_path(bill_doc.latest_doc.id),{:class=> "vtip",:title=>"PDF"}%>
+                                <%= link_to "<span class='icon_xls fl mr5'></span>", document_home_path(bill_doc_xls.latest_doc.id),{:class=> "vtip",:title=>"XLS"}%>
+                              <%end%>
+                            </td>
+                          <%else%>
+                            <% unless cancelledbill %>
+                              <% actionpad = false %>
+                              <%= matter_billing_cancel_links(cancelledbill, tne_invoice_path(tne_invoice, :non_matter => true,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:q=>params[:q],:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status]), "left") %>
+                            <% else %>
+                              <td colspan="2"></td>
+                            <% end %>
+                          <%end%>
+                        </tr>
+                        <% if actionpad && !cancelledbill %>
+                          <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                          <tr>
+                            <%= matter_billing_cancel_links(cancelledbill, tne_invoice_path(tne_invoice, :non_matter => true,:per_page=>params[:per_page],:page=>params[:page],:letter=>params[:letter],:q=>params[:q],:col=>params[:col],:dir=>params[:dir],:mode_type=>params[:mode_type],:status=>params[:status]), "left") %>
+                            <td colspan="2"></td>
+                          </tr>
+                        <% end %>
+                        <tr><td colspan="4"><div class="ap_pixel10"></div></td></tr>
+                      </table>
+                    </td>
+                    <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                  </tr>
+                  <tr>
+                    <td valign="top" class="ap_bottom_curve_left"></td>
+                    <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                    <td valign="top" class="ap_bottom_curve_right"></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          <%end%>
+        </tr>
+      <% end %>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="9">
+        <div class="warningCont m5"><%= t(:text_no_bills_found) %> </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<div class="mandatory mt12 mb8">&nbsp;<div class="icon_system" style="display: inline; padding-right: 16px;padding-bottom:5px;"></div>:- <%= t(:text_system)%></div>

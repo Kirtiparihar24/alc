@@ -1,0 +1,37 @@
+<%if current_user.role?:lawfirm_admin%>
+  <div class="box-head"><h2 class="left"><%= current_user.company_full_name  %></h2></div>
+  <div class="actionLinks"><%= link_to "Automate Matter Numbering", automate_matter_numbering_path %> |
+    <% if params[:company_id].present? %>
+      <% if @company.tne_invoice_setting.blank? %>
+        <%= link_to "Invoice Setting", new_tne_invoice_setting_path(:company_id => params[:company_id]) %>
+      <% else %>
+        <%= link_to "Invoice Setting", edit_tne_invoice_setting_path(@tne_setting, :company_id => params[:company_id]) %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="13%" align="center"><strong><%=t(:text_total_employees)%></strong></th>
+      <th width="13%" align="center"><strong><%=t(:text_total_users)%></strong></th>
+      <th width="13%" align="center"><strong><%=t(:text_active_users)%></strong></th>
+      <th width="20%" align="center"><strong><%=t(:text_total_licence)%></strong><br />
+        (<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</th>
+      <th width="20%" align="center"><strong><%=t(:text_licence_consumed)%></strong><br />
+        (<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)</th>
+      <th width="20%" align="center"><strong><%=t(:text_licence_remaining)%></strong><br />
+        (<span><strong><%=t(:text_permanent)%></strong></span> / <span><strong><%=t(:text_temporary)%></strong></span>)
+      </th>
+    </tr>
+    <tr>
+      <td width="13%" align="center"><%= @employees%></td>
+      <td width="13%" align="center"><%= @totalusers%></td>
+      <td width="13%" align="center"><%= @activeusers%></td>
+      <td width="20%" align="center"><span><%= @activepermlicence + @remainpermlicence%></span> / <span><%= @activetemplicence + @remaintemplicence%></span></td>
+      <td width="20%" align="center"><span><%= @activepermlicence%></span> / <span><%= @activetemplicence%></span></td>
+      <td width="20%" align="center"><span><%= @remainpermlicence%></span> / <span><%= @remaintemplicence%></span></td>
+    </tr>
+  </table>
+</div>
+<div id="userdiv"><%=render :partial => 'companies/list_of_users'%></div>

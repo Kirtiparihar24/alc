@@ -1,0 +1,42 @@
+<div class="box_gray_new">
+  <div class="fl">
+    <strong><%= t(:text_invoice) %></strong>
+  </div>
+  <div class="fr mt5 mr5">
+    <a href="<%=raw select_manual_or_system_bill_path(:matter_id=>@matter, :height=>300, :width=>300,:from_matter_billing=>"true")%>" class="thickbox fr link_blue vtip" title="Create New Invoice" name="Create New Invoice"><span class="icon_add fl"></span></a>
+  </div>
+  <br class="clear" />
+</div>
+<div class="tabular_listing">
+  <table width="100%" cellpadding="1" cellspacing="1" id="invoice_table" class="border_gray">
+    <tbody><tr id="invoice_heading">
+        <th width="4%" align="left">Type</th>
+        <th width="12%" align="left"><%= t(:text_invoice_no) %></th>
+        <th width="8%" align="center"><%= t(:text_date) %></th>
+        <th width="19%" align="left"><%= t(:text_uploaded_by) %></th>
+        <th width="12%" align="right"><%= t(:text_invoice_amount)%></th>
+        <th width="14%" align="right"><%= t(:text_amount_paid_settled) %></th>
+        <th width="9%" align="center"><%= t(:text_due_date) %></th>
+        <th width="10%" align="right"><%= t(:text_dues) %></th>
+        <th width="11%" align="left"><%= t(:text_status) %></th>
+        <th width="1%" align="center"><%= t(:text_actions) %></th>
+      </tr>
+      <% unless bills.empty? %>
+        <% bills.each do |bill| %>
+          <tr class="<%= cycle('bg1','bg2') %>" id="bill_<%=bill.id%>">
+            <%= render :partial=> "matterbill_row" , :locals => {:bill => bill} %>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="9">
+            <div class="warningCont m5"> <%= t(:text_no_record_s_found) %> </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%if bills.present?%>
+  <div class="mandatory mt12 mb8">&nbsp;<div style="display: inline; padding-right: 16px;padding-bottom:5px;" class="icon_manual"></div>:- Manual, <div style="display:inline;padding-right:16px;padding-bottom:5px;" class="icon_system"></div>:- System</div>
+<%end%>

@@ -1,0 +1,2 @@
+<td width="25%" align="left" valign="top"><label><%=t(:text_select_account)%><span>*</span></label></td>
+<td width="52%"><%=collection_select :configurecgc, :account_id, @accounts, :id, :name,{:include_blank => "---Select---"}%></td>

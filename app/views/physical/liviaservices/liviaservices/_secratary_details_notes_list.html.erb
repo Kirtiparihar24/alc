@@ -1,0 +1,61 @@
+<% form_for :tasks, @tasks, :url => {:action => 'update_notes'},:html =>{:method => :post } do |task| -%>
+  <div id="div_errors"></div>
+  <div class="titleHead">
+    <%if @user_name.blank?%><%=t(:text_unassigned)%><%else%><%=@user_name.username.try(:capitalize)%><%end%><%=t(:text_s)%>&nbsp;&nbsp;<%= @notes.size>1? 'Notes':'Note' %>&nbsp;(<%=@notes.size%>)
+  </div>
+  <div class="gryBox">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="formTable">
+      <tr>
+        <th ><%=t(:text_select)%></th>
+        <th ><%=t(:text_lawyers_name)%></th>
+        <th ><%=t(:text_created)%></th>
+        <th ><%=t(:text_task_type)%></th>
+        <th ><%=t(:text_note_details)%></th>
+        <th ><%=t(:text_urgent)%></th>
+        <th ><%=t(:text_assign_to)%></th>
+      </tr>
+      <% if @notes.blank?%>
+        <tr><td colspan="7"><div class="warningCont"><%=t(:text_no_task_created)%></div></td></tr>
+      <%else%>
+        <% @notes.each do |notes| %>
+          <% fields_for "notes[]", notes do |f| %>
+            <tr class="<%= cycle("bgW", "bg1") -%>">
+              <td><%= check_box_tag 'selected_records[]', notes.id, false,options = {:onclick=>"insertToDo(this,'assigned_#{notes.id}_DIV');",:class=>"notes_checks"}%></td>
+              <td><%=notes.receiver.try(:full_name).try(:capitalize) %></td>
+              <td><%= time_ago_in_words(notes.created_at) %></td>
+            <input type="hidden" name="task[<%=notes.id%>][note_id]" value="<%= notes.id %>"/>
+            <td><span class="text_red">*</span>
+              <%=collection_select "task[#{notes.id}]", "tasktype", @skill_types,:id,:lvalue,{:prompt=>true},html_options={:class =>'txtbox'}%>
+            </td>
+            <td><textarea rows="1" name="task[<%=notes.id%>][name]" id="task_<%=notes.id%>_name" cols="30" class="textarea_session"><%= h notes.description %></textarea></td>
+            <td><input type="checkbox" name="task[<%=notes.id%>][priority]" id="task_<%=notes.id%>_priority" class="txtbox" <%=notes.note_priority.eql?(1) ? nil : 'checked' %>/></td>
+            <td>
+              <div id='assigned_<%= notes.id %>_DIV'style="display:none">
+                <select name="task[<%=notes.id%>][assigned_to_user_id]" id="task_<%=notes.id%>_assigned_to_user_id" class="txtbox">
+                  <option value=""><%=t(:text_select)%></option>
+                  <% notes.receiver.service_provider_employee_mappings.each{|st| %>
+                    <option value='<%=st.service_provider.user.id%>'><%=st.service_provider.sp_full_name%></option>
+                  <%}%>
+                </select>
+              </div>
+            </td>
+            </tr>
+          <%end%>
+        <%end%>
+      <%end%>
+      <tr>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >&nbsp;</td>
+        <td >
+          <div id="assign_button">
+            <%= submit_tag(t(:text_assign),:class=>'linknormal', :onclick=>"return validateTaskType();") if @notes.size>0 %>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+<%end%>

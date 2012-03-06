@@ -1,0 +1,53 @@
+<div style="text-align:center;margin-top:20px;">
+  <%form_for([@matter, @bill], :url => {:action => "create_bill_payment_details"}, :html=> {:multipart=> true}) do |f|%>
+    <%if(@bill.errors.length > 0)%>
+      <%=f.error_messages %>
+    <%end%>
+    <table width="460" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+      <tr>
+        <td width="135" align="left">1<label><%= t(:text_amt_available_for_bill_payment_or_settlement) %> <span class="alert_message">*</span></label></td>
+        <td width="304" align="left"><strong><%= show_credit_amount(@matter) %></strong></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%= t(:text_bill_no) %> <span class="alert_message">*</span></label></td>
+        <td align="left"><%= f.text_field :bill_no, :size => "40" %></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%= t(:text_amount) %> <span class="alert_message">*</span></label></td>
+        <td align="left"><%= f.text_field :bill_amount, :size => "40" %></td>
+      </tr>
+      <tr align="right">
+        <td align="left" valign="top"><label><%= t(:text_payment_settled_amount) %></label></td>
+        <td align="left" valign="top"><%= f.text_field :bill_amount_paid, :value => 0, :size => "40" %></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><label><%= t(:text_date) %> <span class="alert_message">*</span></label></td>
+        <td align="left"><%= f.text_field :bill_pay_date, :value => @bill.bill_pay_date, :class=>"date_picker", :size=>"15", :onclick=>"livia_datepicker(this);"%></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><label><%= t(:text_status) %></label></td>
+        <td align="left"><%= f.select :matter_billing_status_id, @matter_billing_statuses.collect{|status| [status.alvalue, status.id]}%></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%= t(:text_bill) %></label></td>
+        <td align="left"><%= file_field_tag 'document_home[file]' %></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><label><%= t(:text_remarks) %></label></td>
+        <td align="left" valign="top"><%= f.text_area :remarks, :rows => "3", :cols => "40" %></td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left"> <%= f.submit t(:text_save) %>
+          <input type="submit" id="Login2" value="Cancel" onclick="parent.tb_remove();return false" /> </td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<script type="text/javascript">  
+  livia_datepicker();
+</script>

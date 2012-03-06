@@ -1,0 +1,336 @@
+zimbra_server_config:
+  liviatech.com:
+    key: 1da8c376385e599bcdda7199296fe1f548066a01b883598cb36ce1885b25cc65
+    url: http://mail.liviatech.com
+
+  mail.livialegal.com:
+    key: 163289ceaaa1fd4f44e16a61a4fb949c0a7317590a72c9e2a798f6f0446308f1
+    url: http://portalmail01.livialegal.com
+
+  liviaservices.com:
+    key: e990bc6ab4dc07e0e915b15a9af354509016cb09cfb1be5b8f341264adb43684
+    url: https://mail.liviaservices.com
+
+  liviamail.com:
+    key: 005875bf92011f4ba6a697a192aec34b54f69186b83cb1d6cfc5f4e331473176
+    url: http://mail.liviamail.com
+
+  hhllp.liviamail.com:
+    key: 344ae17860e437571b0eed2a52aaf2107b4fe614a66373bcedff70d08c84142e
+    url: http://mail.liviamail.com
+
+  amllp.liviamail.com:
+    key: 0c48816607d6958a414c971d0fa41dcac3d8d6e333915a57cb1452e5ae987634
+    url: http://mail.liviamail.com
+
+  tnc.liviamail.com:
+    key: eb9ec3f62df0e513ce26ece32fa54fd1b99725fc8b1a1145128bcdb73b8fea09
+    url: http://mail.liviamail.com
+
+  wnt.liviamail.com:
+    key: c6855c5f8216bed4f1059ac48559597f0f03b876bdcadb8be72499a764cc9be6
+    url: http://mail.liviamail.com
+
+  kns.liviamail.com:
+    key: 5b7de630e6ce3bc7d92e0134733989b1c6d18cdd12e07334b002937669495fbc
+    url: http://mail.liviamail.com
+
+  tnc.liviatech.com:
+    key: c19e2e54743c39318086614b1c512f6211e5cfef342ef029e2b848ab4b6f426c
+    url: http://testmail.liviatech.com
+
+  wnt.liviatech.com:
+    key: bdea02c291d81b5c6f2744e22a0b526ffb8394a97a2c83c7109749e23011afe3
+    url: http://testmail.liviatech.com
+
+  kns.liviatech.com:
+    key: 10974bf569344fa6542a335ca2829428c5b6fa2d858f50a3edf9fee35377f459
+    url: http://testmail.liviatech.com
+
+  kns.liviaindia.com:
+    key: 2deb6f13fde4acc584ce9a14128d39aae24eb798d906d17222684310b8259d61
+    url: http://demomail.liviaindia.com
+
+  tnc.liviaindia.com:
+    key: b5a426ca2f1d789cc8006472cbc482c0ed92ed0a7036f51c36e80008369b862b
+    url: http://demomail.liviaindia.com
+
+  wnt.liviaindia.com:
+    key: ed851d75321581add26616bf6c27af14506658ca4714c676486d5142444bd7c0
+    url: http://demomail.liviaindia.com
+
+  tnc.tm.liviatech.com:
+    key: ef3e652a5d76ebb8c8c86210c3193ba77c19d56639a102267b41b016ba2257a3
+    url: http://tm.liviatech.com
+
+  wnt.tm.liviatech.com:
+    key: 0604d48af7d7c9a068248011fa4fbd168b860369dae596a4c3cc03306bff14e2
+    url: http://tm.liviatech.com
+
+  kns.tm.liviatech.com:
+    key: 360c2bd88a96e41765fd3ed7882d1cd9cfab466f3a690a411aa21fad8bab8c44
+    url: http://tm.liviatech.com
+
+  omega.tm.liviatech.com:
+    key: 03f952a13c2a5ecea15324e0fbbabba16df19abcce99e87f7276347466db3da0
+    url: http://tm.liviatech.com
+
+  tm.liviatech.com:
+    key: 834665cebfcb689d4cb5d6e8b0fe7bcd24d6391ba82bd9b6c496a6b6d87e532e
+    url: http://tm.liviatech.com
+
+  tnc.dm.liviatech.com:
+    key: 8686932d3076ad4769d4aa13e98240242fbe372f70a5d59b09a37f2197b7090a
+    url: http://dm.liviatech.com
+
+  wnt.dm.liviatech.com:
+    key: cd923216c1066918b49fd5140dd8f2608b218e438b4c0dfd6a855e84e6296815
+    url: http://dm.liviatech.com
+
+  kns.dm.liviatech.com:
+    key: 066763ad4b51115521b4bf16919725fa8f2801184b7d28d7c014be632e44f01b
+    url: http://dm.liviatech.com
+
+  dm.liviatech.com:
+    key: f6170df65d837d1bb48ce040663d8fa30a59630e7e62f305154509a386c05a2a
+    url: http://dm.liviatech.com
+
+  tnc.stgm.liviatech.com:
+    key: 60fe8fcd92172390bad887afb144e13704202d2d162a0b24dabd2f6e94846bb6
+    url: http://stgm.liviatech.com
+
+  wnt.stgm.liviatech.com:
+    key: 2a8f373eb8ee74b46a1840aaa45dae985dc885a1eb6d124365f886e58ed3ab68
+    url: http://stgm.liviatech.com
+
+  kns.stgm.liviatech.com:
+    key: 3d2a101e8aa078d4d58d7dd8f895706699b2dd6f056cdf984f967ae7f9f672c0
+    url: http://stgm.liviatech.com
+
+  stgm.liviatech.com:
+    key: 488e0cbbe3bd85f6399edebb9b0fac16abb1b98e4de03dc6db7899b7515f8d63
+    url: http://stgm.liviatech.com
+
+  tnc.sm.liviatech.com:
+    key: f87dfb28eba313abc4634f5131b044c289adc82da04be8fdb8aa27cdec34b475
+    url: http://sm.liviatech.com
+
+  wnt.sm.liviatech.com:
+    key: 74dea887f5475bdbcf84b811c267c08d38458bf4500543c3497b7d40661293eb
+    url: http://sm.liviatech.com
+
+  kns.sm.liviatech.com:
+    key: c0ff7a08140b22e18f38285905f3bad25a0b19dee40ba9906ed8c851b4b00810
+    url: http://sm.liviatech.com
+
+  sm.liviatech.com:
+    key: b16784a5c5a5054289b1f7ce9da297796c340e29f8207641d373a6b3fd8c8b12
+    url: http://sm.liviatech.com
+
+  tnc.gm.liviatech.com:
+    key: 583aaeac86b64692e17b870cc63b7baa3bf810dff5402ea3e8ddc77f098beb96
+    url: http://gm.liviatech.com
+
+  wnt.gm.liviatech.com:
+    key: 8f3e60222a2229bac698fd95fcbdf504f569e58e97a738784c7fbee8255223b0
+    url: http://gm.liviatech.com
+
+  kns.gm.liviatech.com:
+    key: cb3677b5ac201949ce1bf3753ba8a7a377ef780cb570d3eb5d841a52a2962332
+    url: http://gm.liviatech.com
+
+  gm.liviatech.com:
+    key: 3398827f9c9563d13417d384743581cf9a4d376842aeb724e252d1d34beb0c8c
+    url: http://gm.liviatech.com
+
+  ui.liviatech.com:
+    key: d7ba57d3f0f3316d001dd82d146e905603c017a82899e00cc0eb0a9635283871
+    url: http://ui.liviatech.com
+
+  tnc.ui.liviatech.com:
+    key: 8f82f6f34687c371b0409f30f3f937442e1a18b11da972534ad8765765279faa
+    url: http://ui.liviatech.com
+
+  kns.ui.liviatech.com:
+    key: a09625ba545ad284af6fd05d48bdc6ba8e79ce90c7a66a9ab84556a259315220
+    url: http://ui.liviatech.com
+
+  wnt.ui.liviatech.com:
+    key: 5a3c48f1df7dc6ca72d65b47ca0d9d0d205de4f5b19e6beef573c2f898369c86
+    url: http://ui.liviatech.com
+
+  smarterhabitat.com:
+    key: dd2a65caf7cd8d6764523347a9581d29ce98ef3667673fe25b064d3efec765d0
+    url: https://mail.smarterhabitat.com
+
+  lawfirm1.stgm.liviatech.com:
+    key: a57df61da78067a1e6927e18b4c32e7e9c85c28903f90e5750800ba01c1682bb
+    url: http://stgm.liviatech.com
+
+  lawfirm2.stgm.liviatech.com:
+    key: a6b00eb04efb3f56367064e283b60ddb7c7eec5aa84d56c201972ed251831c6a
+    url: http://stgm.liviatech.com
+
+  lawfirm3.stgm.liviatech.com:
+    key: cc3e9750af74d758535401d2ac7a6a00db82b65d4df550e1c0db35ec308071b8
+    url: http://stgm.liviatech.com
+
+  lawfirm1.gm.liviatech.com:
+    key: 5e59c07298beb6181d8f2a01397b6133e58262b203cbdfc133a2b33ea751d9f8
+    url: http://gm.liviatech.com
+
+  lawfirm2.gm.liviatech.com:
+    key: 1fe9ecc4d749c9fb5080cabac0d3636c835a4d6deb266e5da026eb655208f6b4
+    url: http://gm.liviatech.com
+
+  lawfirm3.gm.liviatech.com:
+    key: 21ff5834f15a715db31f11bdf80f8049af9f4dff8228d08ec3109cbc8ee27ff1
+    url: http://gm.liviatech.com
+
+  lawfirm1.dm.liviatech.com:
+    key: b9cd0fc3479e0a76de56aeb9ac94c15bf84229db41ffec653ad159f0879f1cd9
+    url: http://dm.liviatech.com
+
+  lawfirm2.dm.liviatech.com:
+    key: 0bc83dc6a9430f731487525cedcd45be5e1fc2df607c58be3b3b4f49371706d9
+    url: http://dm.liviatech.com
+
+  lawfirm3.dm.liviatech.com:
+    key: 26a6760101e1e1712ee052a537a84ce8097d1f6e4df0c049a0456d35e53cd7aa
+    url: http://dm.liviatech.com
+
+  lawfirm1.tm.liviatech.com:
+    key: 1bb194e87668bd52142c50360d0d4262aa521bd0757163c236ebc5f51fa32a18
+    url: http://tm.liviatech.com
+
+  lawfirm2.tm.liviatech.com:
+    key: 1aa81cf719d234b27ef1c21f3b374fd56272e53814578d0915fa92d843972657
+    url: http://tm.liviatech.com
+
+  lawfirm3.tm.liviatech.com:
+    key: cf83fbd3f4a50c2477a319791b3f3653403c49815c541354490fb75d6a928d6a
+    url: http://tm.liviatech.com
+
+  mdick.liviaservices.com:
+    key: 183e1182c5debf66c3aeae72ae88012a895cf0235bfb6ed2ac411e7b8da6da1a
+    url: http://mail.liviaservices.com
+
+  mail.com:
+    key: b8be4cc5c9bd268aab855cfbe158804af4abd34cc55f6914a65c775a0cf11f45
+    url: http://pmail.liviatech.com
+
+  pp.com:
+    key: b5203c881a924ace40b3df27c933ef20f423cd0f6df2cb94137fe014efc4f737
+    url: http://mail.liviaservices.com
+
+  dmail.liviatech.com:
+    key: 105d82c1ed2822c4e805285fbb2cc408555ce3544c722fbf0d6192e1a4131374
+    url: http://dmail.liviatech.com
+
+  kns.dmail.liviatech.com:
+    key: a908d46c72c13be51c7bd50df56e2f9985a0a14a1b45780ffc80201533fa60a9
+    url: http://dmail.liviatech.com
+
+  tnc.dmail.liviatech.com:
+    key: 34d7996ec8f9d0a9c82c45fffeee4924425c66155d4f9c52f88a574a6a54e4cf
+    url: http://dmail.liviatech.com
+
+  wnt.dmail.liviatech.com:
+    key: f4116265144048c3997950fbda128297de32ae0c1cc275d517d23d6816584de6
+    url: http://dmail.liviatech.com
+
+  lawfirm1.dmail.liviatech.com:
+    key: eb6f050f931a48d4b75119dae09d8b00407923e8e2cb56533b14da44fd0a022b
+    url: http://dmail.liviatech.com
+
+  lawfirm2.dmail.liviatech.com:
+    key: 9e6ccde6d180649636bf27a82f24644f4fdb51f66962ca1e9b50d14fdec6117d
+    url: http://dmail.liviatech.com
+
+  lawfirm3.dmail.liviatech.com:
+    key: 90449cc8a4663ead8cc0aaa1ed5316b8de360ae5d4916f8919a8213678d7ef87
+    url: http://dmail.liviatech.com
+
+  tmail.liviatech.com:
+    key: b431ff9fc1c41e194d3824590685c0fb0748b9995ecbda4aed92d798bcb72584
+    url: http://tmail.liviatech.com
+
+  kns.tmail.liviatech.com:
+    key: 96445afdc92aaab2239cb244895864fa457934e5734bb829ae9bdb5f6217f2e3
+    url: http://tmail.liviatech.com
+
+  tnc.tmail.liviatech.com:
+    key: 2a89f8e816a6b7cb9103219ae8a6f40c8860a839b810277018fa6f28b94c74db
+    url: http://tmail.liviatech.com
+
+  wnt.tmail.liviatech.com:
+    key: a5088a62dddeeb66598f5483baed9fcfba2084fc1f5814a2a21ee58f82b10165
+    url: http://tmail.liviatech.com
+
+  lawfirm1.tmail.liviatech.com:
+    key: b890d5aada8495548072a8f1102b740ca0f755a6caa9ea9a45cec0bf0a197ff1
+    url: http://tmail.liviatech.com
+
+  lawfirm2.tmail.liviatech.com:
+    key: 15bb4585bffc9feaf38db016127b9c5aadbb4cf3f1a70c125c7884e0eaca7821
+    url: http://tmail.liviatech.com
+
+  lawfirm3.tmail.liviatech.com:
+    key: d347f41a67e14612a45798c99340cc108a31ea5ecc9ce5c5bd72ed410cf51602
+    url: http://tmail.liviatech.com
+
+  kelly.liviaservices.com:
+    key: 4233206cf3b330efaf4d02b35b5eaedbb6e74ef1efa735b24cd78977f8af8296
+    url: http://mail.liviaservices.com
+
+  chosid.liviaservices.com:
+    key: c382b7124bfda3084c3e28a7cbb2429cec78219e38bd199a40c08094547efb02
+    url: http://mail.liviaservices.com
+
+  tronce.liviaservices.com:
+    key: 554f0db9796eeff0069e92b203b5cd7d59858f8504acd72ac0ba75ba0050d33b
+    url: http://mail.liviaservices.com
+
+  sholliday.liviaservices.com:
+    key: d03804fec04cc17fea5ac9bb9dc30b37cf44e1ba5612ecfde3fb392ef8b8e64e
+    url: http://mail.liviaservices.com
+
+  stephennicholas.liviaservices.com:
+    key: c8fa7aeedca6c6058dcaf1e9e1d4d2f05b476c193d03190c22cdaafcd4b746a9
+    url: http://mail.liviaservices.com
+
+  gveal.liviaservices.com:
+    key: d4f3261fd28d2025dba99ebdf5a9a5cf18ce6c57e934f6860638adde396841f9
+    url: http://mail.liviaservices.com
+
+  mail.chosidlaw.net:
+    key: fc7489b4acdee36fac28864b317b32ba346f745c0798a79262848792620ddeed
+    url: http://mail.liviaservices.com
+
+  cutlerbay.liviaservices.com:
+    key: cf77d12f1bf727c9a915ec22e84f717fe1d56a6e762b6e6aed8f0099f2e1723a
+    url: http://mail.liviaservices.com
+
+  vikingintlre.liviaservices.com:
+    key: bb176a897b86ce104de4b806f864a6aac2d0581580a6bf747cf049020c17b4e0
+    url: http://mail.liviaservices.com
+
+  campbelllaw.liviaservices.com:
+    key: 333ad42c99970cceb8bd82c8467533906fed11d314f79337e2a2191954a016e6
+    url: http://mail.liviaservices.com
+
+  BorchardLaw.liviaservices.com:
+    key: 84b2f364b1c326a2e626d6f4557aaaabb616cd297a149e7fb2eb8446f403beda
+    url: http://mail.liviaservices.com
+
+  squillace-law.liviaservices.com:
+    key: 1ef015999162b64902f58491299a2a37df969d5a5ab28ea2964dcbe23c64a67a
+    url: http://mail.liviaservices.com
+
+  sullivan.liviaservices.com:
+    key: d23d5099e19a9ccb12c68516352445afbb26f74215e53bd295d8c407ff56bc0e
+    url: http://mail.liviaservices.com
+
+  paulsonandnace.liviaservices.com:
+    key: 9cddc187e5487ecd509c663ae5254601b2f61ead4028456190eda854933171dc
+    url: http://mail.liviaservices.com

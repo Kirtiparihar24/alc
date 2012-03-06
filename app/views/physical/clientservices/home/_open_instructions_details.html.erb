@@ -1,0 +1,33 @@
+<div class="box_gray_new">
+  <div class="fl">
+    <strong><%= "Open Instructions" %></strong>
+  </div>
+  <div class="fr"></div>
+  <br class="clear" />
+</div>
+<div class="border_gray" style="width:99.7%;">
+  <table width="100%" cellpadding="1" cellspacing="0">
+    <tr>
+      <th width="27%" align="left"><%= "Note" %></th>
+      <th width="27%" align="left"><%= "Logged By" %></th>
+      <th width="28%" align="left"><%= "Created On"%></th>
+      <th width="7%" align="center"><%= "Actions" %></th>
+    </tr>
+  </table>
+  <div class="scrollY100">
+    <table width="100%" cellpadding="1" cellspacing="1">
+      <% unless @my_instructions.blank? %>
+        <% @my_instructions.each do |e| %>
+          <tr class="<%= cycle('bg1', 'bg2')%>">
+            <td width="29%"><%= raw(truncate_withscroll(e.description,40))%></td>
+            <td width="29%"><%= e.logged_by_with_destroyed.try(:full_name) %></td>
+            <td width="30%"><%= e.created_at.to_time.strftime('%m/%d/%y %I:%M:%S %p') %></td>
+            <td width="6%" align="center"><div class="icon_action mt3"><%= raw note_action_links(e) %></div></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr><td colspan="3"><div class="warningCont m5"><%= t(:text_no_data) %></div></td></tr>
+      <% end %>
+    </table>
+  </div>
+</div>

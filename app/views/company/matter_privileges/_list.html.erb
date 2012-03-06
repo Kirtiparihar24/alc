@@ -1,0 +1,31 @@
+<div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+  <%= link_to(t(:text_new),new_company_matter_privilege_path(@company),:rel=>"facebox") %>
+</div>
+<div class="p5 gridTable">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left" id="matter_privileges">
+    <tr>
+      <th width="25%">Privileges</th>
+      <th width="25%">Custom Privileges</th>
+      <th width="25%">Actions</th>
+    </tr>
+    <%@company.matter_privileges.each do |status|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <%= hidden_field_tag "support_#{status.id}", status.id, :class=>"supportFieldID" %>
+          <span class="textBlue11Height20">
+            <%= status.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">
+            <%= status.alvalue %>
+          </span>
+        </td>
+        <td>
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_matter_privilege_path(@company,status),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

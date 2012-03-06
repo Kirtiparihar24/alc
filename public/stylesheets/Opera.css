@@ -1,0 +1,37 @@
+.whitelink a{margin-top:10px; line-height: 30px;}
+body:before {content:"";height:100%;float:left;width:0;margin-top:-32767px;/}
+.calender_table td.week, .calender_table th {background-image:none;}
+.search_div span.icon_search{right:1px;}
+.mr10, .column_left{margin-right:13px;}
+select{padding-bottom:2px;}
+.pb1, .box_gray_new{padding-bottom:1px;}
+select{padding-right:5px;}
+select{padding-top:2px;background:#fff}
+.pt1, .box_gray_new, input[type=submit],input[type=button]{padding-top:1px;}
+ul.listing1 li a{padding-top:4px;}
+.box_gray_new{width:99.7%}
+.column_right_tabs{width:81%;}
+select{padding-top:2px;}
+span.icon_search{margin: 3px 5px 0px 0px;}
+#navigation-div{height:37px;}
+#footer{margin-top: 100px;}
+
+.tabular_listing table td{line-height:23px;}
+.fix_mr{margin-right:3px; margin-top:3px;}
+.header_link{margin-top:6px;}
+.form_table td{padding-top:3px;padding-bottom:3px;}
+select, textarea{border:1px solid #d9d9d9;}
+ul.navigation_list li{padding:10px 8px 11px 8px;}
+/***********Entries Table***********/
+.entries th{background:#e4e4e4;padding:5px 0;font-weight:bold}
+.entries td.labels{background:#eff7fa;padding:5px 0 5px 10px;border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.data{border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.total{font-size:90.9%;font-weight:bold;background:#eee7d4;padding:5px 0 5px 10px;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

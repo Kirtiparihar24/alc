@@ -1,0 +1,36 @@
+<div>
+  <div>
+    <div id="matter_document_errors"></div>
+    <% form_for :document_home, @document_home ,:url => {:action => 'supercede_client', :client_doc_id=> @doc_home.id}, :html=> {:multipart=> true, :target => "upload_frame", :onsubmit=> "return checkfile('#document_home_file')"} do |f| %>
+      <div class="content" style="display: block;">
+        <div class="windowForm">
+          <div class="pt10">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+              <tr>
+                <td width="30%" align="left"><label><%=t(:label_client_document)%></label></td>
+                <td width="70%" align="left"><%=@document.name %> [ <%=link_to(@document.data_file_name, document_home_path(@document.id))%>]</td>
+              </tr>
+              <tr>
+                <td align="left"><label><%=t(:label_owner)%></label></td>
+                <td align="left"><%= @document.assigned_by.try(:full_name).try(:titleize) %></td>
+              </tr>
+              <tr>
+                <td align="left"><label><%=t(:label_existing_document)%><span class="alert_message">*</span></label></td>
+                <td align="left"><%=raw collection_select(:document_home, :id, @document_homes, :id,:document_details , { :include_blank => "--None--"  }, {:class => "txtbox"})%></td>
+              </tr>
+              <tr>
+                <%
+                lblsub = @lable_txt=='Replace'? t(:label_replace_doc) : t(:label_supercede)
+              %>
+                <td colspan="2" align="center"><div><br/> <%=submit_tag lblsub, :class=>"button"%>&nbsp;<input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="parent.tb_remove(); return false;" /></div></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    <%-end%>
+    <br/>
+    <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  </div>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+</div>

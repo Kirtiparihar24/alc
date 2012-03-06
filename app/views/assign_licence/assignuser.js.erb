@@ -1,0 +1,10 @@
+<%unless @msg.present?%>
+  jQuery('#productdiv').html("");
+  jQuery('#empdiv').html("");
+  jQuery('#company_id').change()
+<%else%>
+  loader.remove()
+  jQuery('.errorCont').show()
+  jQuery('.errorCont').html("<%=@msg%>");
+<%end%>
+jQuery('#cmp_name').html("<%=@company.name%>");

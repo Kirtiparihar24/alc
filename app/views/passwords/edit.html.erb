@@ -1,0 +1,64 @@
+<table height="100%" align="center" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <div style="margin:0 auto; width:518px;"><%= render :partial => '/common/common_flash_message' %></div>        
+        <div id="login-div">        
+          <h1 class="textC"><a href="dashboard.html"><%= image_tag "livia_logo.png" %></a></h1>
+          <div class="fl w240p">
+            <div class="mt10 ml15"></div>
+          </div>
+          <div class="fl ml15 mt10 form_table">
+            <% if flash[:forgotten_notice] %>
+              <div class="message_sucess_div" id="notice"><%= flash[:forgotten_notice] %></div>
+            <% end %>
+            <% form_for resource_name, resource, :url => password_path(resource_name), :html => { :method => :put } do |f| %>
+              <%= f.hidden_field :reset_password_token, :value => params[:reset_password_token] %>
+              <%= hidden_field_tag :reset_password_token, params[:reset_password_token] %>
+              <table>
+                <tr>
+                  <td align="right">
+                    <label><%= f.label :password %></label></td>
+                  <td style="padding-left:10px;">
+                    <%= f.password_field :password %>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">
+                    <label><%= f.label :password_confirmation %></label>
+                  </td>
+                  <td style="padding-left:10px;">
+                    <%= f.password_field :password_confirmation %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" align="center">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="center">
+                    <%= submit_tag t(:label_reset_password), {:class=>"button"} %>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" align="center">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td colspan="2" align="center">
+                    <%= render :partial => "common/devise_links" %>
+                  </td>
+                </tr>
+              </table>
+            <% end %>
+          </div>         
+          <br class="clear" />
+          <div  class="mandatory mt12">Password should consist of minimum 8 characters with at least one small
+            letter, one capital letter, one numeric character and one special
+            character</div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

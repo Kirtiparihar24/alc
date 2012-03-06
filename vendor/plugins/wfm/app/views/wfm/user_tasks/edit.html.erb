@@ -1,0 +1,389 @@
+<% to_complete = params[:complete].present? %>
+<div id="page">
+  <div class="inner">
+    <div class="section table_section">
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Notes (#{@notes_count})</span></span>", wfm_notes_path %></li>
+          <li><%=link_to "<span><span>Tasks (#{@tasks_count})</span></span>", wfm_user_tasks_path, :class=>'active'%></li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <div class="section_content">
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <br/>
+                  <div>
+                    <h3>Edit Task:</h3>
+                  </div><br/>
+                  <% remote_form_for :task, @task,:url=>{:action=>'update'} ,:html=>{:class=>"search_form general_form task_forms",:method=>:put, :autocomplete=>"off"},:loading=>"disableAllSubmitButtons('buttons_to_disable'); return check_stt_tat();",:complete=>"enableAllSubmitButtons('buttons_to_disable','Update');" do |f| %>
+                    <% if @task.errors.any? %>
+                      <div id="error_explanation">
+                        <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+                        <ul>
+                          <% @task.errors.full_messages.each do |msg| %>
+                            <li><%= msg %></li>
+                          <% end %>
+                        </ul>
+                      </div>
+                    <% end %>
+                    <div class="forms">
+                      <div>
+                        <div class="fl w49 ">
+                          <div class="row">
+                            <label>Lawyer</label>
+                            <div class="inputs">
+                              <%=@task.receiver.full_name%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Note Created On</label>
+                            <div class="inputs">
+                              <%=wfm_date_format(@note.created_at)%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Task Created On</label>
+                            <div class="inputs">
+                              <%=wfm_date_format(@task.created_at)%>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="fr w49 ml5">
+                          <div class="row">
+                            <label>Lawfirm</label>
+                            <div class="inputs">
+                              <%=get_company_name(@task.company_id)%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Note Created By</label>
+                            <div class="inputs">
+                              <%=@note.logged_by_with_destroyed.full_name rescue '-'%>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <label>Task Created By</label>
+                            <div class="inputs">
+                              <%=@task.logged_by_with_destroyed.full_name rescue '-'%>
+                            </div>
+                          </div>
+                          <br class="clear" />
+                        </div>
+                        <br class="clear" />
+                      </div>
+                      <div class="row">
+                        <label>Task <span class="text_red">*</span></label>
+                        <span class="input_wrapper textarea_wrapper">
+                          <%= f.text_area "name",:class=>"text note_text",:cols=>"10", :rows=>"8",:readonly=>true,:style=>"color:grey" %>
+                        </span>
+                      </div>
+                      <div id="sub_tasks_details_toggle_div">
+                        <% if params[:complete].present? && @is_parent_task %>
+                          <div id="subtasks_details_div">
+                            <%= render :partial=>'sub_task_details', :locals=>{:sub_tasks=>@sub_tasks} %>
+                          </div>
+                        <% else %>
+                          <div>
+                            <span id="loader_img"></span>
+                            <div class="fl w49 ">
+                              <span id="_loader_img"></span>
+                              <div class="row">
+                                <div class="fl w20"><input class="radio" name="task__radio_1" value="LivianTask" type="radio" <%= "checked" unless @back_office_task %> onclick="update_work_type_select_edit('LivianTask','','<%=@note.id%>');" /><span class="font_bld"><%= get_category_name %> Task</span></div>
+                                <div class="fl ml8"><input id="back_office_task" class="radio" name="task__radio_1" value="BackofficeTask" type="radio" <%= "checked" if @back_office_task %>  onclick="update_work_type_select_edit('BackofficeTask','','<%=@note.id%>');" /><span class="font_bld">Backoffice Task</span></div>
+                                <br class="clear" />
+                              </div>
+                              <div class="row">
+                                <label>Work Type</label>
+                                <div class="inputs">
+                                  <span class="input_wrapper blank" id="task__work_types">
+                                    <%=select :work_type, :id, @work_types.collect {|w| [ w.name, w.id ]}, {:include_blank => "Please Select"}, {:class=> 'task_edit', :onchange =>"update_work_subtype_select(this.value,'','#{@note.id}')"}%>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <label>Work Type Skills</label>
+                                <div class="inputs">
+                                  <span class="input_wrapper blank" id="task__work_subtypes">
+                                    <%=f.select :work_subtype_id,@work_subtypes.collect {|w| [ w.name, w.id ]}, {:selected=>(@work_subtype.id if @work_subtype),:include_blank => "Please Select"}, {:class=> 'task_edit',:onchange=>@back_office_task ? "update_complexity_select(this.value,'');" : ""}%>
+                                  </span>
+                                </div>
+                              </div>
+                              <% if belongs_to_back_office? %>
+                                <div class="row" id="task__complexity" <%="style='display: none;'" unless @back_office_task%>>
+                                  <label>Complexity</label>
+                                  <div class="inputs">
+                                    <span class="input_wrapper blank" id="task__complexity_select">
+                                      <% task_complexity = @task.work_subtype_complexity.present? ? @task.work_subtype_complexity.id : ''  %>
+                                      <%=f.select :work_subtype_complexity_id,@complexities.collect {|c| [ c.complexity_level, c.id ]}, {:selected=>task_complexity,:include_blank => "Please Select"}, {:class=> 'task_edit',:onchange => 'reassign_task_block();display_stt_tat(this.value)'}%>
+                                      <% complexities = @task.work_subtype.work_subtype_complexities rescue ''%>
+                                      <% unless complexities.blank? %>
+                                        <% complexities.each  do |complexity| %>
+                                          <span class="sub_text_" id="tasks__complexity_stt_tat_<%=complexity.id%>" <%unless @task.work_subtype_complexity_id == complexity.id%>style="display:none;"<%end%>>
+                                            <%="#{complexity.complexity_level} -stt: #{complexity.stt} tat: #{complexity.tat}"%>
+                                          </span>
+                                        <% end %>
+                                      <%end%>
+                                    </span>
+                                  </div>
+                                </div>
+                              <% end %>
+                              <div class="row">
+                                <label>Priority</label>
+                                <div class="inputs">
+                                  <span class="input_wrapper blank">
+                                    <%=f.select :priority, UserTask::PRIORITIES%>
+                                  </span>
+                                </div>
+                              </div>
+                              <div>
+                                <div id="special_handling_0">
+                                  <div class="row" id="scheduled_task_chk_0" style="width:auto;">
+                                    <div class="inputs">
+                                      <label>Scheduled Task?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= check_box_tag :chk_scheduled_task_0, '', true, :onclick=>"check_scheduled_task(0,this.checked);",:class => 'scheduled'%> Yes</label>
+                                    </div>
+                                  </div>
+                                  <div class="row" id="due_on_task_chk_0" style="width:auto;">
+                                    <div class="inputs">
+                                      <label><%= check_box_tag :chk_due_on_task_0, '', false, :onclick=>"check_due_at(0,this.checked);", :class=>"due_on"%> No</label>
+                                    </div>
+                                  </div>
+                                  <div  id="scheduled_task_0">
+                                    <div class="row" id="time_zone_0">
+                                      <label>Time Zone</label>
+                                      <div class="inputs" >
+                                        <span class="input_wrapper_new" style="width: 260px;">
+                                          <%= f.time_zone_select 'time_zone', nil,{:default => @task.time_zone.blank? ? current_user.time_zone : @task.time_zone}, {:onchange =>"update_datepicker_min_date('')"}  %>
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="row" id="start_at_0">
+                                      <label>Start At</label>
+                                      <div class="inputs" >
+                                        <span class="input_wrapper_new" style="width: 139px;">
+                                          <%= f.text_field :start_at, :value=> date_picker_date_format(get_time_from_time_zone(@task.start_at,@task.time_zone)),:class=>"datePicker expense_date_picker textfield", :readonly=>true%>
+                                        </span>
+                                        <span class="input_wrapper_new" style="width: 60px;">
+                                          <%= text_field_tag 'task[start_time]',"#{time_picker_format(get_time_from_time_zone(@task.start_at,@task.time_zone))}", :size=>'8', :id=>'task_start_time_0', :onchange=>"toggle_time_fields('0','start','yes');", :class=>'textfield'%>
+                                        </span>
+                                        <span id="reset_start_0" onclick="reset_fields(this.id);">Reset</span>
+                                      </div>
+                                    </div>
+                                    <div class="row" id="due_at_0">
+                                      <label>Due At</label>
+                                      <div class="inputs" id='cal'>
+                                        <span class="input_wrapper_new" style="width: 139px;">
+                                          <%= f.text_field :due_at, :value=> date_picker_date_format(get_time_from_time_zone(@task.due_at,@task.time_zone)),:class=>"datePicker expense_date_picker textfield",:readonly=>true %>
+                                        </span>
+                                        <span class="input_wrapper_new" style="width: 60px;">
+                                          <%= text_field_tag 'task[due_time]',"#{time_picker_format(get_time_from_time_zone(@task.due_at,@task.time_zone))}", :size=>'8', :id=>'task_due_time_0',  :onchange=>"toggle_time_fields('0','due','yes');", :class=>'textfield'%>
+                                        </span>
+                                        <span id="reset_due_0" onclick="reset_fields(this.id);">Reset</span>
+                                      </div>
+                                    </div>
+                                    <div class="row" id="repeat_0">
+                                      <label>Repeat</label>
+                                      <div class="inputs" >
+                                        <span class="input_wrapper_new" style="width: 59px;">
+                                          <%= f.select :repeat, UserTask::REPEAT_OPTIONS, {}, {:onchange=>"display_wday_end_date_options(this.value,'0','#{@task.repeat}');", :style=>"width:64px;"} %>
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="row" id="repeat_at_0" style=<%= "display:none" unless @task.repeat == 'WEE' %> >
+                                      <label>Repeat At</label>
+                                      <div class="inputs" >
+                                        <span>
+                                          <%=check_box_tag "task[repeat_wday][]", 2, @task.repeat_wday?(2) %>&nbsp;&nbsp;MON
+                                          <%=check_box_tag "task[repeat_wday][]", 4, @task.repeat_wday?(4) %>&nbsp;&nbsp;TUE
+                                          <%=check_box_tag "task[repeat_wday][]", 8, @task.repeat_wday?(8) %>&nbsp;&nbsp;WED<br/>
+                                          <%=check_box_tag "task[repeat_wday][]", 16, @task.repeat_wday?(16) %>&nbsp;&nbsp;THU
+                                          <%=check_box_tag "task[repeat_wday][]", 32, @task.repeat_wday?(32) %>&nbsp;&nbsp;FRI
+                                          <%=check_box_tag "task[repeat_wday][]", 64, @task.repeat_wday?(64) %>&nbsp;&nbsp;SAT<br/>
+                                          <%=check_box_tag "task[repeat_wday][]", 1, @task.repeat_wday?(1) %>&nbsp;&nbsp;SUN
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="row" id="end_at_0" style="<%= "display:none" unless @task.is_repeat_task? %>">
+                                      <label>End At</label>
+                                      <div class="inputs" >
+                                        <span class="input_wrapper_new" style="width: 90px;">
+                                          <%= f.text_field "end_at",:value=> date_picker_date_format(@task.end_at),:class=>"datePicker expense_date_picker textfield", :readonly=>true %>
+                                        </span>
+                                        <span id="reset_end_0" onclick="reset_fields(this.id);">Reset</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="fr w49 ml5">
+                              <!--start old code for special handling on edit -->
+                              <div class="row">
+                                <div class="fl w45">
+                                  <label>STT(hrs)</label>
+                                  <div class="inputs">
+                                    <span class="input_wrapper" style="width:40px;">
+                                      <%=f.text_field :stt, :value => @task.get_stt, :class=>"text width1",:disabled=>true, :maxlength=>4;%>
+                                    </span>
+                                  </div>
+                                </div>
+                                <div><label>TAT(hrs)</label>
+                                  <div class="inputs">
+                                    <span class="input_wrapper" style="width:40px;">
+                                      <%=f.text_field :tat, :value => @task.get_tat, :class=>"text",:disabled=>true, :maxlength=>4;%>
+                                    </span>
+                                  </div></div>
+                                <div <%unless is_team_manager%> style="display:none" <%end%>>
+                                  <label>Special Handling</label>
+                                  <div class="inputs">
+                                    <input name="special_handling" id="special_handling" type="checkbox" onclick="update_stt_tat_fields();" />
+                                  </div>
+                                </div>
+                                <br class="clear" />
+                              </div>
+                              <!-- end old code for special handling on edit -->
+                              <div class="row">
+                                <label>Assigned User</label>
+                                <div class="inputs">
+                                  <%if @task.user %>
+                                    <%=@task.user.full_name%>
+                                  <%else%>
+                                    <%="Common Queue"%>
+                                  <%end%>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="inputs">
+                                  <%= f.check_box :share_with_client, :class=>"ml0"%>
+                                </div>
+                                <label>Share With Client</label>
+                                <br class="clear" />
+                              </div>
+                              <div class="row">
+                                <div class="inputs">
+                                  <input type="checkbox" class="ml0" value ="complete" name="complete_task"<%if to_complete %> checked="checked" <% end %> id="chk_complete_task" onclick="work_type_select_check(this,'<%=@back_office_task%>'); check_for_parent_task('<%=@is_parent_task%>','<%=@task.id%>');toggle_subtasks_div('0',this.checked);jQuery('#complete_task_div').toggle();" />
+                                </div>
+                                <label>Complete Task</label>
+                                <br class="clear" />
+                              </div>
+                              <div id="reassign_div">
+                                <div class="row" id="reassign_task_checkbox_div">
+                                  <div class="inputs" id="reassign_task_checkbox">
+                                    <input type="checkbox" class="ml0" value ="reassign" name="reassign_user" id="chk_reassign_task" onclick="work_type_select_check(this,'<%=@back_office_task%>');toggle_subtasks_div('0',this.checked);"/>
+                                  </div>
+                                  <label>Reassign</label><span id="reassign_to_bo_queue" style="display:none;"><label> to BackOffice queue</label></span>
+                                </div>
+                                <div class="row" id="update_user_div" style="display: none;">
+                                  <span id="0_loader_img"></span>
+                                  <br class="clear" />
+                                  <div class="box_white mt8" style=" height: 120px;width:470px;">
+                                    <div class="row">
+                                      <div class="fl ml8"><input id="common_queue_radio_0" style="float:left;" class="radio" name="user_type" value="CommonPool" type="radio" onclick="update_user_select_edit('CommonPool','0','<%=@task.assigned_by_employee_user_id%>','<%=@back_office_task%>')" /><span class="radio_text" id="backoffice_0" style="min-width: 22px;<%if @back_office_task == false%>display:none;<%end%>">BO </span><span class="radio_text" style="float:right; width:30%;">Common Queue</span></div>
+                                      <div class="fl"><input class="radio cluster_users_radio_0" name="user_type" value="ClusterUsers" type="radio" onclick="update_user_select_edit('ClusterUsers','0','<%=@task.assigned_by_employee_user_id%>','<%=@back_office_task%>')" /><span id="cluster_users" class="radio_text" style="float:right; width:30%;"><%if @back_office_task%>BO Agents<%else%>Cluster Users<%end%></span></div>
+                                      <div id="common_pool_agent_div" class="fl ml8" style="display:<%=@back_office_task ? "none" : ""%>"><input class="radio common_pool_radio_0" name="user_type" value="CommonPoolAgent" type="radio" onclick="update_user_select_edit('CommonPoolAgent','0','<%=@task.assigned_by_employee_user_id%>','<%=@back_office_task%>')"/><span class="radio_text" style="float:right; width:30%;">Common Pool Agent</span></div>
+                                      <br class="clear" />
+                                    </div>
+                                    <div class="row" id="task_0_user_select">
+                                      <label>User</label>
+                                      <div class="inputs">
+                                        <span class="input_wrapper blank" id="task_0_users">
+                                          <%=f.select :assigned_to_user_id, [], {:include_blank => "Please Select"},{:class=>"users_select_0"} %>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <br class="clear" />
+
+                                </div>
+                              </div>
+                              <div id="comments_div" <% unless to_complete %> style="padding:11px 0 11px 5px;width:480px;display: none;" <% else %> style="padding:11px 0 11px 5px;" <% end %>  class="row box_white mt8">
+                                <label>Comment <span id="mandatory">*</span></label>
+                                <span class="input_wrapper textarea_wrapper_small">
+                                  <textarea name="comment_text"  class="text "></textarea>
+                                </span>
+                              </div>
+                              <br class="clear" />
+                            </div>
+                            <br class="clear" />
+                          </div><span id="new_task_form"></span>
+                          <div class="row button_div" id="add_more_div"><span class="button orange_btn" id="add_more_button"><span><span>Add More</span></span><%= button_to_function 'Add More', "add_task_form(#{@note.id},'true');"  %></span> </div>
+                          <br class="clear" />
+                          <div class="button_div">
+                            <% url = request.url == request.referer || params[:back_index].present? ? wfm_user_tasks_path : request.referer %>
+                            <span class="button send_form_btn buttons_to_disable" ><span><span id="button_pressed">Update</span></span><input type="submit" name="" onclick="return check_validation_on_note('from_edit','<%= current_user.belongs_to_back_office %>');"/></span>
+                            <%=link_to "<span class='button buttons_to_disable send_form_btn ml10'><span><span>Cancel</span></span></span>", url%>
+                            <br class="clear" />
+                          </div>
+                        <% end %>
+                      </div>
+                      <div id="comment_errors" class=""></div>
+                      <%=render :partial => 'comments'%>
+                      <br  class="clear"/>
+                      <div id="doc_errors" class=""></div>
+                      <%=render :partial => 'documents'%>
+                    </div>
+                  <%  end %>
+                  <br class="clear" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function()
+  {
+    bln_complete = <%= params[:complete_task].present? %>
+    bln_reassign = <%= params[:reassign_user].present? %>
+     jQuery(function() {
+      var timezone=jQuery("#task_time_zone option:selected").text();
+      startEndTimeFormat("task_start_time_0");
+      startEndTimeFormat("task_due_time_0");
+      var zone= timezone.split('T')[1].split(')')[0].split(':');
+      date_time_zone = getDate(zone.join('.'));
+        jQuery('#task_due_at').datepicker({
+        minDate: date_time_zone,
+        changeMonth: true,
+        changeYear: true
+      });
+      jQuery('#task_start_at').datepicker({
+        minDate: date_time_zone,
+        changeMonth: true,
+        changeYear: true
+      });
+      jQuery('#task_end_at').datepicker({
+        minDate: date_time_zone,
+        changeMonth: true,
+        changeYear: true
+      });
+    });
+
+    if(bln_complete == true)
+    {
+      jQuery('#chk_complete_task').trigger('click');
+      jQuery('#comments_div').show();
+    }
+    else if(bln_reassign == true)
+    {
+      jQuery('#chk_reassign_task').trigger('click');
+      jQuery('#update_user_div').show();
+      jQuery('#comments_div').show();
+    }
+<% if @doc_and_comment_total %>
+      show_error_full_msg('altnotice','There  are Comments and documents attached to this series.\n\
+                                                 All the Comments Documents  will get deleted on updating the series.'
+      ,'message_error_div');
+<%end%>
+  });
+ 
+</script>

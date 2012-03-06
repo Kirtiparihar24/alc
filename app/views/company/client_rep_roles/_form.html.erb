@@ -1,0 +1,25 @@
+<br class="clear"/>
+<div class="windowForm">
+  <table cellspacing="0" border="0" align="center" width="100%">
+    <tr>
+      <td width="45%"><label>Select Representative Role</label><span class="txt_red">*</span></td>
+      <td width="55%">
+        <%= f.select :lvalue, @company.client_rep_roles.collect{|cs|[cs.lvalue]}.uniq, {:include_blank => '--Select--'}%>
+      </td>
+    </tr>
+    <tr>
+      <td width="45%"><label><%=t(:label_client_rep_role)%></label><span class="txt_red">*</span></td>
+      <td width="55%">
+        <%= f.text_field :alvalue,:style=>"width:240px;" %>
+      </td>
+    </tr>
+  </table>
+  <br class="clear"/>
+</div>
+<div class="txtC Pb8" id="submit_cancel_btn">
+  <%=submit_tag t(:label_save), :class=>"button"%>
+  <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="jQuery.facebox.close()" />
+</div>
+<div class="txtC Pb8" id="loading_gif" style="display: none">
+  <%= image_tag"/images/loading.gif" %>
+</div>

@@ -1,0 +1,111 @@
+<% unless params[:height] %>
+<div class="pl5 pt5 pr5">
+  <table class="xbox_gray_new" cellspacing="0" cellpadding="0" border="0" bgcolor="#f1e3c4" width="100%">
+    <tr>
+      <td>
+        <div class="fl"> <strong><%= title %></strong></div>
+        <div class="fr"></div>
+        <br class="clear" />
+      </td>
+    </tr>
+  </table>
+</div>
+<% end %>
+<div class="tabular_listing p5">
+<table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+  <tr>
+    <% if params[:action] == "unattented_list" %>
+    <%= column_sort_link(t(:text_contact),'campaign_members.first_name',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page],:height => params[:height], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <%= column_sort_link(t(:text_email),'campaign_members.email',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page],:height => params[:height], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <%= column_sort_link(t(:text_response),'response',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page],:height => params[:height], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <th align="left" width="10%"><%= t(:text_status) %></th>
+    <%= column_sort_link(t(:text_last_mailed_date),'first_mailed_date',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page],:height => params[:height], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <%= column_sort_link(t(:text_response_date),'responded_date',params[:col], '30%', "left", { :mode_type => params[:mode_type], :id => params[:id], :letter => params[:letter], :per_page => params[:per_page],:height => params[:height], :ajax_sort => true, :class=>"tablesorter"}) %>
+    <% else %>
+    <th align="left" width="30%"><%= t(:text_contact) %>kjhi</th>
+    <th align="left" width="30%"><%= t(:text_email) %></th>
+    <th align="left" width="10%"><%= t(:text_response) %></th>
+    <th align="left" width="10%"><%= t(:text_status) %></th>
+    <th align="center" width="10%"><%= t(:text_last_mailed_date) %></th>
+    <th align="center" width="10%"><%= t(:text_response_date) %></th>
+    <% end %>
+    <% unless params[:height] || type == "attended" %><th align="center" width="5%"><%= t(:text_actions) %></th><% end %>
+  </tr>
+  <% if responses.length >0 %>
+    <% responses.each do |response|%>
+      <tr class="<%=cycle('bg1', 'bg2')%>">
+        <td><%= raw(truncate_hover(response.try(:full_name),15)) %></td>
+        <td><%= raw(truncate_hover(response.email,25)) %></td>
+        <td><%= raw(truncate_hover(response.response,60 )) %></td>
+        <td><%= CompanyLookup.find_by_id(response.status).lvalue %></td>
+        <td align="center"><%= response.get_last_mailed_date if response.get_last_mailed_date %></td>
+        <td align="center"><%= response.responded_date.to_date.to_time.strftime('%m/%d/%y') if response.responded_date %></td>
+        <% unless params[:height] || type == "attended" %>
+          <td align="center">
+            <div class="icon_action mt3"><a href="#"></a></div>
+            <div id="liquid-roundAP" class="tooltip" style="display:none;">
+              <!--Icon table strt here -->
+              <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                    :deactivate_path=> "NO",
+                    :deactivate_text => "NO",
+                    :comment_path=>"NO",
+                    :comment_title => "NO",
+                    :document_path=>"NO",
+                    :history_path=>"NO",
+                    :history_title => "NO"}) %>
+                <tr>
+                  <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                  <td style="background: #fff;">
+                    <table width="100%" border="1" cellspacing="0" cellpadding="2">
+                      <tr>
+                        <td colspan="4"><div class="ap_pixel15"></div></td>
+                      </tr>
+                      <tr>
+                        <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                        <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Create Opportunity</span>",  "/campaigns/create_opportunity/#{response.id}?#{extra_parameters(params,true)}&fragment=fragment-3" )%></td>
+                        <td width="7%" align="center" valign="middle"><div class="ap_child_action"></div></td>
+                        <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Suspend</span>",  "/campaigns/suspend_member_status/#{response.id}?#{extra_parameters(params,true)}" , :confirm => 'Are you sure you want to suspend this member?' )%> </td>
+                      </tr>
+                      <tr>
+                        <td colspan="4"><div class="ap_pixel10"></div></td>
+                      </tr>
+                      <tr>
+                        <td width="7%" align="left" valign="middle"><div class="ap_child_action"></div></td>
+                        <td width="40%" align="left" valign="middle" nowrap><%= link_to("<span>Reject</span>",  "/campaigns/reject_member_status/#{response.id}?#{extra_parameters(params,true)}&fragment=fragment-3", :confirm => 'Are you sure you want to reject this member?'  )%>  </td>
+                        <td width="7%" align="center" valign="middle"> </td>
+                        <td width="40%" align="left" valign="middle"> </td>
+                      </tr>
+                      <tr>
+                        <td colspan="4"><div class="ap_pixel10"></div></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                </tr>
+                <tr>
+                  <td valign="top" class="ap_bottom_curve_left"></td>
+                  <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                  <td valign="top" class="ap_bottom_curve_right"></td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+    <%end%>
+  <%else%>
+    <tr>
+      <td colspan="7">
+        <div class="warningCont">
+          <% unless params[:height] %>
+            <%= title=="#{t(:text_unattended_responses)}" ? t(:text_no_unattended_responses) : t(:text_no_attended_responses) %>
+          <% else %>
+            <%= t(:text_no_unattended_responses) %>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <%end%>
+</table>
+</div>

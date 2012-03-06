@@ -1,0 +1,18 @@
+<div class="w100">
+  <% unless @data.blank? %>
+    <div class="title_blue fl"><%= pluralize_record(@data.length,'Record', 1) %></div>
+  <% end %>
+  <div class="fr  textR pt5">
+    <%=raw(generate_send_email_rpt_link("recent_account_rpt")) unless params[:load_popup]%>
+    <%= raw(generate_rpt_fav_link("#{t(:label_Account)}"))  unless params[:load_popup]%>
+    <%= raw(generate_reports_links("recent_account_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<% unless @data.blank? %>
+  <%= render :partial => 'rpt_partials/list_col_array_with_index', :locals => {:col => @data}%>
+  <div class="title_blue fl"><%= pluralize_record(@data.length,'Record', 1) %></div>
+<%else%>
+  <div class="title_blue fl"><%= pluralize_record((@data.length rescue 0),'Record', 1) %></div>
+<%end%>
+<br class="clear" />

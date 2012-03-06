@@ -1,0 +1,44 @@
+<div class="container_12">
+  <div class="module twoCol">
+    <h2><span><%=t(:text_new_message)%> For Task: <%=@task.clipped_name%> of Matter: <%=@task.matter.clipped_name%></span></h2>
+    <div id="comment_new" class="module-body">
+      <%= render :partial => "new_comment",:locals =>{:commentable => @task }%>
+      <div id='comment_after'>
+        <table id="myTable" class="tablesorter">
+          <thead>
+            <tr>
+              <th width="12%"><%=t(:text_title)%></th>
+              <th width="15%"><%=t(:text_user)%></th>
+              <th width="45%"><%=t(:text_message_details)%></th>
+              <th width="15%" align="center"><%=t(:text_created_at)%></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @comments.length > 0 %>
+              <% @comments.each do |comment| %>
+                <tr class="<%=cycle("odd", "")%>">
+                  <td width="10%">
+                    <%if comment.user.role.name.eql?("lawyer")%>
+                       Lawyer Message
+                    <%else%>
+                      <%=comment.title.eql?("MatterTask Client") ? "Client Message" : "Internal Comment"%>
+                    <%end%>
+                  </td>
+                  <td width="15%"><%= comment.user.nil?? '' : comment.user.try(:full_name)%></td>
+                  <td width="45%">
+                    <span class="comment"><%=raw(truncate_hover_comments(comment.comment,60))%></span></td>
+                  <td width="15%" align="center"><%=comment.created_at.to_time.strftime('%m/%d/%y %H :%M')%></td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr class="odd">
+                <td colspan="4"><span class="message">No Records Found for messages. </span></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div style="clear:both;"></div>
+</div>

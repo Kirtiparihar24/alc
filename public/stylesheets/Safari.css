@@ -1,0 +1,73 @@
+.w100{margin-top:0px;}
+.header_link{margin-top:8px;}
+ul.navigation_list li{padding:10px 8px 11px 8px;}
+.alignRight{text-align: right;}
+textarea, select{margin-left:2px;}
+input.expense_date_picker {padding:3px 10px 3px 3px;}
+input.date_picker{padding:3px 10px 3px;}
+.calender_table td.week, .calender_table th {background-image:none;}
+.tabular_listing table td{line-height:23px; /*padding:3px 0;*/} 
+.mr10, .column_left{margin-right:10px;}
+.pb1, .box_gray_new{padding-bottom:1px;}
+select{padding-top:1px;}
+.w_common_47{width:53%;}
+#breadcrumb{width:80%;}
+#footer{margin-top: 100px}
+span.icon_search{top:5px;right:4px;}
+.calender_table td.week, .calender_table th {background-image:none;}
+select{padding-bottom:2px;}
+.pb1, .box_gray_new{padding-bottom:1px;}
+select{padding-right:5px;padding-top:2px;}
+.pt1, .box_gray_new, input[type=submit],input[type=button]{padding-top:1px;}
+ul.listing1 li a{padding-top:0;}
+.w99, .box_gray_new{width:99.3%}
+#navigation-div{height:36px;}
+#footer{margin-top: 100px;}
+.box_gray{line-height:25px;}
+.form_table td {padding: 1px 0;}
+a:-webkit-any-link {text-decoration:none;}
+
+
+/* Added By Supriya Khedekar - 11/11/2011 */
+.icon_ppt{width:15px;height:14px;background-position:0px -824px;}
+.icon_doc{width:13px;height:14px;background-position:-18px -824px;}
+.icon_image_file{width:14px;height:16px;background-position:-34px -823px;}
+
+/* Added on 24-11-2011 for Synchronize appointments */
+.sync_icon{background-position:-164px -541px;width:22px;height:22px;}
+
+/* Feature 8637 : 24-11-11 Supriya Khedekar */
+ul#topnav { margin: 0; padding: 0; float:left; width: 100%; list-style: none;}
+ul#topnav li { float: left; margin: 0; padding: 0; position: relative;}
+ul#topnav li a { float: left; color:#FFFFFF; font-size:14px;}
+ul#topnav li:hover a, ul#topnav li a:hover {background:#3E6A82}
+ul#topnav a.reports { padding:0 15px;}
+ul#topnav a.favReports { padding:0 15px;}
+ul#topnav li .sub { position: absolute; top: 24px; left: 0; background: #eef5fa; padding: 10px 20px; float: left;
+  -moz-border-radius-bottomright: 5px; -khtml-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; -moz-border-radius-bottomleft: 5px;
+  -khtml-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; display: none; border:2px solid #3E6A82;}
+ul#topnav li .row {clear: both; float: left; width: 100%; margin-bottom: 10px;}
+ul#topnav li .sub ul{ list-style: none; margin: 0; padding: 0; width: 150px; float: left;}
+ul#topnav .sub ul li { width: 100%; color: #fff;}
+ul#topnav .sub ul li h2 { padding: 0;  margin: 0; font-weight: bold;}
+ul#topnav .sub ul li h2 a { padding: 0; background-image: none; color: #074D6D; font-weight: bold;}
+ul#topnav .sub ul li a { float: none; text-indent: 0; height: auto; background:url(../../images/arrow-png.png) no-repeat 0px 7px; padding: 0px 5px 0px 15px; display: block;
+  text-decoration: none; color: #074D6D; font-weight:normal; font-size:12px;}
+ul#topnav .sub ul li a:hover {color: #074D6D; }
+/* Feature 8637 : 24-11-11 Supriya Khedekar */
+/************** Drop down 2-11-2011***********************/
+
+#notes_lwayers_list :hover{background-color: #327796;color: #FFFFFF;}
+/***********Entries Table***********/
+.entries th{background:#e4e4e4;padding:5px 0;font-weight:bold}
+.entries td.labels{background:#eff7fa;padding:5px 0 5px 10px;border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.data{border-bottom:1px solid #fff;font-size:90.9%;font-weight:bold}
+.entries td.total{font-size:90.9%;font-weight:bold;background:#eee7d4;padding:5px 0 5px 10px;}
+
+/************opportunity***********/
+.selectBoxArrow{margin-top:1px;float:left;position:absolute;right:1px;}
+.selectBoxInput{border:0px;padding-left:1px;height:16px;position:absolute;top:0px;left:0px;}
+.selectBox{border:1px solid #7f9db9;height:20px;}
+.selectBoxOptionContainer{position:absolute;border:1px solid #7f9db9;height:100px;background-color:#FFF;left:-1px;top:20px;overflow:auto;}
+.selectBoxIframe{position:absolute;background-color:#FFF;border:0px;}
+.selectBoxAnOption{font-family:arial;font-size:12px;cursor:default;margin:1px;overflow:hidden;white-space:nowrap;}

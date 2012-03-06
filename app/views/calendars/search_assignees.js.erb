@@ -1,0 +1,4 @@
+<% is_popup = (!params[:from].blank? and (['calendars', 'notes'].include?(params[:from]))) ? true : false %>
+<% assignees_id = (is_popup ? 'pop_up_assignees_' : 'activity_assignees_') %>
+<% assignees_div_id = (is_popup ? 'pop_up_assignees_div' : 'activity_assignees_div') %>
+jQuery('#'+'<%=assignees_div_id%>').html("<%=raw(escape_javascript(select_tag("assignees[]", options_for_select(@mtrppl.collect{|assignee|[assignee.get_name, assignee.get_email]}), {:multiple => true, :size => 4, :style=>"width:140px; height: 88px;", :id => assignees_id})))%>")

@@ -1,0 +1,40 @@
+<%expense_types,activity_types = get_expense_type_and_activity_types(current_company)%>
+
+<script type="text/javascript">
+  var expensetypes = <%=raw expense_types%>
+  var activitytypes = <%=raw activity_types%>
+  var status = <%= raw Hash["Open" => "Open", "Approved" => "Approved"].to_json %>
+          initeditexpense_type(expensetypes);
+  initedit_timentry_activity(activitytypes);
+  init_edit_time_entry_status(status);
+  init_edit_expense_entry_status(status);
+  livia_datepicker();
+
+  function object_view()
+  {
+    var sdate = jQuery('#start_date').val();
+    var edate = jQuery('#end_date').val();
+    var object_id = jQuery("#<%=object_type %>_id").val();
+    if(jQuery('#status').val()=="")
+    {
+      jQuery('#status').val('Open');
+    }
+    var status = jQuery('#status').val();
+    var current_tab=jQuery('#current_tab').val();
+    window.location = '/physical/timeandexpenses/<%=view_path %>?current_tab='+current_tab+'&start_date='+sdate+'&end_date='+edate+'&<%=object_type %>_id='+object_id+'&status='+status+'&view=<%=object_type %>'+"<%="&from=matters" if params[:from].eql?('matters')%>";
+    return false;
+  }
+
+  //Added for the Feature #8234 - export to excel in all view pages in T & E
+  <% unless @object.blank? %>
+  function object_xls_view()
+  {
+    window.location = '/physical/timeandexpenses/<%=view_path %>?current_tab='+'<%= @current_tab %>'+'&start_date='+'<%= @start_date %>'+'&end_date='+'<%= @end_date %>'+'&<%=  object_type %>_id='+'<%= @object.id %>'+'&status='+'<%= @status %>'+'&view=<%= object_type %>'+'&format=xls'+"<%="&from=matters" if params[:from].eql?('matters')%>";
+    return false;
+  }
+  <% end %>
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#start_date");
+    livia_matter_inception_datepicker_new("#end_date");
+  });
+</script>

@@ -1,0 +1,9 @@
+<%@names = []%>
+<%if @col.empty?%>
+  <div class="title_blue"><%=t(:text_no_favorite_reports_found)%></div>
+<%else%>
+  <div  class ="fl" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <br class="clear" />
+  <%= render :partial => "reports_fav" %>
+<% end %>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;12</div>

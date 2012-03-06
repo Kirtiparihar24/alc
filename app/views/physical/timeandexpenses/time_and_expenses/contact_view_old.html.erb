@@ -1,0 +1,44 @@
+  <%= raw javascript_include_tag  'time_and_expense/form' %>
+  <%=raw javascript_include_tag  'time_and_expense/new_time_entry' %>
+<script type="text/javascript">
+  var expensetypes = <%=raw Hash[*current_company.expense_types.collect {|v| [v.id,v.lvalue ]}.flatten].to_json%>
+  var activitytypes = <%=raw Hash[*current_company.company_activity_types.collect {|v| [v.id,v.lvalue ]}.flatten].to_json%>
+  var status = <%= raw Hash["Open" => "Open", "Approved" => "Approved"].to_json %>
+  initeditexpense_type(expensetypes);
+  initedit_timentry_activity(activitytypes);
+  init_edit_time_entry_status(status);
+  init_edit_expense_entry_status(status);
+  livia_datepicker();
+
+  function contact_view(){
+    var sdate = jQuery('#start_date').val();
+    var edate = jQuery('#end_date').val();
+    var contact_id = jQuery('#contact_id').val();
+    var status = jQuery('#status').val();
+    window.location = '/physical/timeandexpenses/contact_view?start_date='+sdate+'&end_date='+edate+'&contact_id='+contact_id+'&status='+status;
+    return false;
+  }
+</script>
+<% form_tag :action=>'contact_view' do %>
+  <div id="error_notice" ><%=@error if @error %></div>
+  <h2 class="title_main"><%=t(:text_time_and_expense_pre_sales_billing)%></h2>
+  <div class="p5">
+    <table width="100%" cellpadding="1" cellspacing="1">
+      <tr>
+        <td width="5%"><%= t(:text_date) %>: </td>
+        <td width="5%"><%= t(:text_start_date) %>: </td>
+        <td width="6%"> <input type="text" id="start_date" name="start_date" readonly="true" size="10" class="date_picker" value="<%=params[:start_date]%>" onclick="livia_datepicker(this);"/> </td>
+        <td width="5%"><%= t(:text_end_date) %>: </td>
+        <td width="6%"> <input type="text" id="end_date" name="end_date" readonly="true" size="10" class="date_picker" value="<%=params[:end_date]%>" onclick="livia_datepicker(this);"/> </td>
+        <td width="10%" align="right"><%=t(:label_contact)%><span class="star">*</span>:<%=select_tag "contact_id","<option value=''/>" + options_for_select(@contacts.collect{|contact|[contact.full_name,contact.id]},(params[:contact_id] ? params[:contact_id].to_i : ''))%> </td>
+        <td width="10%" align="right"><%= t(:text_status) %>: <%=select_tag "status","<option value=''/>" + options_for_select({"Open" => "Open", "Approved" => "Approved"},(params[:status] ? params[:status] : ''))%> </td>
+        <td width="5%"><%= submit_tag t(:text_go), :onclick =>'return contact_view()' %></td>
+      </tr>
+    </table>
+    <div id="summary_header">
+      <%= render :partial => "summary_header" %>
+    </div>
+    <div id="saved_entries_div"><%= render :partial =>"summary_grid_entries_matter_view" , :locals =>{:saved_time_entries =>@saved_time_entries,:saved_expense_entries => @saved_expense_entries}%></div>
+    <div class="mandatory mt12">T/E:- Time/Expense, T:- Time, Dur:- Duration,  Amt:- Amount, Dis:- Discount, OA:- Override Amt, Attch:- Attachment, M:- Matter, C:- Contact, Fm:- From </div>
+  </div>  
+<% end %>

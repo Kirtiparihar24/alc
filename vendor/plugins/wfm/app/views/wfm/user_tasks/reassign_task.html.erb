@@ -1,0 +1,57 @@
+<div class="section_content">
+  <div class="fl ml8" style="display:none;"><input id="back_office_task" class="radio" name="task_0_radio_1" value="BackofficeTask" type="radio" <%= "checked" if @back_office_task %> /></div>
+  <% remote_form_for :task, :before=>'loader.appendTo("#0_loader_img");;',:url=>{:action=>'reassign_this_task'} ,:html=>{:class=>"search_form general_form task_forms",:method=>:post}, :loading=>"return disableAllSubmitButtons('buttons_to_disable');", :complete=>"enableAllSubmitButtons('buttons_to_disable','Reassign');" do |f| %>
+    <div id="modal_new_task_errors" class=""></div>
+    <div id="0_loader_img"></div>
+    <%=hidden_field_tag :task_work_subtype_id, "#{@task.work_subtype_id}"%>
+    <%= check_box_tag 'reassign_user','on', true, :style=>"display:none;" %>
+    <fieldset>
+      <div class="forms">
+        <div class="row">
+          <label>Task Name</label>
+          <div class="inputs">
+            <%=@task.name%>
+          </div>
+        </div>
+        <div class="row">
+          <label>Due Date</label>
+          <div class="inputs"><%= wfm_date_format(@task.due_at) rescue "-"%></div>
+        </div>
+        <div class="row">
+          <div class="fl w21"><input class="radio common_queue_radio_0" name="user_type" value="CommonPool" type="radio" onclick="jQuery('#user_task_assigned_to_user_id').val('');update_user_select_edit('CommonPool','0','<%=@task.assigned_by_employee_user_id%>');" /><span class="radio_text" style="float:right;margin-right:8px;"><%if @back_office_task%>BO <%end%>Common Queue</span></div>
+          <div class="fl w21"><input class="radio cluster_users_radio_0" name="user_type" value="ClusterUsers" type="radio" onclick="update_user_select_edit('ClusterUsers','0','<%=@task.assigned_by_employee_user_id%>');" checked/><span class="radio_text" style="float:right;"><%unless @back_office_task%>Cluster Users<%else%>BO Agents<%end%></span></div>
+          <% unless @back_office_task %>
+            <div class="fl ml8" style="width:26%;"><input class="radio common_pool_radio_0" name="user_type" value="CommonPoolAgent" type="radio"  onclick="update_user_select_edit('CommonPoolAgent','0','<%=@task.assigned_by_employee_user_id%>');"/><span class="radio_text" style="padding:0 33px 0 0;float:right;">Common Pool Agent</span></div>
+          <% end %>
+          <br class="clear" />
+        </div>
+        <div id="task_0_user_select" class="row">
+          <label>User</label>
+          <div class="inputs">
+            <span class="input_wrapper blank" id="task_0_users">
+              <%=f.select :assigned_to_user_id, options_for_select(@users_select,{:selected=>current_user.id}), {:include_blank =>'Please Select'},{:class=>'users_select_0'}%>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <label>Comment <span id="mandatory">*</span> </label>
+          <span class="input_wrapper textarea_wrapper">
+            <textarea name="comment_text" cols="10" rows="8" class="text "></textarea>
+          </span>
+        </div>
+        <br class="clear" />
+        <div class="button_div">
+          <span class="button buttons_to_disable send_form_btn" onclick="return check_user_select('from_edit');"><span><span id="button_pressed">Reassign</span></span>
+            <input type="submit" name=""/>
+          </span>
+          <span class="button buttons_to_disable send_form_btn ml10" onclick="tb_remove();"><span>
+              <span>Cancel</span></span>
+          </span>
+          <br class="clear" />
+        </div>
+      </div>
+    </fieldset>
+  <%end%>
+</div>
+
+

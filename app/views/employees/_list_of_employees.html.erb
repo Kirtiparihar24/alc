@@ -1,0 +1,59 @@
+<div class="box-head"><h2 class="left">Employees</h2></div>
+<div class="actionLinks"><%= link_to t(:label_deactivated_employees), '#', :onclick =>"redirect_to_path_for_company(#{@company.id}, 'employees/deactivated_employees')"%> | <%= link_to 'View Organization Chart', {:controller => 'departments', :action => 'view_chart', :id => @company.id}%> | <%= link_to 'New Employee', new_company_employee_path(@company)%></div>
+<div class="table">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th width="25%"><%=t(:text_name)%></th>
+      <th width="20%"><%=t(:text_email)%></th>
+      <th width="15%"><%=t(:text_login)%></th>
+      <th width="15%"><%=t(:text_designation)%></th>
+      <th width="25%" colspan="3"><%=t(:text_action)%></th>
+    </tr>
+    <%@employees.each do |employee|%>
+      <tr>
+        <td>
+          <span style="cursor:pointer;" onclick='jQuery("#<%=employee.id%>_employee_details_view").toggle()' title="Click here to view details">
+            <%if employee.user.nil? || employee.user.clusters.blank?%>
+              <img alt="Alert" src="/images/cgc_images/icon_!.gif?1297072263" title="No Cluster Assigned" />
+            <%end%>
+            <%=employee.full_employee_name%>
+          </span>
+        </td>
+        <td><%=employee.email%></td>
+        <td><%=employee.user.username rescue "-"%></td>
+        <td><%=CompanyLookup.get_employee_designation(employee.designation_id) rescue "-"%></td>
+        <td>
+          <%=link_to(t(:text_edit), edit_company_employee_path(@company, employee))%>
+          <%if employee.user.nil? || employee.user.clusters.blank?%>&nbsp;|&nbsp;
+            <%=link_to "Assign To Cluster", "/manage_cluster"%>
+          <%end%>
+        </td>
+      </tr>
+      <tr style="display: none" id="<%=employee.id%>_employee_details_view">
+        <td colspan="5">
+          <table width="90%" align="center" border="1" cellpadding="0" cellspacing="0">
+            <tr>
+              <th width="10%"><%=t(:label_cluster)%>(s)</th>
+              <th width="30%"><%=t(:label_livian)%>s</th>
+            </tr>
+            <%if employee.user.nil? && employee.user.try(:clusters).blank? %>
+              <tr><td colspan="3"><div class="warningCont m5"><%= employee.full_name%>&nbsp;<%=t(:label_is_not_assigned_to_any_cluster)%></div></td></tr>
+            <% else %>
+              <%employee.user.clusters.each  do |cl|%>
+                <tr>
+                  <td><%=cl.name%></td>
+                  <td>
+                    <% for user in  cl.users%>
+                      <%=user.full_name + ', ' if user.service_provider%>
+                    <%end%>
+                  </td>
+                </tr>
+              <%end%>
+            <%end%>
+          </table>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<div class="pagging"></div>

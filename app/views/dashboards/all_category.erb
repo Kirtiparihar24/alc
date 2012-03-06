@@ -1,0 +1,133 @@
+<div id="container-1">
+  <%= render :partial=>'/dashboard_partials/rpt_dashboard' %>
+  <div id="fragment-2" class="tabs-container" >
+    <%= render :partial=>'/dashboard_partials/fav_dashboard', :locals => {:fav_dashboards => @fav_dashboards }%>
+    <% form_for "charts", :url => {:controller=>'dashboards',:action=>'mange_dashboards_on_homepage'} ,:html => { :onsubmit=>"return validate_checkbox();"}  do |f| %>
+      <div  class="p5">
+        <div class="box_yellow mt8 mb5" style="height:25px;">
+          <div style="padding-top:5px;" class="fl">Please check to Add on Home page</div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="link_blue" style="float:right;">
+            <a href="#" id="show_all_dashboards" onclick="show_all_dashboards();">Show All</a>
+            <a href="#" id="collapse" onclick="hide_all_dashboards();" style="display:none;">Collapse All</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="#" onclick="show_all_selected();"><%= submit_tag t(:label_save),:id => "save_dashbrd" %></a>
+          </span>
+        </div>
+        <div class="border_gray" id="show_selected_dashboards">
+          <div class="xbox_gray" style="background:#f1e3c4; line-height:22px;">
+            <div class="fl" style="color:#3A3A39;font-weight:bold;">&nbsp;&nbsp; Current Dashboard Settings</div>
+            <br class="clear" />
+          </div>
+          <div class="p5 link_blue" id="manage_dashboards">
+            <%= render :partial =>'/dashboard_partials/selected_dashboard', :collection => @selected_dashboards %>
+            <br class="clear" />
+          </div>
+        </div>
+        <br class="clear" />
+        <div class="border_gray">
+          <div class="xbox_gray" style="background:#f1e3c4; line-height:22px;">
+            <div class="fl" style="color:#3A3A39;font-weight:bold;">&nbsp;&nbsp; Dashboard Options</div>
+            <br class="clear" />
+          </div>
+          <input type=hidden name="hidden_checked[]" value=<%=@hidden_checked ? @hidden_checked.chop : '' %>></input>
+          <input type=hidden name="managed_checked" value=<%=@managed_checked ? @managed_checked.chop : '' %>></input>
+          <br class="clear" />
+          <div class="border_gray" style="width:98%; margin:auto;">
+            <h2 class="title_favorites"  id="revenue_enhancement_toggle">
+              <div class="fl">Revenue Enhancement</div>
+              <div class="fr">
+                <a href="#" >
+                  <div class="revenue_enhancement arrow_up mt4" style="display:none;" id="rev_arrow_up"></div>
+                  <div class="revenue_enhancement arrow_down mt4" style="display:block;" id="rev_arrow_down" ></div>
+                </a>
+              </div>
+              <br class="clear" />
+            </h2>
+            <div class="p5 link_blue" id="revenue_enhancement" style="display:none;">
+              <%= render :partial =>'/dashboard_partials/left_sidebar_revenue_enhancement'%>
+              <br class="clear" />
+            </div>
+          </div>
+          <br class="clear" />
+          <div class="border_gray" style="width:98%; margin:auto;">
+            <h2 class="title_favorites" id="cost_savings_toggle">
+              <div class="fl" >Cost Savings</div>
+              <div class="fr">
+                <a href="#">
+                  <div class="cost_savings arrow_up mt4" style="display:none;"  id="cs_arrow_up"></div>
+                  <div class="cost_savings arrow_down mt4" style="display:block;" id="cs_arrow_down"></div>
+                </a>
+              </div>
+              <br class="clear" />
+            </h2>
+            <div class="p5 link_blue" id="cost_savings" style="display:none;">
+              <%#= render :partial =>'/dashboard_partials/left_sidebar_cost_savings'%>
+              <br class="clear" />
+            </div>
+          </div>
+          <br class="clear" />
+          <div class="border_gray" style="width:98%; margin:auto;">
+            <h2 class="title_favorites" id="operational_efficiency_toggle">
+              <div class="fl">Operational Efficiency</div>
+              <div class="fr">
+                <a href="#">
+                  <div class="operational_efficiency arrow_up mt4" style="display:none;" id="op_arrow_up"></div>
+                  <div class="operational_efficiency arrow_down mt4" style="display:block;" id="op_arrow_down"></div>
+                </a>
+              </div>
+              <br class="clear" />
+            </h2>
+            <div class="p5 link_blue" id="operational_efficiency" style="display:none;">
+              <%= render :partial =>'/dashboard_partials/left_sidebar_operational_efficiency'%>
+              <br class="clear" />
+            </div>
+          </div>
+          <br class="clear" />
+          <div class="border_gray" style="width:98%; margin:auto;">
+            <h2 class="title_favorites" id="customer_satisfaction_toggle">
+              <div class="fl">Customer Satisfaction</div>
+              <div class="fr">
+                <a href="#">
+                  <div class="customer_satisfaction arrow_up mt4" style="display:none;" id="cust_arrow_up"></div>
+                  <div class="customer_satisfaction arrow_down mt4" style="display:block;" id="cust_arrow_down"></div>
+                </a>
+              </div>
+              <br class="clear" />
+            </h2>
+            <div class="p5 link_blue" id="customer_satisfaction" style="display:none;">
+              <%= render :partial =>'/dashboard_partials/left_sidebar_customer_satisfaction'%>
+              <br class="clear" />
+            </div>
+          </div>
+          <br class="clear" />
+          <div class="border_gray" style="width:98%; margin:auto;">
+            <h2 class="title_favorites"  id="others_toggle">
+              <div class="fl">Others</div>
+              <div class="fr">
+                <a href="#">
+                  <div class="others_dashboards arrow_up mt4" style="display:none;" id="ot_arrow_up"></div>
+                  <div class="others_dashboards arrow_down mt4" style="display:block;" id="ot_arrow_down"></div>
+                </a>
+              </div>
+              <br class="clear" />
+            </h2>
+            <div class="p5 link_blue" id="others_dashboards" style="display:none;">
+              <%= render :partial =>'/dashboard_partials/left_sidebar_others'%>
+              <br class="clear" />
+            </div>
+          </div>
+          <br class="clear" />
+        </div>
+        <div class="buttonSub_div">
+          <input name="Save" type="submit" id="Save" value="<%=t(:label_save)%>"/>
+          <%= f.submit t(:label_cancel), :name => "cancel", :onclick => "window.location='/dashboards/all_category';return false;"%>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+<script type="text/javascript">
+  if ('<%=params[:show_all_dashboards]%>'){
+    show_all_dashboards()
+  }
+</script>

@@ -1,0 +1,20 @@
+<div class="box-head">  <h2 class="left"><%=t(:text_lookups_list)%></h2></div>
+<div class="actionLinks"><%= link_to t(:label_new_lookup),:controller=>"configurelookups",:action=>"new",:type => params[:type] %></div>
+<div class="table">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tbody>
+      <tr>
+        <th width="42%" align="left"><%=t(:text_lookup_type)%></th>
+        <th width="41%" align="left"><%=t(:text_value)%></th>
+        <th width="17%" align="left" colspan="2"><%=t(:text_action)%></th>
+      </tr>
+      <%@lookuplist.each do |list|%>
+        <tr class="bg1">
+          <td><%=list.type rescue "-"%></td>
+          <td><%=list.lvalue rescue "-"%></td>
+          <td><%=link_to t(:label_edit), edit_configurelookup_path(list) %></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>

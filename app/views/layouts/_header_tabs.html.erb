@@ -1,0 +1,65 @@
+<% contrl = controller_name
+if current_user.role?:lawfirm_admin %>
+  <div class="navTabs">
+    <ul>
+      <li class ='<%= ['companies','employees','assign_licence','payments','invoices','designations','departments'].include?(contrl) || controller.action_name.eql?('manageprivilege') ? 'current' : ''%>'><%= link_to("<span>#{current_user.company.name}</span>", lawfirm_admins_url)%></li>
+    </ul>
+  </div>
+<% else
+  upload_document = contrl.eql?('document_homes') and controller.action_name.eql?('upload_document') %>
+  <div id="navigation-div">
+    <div class="fl">
+      <ul class="navigation_list">
+        <% if contrl.match('^matter') || params[:frm] || params[:from].eql?("matters") || params[:module_type].eql?("matter")
+          matter_tab = 'active'
+        elsif (contrl.match('^document_home') && !action_name.eql?("upload_document"))
+          matter_tab = 'active'
+        end
+
+        if contrl.match('^contact') or (contrl.match('^import_data') && params[:from].blank?) || (upload_document && params[:from].eql?("contacts")) || params[:module_type].eql?("contact")
+          contact_tab = 'active'
+        end %>
+
+        <% if show_header_tabs
+          if !(session[:verified_secretary_id].nil? and !params[:service_provider_id].blank? and @sp_session.assignment.nil?)
+            if can? :manage, Contact %>
+              <li class ='<%= contact_tab%>'><%= link_to(truncate(t(:text_menu_contacts), :length => 20), contacts_path)%></li>
+            <% end
+            if can? :manage, Account %>
+              <li class ='<%= contrl.eql?('accounts') || (upload_document && params[:from].eql?("accounts")) ? 'active' : ''%>'><%= link_to(truncate(t(:text_menu_accounts), :length => 20), accounts_path)%></li>
+            <% end
+            if can? :manage, Opportunity %>
+              <li class ='<%= contrl.eql?('opportunities') || (upload_document && params[:from].eql?("opportunities")) ? 'active' : ''%>'><%= link_to(truncate(t(:text_menu_opportunity), :length => 20), opportunities_path)%></li>
+            <% end
+            if can? :manage, Matter %>
+              <li class ='<%= matter_tab %>'><%= link_to(truncate(t(:text_menu_matter), :length => 20), matters_path)%></li>
+            <% end %>
+            <% if can? :manage, Physical::Timeandexpenses::TimeEntry %>
+              <li class ='<%= (!params[:from].eql?("matters") and contrl.eql?('time_and_expenses') || params[:module_type] == "time" || params[:module_type] == "expense"  || (upload_document && params[:from_tab].eql?("time_expense")))? 'active' : '' %>'><%= link_to(truncate(t(:text_menu_tne), :length => 20), '/physical/timeandexpenses/calendar')%></li>
+            <% end
+            if can? :manage, TneInvoice %>
+              <li class ='<%= contrl.eql?('tne_invoices') || contrl.eql?('tne_invoice_settings') ? 'active' : '' %>'><%= link_to(truncate(t(:text_menu_billing), :length => 20), tne_invoices_path)%></li>
+            <% end
+            if can? :manage, Campaign %>
+              <li class ='<%= (contrl.eql?('campaigns')|| params[:module_type] == "campaign_member" || (upload_document && params[:from].eql?("campaigns"))) ? 'active' : '' %>'><%= link_to(truncate(t(:text_menu_campaign), :length => 20), campaigns_path)%></li>
+            <% end
+            if (can? :manage, :rpt_contact) || (can? :manage, :rpt_account) || (can? :manage, :rpt_campaign) || (can? :manage, :rpt_matter) || (can? :manage, :rpt_opportunity) || (can? :manage, :rpt_time_and_expense)%>
+              <li class ='<%= ["rpt_contacts","rpt_accounts","rpt_opportunities","rpt_matters","rpt_time_and_expenses","rpt_campaigns","company_reports","dashboards"].include?(contrl) ? 'active' : ''%>'><%= link_to(truncate(t(:text_menu_rnd), :length => 20), get_reports_path)%></li>
+            <% end
+            if can? :manage, FinancialAccount %>
+              <li class ='<%= (contrl.eql?('financial_accounts')) ? 'active' : '' %>'><%= link_to(t(:text_financial_accounts), financial_accounts_path)%></li>
+            <% end
+            if is_secretary_or_team_manager? %>
+              <li class='<%= (contrl.eql?('communications') || contrl.eql?('livia_secretaries'))? 'active' : '' %>'><%= link_to(truncate(t(:text_menu_communication), :length => 20), get_communications_link_path)%></li>
+            <% end
+          else
+            if can? :manage, Physical::Liviaservices::LiviaservicesController %>
+              <li class='<%= contrl.eql?('liviaservices')? 'active' : ''%>'><%= link_to(truncate(t(:text_menu_manager), :length => 20), physical_liviaservices_managers_portal_path)%></li>
+            <% end
+          end
+        end
+        if APP_URLS[:use_helpdesk] %> <li class="<%= params[:action].eql?('helpdesk')? 'active' : ''%>"><%= link_to("Helpdesk", helpdesk_path)%></li> <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

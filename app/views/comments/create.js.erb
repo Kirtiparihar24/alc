@@ -1,0 +1,9 @@
+jQuery('#comment_new').after("<%=escape_javascript(render(:partial => 'common/comment',@collection => [ @comment ]))%>")
+jQuery('#new_comment')[0].reset();
+jQuery('#comment_comment').val("");
+jQuery("#comment_after").fadeIn(1000, function() {
+jQuery(this).css("background", "yellow")
+});
+setTimeout("removeHighLight()", 1000);
+
+

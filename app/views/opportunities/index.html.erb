@@ -1,0 +1,23 @@
+<div id="container-1">
+  <div id="report-info">
+    <% arr = ['opportunities--name','contacts--last_name','accounts--name','users--first_name','opportunities--probability','opportunities--amount','opportunities--follow_up','opportunities--closes_on', 'opportunities_stage'] %>
+    <h2 class="title_main">
+      <span class="fl"> <%= t(:text_opportunities) %></span>
+      <%= render :partial =>  "layouts/reports_quick_links" %>
+    </h2>
+    <div class="p5">
+      <div class="w100 fix_mb">
+        <%= raw my_all_radio_button(t(:text_my_opportunities), "getopp('MY','#{@opp_stage}','#{params[:per_page]}','#{params[:letter]}');", t(:text_all_opportunities), "getopp('ALL','#{@opp_stage}','#{params[:per_page]}','#{params[:letter]}');", params[:mode_type]) %>
+        <div class="fr textR link_blue">
+          <a class="vtip" title="Add Filter" id="add_filters" onclick="add_filters('<%=arr.join(",")%>', '15')" style="<%=params[:search_items] ? "display:none;" : ""%>"><span class="icon_filter mr5 fl"></span><span class="fl mr10 icon_name"><%=t(:label_Add_Filter)%></span></a>
+          <a onclick="remove_filters('<%=arr.join(",")%>')" class="vtip" title="Remove Filter" id="remove_filters"  style="<%=params[:search_items] ? "" : "display:none;"%>"><span class="icon_remove_filter mr5 fl"></span><span class="fl mr10 icon_name"><%=t(:label_Remove_Filter)%></span></a>
+          <%= link_to '<span class="icon_create_new fl mr5"></span><span class="fl mr10 icon_name">Create New Opportunity</span>', new_opportunity_path %>
+        </div>
+        <br class="clear" />
+      </div>
+      <%= raw search_with_stages_select_tag("opp_stage", t(:text_stage_filters), @opp_stages, {:selected=>@opp_stage.to_s.to_i}, "filterOpportunity('#{@mode_type}',this.options[this.selectedIndex].value)", "opportunity_sphinx_search","") %>
+      <div id="searched_opportunities"><%= render "opportunity"%></div>
+    </div>
+  </div>
+  <div id="report-content"></div>
+</div>

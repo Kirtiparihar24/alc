@@ -1,0 +1,1 @@
+<%=select 'report', 'contact_id', @contacts.collect{|contact|[contact.full_name, contact.id]},{:selected=> @contact_id,  :include_blank => "All" },{:class => "dropbox1",:onchange=>"get_all_matters();"}%>

@@ -1,0 +1,23 @@
+<div class="mainContent">
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_show_sub_product)%></div>
+    <div class="adminForm">
+      <table align="center" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+        <tr>
+          <td><strong><%=t(:text_name)%></strong></td>
+          <td><%= @subproduct.name %></td>
+        </tr>
+        <tr>
+          <td><strong><%=t(:text_parent_product_name)%></strong></td>
+          <td><%= @subproduct.product_subproducts.first.product.name rescue "-" %></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <%= link_to t(:label_back), {:controller=>'products',:action => 'index'} %>
+          </td>
+        </tr>
+      </table>
+      <br class="clear" />
+    </div>
+  </div>
+</div>

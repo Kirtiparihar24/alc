@@ -1,0 +1,54 @@
+<script type="text/javascript">
+  add_missing_header_to_thickbox("Edit <%=@type=='DocumentHome'? 'Document' : 'Link'%>");
+</script>
+<div  id="loader1" style="display:none;"><img src='/images/loading.gif' /></div>
+<div class="message_error_div" id="modal_new_document_errors" style="display: none;"></div>
+<% form_tag('/document_homes/update_doc_link', :id=>@document_home.id, :onsubmit =>  "show_spinner();",:target=>"upload_frame") do -%>
+  ﻿<div>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" class="form_table">
+      <tr>
+        <%= hidden_field_tag 'upload', params[:type] %>
+        <%= hidden_field_tag 'id', @document_home.id %>
+        <%= hidden_field_tag 'controller_name', params[:controller_name] %>
+        <% if @type=='DocumentHome' %>
+          <td valign="top">Document</td>
+          <td valign="top" colspan="4"> <%= link_to  h(@document_home.latest_doc.name) , document_home_path(@document_home.latest_doc.id)%></td>
+        <% else %>
+          <td valign="top">Web Link<span class="alert_message">*</span></td>
+          <td valign="top" colspan="4"> <%= text_field_tag 'document_home[url]', @document_home.url, :size => "60" %></td>
+        <% end %>
+      </tr>
+      <tr>
+        <td valign="top"><label><%=t(:label_name)%> <span class="alert_message">*</span></label></td>
+        <td valign="top"><%=text_field_tag 'document_home[name]', @type=='DocumentHome'?@document_home.latest_doc.name :  @document_home.name %></td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+      </tr>
+      <% if params[:controller_name]=~ /reposit/ %>
+        <tr>
+          <td valign="top"><%=t(:label_category)%> </td>
+          <td valign="top">
+            <%=select_tag 'document_home[category_id]', options_for_select(@categories.collect{|c| [c.alvalue,c.id]},(@type=='DocumentHome'? @document_home.latest_doc.doc_type_id : @document_home.category_id)),
+              :class=>"widthSelectBox", :id=>"categories_combo"%><span id ="categories_span"></span>
+          </td>
+          <td valign="top">&nbsp;</td>
+        </tr>
+      <% end %>
+      <tr>
+        <td valign="top"><label>Tag</label></td>
+        <td valign="top"><%=text_area_tag 'document_home[tag_array]',@document_home.tag_list , :rows => 3, :cols => 30 %></td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top"><label><%=t(:label_description)%></label></td>
+        <td valign="top"><%=text_area_tag 'document_home[description]', @type=='DocumentHome'? @document_home.latest_doc.description : @document_home.description,:html=>{:cols=>"45", :rows=> '4'} %></td>
+      </tr>
+    </table>
+    <div class="buttonSub_div">
+      <%=submit_tag t(:text_save), :class=>"button",:id=>'save_rep'%>
+      <input type="submit" id="cancel" value="Cancel" onclick="parent.tb_remove();return false"/>
+    </div>
+  </div>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+<% end %>
+<div class="mandatory"><span class="alert_message">*</span> <%= t(:label_Required_fields) %></div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;108</div>

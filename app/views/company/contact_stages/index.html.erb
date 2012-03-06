@@ -1,0 +1,14 @@
+<div class="gridDiv">
+  <div class="titleHead"><%= @company.name.try(:titleize) %>'s <%=t(:text_s_contacts_stages)%></div>
+  <div class="gryBox ">
+    <!--SEARCH FORM STARTS-->
+    <div class="w50 fl pb8" id="contact_st_list">
+    </div>
+    <br class="clear" />
+    <div id="contacts">
+      <div id="list" class="contactsDIV">
+        <%= render :partial =>"list" %>
+      </div>
+    </div>
+  </div>
+</div>

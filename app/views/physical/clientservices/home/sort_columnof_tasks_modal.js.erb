@@ -1,0 +1,1 @@
+jQuery('#home_matter_tasks').html("<%=escape_javascript(render(:partial => "task_data", :locals => {:task_todo => @task_todo,:task_appt => @task_appt, :title => @title, :type => @type,:dir =>@dir,:task_type => @typ,:user_setting => @user_setting.nil? ? '' : @user_setting}))%>")

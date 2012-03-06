@@ -1,0 +1,47 @@
+    <% form_remote_tag :url=>"matter_tasks/complete_task" do %>
+    <div id="modal_complete_task_errors" class="errorCont message_error_div" style="display:none"></div>
+      <table width="100%" cellpadding="1" cellspacing="1" border="0">
+        <tr>
+          <th align="left" width="10%"> <%= submit_tag t(:text_complete), :class=>'linknormal',:style=>"display:none"%></th>
+          <th align="left" width="30%"><%= link_to(t(:text_task_name),"#",:onclick => "sort_columnof_tasks_modal('matter_tasks.name','#{dir}','#{task_type}');") %></th>
+
+          <th align="center" width="5%"><%= link_to(t(:text_start_date),"#",:onclick => "sort_columnof_tasks_modal('matter_tasks.start_date','#{dir}','#{task_type}');") %></th>
+          <th align="center" width="5%"><%= link_to(t(:text_due_date),"#",:onclick => "sort_columnof_tasks_modal('matter_tasks.end_date','#{dir}','#{task_type}');") %></th>
+          <th align="left" width="30%"><%= link_to(t(:text_matter),"#",:onclick => "sort_columnof_tasks_modal('matters.name','#{dir}','#{task_type}');") %></th>
+          <th align="left" width="20%"><%= link_to(t(:text_contact),"#",:onclick => "sort_columnof_tasks_modal('matter_peoples.name','#{dir}','#{task_type}');") %></th>
+          <th align="left" width="20%"><%= t(:text_account) %></th>
+        </tr>
+        <% task_todo.each do |e| %>
+          <% taskclass = cycle('bg1','bg2') %>
+          <tr class="<%= taskclass %>" >
+            <td  align="center" width="10%">
+              <%=hidden_field_tag 'matter_id', e.matter_id%>
+              <%= check_box_tag 'selected_records[]', e.id, false, {:class=>"recordscampmem", :onclick => "check_box_onclick(this.checked,'#complete_div_#{e.id}_#{type}', '#{type}_#{e.id}') check_box_matter(); "} %>
+            </td>
+            <td align="left" width="30%"><%= raw(truncate_hover_link(e.name,35,edit_matter_matter_task_path(e.matter, e))) %></td>
+            <td align="center" width="5%"><%= livia_date(e.start_date) %></td>
+            <td align="center" width="5%"><%= livia_date(e.end_date) %></td>
+            <td align="left" width="30%"><%= conditional_edit(e.matter) %></td>
+            <td align="left" width="20%"><%= contact_hover_link(e.matter.contact) %></td>
+            <td align="left" width="20%"><%= e.matter.contact.accounts[0] ? e.matter.contact.accounts[0].name : ""%></td>
+          </tr>
+          <tr id="complete_div_<%=e.id%>_<%=type%>" style="display: none" class="<%= taskclass %> task_todo1">
+            <td colspan="7">
+              <div>
+    <%#=text_field_tag "completed_at_#{e.id}",  e.completed_at || livia_date(Time.zone.now.to_date) , :class => "date_picker", :size=>"10", :onclick=>"livia_datepicker(this);"%>
+                <%=text_field_tag "completed_at[]",
+                  '',
+                  :id=> "#{type}_#{e.id}", :class => "date_picker",
+                  :size=>"10"%>
+              </div>
+              <script type="text/javascript">
+                jQuery('#<%=type%>_<%=e.id%>').datepicker();
+              </script>
+            </td>
+          </tr>
+                  <% end %>
+
+      </table>
+    <%end%>
+    
+    

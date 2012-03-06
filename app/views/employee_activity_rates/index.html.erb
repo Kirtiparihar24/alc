@@ -1,0 +1,29 @@
+<%if current_user.role?:lawfirm_admin%>
+  <% content_for :company_selection do %>
+    <div id="topheadContainer"><div class="title fl"><%= @company.name  %></div></div>
+  <%end%>
+<% end %>
+<div class="box-head"><h2><%=t(:text_employee_activity_rates)%></h2></div>
+<div class="actionLinks"><%= link_to t(:label_new_employee_activity_rate), "/employee_activity_rates/new/#{@company.id}" %></div>
+<div class="table">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <th width="37%"><%=t(:text_employee)%></th>
+      <th width="35%"><%=t(:text_activity)%></th>
+      <th width="19%"><%=t(:text_billing_rate)%></th>
+      <th width="9%"><%=t(:text_actions)%></th>
+    </tr>
+    <% @employee_activity_rates.each do |employee_activity_rate| %>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td width="37%"><%= get_employee_name employee_activity_rate.employee_user_id %></td>
+        <td width="35%"><%= lookup_lvalue employee_activity_rate.activity_type_id %></td>
+        <td width="19%"><%=h employee_activity_rate.billing_rate %></td>
+        <td width="9%">
+          <%= link_to(image_tag('/images/livia_portal/icon_edit.gif', {:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_employee_activity_rate_path(employee_activity_rate)) %>
+          <%= link_to(image_tag('/images/livia_portal/icon_reject.gif', {:alt =>"Destroy", :title=>"Destroy", :border => 0, :hspace => "0"}), employee_activity_rate, {:confirm => 'Are you sure?', :method => :delete}) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<div class="buttons"><%= link_to t(:label_back), {:controller=>'rate_cards',:action => 'index'}, :class => "button" %></div>

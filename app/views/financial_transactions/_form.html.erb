@@ -1,0 +1,100 @@
+<% if(@financial_transaction.errors.length > 0) %>
+  <div class="message_error_div" style="background-image:none;"><%= f.error_messages %></div>
+<% end %>
+<%= render :partial => '/financial_accounts/additional_header' %>
+<% matter_id = @financial_transaction.matter_id ? @financial_transaction.matter_id : (@financial_transaction.new_record? ? @financial_account.matter_id : '' ) %>
+<% account_id = @financial_transaction.account_id ? @financial_transaction.account_id : (@financial_transaction.new_record? ? @financial_account.account_id : '' ) %>
+<%= f.hidden_field(:matter_id,:value=> matter_id) %>
+<%= f.hidden_field(:account_id, :value => account_id) %>
+<% matter_name = (@financial_transaction.matter_id) ? @financial_transaction.matter.name : ((@financial_transaction.new_record? && @financial_account.matter_id.present?) ? @financial_account.matter.name : '') %>
+<% account_name = (@financial_transaction.account_id) ? @financial_transaction.account.name : ((@financial_transaction.new_record? && @financial_account.account_id.present?) ? @financial_account.account.name : '' ) %>
+        <table width="100%">
+          <tbody><tr>
+              <td width="76%">
+                <!--<strong>Contact Matter</strong> - <strong>Client</strong> David B - <strong>Account:</strong> TestCampaigns - Copy Of Launch Of LIP Service-->
+                <!-- Created this partial for common matter info on all matter tabs, to be able to fix once and display everywhere. -->
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tbody><tr>
+                      <td width="70%">
+                        <strong><%=t(:text_financial_account)%>:</strong>&nbsp;<%= @financial_account.name.camelize %> -
+                        <strong><%=t(:text_financial_account_bank_name)%>:</strong> <%= @financial_account.bank_name.camelize %> -
+                        <strong><%=t(:text_financial_account_ac)%></strong> <%= @financial_account.account_no %>
+                      </td>
+                    </tr>
+                  </tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+        <div class="seperator_dotted_hori"></div>
+  
+  <div style="clear:both;height:10px;"></div>
+<div style="clear:both;height: 0px;"></div>
+<div class="w48 fl p5 bg_white">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+    <tr>
+      <td width="30%"><%= t(:text_financial_account_date_received) %><span class="alert_message">*</span></td>
+      <% tr_date = @financial_transaction.transaction_date ? @financial_transaction.transaction_date.to_date : Date.today %>
+      <td width="60%"><%= f.text_field(:transaction_date, :size => "30", :value => tr_date, :class => "date_picker") %></td>
+    </tr>
+    <tr>
+      <td width="30%"><%= t(:text_financial_account_reference_no) %></td>
+      <td width="60%"><%= f.text_field(:reference, :size => 30) %></td>
+    </tr>
+    <tr>
+      <td width="30%"><%= t(:text_financial_account_from_account) %><span class="alert_message">*</span></td>
+      <td width="60%">
+        <%= text_field_tag 'financial_account_account_sphinx_search', '', :size => '30', :title => '', :value => account_name, :class => "financial_transaction search",:disabled => false%>
+        <div id="account_search_div"></div>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%"><%= t(:text_financial_account_to_matter) %></td>
+      <td width="60%">
+        <%= text_field_tag 'financial_account_matter_sphinx_search', '', :size => '30', :title => '', :value => matter_name, :class => "financial_transaction search",:disabled => false%>
+        <div id="matter_search_div"></div>
+      </td>
+    </tr>
+   </table>
+</div>
+<div class="w48 fl p5 bg_white">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+    <tr>
+      <td width="30%"><%= t(:text_financial_account_amount_received) %><span class="alert_message">*</span></td>
+      <td width="60%"><%= f.text_field(:amount, :size => 30, :class => 'trust_number') %></td>
+    </tr>
+    <!--<tr>
+      <td width="30%"><%#= t(:text_financial_transaction_status)%></td>
+      <td width="60%"><%#= f.select(:transaction_status_id, current_company.transaction_statuses.collect {|x| [x.alvalue.capitalize,  x.id]}) %></td>
+    </tr>-->
+    <tr>
+      <td width="30%" valign="top"><%= t(:text_financial_account_description) %><span class="alert_message">*</span></td>
+      <td width="60%"><%= f.text_area(:details, :cols => 30,:rows=>2) %></td>
+    </tr>
+  </table>
+</div>
+<div class="clear" style="height: 20px;"></div>
+<div class="buttonSub_div" >
+  <%= f.submit t(:text_save), :name => "save", :class => 'financial_accounts', :id => 'financial_transaction_submit' %>
+  <%= link_to((f.submit t(:text_cancel), :type => 'button', :class => 'financial_accounts', :name => "cancel"), params[:check_action] ? bill_retainers_matter_matter_billing_retainers_path(@financial_transaction.matter.id) : financial_account_path(@financial_account) ) %>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    livia_datepicker();
+    //TODO: to disable sphinx search textbox is edit from Matter billing
+    if (<%=params[:check_action]!='matter_billing'%>) {
+         jQuery('#financial_account_account_sphinx_search').attr('disabled', false);
+         jQuery('#financial_account_matter_sphinx_search').attr('disabled', false);
+    } else {
+         jQuery('#financial_account_account_sphinx_search').attr('disabled', true);
+         jQuery('#financial_account_matter_sphinx_search').attr('disabled', true);
+    }
+  })
+
+  jQuery('#financial_transaction_submit').click(function(e){
+    if(jQuery('#financial_transaction_transaction_date').val() == ''){alert('Date cannot be blank.'); e.preventDefault();}
+    if(jQuery('#financial_account_account_sphinx_search').val() == ''){alert('Account cannot be blank.'); e.preventDefault();}
+    if(jQuery('#financial_transaction_amount').val() == ''){alert('Amount received cannot be blank.'); e.preventDefault();}
+    if(jQuery('#financial_transaction_details').val() == ''){alert('Description cannot be blank.'); e.preventDefault();}
+  });
+</script>

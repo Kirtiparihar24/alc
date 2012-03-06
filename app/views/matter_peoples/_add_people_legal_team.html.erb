@@ -1,0 +1,56 @@
+<% form_for([@matter, matter_form],:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+  <div id="nameerror" style="display:none"> <div class='errorCont'>  </div> </div>
+  <div style="text-align:center;">
+    <%= f.hidden_field :people_type, :value => people_type %>
+    <input type="hidden" id="account" name="account" value="false"/>
+    <table width="400" border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+      <tr>
+        <td width="205" align="left"><label><%= t(:label_name) %> <span class="alert_message">*</span></label></td>
+        <td width="224" align="left"><%= f.text_field :name, :size => 20 %></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%= people_type == "opposites" ? t(:label_law_firm) : t(:label_company_name)%></label></td>
+        <td align="left"><%= f.text_field :law_firm, :size => 20 %></td>
+      </tr>
+      <tr>
+        <td align="left"><label><%= t(:label_role) %></label></td>
+        <td align="left"><%= f.collection_select( "role", people_roles, :id, :lvalue) %></td>
+      </tr>
+      <tr>
+        <td align="left"><%= t(:label_primary_contact) %></td>
+        <td align="left"><%= f.check_box :primary_contact, :size => 20 %></td>
+      </tr>
+      <tr>
+        <td align="left"><%= t(:label_email_id) %></td>
+        <td align="left"><%= f.text_field :email, :size => 20 %></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><%= t(:label_phone_no) %></td>
+        <td align="left"><%= f.text_field :phone,:class=>'phone',:maxlength=>"15", :size => 20 %></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><label><%= t(:label_fax_no) %></label></td>
+        <td align="left"><%= f.text_field :fax, :size => 20 %></td>
+      </tr>
+      <tr align="right">
+        <td align="left" valign="top"><%= t(:label_address) %></td>
+        <td align="left"><%= f.text_area :address, :rows => 3, :cols => 30 %></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><%= t(:label_practice_area) %></td>
+        <td align="left"><%= f.text_field :practice_area, :size => 20 %></td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">
+          <%= f.submit t(:text_save),:class=>'matters', :onclick => "return validate_field('matter_people_name','Name can not be blank');" %>
+          <input type="button" class='matters' id="cancel" value="Cancel" onclick="parent.tb_remove();disableAllSubmitButtons('matters');" />
+        </td>
+      </tr>
+    </table>
+  </div>
+<% end %>

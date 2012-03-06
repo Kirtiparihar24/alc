@@ -1,0 +1,122 @@
+<% if new %>
+  <span id="select_existing" > <%= raw account_search_box('account[id]', controller.controller_name, "Select Existing", "") %></span>
+  <span id="create_new" class="textgray" style="display:none">
+    <%= text_field 'account', 'name', :autocomplete => 'off', :maxlength => 64 ,:class=>"textgray txtbox",:style=>"font-size: 11px; width: 27%; margin-left: 2px;margin-right:5px;", :onFocus => " createnew_clear();"%>
+  </span>
+<% else %>
+  <% if contact_account.present? %>
+    <%= collection_select :matter, :account_id, contact_account,:id,:name, {},{:style => 'width:140px;margin-right:5px;'} %>
+    <span id="main_span">
+      <span id="select_existing" > <%= raw account_search_box('account[id]', controller.controller_name, "Select Existing", "") %></span>
+      <span id="create_new" class="textgray" style="display:none">
+        <%= text_field 'account', 'name', :autocomplete => 'off', :maxlength => 64 ,:class=>"textgray txtbox",:style=>"font-size: 11px; width: 27%; margin-left: 2px;margin-right:5px;", :onFocus => " createnew_clear();"%>
+      </span>
+    </span>
+  <% else %>
+    <span id="select_existing" style="display:none"> <%= raw account_search_box('account[id]', controller.controller_name, "Select Existing", "") %></span>
+    <span id="create_new" class="textgray" >
+      <%= text_field 'account', 'name', :autocomplete => 'off', :maxlength => 64 ,:class=>"textgray txtbox",:style=>"font-size: 11px; width: 27%; margin-left: 2px;margin-right:5px;", :onFocus => " createnew_clear();"%>
+      <input type="hidden" value="do_not_display" id="hide_display"/>
+    </span>
+    <% text_val = "select" %>
+  <% end %>
+<% end %>
+<span id="select_existing_div">
+  <label>
+    <a href="#" id="create_new_span"><%= text_val == "select" ? t(:text_select_existing) : t(:text_create_new_account) %></a>      
+  </label>
+</span> <% if  controller_name.eql?('matters') %>| <span id="reset_account" class="reset link_blue" style="cursor: pointer"> Reset </span> <% end %>
+
+<script type="text/javascript" language="javascript">
+  jQuery('#main_span').hide();
+  var select_existing="<%= t(:text_select_existing) %>";
+  var create_new="<%= t(:text_create_new_account) %>";
+  jQuery('#create_new_span').toggle(function(){
+    if(jQuery(this).text() != select_existing){
+      jQuery(this).text(select_existing);
+      jQuery("#matter_account_id").remove();
+      jQuery('#main_span').show();
+      jQuery('#_account_ctl').val('');
+      jQuery('#_accountid').val('');
+      jQuery('#_accountid').attr('disabled', true);
+      jQuery('#select_existing').hide();
+      jQuery('#account_name').attr('disabled', false);
+      jQuery('#account_name').show();
+      jQuery('#account_name').val('Create New');
+      jQuery('#create_new').show();
+      jQuery('#account_id').val('');      
+      initLiviaHint();
+    }else{
+      jQuery(this).text(create_new);
+      jQuery('#account_name').val('');
+      jQuery('#account_name').attr('disabled', true);
+      jQuery('#select_existing').show();
+      jQuery('#_accountid').attr('disabled', false);
+      jQuery('#_account_ctl').attr('disabled', false);      
+      jQuery('#create_new').hide();
+      initLiviaHint();
+    }
+  },function(){
+    jQuery(this).text(create_new);
+    jQuery('#account_name').val('');
+    jQuery('#account_name').attr('disabled', true);
+    jQuery('#select_existing').show();
+    jQuery('#_accountid').attr('disabled', false);
+    jQuery('#_account_ctl').attr('disabled', false);
+    jQuery('#create_new').hide();
+    initLiviaHint();
+  });
+
+  // function createnew_clear() : shifted to livia_common.js
+<% if  controller_name.eql?('matters') %>
+    jQuery('#account_name').blur( function(){
+      if(jQuery("#hide_display").val()== undefined){
+        jQuery.ajax({
+          type: 'GET',
+          url: '/matters/get_account_contacts',
+          dataType: 'script'
+        });
+      }
+    })
+
+jQuery('#_account_ctl').blur( function(){
+  if(jQuery('#_account_ctl').val()=='' || jQuery('#_account_ctl').val() == 'Select Existing'){
+    jQuery.ajax({
+      type: 'GET',
+      url: '/matters/get_account_contacts',
+      dataType: 'script',
+      data: {
+        'rollback' : "true"
+      }               
+    });            
+  }
+})
+
+    jQuery('#_contact_ctl').blur( function(){
+      if(jQuery('#_contact_ctl').val()=='' || jQuery('#_contact_ctl').val() == 'Select Existing') {
+        jQuery.ajax({
+          type: 'GET',
+          url: '/matters/get_contact_accounts',
+          dataType: 'script',
+          data: {
+            'rollback' : "true"
+          }
+        });
+      }
+    })
+
+    jQuery('#create_new_span').click( function(){
+      jQuery.ajax({
+        type: 'GET',
+        url: '/matters/get_account_contacts',
+        dataType: 'script',
+        data: {
+          'rollback' : "true"
+        }
+      });
+    })
+<% end %>
+
+jQuery('.reset').click( function(){reset_search();})
+if(jQuery('#account_name').val() == ""){jQuery('#account_name').val('Create New');}
+</script>

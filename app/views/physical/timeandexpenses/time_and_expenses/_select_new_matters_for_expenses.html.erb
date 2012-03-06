@@ -1,0 +1,1 @@
+<%=select_tag "#{expense_id}[expense_entry][matter_id]","<option value=''/>" + options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id]}, matter_id),{:class=>"typeselect1",:style=>"width:109px;", :onchange=>"get_matters_contact_for_expenses(#{expense_id});",:id=>"#{expense_id}_expense_matter_id"}%>

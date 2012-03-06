@@ -1,0 +1,22 @@
+<!-- set container-1 to display the favourite report list -->
+<div id="container-1">
+  <%=render :partial=>'/dashboard_partials/rpt_dashboard'%>
+  <div class="tabs-container">
+    <h2 class="title_main"><%=t(:text_my_favorites)%></h2>
+    <%= render :partial => "reports_fav" %>
+  </div>
+</div>
+<!-- set container-2 to display the report content Bug #11417 :Rashmi.N -->
+<div id="container-2" style="display:none;">
+    <%= render :partial=>'/dashboard_partials/rpt_dashboard' unless params[:load_popup]%>
+    <div id="fragment-1" class="tabs-container">
+      <%unless params[:load_popup]%>
+        <h2 class="title_main"><%=t(:label_Current_Contacts)%> <%= render :partial =>  "layouts/left_report_sidebar" %></h2>      
+      <%end%>
+      <div class="p5">
+      <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+      <div id="report-info"></div>
+      <div id="report-content"></div>
+    </div>
+  </div>
+</div>

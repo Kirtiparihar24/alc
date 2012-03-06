@@ -1,0 +1,32 @@
+<div class="gridTable">
+  <div id="name_notice"  class="noticeCont" style="display:none"></div>
+  <div class="linkOuter w45 fr txtR mt5" style="float:right;text-align:right;">
+    <%= link_to(t(:text_new),new_company_research_type_path(@company),:rel=>"facebox") %>
+  </div>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left" id="research_types">
+    <tr>
+      <th width="25%"><%=t(:text_research_type)%></th>
+      <th width="25%">Custom Research Type</th>
+      <th width="25%"><%=t(:text_actions)%></th>
+    </tr>
+    <%@company.research_types.each do |research_type|%>
+      <tr class="<%=cycle("bg1", "bg2")%>">
+        <td>
+          <%= hidden_field_tag "support_#{research_type.id}", research_type.id, :class=>"supportFieldID" %>
+          <span class="textBlue11Height20">
+            <%= research_type.lvalue %>
+          </span>
+        </td>
+        <td>
+          <span class="textBlue11Height20">
+            <%= research_type.alvalue %>
+          </span>
+        </td>
+        <td>
+          <%=  link_to(image_tag('/images/livia_portal/icon_edit.gif',{:alt =>"Edit", :title=>"Edit", :border => 0, :hspace => "0"}), edit_company_research_type_path(@company,research_type),:rel=>"facebox")%>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+<br class="clear" />

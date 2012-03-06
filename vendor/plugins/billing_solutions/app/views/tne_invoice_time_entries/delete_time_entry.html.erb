@@ -1,0 +1,6 @@
+<div id="display_div">
+  <% actual_duration = current_company.duration_setting.setting_value == "1/100th" ?  one_hundredth_timediffernce(@time_entry.actual_duration) : one_tenth_timediffernce(@time_entry.actual_duration) %>
+  <%= radio_button_tag "billing", "remove", false, :onClick=>"remove_time_entry(#{@time_entry.id},'remove',#{@time_entry.final_billed_amount},#{@time_entry.actual_activity_rate},#{actual_duration},#{@counter},#{@time_entry.activity_type},#{@detail_entry});"%> Remove and make it available for future invoice. <br/>
+  <%= radio_button_tag "billing", "delete_appear", false, :onClick=>"delete_time_entry(#{@time_entry.id},'delete_appear',#{@counter},#{@time_entry.final_billed_amount},#{@time_entry.actual_activity_rate},#{actual_duration},#{@time_entry.activity_type});" %> Appear in the invoice as 100% discount. <br/>
+  <%= radio_button_tag "billing", "delete_donot_appear", false, :onClick=>"delete_time_entry(#{@time_entry.id},'delete_donot_appear',#{@counter},#{@time_entry.final_billed_amount},#{@time_entry.actual_activity_rate},#{actual_duration},#{@time_entry.activity_type},#{@detail_entry});" %> Remove from invoice and mark it as not billable. <br/>
+</div>

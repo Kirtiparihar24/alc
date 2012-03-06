@@ -1,0 +1,76 @@
+<div id="page">
+  <div class="inner">
+    <div class="section table_section">
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Skills</span></span>", wfm_user_work_subtypes_path, :class=>'active'%></li>
+          <li><%=link_to "<span><span>Priorities</span></span>", wfm_manage_priorities_path %></li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <div class="section_content">
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <div id="skills_spinner"></div>
+                  <fieldset>
+                    <div class="table_wrapper">
+                      <div class="table_wrapper_inner">
+                        <% form_tag :controller => 'user_work_subtypes', :action => 'update_skills' do%>
+                          <%= hidden_field_tag 'back_office_skills', 'back_office_skills' %>
+                          <table cellpadding="0" cellspacing="0" width="100%" class="tablesorter" id="notes_index_table">
+                            <thead>
+                              <tr>
+                                <th style="padding-top:10px;" rowspan="0" width="14%">Livians</th>
+                                <th nowrap="nowrap" style="text-align:center;" align="center">Back Office Skills</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <% @cluster_livians.each do |livian| %>
+                                <tr class="<%cycle('first','second')%>">
+                                  <td style="padding-top:10px;"><%= livian.full_name %></td>
+                                  <td style="padding-top:10px;" height="30">
+                                    <div style="margin-right:10px; float: left; width:120px;"><input type="checkbox" name="select_all" value="" onclick="toggleCheckboxes('back_office_work_subtypes_<%=livian.id%>',this.checked);"/> Select All</div>
+                                    <br class="clear" />
+                                    <div style="float:left">
+                                      <% @back_office_work_subtypes.each do |work_subtype| %>
+                                        <div style="margin-right:20px; float: left; width:auto; line-height: 23px;">
+                                          <% all_complexities = get_complexity_levels(work_subtype) %>
+                                          <% my_complexity_level = my_complexity_level(all_complexities,livian,work_subtype.id) %>
+                                          <span style="display:none;" id="<%=livian.id%>_<%=work_subtype.id%>"><%=my_complexity_level%></span>
+                                          <% has_skill = get_livian_users_work_subtype_ids(livian).include?(work_subtype.id) %>
+                                          <%= check_box_tag "work_subtype_ids[]","#{livian.id}-#{work_subtype.id}" ,has_skill, :class=>"back_office_work_subtypes_#{livian.id}", :onchange=>"set_skill_level(this.checked,#{work_subtype.id},#{livian.id},'#{my_complexity_level}');"%> <%= work_subtype.name %>
+                                          <%= select_tag "complexity_level_ids[]",options_for_select(all_complexities.collect{|complexity_level| [complexity_level, livian.id.to_s + "-"+work_subtype.id.to_s+"-"+complexity_level.to_s]}, my_complexity_level), :include_blank => true, :class=> "level_#{work_subtype.id}_user_#{livian.id}",:disabled=>!has_skill%>
+                                        </div>
+                                      <% end %>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% end %>
+                              <tr><td colspan="3" style="text-align:center;"><div class="button_div">
+                                    <span class="button send_form_btn buttons_to_disable"><span><span>Update Skills</span></span><input type="submit" name=""/></span>
+                                  </div>
+                                </td></tr>
+                              <tr>
+                                <td colspan="4" align="right"><span class="button send_form_btn buttons_to_disable" style="text-align: right; float: right;"><%=link_to "<span><span>Livian Skills</span></span>", skills_by_livians_wfm_user_work_subtypes_path,:style=>"color:#ffffff;"%></span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        <% end %>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+      </div>
+    </div>
+
+  </div>
+</div>

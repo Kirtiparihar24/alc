@@ -1,0 +1,10 @@
+Company Name: <%= @opts[:company_name] %>
+Invoice Date: <%= @opts[:invoice_date] %>
+Invoice from: <%= @opts[:start_date] %> to <%= @opts[:end_date] %>
+
+<%=@table_headers.join(",")%>
+<%@data.each do |data|%>
+<%=data.join(",")%>
+<%end%>
+
+,,,,<%="Total Amount($) = #{@opts[:total_amount]}"%>

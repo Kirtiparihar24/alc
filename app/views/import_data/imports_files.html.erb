@@ -1,0 +1,50 @@
+<% if !params[:from].blank? && params[:from].eql?("matters") %>
+  <%path = matters_path%>
+  <% label = t(:text_matters) %>
+<%else%>
+  <%path =contacts_path %>
+  <% label = t(:text_contacts) %>
+<%end%>
+<% add_breadcrumb label, path
+add_breadcrumb "File Import ", imports_file_path %>
+<h2 class="title_main"><%=t(:text_file_import)%></h2>
+<div class="p8">
+  <!--Form container div @start here -->
+  <% form_tag  "/import_data/import_from_file", :method => 'post', :multipart => true, :onsubmit => "return disableAllSubmitButtons('importcontacts')" do %>
+    <%=hidden_field_tag 'button_pressed'%>
+    <div class="form_table">
+      <table width="62%" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
+        <tr>
+          <td width="10%"><label><%=t(:label_import_type)%></label></td>
+          <td width="20%">
+              <% if !params[:from].blank? && params[:from].eql?("matters") %>
+                <label><%=radio_button_tag 'import', 'matters','checked'%><strong><%=t(:label_matter)%></strong></label>
+                <% csv_link ="matters/download_format" %>
+                <% xls_link ="matters/download_xls_format" %>
+              <%else%>
+                <label><%=radio_button_tag 'import', 'contacts','checked'%><strong><%=t(:label_contact)%></strong></label>
+                <% csv_link ="contacts/download_format" %>
+                <% xls_link ="contacts/download_xls_format" %>
+              <%end%>
+          </td>
+          <td width="2%"></td>
+          <td width="10%"><%=t(:label_file_format)%></td>
+          <td width="20%"><%= select_tag "file_format", options_for_select(%w{ CSV XLS}), :onchange=>"check_file_format();"%></td>
+        </tr>
+        <tr>
+          <td><%=t(:label_select_a_file)%></td>
+          <td><%=file_field_tag :import_file %></td>
+          <td></td>
+          <td colspan="2">
+            <span id="csv" class="textBrwn11" style="text-align:left;"><%=link_to('Download Format (CSV)',{:controller=>csv_link }) %> </span>
+            <span id="xls" class="textBrwn11" style="text-align:left;display:none;"><%=link_to('Download Format (XLS)',{:controller=>xls_link }) %> </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="buttonSub_div">
+      <%= submit_tag t(:label_import), :onclick => 'return validateImportFile(); return setButtonPressed(this);', :class => "importcontacts" %>
+      <input type="submit" id="cancel" value="<%= t(:text_cancel) %>" onclick="window.location='<%=path%>'; return false;" class="importcontacts"/>
+    </div>
+  <% end %>
+</div>

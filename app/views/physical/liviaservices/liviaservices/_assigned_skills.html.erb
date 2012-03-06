@@ -1,0 +1,8 @@
+<%unless assigned_skills.blank?%>
+<table>  
+<%assigned_skills.each do|e|%>
+  <tr><td style="width:200px;"><input id="<%=e.id%>" type="checkbox" value="<%=e.id%>" class="assigned_skills" style="width:auto !important;"/> <label for="<%=e.id%>"><%=e.lvalue%></label></td></tr>
+<%end%>
+<tr><td style="width:250px;"><input type="button" value="<%=t(:label_unassign_skills)%>" class="button" style="font-size:11px;" onclick="unassignSkills()"/></td></tr>
+</table>
+<%end%>

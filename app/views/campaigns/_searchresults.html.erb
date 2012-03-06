@@ -1,0 +1,73 @@
+<div class="tabular_listing">
+  <% form_tag("/campaigns/contacts_campaign",{:onsubmit=>"jQuery('#add_to_campaings').val('Please wait...');jQuery('#add_to_campaings').attr('disabled','disabled');"}) do%>
+    <%=hidden_field_tag 'campaign_id', @campaign.id%>
+    <table width="100%" id="contact_search" cellpadding="1" cellspacing="1" >
+      <tr>
+        <th align="left"><%=t(:text_select)%></th>
+        <th align="left"><%=t(:text_name)%></th>
+        <th align="left"><%=t(:text_account)%></th>
+        <th align="left"><%=t(:text_stage)%></th>
+        <th align="left"><%=t(:text_email)%></th>
+        <th align="left"><%=t(:text_alt_email)%></th>
+        <th align="left"><%=t(:text_phone)%></th>
+      </tr>
+      <% if searchresults.length+donotcallcontacts.length== 0 %>
+        <tr> <td class="warningCont pt5" colspan="7"><%=t(:text_sorry_no_contacts_found)%></td> </tr>
+      <% elsif params[:query] == "" %>
+        <tr> <td class="warningCont pt5" colspan="7"><%=t(:text_please_enter_a_search_term_to_continue)%></td></tr>
+      <% else %>
+        <tr> <td  align="left" valign="top"><input id="check_all_cont" name="check_all_cont" type="checkbox" onclick="campaign_check_all_cont();" />&nbsp;&nbsp;<%=t(:text_select_all)%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> </tr>
+        <tbody class="scrollY200">
+          <% for contact in searchresults %>
+            <%row_color = cycle("bg1", "bg2")%>
+            <%if (contact.email).present? %>
+              <tr class=<%=row_color%>>
+                <td> <%= check_box_tag 'selected_records[]', contact.id, false, {:class=>"recordscampmem"}%>  </td>
+                <td><%= truncate_hover(contact.full_name,25) %></td>
+                <td><%= truncate_hover(contact.accounts[0].name,60) if(!contact.accounts[0].nil?)%></td>
+                <td><%=(contact.contact_stage.alvalue).try(:titleize)%></td>
+                <td><%=contact.email%></td>
+                <td><%=contact.alt_email%></td>
+                <td><%=contact.phone%></td>
+              </tr>
+            <%end%>
+          <% end %>
+        </tbody>
+        <% if donotcallcontacts.length>0 %>
+          <tr> <td class="warningCont pt5" colspan="7">"<%=t(:label_DO_NOT_CONTACT)%>"<%=t(:label_LIST)%></td></tr>
+        <%end%>
+        <tbody class="scrollY200">
+          <% for contact in donotcallcontacts %>
+            <%row_color = cycle("bg1", "bg2")%>
+            <tr class=<%=row_color%>>
+              <td> <%= check_box_tag 'selected_records[]', contact.id, false, {:class=>"recordscampmem"}%>  </td>
+              <td><%= truncate_hover(contact.full_name,25) %></td>
+              <td><%= truncate_hover(contact.accounts[0].name,60) if(!contact.accounts[0].nil?)%></td>
+              <td><%=(contact.contact_stage.alvalue).titleize%></td>
+              <td><%=contact.email%></td>
+              <td><%=contact.phone%></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tr> <td colspan="8" align="center"><%= submit_tag t(:label_add_to_campaign),:id=>"add_to_campaings", :class=>'searchbutton' %></td></tr>
+      <% end %>
+    </table>
+  <%end-%>
+</div>
+<br class="clear" />
+<script type="text/javascript" >
+  jQuery(document).ready(function() {
+    jQuery('#add_to_campaings').live("click",function(){
+      var $b = $('input[type=checkbox]');                
+      var count_check =  $b.filter(':checked').length;
+      if (count_check > 0)
+      { 
+        return true;
+      }
+      else{
+        alert("Please Select Contact To Add In Campaign ");
+        return false;
+      }
+    });
+  });
+</script>

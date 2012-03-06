@@ -1,0 +1,5 @@
+<%unless matters.blank?%>
+  <%= select :note, :matter_id, matters.collect {|u| [ u.clipped_name, u.id ]}, {:prompt=>"Please Select"},:onchange =>"update_contact_select(this.value)"%>
+<%else%>
+  <%= select :note, :matter_id,[] %>
+<%end%>

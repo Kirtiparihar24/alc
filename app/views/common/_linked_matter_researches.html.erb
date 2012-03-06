@@ -1,0 +1,21 @@
+﻿<div style="margin-top:20px; padding:0;">
+  <% unless matter_researches.empty? %>
+    <div class="tabular_listing border_gray">
+      <table width="100%" cellpadding="1" cellspacing="1" style="border-collapse: separate;">
+        <tr>
+          <th width="85%" align="left"><%= t(:text_research) %></th>
+          <th width="15%" align="left"><%= t(:text_citation) %></th>
+        </tr>
+        <% matter_researches.each do |e| %>
+          <tr class="bg1">
+            <td align="left"><%=raw(truncate_hover_link(e.name, 70, edit_matter_matter_research_path(@matter,e)))%></td>
+            <td align="left"><%=e.citation%></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% else %>
+    <div class="warningCont m5">  <%= t(:text_no_researches_linked_yet) %> </div>
+  <% end %>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;152</div>

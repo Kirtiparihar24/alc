@@ -1,0 +1,64 @@
+<% other_modules = ['contacts','accounts','opportunities','campaigns','import_data'].include?("#{controller.controller_name}") || controller_name.match("^matter") %>
+<% time_and_exp = controller_name.eql?("time_and_expenses") && controller.action_name.eql?("calendar") %>
+<% doc_upload = controller_name.eql?("document_homes") && params[:action].eql?("upload_document") && !params[:from].blank? %>
+
+<div class="fr" style="padding-top:3px;">
+  <ul id="topnav">
+    <li>
+      <a href="#" class="reports"><%= t(:text_reports) %></a>
+      <div class="sub" style="left:-100px; z-index: 100">
+        <ul>
+          <% if other_modules %>
+            <% if controller_name.match("^matter") || controller_name.eql?("document_homes") %>
+              <%= render :partial =>"/rpt_partials/left_report_sidebar_matters" %>
+            <% elsif controller_name.eql?('import_data') %>
+              <%= render :partial =>"/rpt_partials/left_report_sidebar_contacts" %>
+            <% else %>
+              <%= render :partial =>"/rpt_partials/left_report_sidebar_#{controller.controller_name}"%>
+            <% end %>
+          <% elsif time_and_exp %>
+            <%= render :partial=>'/rpt_partials/left_report_sidebar_time_and_expenses' %>
+          <% elsif doc_upload %>
+            <% if  ["time_open_entry","time_close_entry","expense_open_entry","expense_close_entry","expense_asso_open_entry","expense_asso_close_entry"].include?(params[:from]) %>
+              <%= render :partial=>'/rpt_partials/left_report_sidebar_time_and_expenses' %>
+            <% else %>
+              <%= render :partial =>"/rpt_partials/left_report_sidebar_#{params[:from]}"%>
+            <% end %>
+          <% end %>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <a href="#" class="favReports"><%= t(:text_favorites_reports) %></a>
+      <div class="sub" style="left:-120px; z-index: 100; max-height: 450px; overflow-y: auto ">
+        <div class="row">
+          <ul style="width: 225px;">
+            <% if other_modules || doc_upload
+              fav_rpt = []
+              from = other_modules ? controller_name : params[:from]
+              if from.match("^matter") || from.eql?("document_homes")
+                fav_rpt = @matters_fav
+              elsif from.eql?('import_data') || from.eql?('contacts')
+                fav_rpt = @contacts_fav
+              elsif from.eql?("campaigns")
+                fav_rpt = @campaigns_fav
+              elsif from.eql?("opportunities")
+                fav_rpt = @opps_fav
+              elsif from.eql?("accounts")
+                fav_rpt = @accounts_fav
+              elsif from.eql?("time_and_expenses")
+                fav_rpt = @times_fav
+              end
+            end %>
+            <% if other_modules || doc_upload %>
+              <%=render :partial => "rpt_partials/favourites",:locals => {:col => fav_rpt}%>            
+            <% elsif time_and_exp %>
+              <%=render :partial => "rpt_partials/favourites",:locals => {:col => @times_fav}%>
+
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

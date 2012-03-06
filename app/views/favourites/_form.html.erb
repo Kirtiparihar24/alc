@@ -1,0 +1,19 @@
+
+<div class="tabular_listing border_gray">
+  <div id="nameerror" style="display:none"></div>
+  <% form_remote_tag :url => {:action => :create_favourite} ,:method=>:post do  -%>
+    <table width="100%" cellpadding="1" cellspacing="1" border="0">
+      <tr>
+        <td>Name:</td>
+        <td><%=text_field_tag :name%></td>
+      </tr>
+      <tr>
+        <td>URL:</td>
+        <td><%=text_field_tag :url%></td>
+      </tr>
+      <tr>
+        <td><%=submit_tag 'Save' ,:onclick=>"return validate_favourite();"%></td>
+      </tr>
+    </table>
+  <%end%>
+</div>

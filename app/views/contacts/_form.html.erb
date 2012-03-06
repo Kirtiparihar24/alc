@@ -1,0 +1,194 @@
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('#container-1').tabs(1);
+    //It is used to show the legend 
+    if (jQuery('.tabs-selected a').attr('href')=='#fragment-1') {
+      jQuery(".mandatory").show();
+    } else {
+      jQuery(".mandatory").hide();
+    }
+  });
+  // function change_tab(link) : shifted to livia_common.js
+</script>
+<div>
+  <% form_for(contact, :html => {:onsubmit => "return disableAllSubmitButtons('contacts')"}) do |f| %>
+    <div id="container-1">
+      <ul class="tabs-nav"><li class="tabs-selected"><a href="#fragment-1" onclick="change_tab(this);"><span><%= contact.new_record? ? t(:text_new) : t(:text_edit) %> <%= t(:text_contact) %></span></a></li><li><a href="#fragment-2" onclick="change_tab(this);"><span><%= t(:text_business_contact_details) %></span></a></li><li><a href="#fragment-3" onclick="change_tab(this);"><span><%= t(:text_education_and_work) %></span></a></li><li><a href="#fragment-4" onclick="change_tab(this);"><span><%= t(:text_personal_information) %></span></a></li><li><a href="#fragment-5" onclick="change_tab(this);"><span><%= t(:text_sales_related_details) %></span></a></li><li><a href="#fragment-6" onclick="change_tab(this);"><span><%= t(:text_others) %></span></a></li></ul>
+      <!--New Contacts Starts-->
+      <div id="fragment-1" class="tabs-container-tabs" style="border-bottom:none;">
+        <div class="p8">
+          <%= raw same_contacts_show %>
+          <%= raw same_account_show %>
+          <% if(contact.errors.length > 0) %>
+            <div class='message_error_div'>
+              <%= error_messages_for(:contact) %>
+              <%= flash[:error]%>
+            </div>
+          <% end %>
+          <%= hidden_field_tag :divid %>
+          <%=hidden_field_tag 'button_pressed'%>
+          <%=hidden_field_tag  :contact_type,params[:contact_type]%>
+          <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+          <%= hidden_field_tag :return_url,params[:return_url] unless contact.new_record? %>
+          <div class="form_table">
+            <table width="90%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td width="19%"><label><%= t(:label_salutation) %></label></td>
+                <td width="34%"><%= f.collection_select('salutation_id', current_company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %></td>
+                <td width="2%">&nbsp;</td>
+                <td width="21%">&nbsp;</td>
+                <td width="24%">&nbsp;</td>
+              </tr>
+              <tr>
+                <td><label><%= t(:label_contact_first_name) %> <span class="alert_message">*</span></label></td>
+                <td><%=f.text_field :first_name, :class => "",:id=>'first_name', :autocomplete => 'off', :maxlength => 64, :size => "30"%></td>
+                <td>&nbsp;</td>
+                <td><label><%= t(:label_contact_middle_name) %> </label></td>
+                <td><%=f.text_field :middle_name, :class => "",:id=>'middle_name', :autocomplete => 'off', :maxlength => 64, :size => "30"%></td>
+              </tr>
+              <tr>
+                <td><label><%= t(:label_contact_last_name) %></label></td>
+                <td><%=f.text_field :last_name, :class => "", :maxlength => 64, :size => "30" %></td>
+                <td>&nbsp;</td>
+<td><label><%= "#{t(:text_primary)} #{t(:label_phone)}" %> <span class="alert_message">#</span></label></td>
+                <td><%=f.text_field :phone,:size => "30",:maxlength=>"15"%></td>
+              </tr>
+              <tr>
+                <td><label> <%= "#{t(:text_primary)} #{t(:label_email)}" %> <span class="alert_message">#</span></label></td>
+                <td><%=f.text_field :email, :maxlength => 64, :size => "30" %></td>
+                <td>&nbsp;</td>
+                <td><%= t(:label_alternate_email) %></td>
+                <td><%= f.text_field :alt_email, :maxlength => 64, :size => "30" %></td>
+              </tr>
+              <tr>
+                <td><label><%= t(:label_nick_name) %></label></td>
+                <td><%=f.text_field :nickname,:class => "", :maxlength => 100, :size => "30"  %></td>
+                <td>&nbsp;</td>
+                <td><label><%= t(:text_note) %></label></td>
+                <td><%=f.text_field :preference, :maxlength => 100, :size => "30"  %></td>
+              </tr>
+            </table>
+            <div class="border_top_gray mt12">
+              <table width="90%" cellspacing="0" cellpadding="0" border="0" class="mt12">
+                <tr>
+                  <td width="19%"><label><%= t(:label_account) %></label></td>
+                  <td width="34%">
+                    <% if account.new_record? %>
+                      <%= render :partial => '/accounts/createnew_selectexisting', :locals => {:contact => contact, :new => true} %>
+                    <% else %>
+                      <%=text_field_tag 'account',account.name,:disabled=>true%>
+                    <% end %>
+                  </td>
+                  <td width="2%">&nbsp;</td>
+                  <td width="21%"><label><%= t(:label_assigned) %></label></td>
+                  <td width="24%">
+                    <%= collection_select :contact, :assigned_to_employee_user_id, employees, :id, :full_name, {:selected => contact.new_record? && contact.errors.length == 0 ? get_employee_user_id : contact.assigned_to_employee_user_id , :include_blank => "--None--"} %>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label><%= t(:label_source) %></label> </td>
+                  <td><%= f.collection_select :source, company_sources, :id, :alvalue, {:include_blank=>'--None--' } %></td>
+                  <td>
+                  </td>
+                  <% label_source_details = "#{t(:label_source )}  #{t(:label_details )}"%>
+                  <td><label><%= label_source_details %></label></td>
+                  <td><%= f.text_field :source_details, :maxlength => 64, :size => "30" %></td>
+                  <td>&nbsp;</td>
+
+                </tr>
+                <tr>
+                  <td><label><%= t(:label_stage) %></label></td>
+                 <% if(contact.new_record?)%>
+                  <td><%= f.collection_select('contact_stage_id', contact_stages , :id, :alvalue,
+                                {:selected=>@client_stage_value[0].id},
+                                {:onChange => contact.new_record? ? "status_change()" : "status_change(this.value,null, #{session[:contact_stage_id]}, #{contact.opportunities.size}, #{contact.matters.size})"}
+                              ) %></td>
+
+                  <%else%>
+                   <td><%= f.collection_select('contact_stage_id', contact_stages , :id, :alvalue,
+                                {:onChange => contact.new_record? ? "status_change()" : "status_change(this.value,null, #{session[:contact_stage_id]}, #{contact.opportunities.size}, #{contact.matters.size})"}
+                              ) %></td>
+                  <%end%>
+
+                  <td>&nbsp;</td>
+                  <td><label><%= t(:label_title) %></label></td>
+                  <td><%=f.text_field :title, :maxlength => 64, :size => "30" %></td>
+                  <td></td>
+                  <td>
+                    <span id="lead"></span>
+                    <span id="prospect" style="display:none;"></span>
+                  </td>
+                </tr>
+                <% unless contact.new_record? %>
+                  <tr id="notes">
+                    <td><label><%= t(:label_reason) %> <span class="alert_message">*</span></label></td>
+                    <td><%= f.text_field 'reason' %> </td>
+                    <td>&nbsp;</td>
+                    <td> </td>
+                    <td></td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td><label><%= t(:label_company) %></label></td>
+                  <td><%= f.text_field :organization, :maxlength => 64, :size => "30" %></td>
+                  <td>&nbsp;</td>
+                  <td><label><%= t(:label_rating) %></label></td>
+                  <td><%= rating_select "contact[rating]",{:id => :contact_rating, :selected => contact.rating, :class=> "w32"} %></td>
+                </tr>                
+              </table>
+            </div>
+          </div>
+      </div>
+      <br class="clear"/>
+    </div>
+    <%= render :partial => 'contact_additional_fields_form',:locals=>{:f => f, :contact => contact } %>
+  </div>  
+    <div class="buttonDiv">
+      <% matter_ppl_present = check_contact_matter_people(contact) unless contact.new_record? %>
+      <%= f.submit t(:text_save), :name => "save" , :onclick => "validate_account_presence(this,'#{contact.email}', '#{matter_ppl_present}');", :class => "contacts" %>
+      <%= f.submit t(:text_save_n_exit), :name => "save_exit", :onclick => "validate_account_presence(this);", :class => "contacts" %>
+
+      <input name="Cancel" type="button" id="Cancel"  class = 'contacts' value="<%= t(:text_cancel) %>" onclick="setButtonPressed(this); disableAllSubmitButtons('contacts'); window.location='<%=params[:from].eql?('accounts')? accounts_path : remember_past_path%>';return false;" />
+      <br class="clear"/><br class="clear"/>
+
+      <div class="mandatory" style="text-align:left; display:none;"><span class="alert_message">*</span><%= t(:label_Required_fields) %>, <span class="alert_message">#</span><%= t(:label_Either_Primary_Phone_or_Primary_Email_required) %></div>
+
+    </div>
+  <% end %>
+</div>
+<script language="javascript" type="text/javascript">
+
+<% unless contact.new_record?%>
+  <% contact_stage = contact_stages.find_all_by_lvalue('Lead').collect{|cs| cs.id} %>
+  <% if contact_stage.include?(contact.contact_stage_id) %>
+      jQuery('#lead').show();
+      jQuery('#prospect').hide();
+      jQuery('#selected_list_box').val("Lead");
+  <% elsif !contact_stage.include?(contact.contact_stage_id) %>
+      jQuery('#selected_list_box').val("Prospect");
+      jQuery('#lead').hide();
+      jQuery('#prospect').show();
+  <% end %>
+<% end %>
+
+  function validate_account_presence(button,email,matter_people){
+    if(jQuery.trim(jQuery("#_account_ctl").val()) == "" ||jQuery("#_account_ctl").val() == 'Select Existing'){
+      jQuery('#_accountid').val("");
+    }
+
+    setButtonPressed(button);
+    createnew_clear();
+    check_bill_address_update('contact',address_changed,"<%=total_open_invoices%>","<%=params[:action]%>");    
+  }
+
+  // function createnew_clear() : shifted to livia_common.js
+
+  stage_reason("<%= params[:action] %>", "<%= @contact.contact_stage_id_changed? %>")
+  jQuery('#first_name').focus();
+
+  jQuery('#contact_contact_stage_id').bind('change', function(){
+   status_change(this.value,null,('#contact_stage_id'),'2', '3');
+  })
+</script>
+
+

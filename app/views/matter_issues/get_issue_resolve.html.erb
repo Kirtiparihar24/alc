@@ -1,0 +1,35 @@
+<div style="text-align:left;margin-top:10px;">
+  <div id="modal_resolve_issue_errors" class="errorCont" style="display:none"></div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  <% remote_form_for :matter_issue,@matter_issue,:url=>{:controller => "matter_issues" ,:action => :update_issue_resolve,:matter_id => @matter.id,:id => @matter_issue.id},:html =>{:method => :post },:loading=>"jQuery('button').val('Please wait...');jQuery('button').attr('disabled','disabled');",:complete=>'return enableAllSubmitButtons("button")' do |f| %>
+  <table border="0" cellpadding="2" cellspacing="2" width="100%">
+      <tr>
+        <td align="left"><label><%=t (:label_resolved_at)%></label></td>
+        <td align="left">          
+          <%= f.text_field :resolved_at, :value => @matter_issue.resolved_at ? @matter_issue.resolved_at : Time.zone.now.to_date.to_s, :class => "date_picker", :size => "9"%>
+          <%= f.hidden_field :resolved, :value=>true%>
+        </td>
+      </tr>
+      <tr align="right">
+        <td align="left" valign="top"><%=t(:label_resolution)%></td>
+        <td align="left">
+          <%=f.text_area :resolution, :cols => "40", :rows => "3"%>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr align="center">
+        <td colspan="2" align="center">
+          <%= f.submit "Save" ,{:class=> "button", :onclick=> " return checkloader();"}%>
+          <input type="button" class="button"id="Login2" value="Cancel" onclick="tb_remove();disableAllSubmitButtons('button');" /></td>
+      </tr>
+    </table>
+  <%end%>
+</div>
+
+<script type="text/javascript">  
+  livia_datepicker_new("#matter_issue_resolved_at");
+</script>
+
+  <div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;54 </div>

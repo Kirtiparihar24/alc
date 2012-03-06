@@ -1,0 +1,32 @@
+<div class="box-head"><h2><%=t(:text_new_product)%></h2></div>
+<% form_for @product,:url => {:action => 'create'} do |f| %>
+  <%if(@product.errors.length > 0)%>
+    <div class='errorCont'>
+      <%= f.error_messages %>
+      <div class="clear"></div>
+    </div>
+  <%end%>  
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_product_name)%> <span>*</span></label></td>
+        <td width="75%"><%=f.text_field :name, :id => 'pname', :class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_description)%></label></td>
+        <td><%=f.text_field :description, :class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:text_price)%> <span>*</span></label></td>
+        <td><%=f.text_field :cost, :class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%= submit_tag t(:label_create), :class => 'button' %>
+    <%= link_to t(:label_back), {:action => 'index'} ,:class=>"button" %>
+  </div>
+<% end %>

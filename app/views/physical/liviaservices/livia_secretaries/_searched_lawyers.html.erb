@@ -1,0 +1,13 @@
+<ul class="userList">
+  <%unless @searched_lawyers.empty?%>
+  <%@searched_lawyers.each do|assign|%>
+  <%lawyer = assign.receiver%>
+  <li class="<%= cycle("bg1", "bg2") -%>">
+    <%= link_to(lawyer.full_name,{:controller=>"/physical/liviaservices/verification/#{assign.id}"} ,:rel=>"facebox")%>
+  </li>  
+  <%end%>
+  <%else%>
+  <li><%=t(:text_no_lawyer_found)%></li>
+  <%end%>
+</ul>
+

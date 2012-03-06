@@ -1,0 +1,35 @@
+<% form_for (@cluster) do |f|%>
+  <div class="form">
+    <%if(@cluster.errors.length > 0)%>
+      <div class='errorCont'>
+        <%=f.error_messages %>
+        <div class="clear"></div>
+      </div>
+    <%end%>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%= t(:label_name)%> <span>*</span></label></td>
+        <td><%=f.text_field :name, :style=>"width:46%",:class=>"field size4"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr>
+        <td align="left" valign="top"><label><%= t(:label_description)%> <span>*</span></label></td>
+        <td><%=f.text_area :description,:cols => 40, :rows => 10, :style=>"width:46%",:class=>"field size1"%></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+      <tr id="service_provider_type" >
+        <td align="left" valign="top"><label><%= t(:label_type)%></label></td>
+        <td>
+          <%=check_box_tag "type[]", 1, @cluster.is_front_office_cluster? %>&nbsp;&nbsp;<%=t(:text_livian_front_office)%><br/>
+          <%=check_box_tag "type[]", 2, @cluster.is_back_office_cluster? %>&nbsp;&nbsp;<%=t(:text_back_office)%><br/>
+          <%=check_box_tag "type[]", 4, @cluster.is_common_pool_cluster? %>&nbsp;&nbsp;<%=t(:text_common_pool)%><br/>
+        </td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+  </div>
+  <div class="buttons">
+    <%=f.submit t(:text_save), :class=>"button"%>
+    <%=link_to t(:label_back), clusters_path, :class => "button"%>
+  </div>
+<% end %>

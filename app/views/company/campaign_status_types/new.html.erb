@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_new)%> <%=t(:text_campaigns_status)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:campaign_status_type,@campaign_status_type, :url => company_campaign_status_types_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "Status Type", :modal_text => "#{t(:label_status_name)}",
+    :all_modal_values => @company.campaign_status_types.collect{|cs|[cs.lvalue]}.uniq ,:modelclass=>'campaign_status_types'} %>
+<%end%>
+<br class="clear"/>

@@ -1,0 +1,8 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_new)%> <%=t(:text_client_role)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<%remote_form_for(:client_role,@client_role, :url => company_client_roles_path(@company),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :post}) do |f|%>
+  <%= render :partial=>"company/form", :locals => {:f => f,
+    :select_modal_text => "#{t(:label_client_role)}", :modal_text => "#{t(:label_client_role)}",
+    :all_modal_values => @company.client_roles.reject { |x| (x.lvalue=="Lead Lawyer" || x.lvalue=="Matter Client")}.collect{|rt|[rt.lvalue]}.uniq ,:modelclass=>'client_roles'} %>
+<%end%>
+<br class="clear"/>

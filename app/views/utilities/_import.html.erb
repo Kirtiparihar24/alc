@@ -1,0 +1,77 @@
+<div class="pl15">
+  <table width="100%" border="0" cellspacing="1" cellpadding="1">
+    <tr>
+      <td width="20%">
+      <!--  <% form_tag "/import_data/import_from_file", :method => 'post', :multipart => true,:id=>'utility_contact_form' do %> -->
+          <table width="80%" border="0" cellspacing="1" cellpadding="1">
+            <tr>
+              <td width="20%">&nbsp;</td>
+              <td width="2%">&nbsp;</td>
+              <td width="70%">&nbsp;</td>
+            </tr>
+            <tr><td colspan="3"><%= radio_button_tag 'import', 'util_contacts', params[:radio].blank? ? true : false,{:onclick => "download_formats();"} %><strong><%= t(:text_contacts) %></strong></td></tr>
+            <% unless current_user.role?("lawyer")%>
+              <tr><td colspan="3"><%= radio_button_tag 'import', 'time',(!params[:radio].blank? && params[:radio].eql?("time")) ? true : false,{:onclick => "download_formats();"} %><strong><%= t(:text_time_entry) %></strong></td></tr>
+              <tr><td colspan="3"><%= radio_button_tag 'import', 'expense',(!params[:radio].blank? && params[:radio].eql?("expense")) ? true : false,{:onclick => "download_formats();"} %><strong><%= t(:text_expense_entry) %></strong></td></tr>
+              <tr><td colspan="3"><%= radio_button_tag 'import', 'matter',(!params[:radio].blank? && params[:radio].eql?("matters")) ? true : false,{:onclick => "download_formats();"} %><strong><%= t(:label_matters) %></strong></td></tr>
+             <% end %>
+            <tr><td colspan="3" height="6">&nbsp;</td></tr>
+            <tr>
+              <td><%#= t(:text_file_format) %></td>
+              <td>&nbsp;</td>
+              <!--<td><span id="file_format_type" ><%#= select_tag "file_format", options_for_select(%w{ CSV XLS}), :onchange => "download_formats();" %></span>
+                <%#download_type = params[:radio] ? params[:radio] : 'contacts'%>
+                <span id="sample_format" class="link_blue"><%#= link_to('Download File Format (CSV)',{:controller => "/import_data/#{download_type}?f=CSV"}) %></span>
+              </td>-->
+              <!--<td><span id="file_format_type" ><%= select_tag "file_format", options_for_select(%w{ XLS }), :onchange => "download_formats();" %></span>
+                <%download_type = params[:radio] ? params[:radio] : 'contact'%>
+                <span id="sample_format" class="link_blue"><%= link_to "Download Format (XLS)","/excel_imports/download_template?module_type=#{download_type}" %></span>
+              </td>-->
+            </tr>
+            <tr>
+              <td colspan="3" height="6"></td>
+            </tr>
+            <!--<tr>
+              <td><%= t(:text_file) %> :</td>
+              <td>&nbsp;</td>
+              <td><%= file_field_tag :import_file %></td>
+            </tr>
+            <tr>-->
+              <td colspan="3" height="4"></td>
+            </tr>
+            <tr>
+              <td colspan="3" height="4"></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <!--<td><%= submit_tag t(:label_import), :onclick => 'return validateImportFile();set_radio_button()', :class => "importcontacts" %></td>-->
+            </tr>
+          </table>
+        <% end %>
+      </td>
+    </tr>
+  </table>
+</div>
+<script>
+  function update_form_action()
+  { 
+     var mod = jQuery("#utility_contact_form :input['radio']:checked").val();
+    var format = jQuery("#file_format").val();
+  
+    if(mod=="util_contacts" && format == "XLS"){
+       jQuery("#utility_contact_form").attr("action","/excel_imports/contact_import");
+     }
+    else{
+      jQuery("#utility_contact_form").attr("action","/import_data/import_from_file");
+     }
+  
+  }
+  jQuery("#utility_contact_form :input['radio']").live("change",function(){
+    update_form_action();
+  });
+jQuery("#file_format").live("change",function(){
+    update_form_action();
+  });
+  update_form_action();
+</script>

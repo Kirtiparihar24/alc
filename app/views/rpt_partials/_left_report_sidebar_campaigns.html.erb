@@ -1,0 +1,4 @@
+  <li><%=link_to(t(:text_campaign_status),{:controller => :rpt_campaigns , :action => :campaign_status}, :class => "#{@campaign_status}" )%></li>
+  <li><%=link_to(t(:text_campaign_responsiveness),{:controller => :rpt_campaigns , :action => :campaign_response }, :class => "#{@campaign_response}")%></li>
+  <li><%=link_to(t(:text_campaign_contacts),{:controller => :rpt_campaigns , :action => :campaign_members}, :class => "#{@campaign_members}")%></li>
+  <li><%=link_to(t(:text_campaign_revenue),{:controller => :rpt_campaigns , :action => :campaign_revenue}, :class => "#{@campaign_revenue}")%></li>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%= get_title_for_site %></title>
+    <%= include_stylesheets :application_stylesheet ,:media => 'all'%>
+    <%= include_stylesheets :plupload_stylesheet ,:media => 'all'%>
+    <%= include_stylesheets :base_stylesheet ,:media => 'all'%>
+    <%= style_sheet %>
+    <%= stylesheet_link_tag "jquery.countdown.css" %>
+    <%= include_javascripts :application_javascripts %>
+    <%= raw(javascript_include_tag "application.js", "reports.js", "sticky_note_core.js", "jquery.countdown.min.js") %>
+    <!-- Plupload -->
+    <%= include_javascripts :plupload_javascripts %>
+    <%= raw(javascript_include_tag "rails.js")%>
+    <%= csrf_meta_tag %>
+    <style type="text/css">  
+      .coming_soon{border:1px solid #ccc;  background:#FFE9A9; width:200px; position:absolute; text-align:center;}
+      #coming_fav{margin:-120px 0 0 -120px;} #coming_cal{margin:10px 0 0 30px;} #coming_settings, #coming_know{margin:0 0 0 -120px}
+      .coming_soon div#main{border:4px solid #CFEAED; }
+      .coming_soon div#link{text-align:right} .coming_soon a, .coming_soon a:visited{color:#000; text-decoration:none}
+      .livia_dashboardroller {position: absolute; width:200px;word-wrap:break-word;padding: 10px 10px; margin-left:50px; z-index: 9999; color: #303030; border:1px solid #aed0eb; background:#e3f1fa;line-height: 18px; color:#000;font:normal 1em Arial, Helvetica, sans-serif; text-decoration:none; text-align:left;}
+    </style>
+    <script type="text/javascript">
+      jQuery(document).ready(function(){
+        <% unless is_secretary_or_team_manager? %>
+          fetchTimer();
+        <% end %>
+        <% if devise_controller? %>
+          jQuery('body').removeClass('main_page_body');
+          jQuery('body').addClass('login');
+        <%end%>
+      });
+    </script>
+    <div id="timer-container"></div>
+  </head>
+  <body class="body_container main_page_body">
+    <div id="doc" class="body_container">
+      <script type="text/javascript">
+        jQuery.noConflict();           
+        application_layout_init();
+        if(Cookies['sNo']=='true'){
+          jQuery(document).ready(function(){
+            setFlagForStickyNote(true)
+          });
+        }
+      </script>
+      <table width="100%">
+        <tbody>
+          <tr>
+            <td>
+              <%= render :partial =>'layouts/header' %>
+              <%= render :partial =>'layouts/header_tabs' %>
+              <div id="middleBody-div"> 
+                <div class="mtb5">
+                  <div id="breadcrumb" class="fl"><%= raw render_breadcrumbs :separator => '<div class="arrow_dotted"></div>' %></div>
+                  <%if request.get?%>
+                    <div class="fr mlr2 ie7_mt4">
+                      <%=link_to "<span class='btn_addPageFav fr'></span>", "#", :onclick=> "tb_show('#{t(:text_add )} #{t(:text_favorite)}','#{physical_clientservices_add_to_fav_path}?height=100&width=350','');return false;", :class => "btn_addPageFav fr vtip", :title => "#{t(:text_add )} #{t(:text_favorite)}" %>
+                    </div>
+                  <%end%>
+                  <br class="clear" />
+                </div>            
+                <div id="altnotice"></div>
+                <div class="main_containt">
+                  <div id="ajax_flash"></div>
+                  <%= render :partial => '/common/common_flash_message' %>
+                  <div id="column_left_accordion" class="column_left"><%= render :partial =>'layouts/left_sidebar' %></div>
+                  <script type="text/javascript">                    
+                    jQuery(document).ready(function(){                      
+                      var config = {
+                        sensitivity: 2, // number = sensitivity threshold (must be 1 or higher)
+                        interval: 100, // number = milliseconds for onMouseOver polling interval
+                        over: megaHoverOver, // function = onMouseOver callback (REQUIRED)
+                        timeout: 500, // number = milliseconds delay before onMouseOut
+                        out: megaHoverOut // function = onMouseOut callback (REQUIRED)
+                      };
+                      jQuery("ul#topnav li .sub").css({
+                        'opacity':'0'
+                      });
+                      jQuery("ul#topnav li").hoverIntent(config);
+                    });
+                  </script>
+                  <% dochome = controller_name.eql?("document_homes") && (params[:action]=="index" || params[:action]=="folder_list") %>
+                  <div id="column_right_tabs" class="column_right_tabs fr" style="width: <%= dochome ? "80%" : "100%" %> ">
+                    <%= yield %>
+                    <br class="clear" />
+                    <div class="pagiText"><%=t(:label_page)%>&nbsp;<%=h @pagenumber%></div>
+                  </div>
+                  <br class="clear" />
+                  <br class="clear" />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <%= render :partial =>'layouts/footer' %>
+    <%=hidden_field_tag "user_offset",Time.zone.now.utc_offset%>
+    <%=hidden_field_tag "user_date", Time.zone.now.to_date %>
+    <%=hidden_field_tag "user_of", Time.zone.now.to_time.strftime("%Z")%>
+    <%=hidden_field_tag "user_time", Time.zone.now.to_time.strftime("%H:%M:%S") %>
+  </body>
+</html>

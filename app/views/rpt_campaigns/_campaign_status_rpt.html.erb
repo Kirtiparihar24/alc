@@ -1,0 +1,30 @@
+<% @widths_hash = {"Campaign" => "20%","Contacts" => "10%","Start date" => "7%","Closure date" => "7%","1st mail date" => "8%","2nd mail date" => "8%","Opportunities" => "10%","Value" => "7%","Owner" => "10%"} %>
+<div class="w100">
+  <% unless @total_data.blank? %>
+    <div class="title_blue fl"><%= t(:text_total_records) %> = <%= @col.length %> </div>
+  <% end %>
+  <div class="fr  textR">
+    <%=raw(generate_send_email_rpt_link("campaign_status_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("#{t(:text_campaign)}")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("campaign_status_rpt")) %>
+  </div>
+  <br class="clear" />
+</div>
+<% unless @total_data.blank? %>
+  <% @total_data.each do |label, col| %>
+    <div class="mt5">
+      <div class="w100">
+        <div class="title_blue  fl" ><%=(label == "" or !label) ? "None" : label%> <span >(<%= pluralize_record(col.length , 'Record',0)%>)</span></div>
+        <div class="fr textR"> <%# links %> </div>
+        <br class="clear" />
+      </div>
+      <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => col} %>
+    </div>
+    <% reset_cycle %>
+  <% end %>
+  <br class="clear" />
+  <div class="title_blue fl"><%= pluralize_record(@col.length , 'Record',1)%> </div>
+<% else %>
+  <div class="title_blue fl"><%= pluralize_record((@col.length rescue 0), 'Record',1)%></div>
+<% end %>
+<br class="clear" />

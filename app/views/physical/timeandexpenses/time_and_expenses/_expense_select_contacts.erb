@@ -1,0 +1,1 @@
+<span id="contact_span_<%=saved_entry.id%>" class="editLiviaTextBox"><%=select_tag "#{saved_entry.id}[contact_id]", "<option value=''/>" + options_for_select(@contacts.collect{|contact|[contact.full_name, contact.id]},contact_id),{:class => "dropbox w100p",:onchange=>"get_all_expense_matters(this.id,#{saved_entry.id});",:id=>"#{saved_entry.id}_expense_contact_id"}%></span>

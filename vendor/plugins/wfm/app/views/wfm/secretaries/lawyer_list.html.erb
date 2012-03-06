@@ -1,0 +1,120 @@
+<div id="page">
+  <div class="inner">
+    <div class="section table_section">
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li>
+            <a href="#"><span><span>Lawyer List</span></span></a>
+          </li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <div class="section_content">
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <div class="sct_left">
+                <div class="sct_right">
+                  <div style="min-height: 250px;">
+                    <%form_for :search, :url=>wfm_lawyer_list_path,:html =>{:method=>:get,:class=>"search_form general_form"} do |f| %>
+                      <div class="table_wrapper">
+                        <div class="table_wrapper_inner">
+                          <table cellpadding="0" cellspacing="0" width="100%" >
+                            <thead>
+                              <tr>
+                                <th width="23%" >Name</th>
+                                <th width="23%">email</th>
+                                <th width="23%">Birth Date</th>
+                                <th width="23%">Phone</th>
+                                <th width="10%"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <%=f.text_field :name, :value =>params[:search].nil? ? "" : params[:search][:name],:size=>20 %>
+                                </td>
+                                <td><%=f.text_field :email, :value =>params[:search].nil? ? "" : params[:search][:email],:size=>20 %></td>
+                                <td><%=f.text_field :birthdate, :value =>params[:search].nil? ? "" : params[:search][:birthdate],:size=>20,:class=>'datePicker',:readonly=>true %></td>
+                                <td><%=f.text_field :phone,:maxlength=>"15", :value =>params[:search].nil? ? "" : params[:search][:phone],:size=>20%></td>
+                                <td><%= f.submit "Go" ,{:style=>""}%></td>
+                              </tr>
+                              <%if !@employees.blank? %>
+                                <%@employees.each do |emp|%>
+                                  <tr class="<%= cycle('first','second') %>">
+                                    <td>
+                                      <span class="textBlue11Height20" style="cursor:pointer;" onclick='jQuery("#<%=emp.id%>_employee_secruity_question_view").toggle()' title="Click here to view details">
+                                        <%=emp.full_name%>
+                                      </span>
+                                    </td>
+                                    <td><%= emp.email%></td>
+                                    <td><%= emp.birthdate%></td>
+                                    <td><%= emp.phone%></td>
+                                    <td><%#=emp.designation.lvalue rescue '-'%></td>
+                                  </tr>
+                                  <tr>
+                                    <td colspan="5">
+                                      <div style="display: none" id="<%=emp.id%>_employee_secruity_question_view" class="p5 gridTable">
+                                        <table width="90%" align="center" border="1" cellpadding="0" cellspacing="0">
+                                          <tr>
+                                            <th width="10%" class="textBlack11Height10L" >Security Question</th>
+                                            <th width="30%" class="textBlack11Height10L" >Answer</th>
+                                          </tr>
+                                          <%if emp.user.present?%>
+                                            <%emp.user.questions.each do |question|%>
+                                              <tr>
+                                                <td class="textBlack11Height10L" ><%= question.setting_value rescue '-'%></td>
+                                                <td class="textBlack11Height10L" ><%= question.answer.setting_value rescue '-' %></td>
+                                              </tr>
+                                            <%end%>
+                                          <%end%>
+                                          <tr>
+                                            <td class="textBlack11Height10L" colspan="2" align="center">
+                                              <div class="button_div">
+                                                <span class="button send_form_btn buttons_to_disable">
+                                                  <span><span><%=link_to 'Yes', physical_liviaservices_assign_lawyer_url(emp.id), :class=>"linkbutton", :style=>"padding:0 0 0 0; color:white; background:none;" %></span></span>
+                                                </span>
+                                                <span class="button send_form_btn ml10 buttons_to_disable">
+                                                  <span><span>No</span></span>
+                                                  <input type="button" name="" onclick='jQuery("#<%=emp.id%>_employee_secruity_question_view").hide()'/>
+                                                </span>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </table>
+
+                                      </div>
+                                    </td>
+                                  </tr>
+                                <%end%>
+                              <%elsif params[:search].present?%>
+                                <tr class="bg2"><td colspan="5">No Lawyers Found</td></tr>
+                              <%end%>
+                            </tbody>
+                          </table>
+                           <%unless @employees.blank?%>
+                              <%=will_paginate @employees%><%=raw custom_page_entries_info @employees%>
+                           <%end%>
+                        </div>
+                      </div>
+                    <%end%>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery(function() {
+      jQuery('#search_birthdate').datepicker({ changeYear: true, yearRange: '1900:2000' });
+    });
+  });
+</script>

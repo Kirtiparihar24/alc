@@ -1,0 +1,96 @@
+<div id="matter_bill_errors" class="" style="display: none;"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+﻿<div style="text-align:center;margin-top:20px;">
+  <%form_for([@matter, @bill], :url => {:action => :update_bill}, :html=> {:multipart=> true,:target=>"upload_frame"}) do |f|%>
+    <%=hidden_field_tag "flag",params[:flag] if params[:flag]%>
+    <table width="440" border="0" cellpadding="6" cellspacing="6" style="margin:0 auto;" class="form_table">
+      <tr>
+        <td width="115" align="left">Matter Name </td>
+        <td width="304" align="left"><%=@matter.try(:name)%></td>
+      </tr>
+      <tr>
+          <td align="left">Matter Id </td>
+          <td align="left"><%=@matter.try(:matter_no)%></td>
+      </tr>
+      <tr>
+        <td width="115" align="left"><%=t(:text_invoice_no)%><span class="alert_message">*</span></td>
+        <td width="304" align="left"><%=f.text_field :bill_no ,:onblur=>"displayInvoiceNo(this);"%></td>
+      </tr>
+      <tr align="right">
+        <td align="left">Invoice Amount<span class="alert_message">*</span></td>
+        <td align="left"><%=f.text_field :bill_amount, :size => 12 , :maxlength=>8%></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><%=t(:text_Invoice_Date)%><span class="alert_message">*</span></td>
+        <td align="left"><%= f.text_field :bill_pay_date, :value => @bill.bill_pay_date, :class=>"date_picker", :size=>"15"%></td>
+      </tr>
+      <tr align="right">
+        <td align="left"><%= t(:text_due_date) %></td>
+        <td align="left"><%= f.text_field :bill_due_date, :value => @bill.bill_due_date, :class=>"date_picker", :size=>"15"%></td>
+      </tr>
+
+      <tr>
+        <td align="left"><%= t(:text_invoice) %></td>
+        <%if @bill.get_document%>
+          <%bill_doc= @bill.get_document%>
+          <td align="left"><%=link_to(bill_doc.latest_doc.name, document_home_path(bill_doc.latest_doc.id))%>
+            <span><%= get_file_extension(bill_doc)%></span><!--to set the image for the extension type -->
+          </td>
+        <%else%>
+          <td align="left"><%= file_field_tag 'document_home[file]' %></td>
+        <%end%>
+      </tr>
+      <tr>
+        <td align="left" valign="top"><%=t(:label_Remarks)%></td>
+        <td align="left" valign="top">
+          <%=f.text_area :remarks, :rows=>3, :cols=>40%>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" height="10%"></td>
+      </tr>
+      <tr align="right">
+        <td>&nbsp;</td>
+        <td align="left">
+          <%=f.submit t(:text_save), :name => "save", :id=>"save_edit_bill"%>
+          <input type="submit" id="Login2" value="Cancel" onclick="tb_remove(); return false;" />
+        </td>
+      </tr>
+      <tr><td align="left" colspan="2" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></td></tr>
+      <tr><td align="left" colspan="2"><span class="mandatory mt12">Note : Limit on file size is 50 MB.</span></td></tr>
+      <tr><td align="left" colspan="2"> <%= render :file=>'common/document_extension' %></td></tr>
+    </table>
+  <%end%>
+
+</div>
+<iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;60 </div>
+<script type="text/javascript">
+  livia_datepicker();
+</script>
+
+<script type="text/javascript" >
+  jQuery(document).ready(function() {
+    // Need to removed to JS File
+    jQuery('#save_edit_bill').click(function(){      
+      if(jQuery('#matter_billing_bill_amount').val() == ""){
+        alert("Invoice Amount cannot be blank.");
+        jQuery('#loader').hide();
+        jQuery('#save_edit_bill').val('Save');
+        jQuery('#save_edit_bill').attr('disabled','');
+        return false;
+      }
+      //to check for start date and end date validation :Rashmi N.
+      var d1 = jQuery('#matter_billing_bill_pay_date').val();//start date
+      var d2 = jQuery('#matter_billing_bill_due_date').val();//end date
+      if(new Date(d1) > new Date(d2)){//start date should not be greater than end date
+        alert('Due date is less than Invoice date');
+        jQuery('#matter_billing_bill_due_date').focus();
+        return false;
+      }else{
+        jQuery('#save_edit_bill').val('Please Wait');
+        return checkloader();
+      }
+    });
+  });
+</script>

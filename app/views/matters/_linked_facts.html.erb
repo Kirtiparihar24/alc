@@ -1,0 +1,30 @@
+﻿<div style="text-align:center;margin-top:20px;">
+  <!--Tabular container div @start here -->
+  <% unless @matter_facts.empty? %>
+    <% form_for([@matter, @submodel], :url => {:action => :linked_facts, :id => @matter.id},:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+      <div class="tabular_listing">
+        <%=hidden_field_tag :fact_type, @fact_type%>
+        <%=hidden_field_tag :matter_research_id, @submodel.id  if @fact_type=="matter_research" %>
+        <%=hidden_field_tag :matter_document_id, @submodel.id  if @fact_type=="document_home" %>
+        <%=hidden_field_tag :path, @path%>
+        <table width="100%" cellpadding="1" cellspacing="1">
+          <tr>
+            <th width="95%" align="left"><%=t(:label_fact)%></th>
+            <th width="5%" align="left">&nbsp;</th>
+          </tr>
+          <% @matter_facts.each do |mi| %>
+            <tr class="<%=cycle('bg1', 'bg2')%>">
+              <td align="left"><%= truncate_hover(mi.name, 85) %></td>
+              <td align="left"><%= check_box_tag "#{@fact_type}[matter_fact_ids][]", mi.id, @matter_factid.include?(mi.id) %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <br class="clear"/>
+      <%=f.submit "Link",:name => "link", :id => "linked_facts_button", :onclick => "this.value = 'Please wait ...'" %>&nbsp;&nbsp;&nbsp;<%=f.submit "Cancel",:class=>'matters' ,:onclick => "tb_remove(); return false;"%>
+    <% end %>
+  <% else %>
+    <div class="warningCont m5">No <%=t(:label_facts)%> found for this matter</div>
+  <% end %>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;59 </div>

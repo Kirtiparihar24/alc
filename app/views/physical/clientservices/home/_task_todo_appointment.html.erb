@@ -1,0 +1,94 @@
+<%= raw javascript_include_tag  "latest/calendars" %>
+<script type="text/javascript">
+  function getLiviaTodayDate() {
+    var now = today_date();
+    var month = now.getMonth() + 1
+    var day = now.getDate()
+    var year = now.getFullYear()
+    return month + "/" + day + "/" + year;
+  }
+
+  function check_box_onclick(check, id, date_id){
+    if (check) {
+      jQuery(id).show();
+      jQuery('#'+date_id).val(getLiviaTodayDate());
+    } else {
+      jQuery(id).hide();
+      jQuery(date_id).val('');
+    }
+  }
+  
+</script>
+<% form_remote_tag :url => "/matter_tasks/complete_task" do%>
+  <div id="modal_complete_task_errors"></div>
+  <% is_appointment = text_task_appiontment_name == t(:text_appointment_name) %>
+  <table width="100%" cellpadding="1" cellspacing="1" border="0">
+    <tr>
+      <% unless is_appointment %> <th align="left" width="11%"> <%= submit_tag t(:text_complete), :class=>'linknormal',:style=>"display:none"%></th><% end %>
+      <th align="left" width="<%= is_appointment ? "15%" : "11%" %>"><%= link_to(text_task_appiontment_name,"#",:onclick => "sort_columnof_tasks_modal('matter_tasks.name','#{dir}','#{task_type}');") %></th>
+      <th align="center" width="9%"><%= link_to(t(:text_start_date),"#",:onclick => "sort_columnof_tasks_modal('matter_tasks.start_date','#{dir}','#{task_type}');") %></th>
+      <% if is_appointment %><th align="center" width="6%"> Start Time</th><%end%>
+      <th align="center" width="9%"><%= link_to(end_date,"#",:onclick => "sort_columnof_tasks_modal('matter_tasks.end_date','#{dir}','#{task_type}');") %></th>
+      <% if is_appointment %><th align="center" width="6%"> End Time</th><% end %>
+      <th align="left" width="13%"><%= link_to(t(:text_matter),"#",:onclick => "sort_columnof_tasks_modal('matters.name','#{dir}','#{task_type}');") %></th>
+      <th align="left" width="13%"><%= link_to(t(:text_contact),"#",:onclick => "sort_columnof_tasks_modal('matter_peoples.name','#{dir}','#{task_type}');") %></th>
+      <th align="left" width="13%"><%= t(:text_account) %></th>
+    </tr>
+  </table>
+
+  <div style="width: auto; height: 300px; overflow: auto;">
+    <table width="100%" cellpadding="1" cellspacing="1" border="0">
+      <% task_todo_appt.each do |activity| %>
+      <%= hidden_field_tag 'matter_id', activity[:activity_matter_id] %>
+        <% is_matter = activity[:activity_is_matter] %>
+        <% task_app = activity[:activity] %>
+      <% appointment = activity[:activity]
+        instance = activity[:activity_is_instance]
+        matterid = activity[:activity_is_matter]
+        current_user_id = @userid
+        %>
+        <tr class="<%= cycle('bg1','bg2') %>" >
+          <% if is_appointment %>
+           <td align="left" width="11%">
+             <%=edit_path_with_thickbox_for_appointment(activity,is_appointment)%>
+              <%if activity[:activity_repeat] %>
+              <% MatterTask::REPEAT_OPTIONS.each do |k,v| %>
+                <%= "- #{k}" if task_app.repeat.eql?(v) %>
+              <%end%>
+            <%end%>
+            </td>
+         <%else%>
+           <td  align="center" width="11%">
+              <%= hidden_field_tag 'matter_id', activity[:activity_matter_id] if is_matter %>
+              <%= check_box_tag 'selected_records[]', activity[:activity_id], false, {:class=>"recordscampmem", :onclick => "check_box_matter(); check_box_onclick(this.checked,'#complete_div_#{activity[:activity_id]}', 'todo_#{activity[:activity_id]}') "} %>
+              <div id="complete_div_<%= activity[:activity_id] %>" style="display: none">
+                <%= text_field_tag "completed_at[]", '', :id=> "todo_#{activity[:activity_id]}", :class => "date_picker", :size=>"10" %>
+                <%= hidden_field_tag 'activity[]', is_matter ? '' : 'true'%>
+              </div>
+              <script type="text/javascript">jQuery('#todo_<%= activity[:activity_id] %>').datepicker(); </script>
+            </td>
+            <td align="left" width="11%">
+              <%= edit_path_with_thickbox_for_appointment(activity,is_appointment) %>
+            </td>
+          <% end %>
+          <td align="center" width="9%"><%= is_appointment ? activity[:activity_instance_start_date].strftime("%m/%d/%Y") : livia_date(activity[:activity_start_date]) %></td>
+          <% if is_appointment %><td align="center" width="6%"><%= livia_time_zone(activity[:activity_start_date]) %></td><% end %>
+          <td align="center" width="9%"><%= is_appointment ? activity[:activity_instance_end_date].strftime("%m/%d/%Y") : livia_date(activity[:activity_end_date]) %></td>
+          <% if is_appointment %><td align="center" width="6%"><%= livia_time_zone(activity[:activity_end_date]) %></td><% end %>
+          <% if is_matter %>
+            <td align="left" width="13%"><%= conditional_edit(activity[:activity_matter]) %></td>
+            <td align="left" width="13%"><%= contact_hover_link(activity[:activity_contact]) %></td>
+            <td align="left" width="13%"><%= activity[:activity_account_name] %></td>
+          <% else %>
+            <td align="left" width="12%">&nbsp;</td>
+            <td align="left" width="13%">&nbsp;</td>
+            <td align="left" width="11%">&nbsp;</td>
+          <% end %>
+        </tr>
+      <% end %>
+       <% if task_todo_appt.blank? %>
+          <td colspan="7"><div  class="warningCont m5">No Appointment Found</div></td>
+       <%end%>
+    </table>
+  </div>
+<%end%>

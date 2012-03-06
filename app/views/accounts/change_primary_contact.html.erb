@@ -1,0 +1,37 @@
+<script type="text/javascript">
+  add_missing_header_to_thickbox("Change Primary Contact");
+</script>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div class="mt20">
+  <% form_for :account, @account, :url=>"/accounts/change_primary_contact", :html => {:method=>:put,:onsubmit => "return disableAllSubmitButtons('accounts')"} do |f| %>
+    <%= hidden_field_tag :id, @account.id %>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table">
+      <% if @primary_contact.present? %>
+        <tr>
+          <td><label><%= t(:label_current_primary_contact) %></label></td>
+          <td><strong><%= @primary_contact.name %></strong></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td><label><%= t(:label_change_to) %></label></td>
+        <% contacts = @account.contacts.sort {|x,y| x.created_at <=> y.created_at }%><!-- Sorting added for Bug #9740 : Pratik AJ -->
+        <td><%= collection_select :new_account_contact, :id, contacts.select{|con| @account.primary_contact_id!=con.id}, :id, :full_name, {}, {:style => "width:150px"} %></td>
+      </tr>
+      <tr>
+        <td colspan="2"><div class="buttonSub_div">
+            <%= f.submit t(:text_save) , :onclick=>"return checkloader();", :class=>"accounts", :onsubmit => " return setButtonPressed(this);"%>
+            <input name="Cancel" type="button" id="Cancel" value="Cancel" class = 'accounts' onclick = "setButtonPressed(this); disableAllSubmitButtons('accounts'); parent.tb_remove();"/>
+          </div></td>
+      </tr>
+    </table>
+  <% end %>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;31</div>
+
+<script  type="text/javascript">
+  $(document).ready(function(){   
+    jQuery("#account_submit").click(function() {
+      jQuery("#account_submit").val('Please wait...');
+    });
+  });
+</script>

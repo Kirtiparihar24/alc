@@ -1,0 +1,25 @@
+<td align="left" valign="middle"><input type="checkbox" name="date_selected" id="date_selected" value="1" <%=checked%> /></td>
+<td align="left" valign="middle"><%=t(:text_date_created)%></td>
+<td valign="middle">
+  <div id="date_div" style="<%= opt_style %>">
+    <table width="100%" cellspacing="0" cellpadding="0" >
+      <tbody>
+        <tr>
+          <td align="right"><%=t(:text_start_date)%></td>
+          <td align="left" valign="middle" class="plr5" style="width:120px"><input type="text" id="date_start" name="date_start"  readonly="true" class="fl date_picker" size="10" value="<%=params[:date_start]%>" /></td>
+          <td align="right"><%=t(:text_end_date)%></td>
+          <td align="left" valign="middle" class="plr5" style="width:120px"><input type="text" id="date_end" name="date_end"  readonly="true" class="fl date_picker" size="10" value="<%=params[:date_end]%>" /></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</td>
+<script type="text/javascript">  
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#date_start");
+    livia_matter_inception_datepicker_new("#date_end");
+    jQuery("#date_selected").change(function(){
+      jQuery("#date_div").toggle();
+    });
+  });
+</script>

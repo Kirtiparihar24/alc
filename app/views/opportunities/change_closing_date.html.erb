@@ -1,0 +1,36 @@
+<% remote_form_for :opportunity, :url => {:action => 'change_closing_date', :id => @opportunity.id} do |opportunity| %>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#opportunity_closes_on");
+  });
+</script>
+<div class="mt20">
+  <div id="closing_date_error" style="display:none;"> </div>
+  <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="form_table">
+  <tr>
+    <td width="33%" align="left"><%=t(:label_Target_Closing_Date)%></td>
+    <td width="67%" align="left">
+          <input type="text"
+             id="opportunity_closes_on"
+             name="opportunity[closes_on]"
+             class="date_picker"
+             size="10"             
+             value=<%= @opportunity.closes_on.present? ? @opportunity.closes_on : livia_date(Time.zone.now.to_date) %>
+      />
+    </td>
+  </tr>
+  <tr align="right">
+    <td colspan="2" height="10"></td>
+  </tr>
+  <tr align="right">
+    <td colspan="2" align="center">
+      <%= submit_tag t(:label_save) ,:class=>'opportunities',:onclick=> 'return checkloader();' %>
+      <input type="button" class='opportunities' value="<%= t(:text_cancel) %>" onclick="parent.tb_remove();return false" id="cancel" />
+    </td>
+    </tr>
+</table>
+</div>
+<%end%>
+
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;37</div>

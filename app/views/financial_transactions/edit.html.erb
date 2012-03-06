@@ -1,0 +1,21 @@
+<!--div class="mb8">
+  <div class="column_main01"-->
+    <%unless params[:check_action] %>
+    <h2 id="toggle_busi_cont_detail_toggle" class="title_main">
+      <div class="fl"><%= t(:text_edit_financial_transaction) %></div>
+    </h2>
+    <%end%>
+    <div style="display: block;" id="toggle_busi_cont_detail_div" class="p5 bg_white">
+      <div class="w100 fl bg_white">
+          <% form_for :financial_transaction, @financial_transaction, :url => financial_account_financial_transaction_path(@financial_account,@financial_transaction, :return_action => params[:check_action]), :html => {:method => :put} do |f| %>
+            <%= render :partial => "form", :locals => { :f => f } %>
+          <% end %>
+      </div>
+      <div class="p5">
+        <div class="buttonSub_div">
+        </div>
+      </div>
+      <div style="clear: both;height:30px;"></div>
+    </div>
+  <!--/div>
+</div-->

@@ -1,0 +1,96 @@
+<b>This task has following sub tasks associated with it. You need to complete all of them in order to complete this task.</b>
+<br class="clear"/>
+<div class="table_wrapper modalTable">
+  <div class="table_wrapper_inner">
+    <table cellpadding="0" cellspacing="0" width="100%" class="tablesorter" id="tasks_index_table">
+      <thead>
+        <tr>
+          <th nowrap="nowrap" width="15%">Client</th>
+          <th style="width:auto;">Task</th>
+          <th style="width:auto;" nowrap="nowrap">Work Sub Type</th>
+          <th style="width:auto;" nowrap="nowrap">Starts At</th>
+          <%if is_completed%>
+            <th style="width:auto;">Completed At</th>
+          <%else%>
+            <th style="width:auto;" nowrap="nowrap">Due On</th>
+          <%end%>
+          <th nowrap="nowrap" style="width:auto;">Assigned To</th>
+          <%if is_team_manager%>
+            <th nowrap="nowrap" style="width:auto;">Livian's Cluster</th>
+          <%end%>
+          <th nowrap="nowrap" style="width:auto;">Priority &nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%priority_hash=Hash[UserTask::PRIORITIES.map {|x| [x[1], x[0]]}]%>
+        <% sub_tasks.each  do |sub_task|%>
+          <% task_id = sub_task.id %>
+          <tr class="<%cycle('first','second')%>">
+            <td>
+              <%= sub_task.receiver.full_name%><br />
+              <i><%= sub_task.receiver.company.name%></i>
+            </td>
+            <td>
+              <div id="hoverIntent" style="position:relative;">
+                <span>
+                  <% if is_parent_task(sub_task) %>
+                    <%=link_to "#{sub_task.name}",edit_wfm_user_task_path(sub_task,:complete => 'complete', :back_index => true)%>
+                  <% else %>
+                    <%=link_to "#{sub_task.name}",'#', :onclick=> "tb_show('Complete Task','#{wfm_complete_task_path(sub_task)}?height=370&width=700','');"%>
+                  <% end %>
+                  <div id="<%= task_id%>" class="task_details" style="display:none; position:absolute; top:35px;">
+                    <div class="task_details_scroll"><%=sub_task.name%></div>
+                  </div>
+                </span>
+              </div>
+            </td>
+            <td>
+              <%=sub_task.work_subtype.name if sub_task.work_subtype%>
+            </td>
+            <td>
+              <%= wfm_date_format(sub_task.start_at) rescue '-'%>
+            </td>
+            <td id="date_td">
+              <%if is_completed%>
+                <div>
+                  <%= wfm_date_format(sub_task.completed_at) %>
+                </div>
+              <%else%>
+                <div>
+                  <%= wfm_date_format(sub_task.due_at) rescue "-"%>
+                </div>
+              <%end%>
+              <div class="task_due <%= task_id%>" style="display:none;">
+                <div><strong>Note Generated Date</strong> <%= wfm_date_format(sub_task.communication.created_at) %> </div>
+                <div><strong>Note Created By</strong> <span> <%= sub_task.communication.logged_by_with_destroyed.full_name rescue '-' %> </span></div>
+                <br/>
+                <div><strong>Task Generated Date</strong> <%= wfm_date_format(sub_task.created_at) %> </div>
+                <%if is_completed == false%>
+                  <div><strong>Task Due Date</strong> <%= wfm_date_format(sub_task.due_at) if sub_task.due_at.present?%> </div>
+                <%end%>
+                <div><strong>Task Created By</strong> <span> <%= sub_task.logged_by_with_destroyed.full_name rescue '-'%> </span></div>
+                <div><strong>TAT</strong> <span> <%= sub_task.get_tat rescue '-'%> hrs </span></div>
+              </div>
+            </td>
+            <td>
+              <%= get_assigned_to('user',sub_task.assigned_to_user_id) %>
+            </td>
+            <%if is_team_manager%>
+              <td>
+                <%= get_assigned_to('clusters',sub_task.assigned_to_user_id) %>
+              </td>
+            <%end%>
+            <td <% if priority_hash[sub_task.priority.to_s].eql?('Urgent')%> style="color:red" <%end%> >
+              <%=priority_hash[sub_task.priority.to_s]%>
+            </td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+    <br class="clear" />
+    <div class="button_div">
+      <%=link_to "<span class='button buttons_to_disable send_form_btn ml10'><span><span>Back</span></span></span>", request.referer %>
+      <br class="clear" />
+    </div>
+  </div>
+</div>

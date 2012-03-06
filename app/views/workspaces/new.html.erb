@@ -1,0 +1,46 @@
+<div style="text-align:left; margin-top:10px;">
+  <div id="one_field_error_div" >
+    <div class="message_error_div" id="modal_new_document_errors" style="display: none;"></div>
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+  </div>
+  <% form_for(@document_home, :url => {:controller => 'workspaces', :action => 'create', :folder_id => @document_home.folder_id, :selected_node => params[:selected_node]}, :html => {:multipart => true, :onsubmit => "disableAllSubmitButtons('button');"}) do |f| %>
+    <% for document in @document_home.documents %>
+      <% fields_for 'document_home[document_attributes]', document do |d| %>
+        <table  border="0" cellpadding="3" cellspacing="3" style="margin:0 auto;">
+          <tr>
+            <td><label><%=t(:label_document)%>&nbsp;<span class="alert_message">*</span></label></td>
+            <td width="304" align="left">
+              <%= d.file_field :data,  :onChange=> "updatename('document_home_document_attributes_data','document_home_document_attributes_name')" %>
+              <%= d.hidden_field :name %>
+            </td>
+          </tr>
+          <tr align="right"><td colspan="2" align="center"><%=f.submit t(:text_upload), :onclick=>" return checkloader();return validate_field('document_home_document_attributes_data','Please upload a file');",:class=>"button"%>  <input type="button" id="Login2" value="Cancel" class="button" onclick="tb_remove();return false;" /></td></tr>
+        </table>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+<div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+<div class="mandatory mt12">
+  <pre>Note : Limit on file size is 50 MB.</pre>
+</div>
+<div align="right" class="pagiText"><%= t(:label_page)%>&nbsp;112</div>
+<script>
+  jQuery(document).ready(function(){
+    jQuery('#document_home_document_attributes_data').bind('change', function(){
+      // Need to removed to JS File
+      if (jQuery.browser.msie ){}else{
+        //this.files[0].size gets the size of your file.
+        var file_size = this.files[0].size;
+        var max_size = 52428800;
+        if (file_size <= 1 || file_size > max_size){
+          jQuery('#modal_new_document_errors').html('Upload File size should be between is 1KB-50MB.');
+          jQuery('#modal_new_document_errors').show();
+          jQuery('#document_home_document_attributes_data').val('');
+        }else{
+          jQuery('#modal_new_document_errors').hide();
+        }
+      }
+    });
+  });
+</script>

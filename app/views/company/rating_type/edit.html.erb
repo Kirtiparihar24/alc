@@ -1,0 +1,6 @@
+<div id="topheadContainer"><div class="title fl"><%=t(:text_edit)%> <%=t(:label_rating_type)%></div></div>
+<div id="nameerror"  class="errorCont" style="display:none"></div>
+<% remote_form_for(:rating_type,@rating_type, :url => company_rating_type_path(@company,@rating_type),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+  <%= render :partial=>"form", :locals => {:f => f} %>
+<%end%>
+<br class="clear"/>

@@ -1,0 +1,22 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer">
+      <div class="title fl"><%= @company.name unless @company.blank? %></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%if params[:id].present?%>
+          <%=collection_select :employee,:company_id,@companies,:id,:name_type,{:include_blank => 'Please select',:selected => @company.id},{:onchange=>"show_data_for_record(this.value, 'companyratecarddiv', 'POST', '/rate_cards/index')" ,:class=>"field size3"}%>
+        <%else%>
+          <%=collection_select :employee,:company_id,@companies,:id,:name_type,{:include_blank => 'Please select'}, {:onchange=>"show_data_for_record(this.value, 'companyratecarddiv', 'POST', '/rate_cards/index')" ,:class=>"field size3"}%>
+        <%end%>
+      </div>
+    </div>
+  <%end%>
+  <% if current_user.role?:lawfirm_admin %>
+    <div id="topheadContainer"><div class="title fl"><%= current_user.company_full_name  %></div></div>
+  <% end %>
+<% end %>
+<div id="companyratecarddiv">
+  <% if session[:company_id].present? %>
+    <%= render :partial=>'company_rate_card' %>
+  <% end %>
+</div>

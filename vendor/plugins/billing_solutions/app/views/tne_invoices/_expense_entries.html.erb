@@ -1,0 +1,83 @@
+<%expense_act_type=""%>
+<tr class='bg2' id="outer_<%=bill_expense[0]%>" >
+  <td width="<%=@consolidated_by=="Date" ? "10%" : "7%"%>">
+    <%= tne_invoice_detail.hidden_field :matter_id, :value => params[:matter_id] if params[:matter_id].present? %>
+    <%= tne_invoice_detail.hidden_field :contact_id, :value => params[:contact_id] if params[:contact_id].present? %>
+    <%= tne_invoice_detail.hidden_field :entry_type, :value => "Expense" %>
+    <%= tne_invoice_detail.hidden_field :company_id, :value => current_company.id %>
+  </td>
+  <td width=<%=@consolidated_by=="Date" ? "5%" : "16%"%>>
+    <%expense_act_type=bill_expense[0]%>
+    <%if @consolidated_by=="Activity"%>
+      <%= tne_invoice_detail.hidden_field :activity, :value => bill_expense[2] %>
+      <%= tne_invoice_detail.hidden_field :lawyer_name,:value=>bill_expense[8] %>
+      <%= tne_invoice_detail.hidden_field :tne_entry_date,:value=>bill_expense[9] %>
+    <%elsif @consolidated_by== "User"%>
+      <%= tne_invoice_detail.hidden_field :lawyer_name, :value => bill_expense[2] %>
+      <%= tne_invoice_detail.hidden_field :activity, :value => bill_expense[8] %>
+      <%= tne_invoice_detail.hidden_field :tne_entry_date,:value=>bill_expense[9] %>
+    <%else%>
+      <%= tne_invoice_detail.hidden_field :tne_entry_date,:value=>bill_expense[2] %>
+      <%= tne_invoice_detail.hidden_field :lawyer_name, :value =>bill_expense[8] %>
+      <%= tne_invoice_detail.hidden_field :activity, :value =>bill_expense[9] %>
+    <%end%>
+    <%= link_to bill_expense[2], "#this", :onClick=>"hide_show_billentry(this, 'expenseentry#{bill_expense[0]}')" %>
+  </td>
+  <td width="6%" align="center">&nbsp;</td>
+  <td width="5%"> &nbsp;</td>
+  <td width="15%">&nbsp; </td>
+  <td width="20%">
+    <% if @view_summery=='Summary' %>
+      <%= tne_invoice_detail.text_field :description, :value => bill_expense[10], :size => 25 %>
+    <%else%>
+      <%= tne_invoice_detail.text_field :description, :value => bill_expense[10], :size => 25,:readonly=>true,:style=>'background:#DDDDDD;border:none;' %>
+    <%end%>
+  </td>
+  <td width="18%"></td>
+  <% unless primary_tax_disable %>
+    <td align="center" width="4%"><%= tne_invoice_detail.check_box :primary_tax, {:class=> "p_tax p_tax_expense", :onClick => "check_uncheck_sub_entries(this, '#{bill_expense[0]}', '#{inv}', 'expense')"} %> <%= hidden_field_tag "expense_header_ptax_hidden_#{bill_expense[0]}", 0 ,:class=>'expense'%></td>
+    <% if @tne_invoice_setting.try(:secondary_tax_enable) %>
+      <td align="center" width="4%"><%= tne_invoice_detail.check_box :secondary_tax, {:class=> "s_tax s_tax_expense", :onClick => "check_uncheck_sub_entries(this, '#{bill_expense[0]}', '#{inv}', 'expense')"} %> <%= hidden_field_tag "expense_header_stax_hidden_#{bill_expense[0]}", 0 ,:class=>'expense'%></td><% end %>
+  <% end %>
+  <td width="8%" align="right" id="te_expense_amount_<%=bill_expense[0]%>">
+    <% amount = bill_expense[3] %>
+    <% if @view_summery=='Summary' %>
+      <%= tne_invoice_detail.text_field :amount, :value => number_with_lformat(amount), :size => 5 ,:class=>"tne_invoice_amount textR",:onblur=>"convertTOFloat(this);check_amount();"%>
+    <% else %>
+      <%= tne_invoice_detail.text_field :amount, :value => number_with_lformat(amount),:readonly=>true, :size => 8 ,:style=>'background:#DDDDDD;border:none;text-align: right;padding: 5px 0;' ,:class=>'tne_invoice_amount'%>
+    <% end %>
+    <%= hidden_field_tag "expense_hidden_amount_#{bill_expense[0]}", amount.to_f.fixed_precision(2) %>
+  </td>
+  <td align="center" width="5%">
+    <div class="icon_action  mt3"><a href="#"></a></div>
+    <div id="liquid-roundAP" class="tooltip" style="display:none;">
+      <!--Icon table strt here -->
+      <% link = (link_to "Delete", "#", :onClick=>"delete_all_expense_entry('#{params[:matter_id].present??params[:matter_id] : @tne_invoice.matter_id}','#{params[:contact_id].present??params[:contact_id] : @tne_invoice.contact_id}','#{expense_act_type}','#{@tne_invoice.id}','#{@consolidated_by}');" )%>
+      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+        <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+            :deactivate_path=> "NO",
+            :deactivate_link => link,
+            :deactivate_text => "NO",
+            :comment_path=> "NO",
+            :comment_title => "NO",
+            :document_path=>"NO",
+            :history_path=>"NO",
+            :history_title => "NO"}) %>
+        <tr>
+          <td valign="top" class="ap_bottom_curve_left"></td>
+          <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+          <td valign="top" class="ap_bottom_curve_right"></td>
+        </tr>
+      </table>
+    </div>
+  </td>
+</tr>
+<% i = 0 %>
+<% bill_expense[4].each do |split_data| %>
+  <%= hidden_field_tag "expense_entries_ids[]", split_data.id %>
+  <% data = @tne_invoice.new_record? ? @tne_invoice_expense_entries : split_data %>
+  <% tne_invoice_detail.fields_for :tne_invoice_expense_entries, data do |expense| %>
+    <%= render :partial=>"summary_grid_expense_open_entries_matter_view", :locals=>{:expense_entry=>split_data, :classname => "expenseentry#{bill_expense[0]}",:bill_entry_id=>bill_expense[0], :i => i, :inv => inv, :expense => expense, :total_time_data => total_time_data, :primary_tax_disable => primary_tax_disable,:detail_id =>(bill_expense[6].present? ? bill_expense[6].id : 0)} %>
+  <% end %>
+  <% i += 1 %>
+<% end %>

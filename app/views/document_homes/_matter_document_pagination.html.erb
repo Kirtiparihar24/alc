@@ -1,0 +1,22 @@
+<% if controller.action_name=="search_document" %>
+  <div class="pagination_div">
+    <ul class="alphabetical fl"><%# no alphabetical sorting %>
+    </ul>
+    <div class="fl ml10"><%# no reset %>
+    </div>
+    <div class="pagination fr w48">
+      <%= create_per_page_limit_remote_links(params[:per_page], "search_results_DIV", params.merge(:action => "search_document"))if(@document_homes.size >= 25)%>
+      <div class="fr ">
+        <div class="fl"><%=raw custom_page_entries_info @document_homes, :entry_name => 'public documents'  %>
+        </div>
+        <div class="fl ml3 mr3 willpaginate"><%=will_paginate @document_homes, :previous_label => '<span class="previousBtn"></span>', :next_label => '<span class="nextBtn"></span>', :renderer => 'WillPaginateRemoteLinkRenderer', :remote => {:update => "search_results_DIV"}, :params => {:action => "search_document", :paginating => true}.merge!(params)%>
+        </div>
+        <br class="clear" />
+      </div>
+      <br class="clear" />
+    </div>
+    <br class="clear" />
+  </div>
+<% else %>
+  <%= raw all_pagination(@documenthomes, params[:per_page], "willpaginate", matter_document_homes_path, {:action=>"index", :per_page=>params[:per_page]}, false) %>
+<% end %>

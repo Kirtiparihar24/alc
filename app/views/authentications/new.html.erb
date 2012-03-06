@@ -1,0 +1,32 @@
+<table height="100%" align="center" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <!--Header div @start here -->
+        <div id="login-div">
+          <%= render :partial => '/common/common_flash_message' %>
+          <h1 class="textC"><%= image_tag "livia_logo.png" %></h1>
+
+          <%form_for @authentication, :url => authentication_path,:html => {:onsubmit => "jQuery('#user_session_submit').attr('disabled',true);return true;"} do |f|%>
+            <table width="55%" border="0" cellpadding="1" cellspacing="10" align="center" class="form_table" style="xborder:1px solid red; margin:0 auto;">
+              <tr><td>Username</td><td><%= f.text_field :username, :size => "35", :onclick => "changeValue(jQuery(this))", :onblur=> "trackValue(jQuery(this), 'user')", :class=>'textgray' %></td></tr>
+              <tr><td>Password</td><td><%= f.password_field :password, :size => "35", :onclick => "changeValue(jQuery(this))", :onblur=> "trackValue(jQuery(this), 'pass')", :class=>'textgray' %></td></tr>
+              <tr><td></td><td><%= f.check_box(:remember_me) %><label>Remember Me</label>&nbsp;&nbsp;|&nbsp;&nbsp;<label><%= link_to t(:label_forgot_password), :action => 'forgot_password' %></label></td></tr>
+              <% if @flag == true %>
+                <tr><td></td>
+                  <td>
+                    <%= f.check_box(:session_key) %> &nbsp;
+                    <%= f.label :session_key, t(:label_end_all_sessions) %>
+                  </td>
+                </tr>
+              <% end %>
+              <tr><td></td><td align="left"><%= f.submit t(:text_login) %></td></tr>
+            </table>
+          <%end%>
+          <br class="clear" />
+        </div>
+        <!--Header div #ends here -->
+      </td>
+    </tr>
+  </tbody>
+</table>

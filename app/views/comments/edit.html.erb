@@ -1,0 +1,9 @@
+<% form_for(@company) do |f| %>
+  <%= f.error_messages %>
+  <%= f.text_field :name %>
+  <p>
+    <%= f.submit t(:text_update) %>
+  </p>
+<% end %>
+<%= link_to t(:label_show), @company %> |
+<%= link_to t(:label_back), company_path %>

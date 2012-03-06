@@ -1,0 +1,18 @@
+<p>
+  <b><%=t(:label_name)%>:</b>
+  <%=h @work_subtype.name %>
+</p>
+
+<p>
+  <b><%=t(:label_description)%>:</b>
+  <%=h @work_subtype.description %>
+</p>
+
+<p>
+  <b><%=t(:label_work)%>&nbsp;<%=t(:label_type)%>:</b>
+  <%=h @work_subtype.work_type_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_work_subtype_path(@work_subtype) %> |
+<%= link_to 'Back', work_subtypes_path %>

@@ -1,0 +1,190 @@
+<script src="/javascripts/jquery/jquery.timeentry.pack.js" type="text/javascript"></script>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    jQuery('#opportunity_follow_up_time').timeEntry({
+      ampmPrefix: ' ',
+      initialField: 0,
+      show24Hours: false,
+      timeSteps: [1,1,1]
+    });
+    if (jQuery('#datepicker_opportunity_follow_edit').val()!="") {jQuery('.opportunity_follow_up_time').show();}
+    livia_matter_inception_datepicker_new("#datepicker_opportunity_edit");
+    livia_matter_inception_datepicker_new("#datepicker_opportunity_follow_edit");
+  });
+</script>
+<style type="text/css">
+  .form_table table input[type="text"], .form_table table textarea, .form_table table select{margin:1px 0 }
+</style>
+<h2 class="title_main"><%= t(:text_edit_opportunity) %></h2>
+<div class="p8">
+  <!--Form container div @start here -->
+  <% form_for @opportunity, :html => {:onsubmit => "return disableAllSubmitButtons('opportunities')"} do |f| %>
+    <%=hidden_field_tag  'opp_stage' , params[:opp_stage] if params[:opp_stage] %>
+    <%=hidden_field_tag :action_name, params[:action_name] if params[:action_name]%>
+    <%=hidden_fields_for_return_path(params[:letter],params[:per_page],params[:page],params[:col],params[:dir],params[:mode_type],params[:controller])%>
+    <div class="form_table">
+      <% fields_for(@contact) do |contact|%>
+        <%if(@opportunity.errors.length >0)%>
+          <div class='message_error_div'>
+            <%= error_messages_for(:opportunity, :contact)%>
+            <%= flash[:error]%>
+          </div>
+        <%end%>
+      <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="24%"><label><%= t(:label_opportunity) %><span class="alert_message">*</span></label></td>
+            <td width="24%"><%= f.text_field :name,:id=>'opportunity' %></td>
+            <td colspan="3"></td>
+          </tr>
+          <tr>
+            <td colspan="5" height="5"></td>
+          </tr>
+          <tr>
+            <td class="box_bg_bdr_1" width="23%"><label><%= t(:label_contact) %><span class="alert_message">*</span></label></td>
+            <td class="box_bg_bdr_1" width="28%">
+              <%="#{@contact.last_name} #{@contact.first_name} #{@contact.middle_name}"  %>
+              <%=hidden_field_tag [:contact_id],@contact.id %>
+            </td>
+            <td  class="box_bg_bdr_1" width="3%">&nbsp;</td>
+            <td  class="box_bg_bdr_1" width="23%"></td>
+            <td  class="box_bg_bdr_1" width="25%"></td>
+          </tr>
+
+          <tr>
+            <td class="box_bg_1 bdr_bot_1"><label><%= t(:label_primary_phone) %></label></td>
+            <td class="box_bg_1 bdr_bot_1" style="padding-left:2px;"><%= raw label_tag  @contact.phone, @contact.phone %></td>
+            <td class="box_bg_1 bdr_bot_1">&nbsp;</td>
+            <td class="box_bg_1 bdr_bot_1"><label><%= t(:label_primary_email) %></label></td>
+            <td class="box_bg_1 bdr_bot_1"><%= label_tag  @contact.email,@contact.email %></td>
+          </tr>
+
+          <tr>
+            <td colspan="5" height="5"></td>
+          </tr>
+          <tr>
+            <td><label><%= t(:label_stage) %></label></td>
+            <td>
+              <%= f.collection_select :stage,current_company.opportunity_stage_types,:id,:alvalue,
+                { :selected => @opportunity.stage},
+                { :class=>"widthSelectBox",
+                :onChange => "opportunity_status_change(this.value,'#{session[:stage_id]}','#{@closed_won_stage}')"} %>
+            </td>
+            <td>&nbsp;</td>
+            <td><label><%= t(:label_probability) %></label></td>
+            <td>
+              <div style="width: 141px; position: relative;" id="selectBox0" class="selectBox">
+                <%= f.text_field :probability, :class=>"selectBoxInput",:size=>'15',:maxlength =>4,:value=>floatIfNil(@opportunity.probability)%>
+              <img src="/images/select_arrow_down.gif" class="selectBoxArrow" id="arrowSelectBox0"></img>
+              <div id="selectBoxOptions0" class="selectBoxOptionContainer" style="width: 141px; display: none;">
+                <% current_company.opportunity_stage_types.each do |op_stage| %>
+                <%if !op_stage.percentage.nil?%>
+                  <div  class="selectBoxAnOption" style="width: 141px;" id="op_prob_<%=op_stage.id%>"><%=floatIfNil(op_stage.percentage)%></div>
+                <%end%>
+                <%end%>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="5">
+              <div id="reason" style=<%unless @opportunity.stage_changed?%> 'display:none;' <%end%>>
+                <table width="100%" class="highlight_bg_1 mt8">
+                  <tr>
+                    <td width="24%"><label><%= t(:label_reason_for_stage_change) %> <span class="alert_message">*</span></label></td>
+                    <td width="24%"><%= f.text_area :reason, :id=>"textarea", :rows=>"2" %></td>
+                    <td width="4%">&nbsp;</td>
+                    <td width="24%">&nbsp;</td>
+                    <td width="24%">&nbsp;</td>
+                  </tr>
+                  <tr class="opportunityMatterCheck" id="opp_matter" <%unless @opportunity.stage.eql?(current_company.opportunity_stage_types.find_by_lvalue('Closed/Won').id)%> style="display:none;" <%end%>>
+                    <td width="24%"><label><%= t(:label_check_here_to_create_matter_for_this_opportunity) %></label> </td>
+                    <td width="24%"><%= check_box :opp_matter, true, :checked => @opportunity.stage.eql?("won") %></td>
+                    <td width="4%">&nbsp;</td>
+                    <td width="24%">&nbsp;</td>
+                    <td width="24%">&nbsp;</td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><label><%= t(:label_closure_date) %></label></td>
+            <td><input type="text" id="datepicker_opportunity_edit" name="opportunity[closes_on]"  readonly="true"  size="15" class="date_picker" value="<%= @opportunity.closes_on.strftime('%m/%d/%Y') if f.object.closes_on %>" /></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="5" height="5"></td>
+          </tr>
+          <tr>
+            <td class="box_bg_bdr_1 bdr_bot_1"><label><%= t(:text_followup) %></label></td>
+            <td class="box_bg_bdr_1 bdr_bot_1"><input type="text" size="15" id="datepicker_opportunity_follow_edit" name="opportunity[follow_up]" readonly="true" class="date_picker" onchange="jQuery('.opportunity_follow_up_time').show();" value="<%= @opportunity.follow_up.strftime('%m/%d/%Y') if f.object.follow_up %>" /></td>
+            <td class="box_bg_bdr_1 bdr_bot_1">&nbsp;</td>
+            <td class="box_bg_bdr_1 bdr_bot_1"><label><%= t(:text_follow_up_done) %></label></td>
+            <td class="box_bg_bdr_1 bdr_bot_1"><input type="checkbox" name="opportunity[follow_up_done]" /></td>
+          </tr>
+          <tr>
+            <td><label class="opportunity_follow_up_time" style="display:none"><%= "#{t(:text_followup)} #{t(:text_time)}"%></label></td>
+            <td width="10%">
+              <%follow_up_time=(!@opportunity.follow_up.blank?) ? @opportunity.follow_up.strftime("%I:%M %p"):"12:00 PM"%>
+              <%= f.text_field :follow_up_time,:class=>"opportunity_follow_up_time", :value => follow_up_time,:size => "7",:style=>"display:none"%>
+            </td>
+          </tr>
+          <tr>
+            <td><label><%= t(:label_amt) %></label></td>
+            <td><%= f.text_field :amount, :maxlength => 10, :size => 30, :class=>"opportunityAmt", :onblur =>"checkamount();" %></td>
+            <td>&nbsp;</td>
+            <td><label><%= t(:label_estimated_hours) %></label></td>
+            <td><%= f.text_field :estimated_hours, :maxlength => 6, :size => 30, :class=>"opportunityAmt" %></td>
+          </tr>
+          <tr>
+            <td><label><%= t(:label_assigned_to) %></label></td>
+            <td><%= f.collection_select  :assigned_to_employee_user_id, @employees, :id, :full_name, { :include_blank => "--None--" } %></td>
+            <td>&nbsp;</td>
+            <td><label><%= t(:label_source) %></label></td>
+            <td>
+              <%= f.collection_select :source, current_company.company_sources,:id,:alvalue,
+                { :include_blank => '--None--',
+                :selected => @opportunity.source },
+                {:class=>"widthSelectBox",:onchange=>"show_campaign_combo();",
+                :id=>"source_combo" } %>
+              <div id="spinnerDefault"></div>
+            </td>
+          </tr>
+          <tr>
+            <% fields_for(@comment) do |comment| %>
+            <td valign="top"><%= t(:label_note) %></td>
+              <td><%= comment.text_area :comment, :id=>"textarea", :rows=>"2" %></td>
+            <% end %>
+            <td>&nbsp;</td>
+            <%
+            if @opportunity.try(:company_source).try(:lvalue)=="Campaign"
+              disp = ''
+            else
+              disp = 'none'
+            end
+          %>
+            <td id="campaign_combo" valign="top"  style='display:<%= disp %>'><label><%= t(:label_campaign_name) %></label></td>
+            <td id="campaign_combo1" valign="top" style='display:<%= disp %>'>
+                  <%= render :partial => "campaigns" %>
+                </td>
+          </tr>
+        </table>
+      </div>
+      <div class="buttonSub_div">
+        <%= f.submit t(:text_save),:name => "save",:disable_with => "Please wait ...", :class => "opportunities"  %>
+        <%= f.submit t(:text_save_n_exit),:name => "save_exit",:disable_with => "Please wait ...", :class => "opportunities" %>
+        <%= f.submit t(:label_cancel), :name => "cancel",:type => "button", :class => "opportunities", :onclick => "disableAllSubmitButtons('opportunities');setButtonPressed(this);window.location='#{params[:from].eql?('accounts')? accounts_path : remember_past_path}';"%>
+        <%= hidden_field_tag :commit, '', :id => "updateme" %>
+      </div>
+      <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+      &nbsp;&nbsp;&nbsp;<div class="mandatory"> Amt :- Amount</div>
+    <% end %>
+    <!--Form container div #ends here -->
+  </div>
+<% end %>
+
+<script language ="javascript">
+  jQuery('#opportunity').focus();
+</script>

@@ -1,0 +1,123 @@
+<%= raw javascript_include_tag("ajax_file_upload") %>
+<%= raw(javascript_include_tag "application.js") %>
+<script type="text/javascript">
+  add_missing_header_to_thickbox("Helpdesk: LIVIA Portal");
+</script>
+<div id="ticket_errors"></div>
+<% form_tag support_path, :multipart=> true, :target=>"upload_frame" do  %>
+  <table width="100%" border="0" cellpadding="3" cellspacing="1" style="margin: 0pt auto;">
+    <tbody>
+      <tr>
+        <td align="left"><label><%= current_user ? 'Customer' : 'Email Id <span class="alert_message">*</span>' %> </label></td>
+        <td align="left"><strong><%= current_user ? current_user.full_name : text_field_tag('ticket[email]') %></strong> </td>
+        <td align="right">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr><td colspan="4" align="left" height="12"></td></tr>
+      <tr><td colspan="4" align="left" height="12" class="border_top_gray"></td></tr>
+
+      <tr> <%count=1%>
+        <td align="left" width="105px" valign="top"><label>Request Type <span class="alert_message">*</span></label> </td>
+        <td align="left">
+          <%@ticket_types.each do |request_type|%>
+            <%= radio_button_tag 'ticket[request_type_id]', request_type["id"],count==1,{:rel => request_type['name'].capitalize,:onclick =>"update_ticket_sub_types(this);"}%>
+            <%= request_type['name'] %>
+            <%count=count+1%>
+          <%end%>
+        </td>
+        <td align="right">&nbsp;</td>
+        <td align="left">&nbsp; </td>
+      </tr>
+      <tr><td colspan="4" align="left" height="12" ></td></tr>
+      <tr>
+        <td colspan="5">
+          <table width="100%">
+            <tr id="request_sub_types" >
+              <td width="100px" valign="top"> Standard List </td>
+              <td>
+                <table>
+                  <tr>
+                    <td> <%= custom_select_tag "ticket[request_sub_type_id]", options_for_select(@ticket_sub_types.collect{|p| [p['name'], p['id']]}),:prompt=>"--------Select---------",:onchange=>"suggestion_display(this.value,jQuery('#ticket_request_sub_type_id option:selected').text());" ,:class=>"request_lists"%></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr><td colspan="4"> <div id="suggestion" > </div></td></tr>
+      <tr><td colspan="4" align="left" height="12" class="border_top_gray"></td></tr>
+      <tr>
+        <td align="left"  width="105px" valign="top"><label>Product</label><span class="alert_message">*</span></td>
+        <td align="left"><%=   select("ticket", "product_id", @products.collect {|p| [ p['name'], p['id'] ] }, { :selected=>   @current_product[0]['id']  },:onChange=> "update_sub_products(this)", :disabled=> true)%></td>
+        <td align="right">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr><td colspan="4" align="left" height="12"></td></tr>
+      <tr>
+        <td align="left"  width="105px" valign="top"><label><strong><%=t(:label_module)%></strong> </label></td>
+        <td colspan="3" align="left" valign="top" id="sub_product_list">
+          <%count=1%>
+          <table width="100%">
+            <tr>
+              <% for sub_product in @sub_products%>
+                <%if count%5 !=0 %>
+                  <td><%= check_box_tag 'ticket[sub_product_ids][]', sub_product['id'], false, {:class=>"recordscampmem"}%>  </td>
+                  <td> <%=sub_product['name']%></td>
+                  <%count+=1%>
+                <%else%>
+                  <%count=1%>
+                <tr></tr>
+                <%redo%>
+          </tr>
+        <%end%>
+      <%end%>
+  </table>
+  </td>
+  </tr>
+  <tr><td colspan="4" align="left" height="12" class="border_top_gray"></td></tr>
+  <tr>
+    <td  width="105px" valign="top"><label>Brief</label><span class="alert_message">*</span></td>
+    <td><%= text_field_tag "ticket[brief]",'',:id=>"brief_value",:maxlength=>'50'%> </td>
+    <td align="right">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr><td colspan="4" align="left" height="12"></td></tr>
+  <tr>
+    <td align="left" width="105px" valign="top"><label><%=t(:label_description)%> </label></td>
+    <td align="left"><%= text_area_tag "ticket[description]",'', :rows => 4, :cols => 25,:id=>"descript_value"%> </td>
+  </tr>
+  <tr><td colspan="4" align="left" height="12"></td></tr>
+  <tr>
+    <td align="left">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+    <td align="right">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+    <td align="right">&nbsp;</td>
+    <td align="left">&nbsp;</td>
+  </tr>
+  <tr align="right">
+    <td align="center" colspan="4">
+      <%=submit_tag 'Create Ticket' %>
+      <input type="submit" id="Login2" value="Cancel" onclick="parent.tb_remove();return false" />
+    </td>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+  </tr>
+  </tbody>
+  </table>
+<% end %>
+<div align ="right">Page 18</div>
+
+<script type="text/javascript">
+  livia_datepicker();
+  function startCallback() {
+    return true;
+  }
+  function completeCallback(response) {
+    tb_remove();
+  }
+</script>

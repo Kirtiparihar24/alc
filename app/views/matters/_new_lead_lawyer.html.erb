@@ -1,0 +1,142 @@
+<script type="text/javascript"> 
+  var noRole = "no";
+  var firstClick = true;
+  // Need to removed to JS File
+  function wouldYouChecked(val) {
+    jQuery("#no_role").css("visibility", "hidden");
+    if (val == "yes") {
+      jQuery("#role").css("visibility", "visible");
+    } else {
+      jQuery("#role").css("visibility", "hidden");      
+    }
+  }
+
+  function noRoleChecked(val) {
+    noRole = val;
+  }
+
+  function roleChange(val) {
+    if (val != "") {
+      jQuery("#no_role").css("visibility", "hidden");
+    }
+  }
+
+  function leadLawyerChange(old_id, new_id) {
+    old_id = parseInt(old_id);
+    new_id = parseInt(new_id);
+
+    if (old_id != new_id) {
+      jQuery("#no_change").css("visibility", "hidden");
+      jQuery("#would_you").css("visibility", "visible");
+      jQuery("#role").css("visibility", "visible");
+    } else {
+      jQuery("#would_you").css("visibility", "hidden");
+      jQuery("#would_you_radio_no").attr("checked", "checked");
+      
+      jQuery("#no_role").css("visibility", "hidden");
+      jQuery("#no_role_radio_no").attr("checked", "checked");
+      noRole = "no"; 
+      
+      jQuery("#role").css("visibility", "hidden");
+      jQuery("#lawyer_new_role").val("");
+    }
+  }
+
+  function changeLeadLawyer() {    
+    var new_lead_lawyer = jQuery("#new_lead_lawyer").val();
+    var url = "<%=change_lead_lawyer_matter_path(@matter)%>";
+    //tb_remove();
+    
+    jQuery.post(url,
+    {
+      "matter_id" : <%=@matter.id%>,
+      "new_lead_lawyer" : new_lead_lawyer,
+      "new_lead_role" : jQuery("#lawyer_new_role").val()
+    },
+    function(data) {
+      if (data == "home") {
+        window.location = "<%=matters_path%>";
+      } else {
+        location.reload(true);
+      }      
+    });
+  }
+
+  function doneClicked() {
+    
+    if (jQuery("#new_lead_lawyer").val() == "") {tb_remove();return;}
+    if (jQuery("#new_lead_lawyer").val() != jQuery("#last_lead_lawyer").val()) {
+      if (jQuery("#lawyer_new_role").val() == "") {
+        jQuery("#no_role").css("visibility", "visible");
+        if (noRole == "yes") {
+          changeLeadLawyer();
+        } else if (noRole == "no" && firstClick==true){
+          firstClick=false;
+          disableWithPleaseWait('change_lead_button', false, 'Done');
+        }else if(noRole =="no" && firstClick==false){tb_remove();return;}
+        else {
+          disableWithPleaseWait('change_lead_button', false, 'Done');
+        }
+      } else {
+        jQuery("#no_role").css("visibility", "hidden");
+        changeLeadLawyer();
+      }    
+    } else {
+      // UNREACHABLE CODE!!
+      jQuery("#no_change").css("visibility", "visible");
+    }
+  } 
+</script>
+
+<div class="gridDiv">  
+  <div class="gryBox">    
+    <table cellspacing="0" cellspacing="0" border="0" class="form_table">
+      <tr>
+        <td>
+          Lead Lawyer <%=collection_select("new", :lead_lawyer, @elligible_lawyers, :id, :get_name, {:include_blank => "---Select---", :selected => @matter.employee_user_id}, {:onchange => "leadLawyerChange(#{@matter.employee_user_id}, this.value);"})%>
+          <%=hidden_field_tag :last_lead_lawyer, @matter.employee_user_id%>
+        </td>
+      </tr>
+      <tr p id="would_you" style="visibility: hidden;">
+        <td>
+          <!--You are about to remove your role as Lead Lawyer.<br /> -->
+          Would you like to continue to be a part of matter team?<br />
+          <table cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td><%=radio_button_tag :would_you_radio, "yes", true, :onclick => "wouldYouChecked(this.value);"%></td>
+              <td>Yes</td>
+              <td><%=radio_button_tag :would_you_radio, "no", false, :onclick => "wouldYouChecked(this.value);"%></td>
+              <td>No</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr id="role" style="visibility: hidden;">
+        <td>
+          Select a new role for yourself
+          <%=collection_select("lawyer","new_role", @available_roles,:id,:alvalue, {:include_blank=>"No Role"}, {:onchange => "roleChange(this.value);"})%>
+        </td>
+      </tr>
+      <tr id="no_role" style="visibility: hidden;">
+        <td>
+          <!--You did not select any role for yourself, all your assignments will be given to new Lead Lawyer.<br />-->
+          All your current Tasks, Issues and documents will be assigned to the new Lead Lawyer<br />
+          Is it ok to continue?
+          <%=radio_button_tag :no_role_radio, "yes", {}, :onclick => "noRoleChecked(this.value);"%> Yes
+          <%=radio_button_tag :no_role_radio, "no", {}, :onclick => "noRoleChecked(this.value);"%> No
+        </td>
+      </tr>
+      <tr id="no_change" style="visibility: hidden;">
+        <td>
+          Nothing to be done, no change made in Lead Lawyer.
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <input id="change_lead_button" type="button" value="Done" class="button" onclick="disableWithPleaseWait('change_lead_button', true); doneClicked();" />&nbsp;
+          <input type="button" value="Cancel" class="button" onclick="tb_remove();" />
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

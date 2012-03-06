@@ -1,0 +1,53 @@
+<%#=raw javascript_include_tag("ajax_file_upload")%>
+<div id="xxx-loader" style="text-align:center;display: none;"><img src="/images/loading.gif" width="16" height="16" alt="Sending..." title="Sending..." /></div>
+<div id="matter_retainer_errors" class="" style="display: none; text-align: left"></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<div id="modal_retainer_form" class="mt20">
+  <% form_for([@matter, @retainer], :url => {:action => @retainer.new_record? ? "create_retainer" : "update_retainer"}, :html=> {:multipart=> true, :target=>"upload_frame"}) do |f|%>
+    <%=hidden_field_tag :page_reload, page_reload%>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="form_table">
+      <tr>
+        <td width="25%" align="left"><label><%=t(:text_date)%> <span class="alert_message">*</span></label></td>
+        <td width="75%" align="left"><%= f.text_field :date, :value => (@retainer.date.strftime("%m/%d/%Y") if @retainer.date), :class => "date_picker", :size => "15" %></td>
+      </tr>
+      <tr>
+        <td align="left"><%= t(:text_amount_received) %><span class="alert_message">*</span></td>
+        <td align="left"><%= f.text_field :amount, :size => "40" %></td>
+      </tr>
+      <tr>
+        <td align="left"><%= t(:text_receipt) %></td>
+        <td align="left"><%= file_field_tag 'document_home[file]' %></td>
+      </tr>
+      <tr align="right">
+        <td align="left" valign="top"><%= t(:text_remarks) %></td>
+        <td align="left" valign="top"><%= f.text_area :remarks, :rows => "3", :cols => "40" %></td>
+      </tr>
+      <tr>
+        <td colspan="2" height="10">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center">
+          <%= f.submit t(:text_save), :id => "save_retainer",:onclick=>'return checkloader();'%>
+          <input type="submit" id="Login2" value="Cancel" onclick="tb_remove();return false" />
+        </td>
+      </tr>
+      <tr><td align="left" colspan="2" class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></td></tr>
+      <tr><td align="left" colspan="2"><div class="mandatory mt12">
+            <pre>Note : Limit on file size is 50 MB.</pre></div></td></tr>
+  </table>
+  <%end%>
+  <iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    livia_matter_inception_datepicker_new("#matter_retainer_date");
+  });
+  function startCallback() {
+    return true;
+  }
+
+  function completeCallback(response) {
+    tb_remove();window.location.reload();
+  }
+</script>
+<div align="right"class="pagiText"><%=t(:label_page)%>&nbsp;45</div>

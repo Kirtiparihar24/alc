@@ -1,0 +1,57 @@
+<div>
+  <div class="gridDiv">
+    <div class="gryBox">
+      <div class="mt5">
+        <div class="gridDiv">
+          <div id="dashboard_toggle" class="titleHead">
+            <div class="fl"><%=t(:text_licence_details_of_company)%><%=@company.name%></div>
+            <br class="clear"/>
+          </div>
+          <!--Dash board DATA STARTS-->
+          <div>
+            <div class="gryBox">
+              <div class="p5 gridTable">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                  <tbody>
+                    <tr>
+                      <th width="30%"><%=t(:text_product)%></th>
+                      <th width="10%"><%=t(:text_licence_type)%></th>
+                      <th width="10%"><%=t(:text_start_date)%></th>
+                      <th width="10%"><%=t(:text_end_date)%></th>
+                      <th width="15%"><%=t(:text_billing_rate_usd)%></th>
+                      <th width="10%"><%=t(:text_status)%></th>
+                      <th width="10%"><%=t(:text_user)%></th>
+                    </tr>
+                    <%@product_licences.each do |pl|  %>
+                      <tr  class="<%=cycle("bg1", "bg2")%>">
+                        <td width="30%">
+                          <%=pl.product.name%>
+                        </td>
+                        <td width="10%"><%=ProductLicence::LICENCE_TYPE[pl.licence_type][0] %></td>
+                        <td width="10%"><%=pl.start_at.to_time.strftime("%d-%b-%y") rescue "-"%></td>
+                        <td width="10%"><%=pl.end_at.to_time.strftime("%d-%b-%y") rescue "-"%></td>
+                        <td width="10%">$<%=pl.licence_cost.to_i rescue "-"%></td>
+                        <td width="10%"><%=ProductLicence::Status[pl.status][0] %></td>
+                        <td width="10%">
+                          <%pl.product_licence_details.each do |pld|%>
+                            <%=pld.user.try(:full_name) rescue "-"%>
+                          <%end%>
+                        </td>
+                      </tr>
+                    <%end%>
+                  </tbody>
+                </table>
+              </div>
+              <br class="clear"/>
+            </div>
+          </div>
+          <!--Dash board DATA ENDS-->
+        </div>
+      </div>
+      <br class="clear" />
+    </div>
+
+  </div>
+  <br class="clear" />
+  <div class="txtC"><%=link_to t(:label_back),companies_url, :class => "linkbutton"%></div>
+</div>

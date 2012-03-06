@@ -1,0 +1,14 @@
+<h1><%=t(:text_listing_secretaries)%></h1>
+<table>
+  <tr>
+  </tr>
+  <% @secretaries.each do |secretary| %>
+    <tr>
+      <td><%= link_to t(:label_show), secretary %></td>
+      <td><%= link_to t(:label_edit), edit_secretary_path(secretary) %></td>
+      <td><%= link_to t(:label_destroy), secretary, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= link_to t(:label_new_secretary), new_secretary_path %>

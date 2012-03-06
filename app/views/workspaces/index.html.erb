@@ -1,0 +1,6 @@
+<%=hidden_field_tag "display_search" %>
+<div class="column_main mb8" <% if @recycle_bin %> style="display:none;"<% end %>><%=render :partial=>'document_homes/search',:locals =>{:extension=>@file_ext}%></div>
+<div id ="browser" class="column_main"><%=render :partial=>"workspace"%><br class="clear"  /></div>
+
+
+      

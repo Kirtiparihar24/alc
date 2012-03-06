@@ -1,0 +1,332 @@
+<h2 class="title_main"><%=t(:label_New_Matter)%></h2>
+<% form_for(@matter, :html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+  <div id="main-nav-holder">
+    <!-- Buttons Save, Save Exit, Cancel added at the top of the form :Rashmi.N Bug #11377 -->
+    <%= render :partial => 'matter_buttons', :locals => {:f => f} %>
+  </div>
+  <div class="p8">
+    <%= hidden_field_tag :button_pressed %>
+    <%= f.hidden_field :sequence_no_used,:id=>'sequence_no_used_id', :value => @matter_no_without_format%>
+    <%= f.hidden_field :sequence_seperator,:id=>'sequence_seperator_id', :value => @matter_no_seperator%>
+    <%= f.hidden_field :matter_id_flag,:id=>'matter_id_flag',:value => @matter_flag_id%>
+    <%= f.hidden_field :format,:id=>'format_id',:value => @sequence_format %>
+    <% if(@matter.errors.length > 0) %>
+      <div class="message_error_div"><%= f.error_messages %></div>
+    <% end %>
+    <div class="form_table">
+      <table width="100%" border="1" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="56%" valign="top"><table width="100%" border="1" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="28%"><label><%= t(:label_matter_id) %></label> <span class="alert_message">*</span></td>
+                <td width="72%"><%= f.text_field :matter_no,:id=>'matter_id',:size => 20, :maxlength => 255, :value => @matter_no, :onChange => "onMatterIdChange();" %></td>
+              </tr>
+              <tr>
+                <td  valign="top"><%= t(:label_matter_name) %> <span class="alert_message">*</span></td>
+                <td  valign="top" style="padding-top:1px;"><%= f.text_area :name, :rows => '2', :cols => "35",  :class => "w350p", :style => "height:38px;", :onBlur => "formatSequenceOnChange();" %></td>
+              </tr>
+              <tr>
+                <td><%= t(:label_is_it_internal_to_law_firm) %></td>
+                <td>
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td><%= f.check_box :is_internal %></td>
+                      <td>&nbsp;&nbsp;&nbsp;</td><td><%= t(:label_matter_date) %>&nbsp;</td>
+                      <td><%= f.text_field :matter_date, :value => livia_date((@matter.matter_date || Time.zone.now.to_date).to_time), :size => 10, :class => "date_picker" %></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td><%= t(:label_primary_matter_proceeding) %></td>
+                <td><%= f.collection_select  :parent_id, @all_matters, :id, :clipped_name, { :include_blank => "-------------------------------------Select-------------------------------------" }, {:class => "w350p"} %></td>
+              </tr>
+              <tr>
+                <td><%= t(:label_account) %> </td>
+                <td><div id="accounts"><%= render :partial => '/accounts/createnew_selectexisting', :locals => {:new => true} %></div></td>
+              </tr>
+              <tr>
+                <td><%= t(:label_primary_matter_contact) %><span class="alert_message">*</span></td>
+                <td><div id="contacts"><%= render :partial => 'account_contacts', :locals => {:f => f, :new => true} %></div></td>
+              </tr>
+              <tr>
+                <td><%= t(:label_lead_lawyer) %></td>
+                <td>
+                  <% uid = get_employee_user_id %>
+                  <table cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                      <td><%= f.collection_select :employee_user_id, @employees, :id, :full_name, { :selected => uid }, {:onchange => "roleInMatter(this.value, #{uid})"} %></td>
+                      <td><div id="role" style="display:none;">
+                          <%= t(:label_specify_your_role)%>&nbsp;<span class="alert_message">*</span> &nbsp;
+                          <%= hidden_field_tag "role_given"%>
+                          <%= collection_select("lawyer","role", @company.client_roles.except_lead_lawyer_matter_client_for_matter, :id, :alvalue, :include_blank => "No Role")%>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td><%= t(:label_ref_id) %></td>
+                <td><%= f.text_field :ref_no, :size => 10 %></td>
+              </tr>
+              <tr>
+                <td><%= t(:label_matter_description) %></td>
+                <td><%= f.text_area :description, :rows=>'4', :cols=>"30",  :class=>"w350p" %></td>
+              </tr>
+              <tr>
+                <td><%= t(:label_share_with_client) %></td>
+                <td><%= check_box_tag "matter[client_access]", true, false,:onclick=>"show_email_validation(this);" %>
+                  <span id="update_my_email_id"><%=hidden_field_tag "contact[email]",@contact.email%></span>
+                </td>
+              </tr>
+              <tr>
+                <td><%= t(:label_has_conflict_check_been_completed) %></td>
+                <td><%= f.check_box :conflict_checked %></td>
+              </tr>
+            </table></td>
+          <td width="1%">&nbsp;</td>
+          <td width="43%" valign="top"><table width="100%" border="1" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="30%">&nbsp;&nbsp;<%= t(:label_status) %></td>
+                <td width="70%">
+                  <% statuses = @company.matter_statuses %>
+                  <% openstatus = statuses.find_all_by_lvalue('Open',:order => 'sequence asc')[0].id %>
+                  <%= f.collection_select :status_id, statuses, :id, :alvalue, {:selected => openstatus} %></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table>
+                    <tr>
+                      <td><%= f.radio_button(:matter_category, "non-litigation", :checked => true, :onclick =>"return radio_button_validation(),formatSequenceOnChange();") %></td>
+                      <td><%= t(:label_non_litigation) %></td>
+                      <td>&nbsp;&nbsp;&nbsp;</td>
+                      <td><%= f.radio_button(:matter_category, "litigation", :onclick =>"return radio_button_validation(),formatSequenceOnChange();") %></td>
+                      <td><%= t(:text_litigation) %></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;&nbsp;<%= t(:label_matter_type) %></td>
+                <td>
+                  <div id="matter_type_liti" style="display: none;"><%= collection_select(:matter, :matter_type_liti, @company.liti_types, :id, :alvalue, {:style => "width:150px"},:onchange => "formatSequenceOnChange();") %> </div>
+                  <div id="matter_type_nonliti"><%= collection_select(:matter, :matter_type_nonliti, @company.nonliti_types, :id, :alvalue, {:style => "width:150px"}, :onchange => "formatSequenceOnChange();") %> </div>
+                </td>
+              </tr>
+              <tr><td colspan="2" height="10"></td></tr>
+              <tr>
+                <td id="modal_litigation" colspan="4" rowspan="5" valign="top" class="box_bg_bdr_1 bdr_bot_1">
+                  <div><% f.fields_for :matter_litigations do |lf| %>
+                      <table width="98%" align="left" border="0" cellpadding="0" cellspacing="0" class="pl10" >
+                        <tr>
+                          <td width="60%"  align="left">&nbsp;</td>
+                          <td width="35%" align="left">
+                            <table border="0" align="left" cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td align="left"> <p><%= lf.radio_button :plaintiff, true, :checked => true %></p> </td>
+                                <td align="left"><label><%= t(:label_plaintiff) %></label></td>
+                                <td align="left">&nbsp;</td>
+                                <td align="left"><%= lf.radio_button :plaintiff, false %></td>
+                                <td align="left"><%= t(:label_defendant) %></td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="60%"  align="left"><%= t(:label_case_no) %></td>
+                          <td width="35%"  align="left" style="padding-left:8px;"><%= lf.text_field :case_number, :class => "textgray" ,:id=>"case_number_ID" %></td>
+                        </tr>
+                        <tr>
+                          <td colspan="2" height="5"></td>
+                        </tr>
+                        <tr>
+                          <td width="60%" align="left"><%= t(:label_court_arbitration_panel_forum) %></td>
+                          <td width="35%"  align="left"style="padding-left:8px;" valign="top"><%= lf.text_field :forum, :class => "textgray" , :id => "forum_ID" %></td>
+                        </tr>
+                        <tr><td colspan="2" height="5"></td></tr>
+                        <tr>
+                          <td width="60%"  align="left" valign="top"><%= t(:label_mediator_arbitrator_judges) %></td>
+                          <td width="35%"  align="left" valign="top"style="padding-left:8px;"><%= lf.text_field :hearing_before, :class => "textgray" ,:id => "hearing_before_ID"%></td>
+                        </tr>
+                        <tr><td colspan="2" height="5"></td></tr>
+                        <tr >
+                          <td width="60%"  align="left"><%= t(:label_phase) %></td>
+                          <td width="35%"  align="left"style="padding-left:8px;"><%= collection_select(:matter, :phase_id, @company.phases, :id, :alvalue, {:include_blank => "----------Select----------"}) %></td>
+                        </tr>
+                        <tr><td colspan="2" height="5"></td></tr>
+                      </table>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <%= render :partial => 'matter_buttons', :locals => {:f => f} %>
+    <div class="mandatory">
+      <span class="alert_message">*</span><%=t (:label_Required_fields)%>
+    </div>
+    <!--Form container div #ends here -->
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    validate_contact_presence();
+    radio_button_validation();      
+  });
+
+  // function radio_button_validation() : shifted to livia_common.js
+
+  // Need to removed to JS File
+  function validate_btnpressed(but){
+    if(jQuery.trim(jQuery('#_contact_ctl').val()) == '' ||jQuery('#_contact_ctl').val() == 'Search Existing') {
+      jQuery('#_contactid').val('')
+    }
+    jQuery("#button_pressed").val(but.name);
+    return true;
+  }
+
+<% unless @matter.contact.blank?
+  matter_contact = @matter.contact%>
+    jQuery("#_contact_ctl").val("<%= matter_contact.try(:full_name)%>");
+    jQuery("#_contactid").val("<%= matter_contact.id%>");
+    jQuery("#matter_contact_id").val(" <%= matter_contact.id%>");
+<% end %>
+  
+  // function check_client_contact(e) : shifted to livia_common.js
+  // Need to removed to JS File
+  function check_for_share_with_client(matter_id, permn, mattercontactid, select){
+    jQuery('#contact_email').removeClass('selected');
+    var contact_id=jQuery("#_contactid").val();
+    if(jQuery('#matter_client_access').is(':checked')) {
+      jQuery('body').css("cursor", "wait");
+      jQuery.ajax({
+        type: 'GET',
+        url: "/matters/get_client_contact",
+        data: {
+          'contact_id' : contact_id,
+          'matter_id'  : matter_id
+        },
+        beforeSend: function(){
+          jQuery('#matter_client_access').attr('disabled', true);
+        },
+        complete: function(){
+          jQuery('#matter_client_access').attr('disabled', false);
+        },
+        success: function(transport) {
+          jQuery('body').css("cursor", "default");
+
+          if(jQuery("#contact_email").val()=="" && jQuery('#contact_email').hasClass('selected') ){
+            var c=confirm("Do you want this client to have client portal access?")
+            if(c){
+              tb_show('Client Email','/matters/new_client?contact_id='+contact_id+'&KeepThis=false&height=150&width=300','')
+              return false;
+            }else{
+              jQuery('#matter_client_access').attr('checked', false);
+              return false;
+            }
+          }
+        }
+      });
+    }
+  }
+</script>
+﻿<div style="text-align:center;display: none;" id="modal_contact">
+  <% remote_form_for(:contact, @contact, :url => url_for(:controller => :contacts, :action => :create_matter_contact)) do |contact| %>
+    <div id="matter_contact_errors" class="" style="display: none; text-align: left"></div>
+    <div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <table width="100%" width="100%" cellpadding="0" cellspacing="0" border="0" class="form_table" style="margin-top:10px;">
+      <tbody>
+        <tr>
+          <%= hidden_field_tag :account_id  %>
+          <td width="24%" align="left"><label><%= t(:label_salutation) %> </label></td>
+          <td width="26%" align="left">
+            <%= contact.collection_select('salutation_id', @company.salutation_types , :id, :alvalue,{:include_blank=>true},:class=>'toggle_handler' ) %>
+          </td>
+          <td width="2%">&nbsp;</td>
+          <td width="24%" align="left">&nbsp;</td>
+          <td width="26%" align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_first_name) %>  <span class="alert_message">*</span></label></td>
+          <td align="left"><%= contact.text_field :first_name, :size =>'15',:maxlength=>"64", :class=>"contact_content" %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= t(:label_middle_name) %>&nbsp;</label></td>
+          <td align="left"><%= contact.text_field :middle_name, :size =>'15',:maxlength=>"64", :class=>"contact_content" %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_last_name) %>&nbsp;</label></td>
+          <td align="left"><%= contact.text_field :last_name, :size =>'15',:maxlength=>"64", :class=>"contact_content" %></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="left"><label>Primary&nbsp;<%= t(:label_phone) %> <span class="alert_message">#</span></label></td>
+          <td align="left"><%= contact.text_field :phone, :size =>'15',:maxlength=>"15", :class=>"contact_content" %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label>Primary&nbsp;<%= t(:label_email) %> <span class="alert_message">#</span></label></td>
+          <td align="left"><%= contact.text_field :email, :size =>'15',:maxlength=>"64", :class=>"contact_content" %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_nick_name) %></label></td>
+          <td align="left"><%= contact.text_field :nickname, :size =>'15',:maxlength=>"64", :id => 'nickname', :class=>"contact_content" %></td>
+          <td>&nbsp;</td>
+          <td align="left"><label><%= t(:label_preference) %></label></td>
+          <td align="left"><%= contact.text_field :preference, :size =>'15',:id => 'preference', :class=>"contact_content" %></td>
+        </tr>
+        <tr>
+          <td align="left"><label><%= t(:label_stage) %></label></td>
+          <td align="left"><%= contact.collection_select :contact_stage_id, @company.contact_stages, :id, :alvalue, {:selected => @client_stage_value.id, :value => @client_stage_value.id }, {:class => "textBoxwidth disundis"} %></td>
+          <td>&nbsp;</td>
+          <td align="left"></td>
+          <td align="left"></td>
+        </tr>
+        <tr>
+          <td align="left">&nbsp;</td>
+          <td align="left">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td align="left">&nbsp;</td>
+          <td align="left">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="5" align="center">
+            <%= contact.submit t(:text_save), :name => "save",:class=>'matters' ,:onclick=>'clear_previous_contact(); return checkloader();'%>
+            <input type="button" id="Login2" value="Cancel" onclick="contact_remove_content(); contactDetailsAdded(false);return false;" />
+          </td>
+        </tr>
+        <tr><td colspan="5" align="left">&nbsp;</td></tr>
+        <tr><td colspan="5" align="left"><div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%><span class="alert_message"># </span>Either Primary Phone or Primary Email required   </div></td></tr>
+      </tbody>
+    </table>
+  <%end%>
+  <div class="pagiText"><%=t(:label_page)%>&nbsp;134</div>
+</div>
+
+<script type="text/javascript">
+  // function savedMatterContact(id, name) : shifted to livia_common.js
+  // function contactDetailsAdded(save) : shifted to livia_common.js
+
+  livia_matter_inception_datepicker_new("#matter_matter_date");
+  jQuery('#matter_id').focus();
+  jQuery('#matter_matter_category_nonlitigation').click(function(){
+    jQuery('#matter_type_liti').hide();
+    jQuery('#matter_type_nonliti').show();
+  });
+  jQuery('#matter_matter_category_litigation').click(function(){
+    jQuery('#matter_type_nonliti').hide();
+    jQuery('#matter_type_liti').show();
+  });
+
+  // function contact_remove_content() : shifted to livia_common.js
+  formatSequenceOnChange();
+
+  jQuery("#_contact_ctl").focusout(function(){
+    validate_contact_presence();
+  });
+
+  // function clear_previous_contact() : shifted to livia_common.js
+  // function reset_search() : shifted to livia_common.js
+</script>

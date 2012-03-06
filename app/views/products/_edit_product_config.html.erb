@@ -1,0 +1,48 @@
+<div class="mid-box-head"> <h2 class="left"><%=t(:text_dependant_product)%></h2> </div>
+<% product_id = @product.id %>
+<div class="form">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="15%" align="left"><label><%=t(:text_products)%>:</label>
+        <br />
+        <br />
+        <%= collection_select(:parentprod, :ids, @prodDeps, :parent_id, :product_name, {}, {:multiple => true, :size=>6, :style=>"width:140px"}) %>
+      </td>
+      <td width="5%" align="center">
+        <a href="javascript:add_delete_items(<%= product_id %>, 'prod_ids', 'parentprod_ids', '/product_dependents', 'POST')" ><input type="button" value="←" name=""/></a>
+        <a href="javascript:add_delete_items(<%= product_id %>, 'parentprod_ids', 'prod_ids', '/product_dependents/<%= product_id %>', 'DELETE')' ><input type="button" value="→" name=""/></a>
+      </td>
+      <td width="80%" align="left"><label><%=t(:text_available_products)%>:</label>
+        <br />
+        <br />
+        <%= collection_select(:prod, :ids, @products, :id, :name, {}, {:multiple => true, :size=>6, :style=>"width:140px"}) %>
+      </td>
+    </tr>
+    <tr><td colspan="3">&nbsp;</td></tr>
+  </table>
+</div>
+<div class="mid-box-head">
+  <h2 class="left"><%=t(:text_product_configuration)%></h2>
+</div>
+<div class="form">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="15%" align="left"><label><%=t(:text_modules)%>:</label>
+        <br />
+        <br />
+        <%= collection_select(:currentSub, :ids, @currentSubProds, :id, :name, {}, {:multiple => true, :size=>6, :style=>"width:140px"}) %>
+      </td>
+      <td width="5%" align="center">
+        <a href="javascript:add_delete_items(<%= product_id %>, 'availableSub_ids', 'currentSub_ids', '/product_subproducts', 'POST')" ><input type="button" value="←" name=""/></a>
+        <a href="javascript:add_delete_items(<%= product_id %>, 'currentSub_ids', 'availableSub_ids', '/product_subproducts/<%= product_id %>', 'DELETE')" ><input type="button" value="→" name=""/></a>
+      </td>
+      <td width="80%" align="left"><label><%=t(:text_available_modules)%>:</label>
+        <br />
+        <br />
+        <%= collection_select(:availableSub, :ids, @availableSubProds, :id, :name, {}, {:multiple => true, :size=>6, :style=>"width:140px"}) %>
+      </td>
+    </tr>
+    <tr><td colspan="3">&nbsp;</td></tr>
+  </table>
+</div>
+<div class="pagging"></div>

@@ -1,0 +1,24 @@
+<div class="row">
+  <label>Matter</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" >
+      <span id="matter_select">
+      <%=select :note, :matter_id, matters.collect {|u| [ u.clipped_name, u.id ]}, {:prompt=>"Please Select"},:onchange =>"update_contact_select(this.value)"%>
+      </span>
+    </span>
+
+  </div>
+</div>
+<!--[if !IE]>end row<![endif]-->
+<!--[if !IE]>start row<![endif]-->
+<div class="row">
+  <label>Contact</label>
+  <div class="inputs">
+    <span class="input_wrapper blank" >
+      <span id="contact_select">
+        <%=select :note, :contact_id, contacts.collect {|u| [ u.full_name, u.id ]}, {:prompt=>"Please Select"},:onchange =>"update_matter_select(this.value)"%>
+      </span>
+    </span>
+
+  </div>
+</div>

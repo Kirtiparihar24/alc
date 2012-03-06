@@ -1,0 +1,26 @@
+<div style="text-align: center">
+  <div id="cmp_name"><label class="txtc"><%= @company.name %></label></div>
+</div>
+
+<div class="gridDiv">
+  <div class="titleHead"><%=t(:text_rate_of)%><%= @employee.full_name%></div>
+  <div class="gryBox">
+    <div class="adminForm">
+      <% form_for @employee, :url => {:action => 'update_emp_rate', :id=> @employee.id}  do |f| %>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+          <tr>
+            <td width="50%" align="right"><label for="employee_billing_rate"><%=t(:label_billing_rate)%><span class="text_red">*</span></label>          </td>
+            <td width="50%" align="left"><%= f.text_field :billing_rate %></td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">
+              <%= f.submit t(:text_create), :class=>"button"%>
+              <%= link_to t(:label_cancel), "/employees/show_all_employee_rates" %>
+            </td>
+          </tr>
+        </table>
+      <% end %>
+      <br class="clear" />
+    </div>
+  </div>
+</div>

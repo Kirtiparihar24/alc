@@ -1,0 +1,58 @@
+<script type="text/javascript">  
+  jQuery(document).ready(function() {
+  livia_matter_inception_datepicker_new("#from_date");
+  livia_matter_inception_datepicker_new("#to_date");
+  });
+</script>
+<div class="box_org mtb8">
+<% form_remote_for "dashboard_charts",:before=>"validate_date_dashboards();",:url=>{:controller=>'dashboards',:action=>'manage_dashboard'} do |f| %>
+<div class="fl pl4">
+<table border="0" cellpadding="3" cellspacing="0">
+     <tr>
+      <td align="left"><%=select_tag("duration",options_for_select([["All",""],["Last 3 Months","3months"],["Last 6 Months","6months"],["Last 9 Months","9months"],["Last 12 Months","12months"],["Date range","5"]],:selected=>chart.parameters[:duration]),{:style => "width:130px"})%></td>
+      <% if chart.parameters[:duration] == "5" 
+         style="display:block;width:292px;"
+      else 
+      style="display:none" 
+      end %>
+      <td><label><%=t(:label_lower_threshold)%></label>
+        <input size="6" type="text" name="threshold[lower_threshold]" class="dateTextBox" value="<%=chart.threshold["lower_threshold"]%>"/>&nbsp;
+      </td>
+      <td>
+        <label><%=t(:label_upper_threshold)%></label>
+        <input size="6" type="text" name="threshold[upper_threshold]" class="dateTextBox" value="<%=chart.threshold["upper_threshold"]%>"/>&nbsp;
+      </td>
+      <td>
+        <input type="hidden" name="dashboard_chart_id" value='<%=chart.dashboard.id%>'></input>
+        <input  id="dashboard_check_id" type="hidden" name="chart_id" value='<%= chart.try(:id)%>' ></input>
+        <input type="submit" style="font-size:12px;" value="Submit" class="button"/>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <div style="<%=style%>" id="date_div" class="mt2">
+          <table cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td><div style="display:none;"><input type="checkbox" name="date_checked" id="date_checked" value="1"/>
+              </div>
+            </td>
+            <td><%=t(:text_start_date)%>&nbsp;</td>
+            <td><input size="10"  type="text" id="from_date" name="from_date"  readonly="true" class="date_picker" value="<%=chart.parameters["'From-Date'"]%>"/></td>
+            <td><%=t(:text_end_date)%>&nbsp;</td>
+            <td> <input size="10" type="text" id="to_date" name="to_date"  readonly="true" class="date_picker" value="<%=chart.parameters["'To-Date'"]%>"/></td>
+          </tr>
+        </table>
+        </div>
+      </td>
+  </tr>
+      </table>
+</div>
+  <%end%>
+ <div class="fr mt5 mr5 link_blue">
+<%=link_to(t(:text_add_to_favorite),"#",{:onclick => "return show_fav_div()",:style=>"line-height:30px;"})%>
+ </div>
+ <br class="clear" />
+</div>
+<script type="text/javascript">
+db_date_change();
+</script>

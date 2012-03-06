@@ -1,0 +1,314 @@
+<%=raw javascript_include_tag  "time_and_expense/new_time_entry" %>
+<%=raw(javascript_include_tag "application.js")%>
+<%=raw javascript_include_tag  "time_and_expense/expense_entry_for_time_entry" %>
+<% from_matters = params[:from].eql?("matters")%>
+<% if from_matters %>
+  <div>
+    <div id="container-1">
+      <%= render :partial => "matters/matter_tabs" %>
+      <!--Task Starts-->
+      <div id="fragment-3" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            <tr>
+              <td width="76%">
+                <%=render :partial => "matters/matter_contact_account"%>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="seperator_dotted_hori"></div>
+        <div>
+        <% end %>
+<div id="new_errors"><%#=error_messages_for :time_entry%></div>
+<h2 class="title_main"><%=t(:text_add_more_associated_expenses_for_time_entry)%></h2>
+<div class="p5">
+  <!--Form container div @start here -->
+  <% form_for @time_entry ,:url =>{:action => 'create'}, :html=> {:multipart=> true, :onsubmit => "return disableAllSubmitButtons('time_and_expense')"} do |time_entry| %>
+    <div class="form_table">
+      <div class="fl" style="width:45%;">
+        <table width="100%">
+          <tr>
+            <td width="15%"><label><%=t(:label_date)%> </label><span class="alert_message">*</span></td>
+            <td width="85%"><%= @entry_date %>
+              <%= hidden_field_tag("physical_timeandexpenses_time_entry[time_entry_date]",@entry_date)  %></td>
+          </tr>
+          <%# if matter_time_expense_available? %>
+          <tr>
+            <td width="23%"><label><%= @time_entry.matter_people_id ? "Matter People(Non user)" : "Employee"%></label></td>
+            <td width="85%"> <%= @time_entry.matter_people_id ? @time_entry.matter_people.full_name : @time_entry.performer.full_name%> </td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top" ><label><%=t(:label_matters)%> </label></td>
+            <td width="85%" valign="top">
+              <span id="matters_div" class="search_div"></span>
+              <span id="001_matterSearch" class="search_div" style="width:164px;">
+                <% matter_id = !@time_entry.matter_id.nil? ? @time_entry.matter_id : nil %>
+                <% mat_name = !@time_entry.matter_id.nil? ? @time_entry.matter.clipped_name : nil %>
+                <%matter_name = @matters.collect{|matter|[matter.clipped_name,matter.id ]}%>
+                <%= raw new_time_entry_matter_search_box('physical_timeandexpenses_time_entry[matter_id]','physical_timeandexpenses_time_entry_matter_id',"_matter_ctl",'001',mat_name,matter_id,'disabled="disabled"') %>              </span>
+                <%= image_tag("/images/download.png",:alt=>"Lists",:border=>"0")  %>
+              <!--<span id="matters_div"><%#=time_entry.select 'matter_id', @matters.collect{|matter|[matter.clipped_name,matter.id ]},{:include_blank => true },{ :disabled => true, :onchange=>"get_matters_contact();" , :class=>"dropbox1", :style=>"width:164px;"}%></span>-->
+            </td>
+          </tr>
+          <%# end %>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_contact)%></label></td>
+            <td width="85%" valign="top">
+             <!-- <span id="contact_span">
+                <%#=time_entry.select 'contact_id', @contacts.collect{|contact|[contact.full_name,contact.id ]},{:include_blank => true },{ :disabled => true, :onchange=>"get_all_matters();" , :class=>"dropbox1"}%>
+              </span>-->
+             <span id="contact_span" class="search_div"></span>
+              <span id="001_contactSearch" class="search_div" style="width:164px;">
+                <% contact_id = !@time_entry.contact_id.nil? ? @time_entry.contact_id : nil %>
+                <% cont_name = !@time_entry.contact_id.nil? ? @time_entry.contact.name : nil %>
+                <% contact_name = @contacts.collect{|contact|[contact.full_name,contact.id ]} %>
+                <%= raw new_time_entry_contact_search_box('physical_timeandexpenses_time_entry[contact_id]','physical_timeandexpenses_time_entry_contact_id','_contact_ctl','001',cont_name,contact_id,'disabled="disabled"') %>              </span>
+                <%= image_tag("/images/download.png",:alt=>"Lists",:class=>"drop_down",:border=>"0")  %>
+
+            </td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_internal)%> </label></td>
+            <td width="85%" valign="top"><%= time_entry.check_box 'is_internal' ,{:class=>"radio", :checked => @time_entry.is_internal, :disabled => true, :onclick =>"alert_for_matter_and_contact('physical_timeandexpenses_time_entry_is_internal');"}%></td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_activity_type)%></label></td>
+            <td width="85%" valign="top">
+  <%#=time_entry.select 'activity_type', Physical::Timeandexpenses::ActivityType.find(:all,:order =>'lvalue').collect{|activity|[ activity.lvalue,activity.id ]},{},{:class => "w75",:disabled => true}%>
+              <%= time_entry.text_field 'activity_type',:value=> current_company.company_activity_types.find(@time_entry.activity_type).alvalue,:size =>50 , :style=> "width:35%", :disabled => true%>
+            </td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_description)%> </label><span class="alert_message">*</span></td>
+            <td width="85%" valign="top">
+              <%=time_entry.text_area 'description' ,:rows =>5,:cols=> 50 , :disabled => true, :class =>"textarea"%>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="fr" style="width:50%;"><table width="100%" class="form_table">
+          <tr>
+            <td width="14%" valign="top"><label><%=t(:label_start_time)%> </label></td>
+            <td width="20%"><%= time_entry.text_field 'start_time' ,:size =>15 , :value => @time_entry.formatted_start_time, :disabled => true, :class => 'w65p', :style=>"margin:0;" %></td>
+            
+            <td width="11%" valign="top"><label><%=t(:label_end_time)%></label>&nbsp;</td>
+            <td width="20%">
+              <%= time_entry.text_field 'end_time',:size =>15 ,:value => @time_entry.formatted_end_time, :disabled => true, :class => 'w65p', :onblur => "get_time_difference(); return false;"%></td>
+            
+            <td width="16%" valign="top"><%=t(:label_duration_hrs)%> <span class="alert_message">*</span>&nbsp;</td>
+            <% duration=  @dur_setng_is_one100th ? one_hundredth_timediffernce(@time_entry.actual_duration) : one_tenth_timediffernce(@time_entry.actual_duration) %>
+            <td width="19%">
+              <%= time_entry.text_field 'actual_duration',:value=>duration,:size =>15 , :class => 'w65p textR', :disabled => true, :onblur=>"calculate_bill_amount()"%>            </td>
+          </tr>
+          <tr>
+            <td width="12%" valign="top"><label><%=t(:label_rate_hr)%></label><span class="alert_message">*</span></td>
+            <td width="83%" colspan="5"><%=time_entry.text_field 'actual_activity_rate',:class =>"textR",:maxlength=>12, :size=>15, :disabled => true, :onblur => "calculate_bill_amount();",:style=>"margin:0;" %><%= hidden_field_tag("physical_timeandexpenses_time_entry[activity_rate]",params[:activity_rate])  %></td>
+          </tr>
+          <%
+          full_amt = ''
+          discount = ''
+          over_amt = ''
+          if(@time_entry.billing_method_type.to_i == 1)
+            full_amt = true
+          elsif(@time_entry.billing_method_type.to_i == 2)
+            discount =true
+          elsif(@time_entry.billing_method_type.to_i == 3)
+            over_amt = true
+          end
+        %>
+          <tr>
+            <td width="12%" valign="top"><label><%=t(:label_billable)%></label></td>
+            <td colspan="5"><div class="highlight_bg_1 border_gray p5" style="width:53%"><%= time_entry.check_box 'is_billable' ,{:disabled=>true, :checked=> @time_entry.is_billable , :onclick =>"enable_disable_time_entry_billing();"}%><br />
+                <table id="adjustment_table"width="100%" border="0" align="left">
+              <tbody>
+                <tr>
+                  <td width="82%" align="left" ><%=t(:label_Full_Amount)%>:</td>
+                  <td width="18%" align="right" style="padding-right:7px;"><span  id="bill_amount"><%= @time_entry.calculate_billed_amount %></span></td>
+                </tr>
+                <tr>
+                  <td width="82%" align="left" >
+                    <%disabled = !@time_entry.is_billable ? true : false%>
+                    <%=dynamic_select("physical_timeandexpenses_time_entry","billing_method_type",'time_entries',{:selected=>@time_entry.billing_method_type},{:style=>'width:110px;',:class=>"w95 IE_8_time_entries",:disabled=>true})%>
+                    </td>
+                   <td width="18%" align="right">
+                     <%name,adjustment,final_amount= time_entry_adjustments(@time_entry) %>
+                     <%disabled =  @time_entry.billing_method_type ==1 ? true : false%>
+                     <% adjustment =  "" if @time_entry.billing_method_type ==1%>
+                    <%= text_field_tag "show_full_amount", '',:size => 8 ,:class=>'amount',:value=>adjustment,:maxlength=>5,:id=>"show_amount",:name=>name, :onblur =>"newEntryBillAmount(this,'physical_timeandexpenses_time_entry_')",:style=>"text-align: right;",:disabled=>true%>
+                   </td>
+                </tr>
+                <tr>
+                  <td align="left" width="82%"><b><%=t(:label_Final_Amount)%>&nbsp;(<%=t(:label_doller)%>):</b></td>
+                  <td align="right" width="18%" style="padding-right:7px;"><span id="final_billed_amount"><%= number_with_lformat(final_amount)%></span></td>
+                </tr>
+              </tbody>
+            </table>
+                <br class="clear" /></div></td>
+          </tr>
+          <tr>
+            <td width="12%" valign="top"><label><%=t(:label_Attachment)%></label></td>
+            <td colspan="5"><input type="file" disabled="disabled"/></td>
+          </tr>
+        </table>
+      </div>
+      <br class="clear" />
+    </div>
+  <%end%>
+</div>
+<h2 class="title_main"><%=t(:label_Expenses_Entry_Form)%></h2>
+  <div id ="associated_expense" class="form_table tabular_listing p5">
+    <% form_for @expense_entry ,:url =>{:action => 'save_all_expense_entries'}, :html=>{:multipart => true, :onsubmit => "return expence_entry_validation();"} do |time_expense_entry| %>
+      <table width="100%" border="0" >
+        <tr>
+          <th width="13%" align="left"><%=t(:text_expense_type)%></th>
+          <th width="35%" align="left"><%=t(:text_description)%><span class="alert_message">*</span></th>
+          <th width="10%" align="right"><%=t(:text_expense_amount)%><span class="alert_message">*</span></th>
+          <th width="4%"><%=t(:text_billable)%></th>
+          <th width="22%" align="left"><%=t(:text_billing_adjustments)%></th>
+          <th width="12%" align="right"><%=t(:text_final)%> <%=t(:text_bill_amount)%>&nbsp;(<%=t(:label_doller)%>)</th>
+          <th width="1%" align="center"><%=t(:label_Action)%></th>
+        </tr>
+        <%= hidden_field_tag :from, "matters" if from_matters %>
+        <% for expense_entry in 1..3%>
+          <% file_data = "file_data_"+expense_entry.to_s %>
+          <%= hidden_field_tag "#{expense_entry}[expense_entry][is_internal]", @time_entry.is_internal %>
+          <%= hidden_field_tag "#{expense_entry}[expense_entry][expense_entry_date]", @entry_date %>
+          <%= hidden_field_tag "#{expense_entry}[expense_entry][contact_id]", @time_entry.contact_id %>
+          <%= hidden_field_tag "#{expense_entry}[expense_entry][matter_id]", @time_entry.matter_id %>
+        <%= hidden_field_tag "#{expense_entry}[expense_entry][status]", @time_entry.status %>
+          <tr class="<%=cycle('bg1','bg2')-%>">
+            <td width="13%" valign="top">
+              <%=select_tag "#{expense_entry}[expense_entry][expense_type]", options_from_collection_for_select(current_company.expense_types, :id ,:alvalue ),{:class => "w88"}%>
+            </td>
+            <td width="35%" valign="top">
+              <%=text_area_tag "#{expense_entry}[expense_entry][description]", '' ,:warp =>"virtual", :rows =>'4',:class=>"w94 fl" %>
+	     </td>
+            <td width="10%" valign="top" >
+              <%=text_field_tag "#{expense_entry}[expense_entry][expense_amount]",  '' ,:maxlength=>12, :class =>'fl amount w86',:size =>'6', :onblur=>"check_add_expense_amt(this, #{expense_entry});",:style=>"text-align: right;" %>
+              </td>
+            <td width="4%" align="center" >
+              <%= check_box( expense_entry, 'expense_entry[is_billable]', options = {:id=> expense_entry,:checked => false,:disabled=>@time_entry.is_internal, :onclick=>"enable_disable_billing(#{expense_entry},this);"}) %>
+            </td>
+            <td width="22%" >
+             <!--<table align="left">
+                <tr>
+                  <td>
+                    <%#=radio_button_tag "#{expense_entry}[expense_entry][billing_method_type]",  1 , false , :disabled => "true", :onclick=>"disable_amount_and_percent('#{expense_entry}_expense_entry_billing_percent','#{expense_entry}_expense_entry_final_expense_amount', '#{expense_entry}_expense_entry_expense_amount', '#{expense_entry}_final_billed_amount')"%>
+                  </td>
+                  <td><label><%=t(:text_full)%></label></td>
+                  <td>$</td>
+                  <td align="right"><span id="billed_amount_<%=expense_entry%>">0.0</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <%#=radio_button_tag "#{expense_entry}[expense_entry][billing_method_type]", 2 ,  false, :class=> "radio", :disabled => "true",:onclick=>"enable_disable_time_percent('#{expense_entry}_expense_entry_billing_method_type_2', '#{expense_entry}_expense_entry_billing_percent','#{expense_entry}_expense_entry_final_expense_amount')" %>
+                  </td>
+                  <td><label><%=t(:text_discount)%></label></td>
+                  <td>(%)</td>
+                  <td align="right">
+                    <%#= text_field_tag "#{expense_entry}[expense_entry][billing_percent]", '',:maxlength=>5,:size => 8 ,:disabled=> true, :onblur =>"calculate_discount_rate_for_expense_entry('#{expense_entry}_expense_entry_expense_amount','#{expense_entry}_expense_entry_billing_percent',#{expense_entry})",:style=>"text-align: right;"%>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <%#=radio_button_tag "#{expense_entry}[expense_entry][billing_method_type]", 3 ,	false, :class=>'radio', :disabled => "true",:onclick=>"enable_disable_time_percent('#{expense_entry}_expense_entry_billing_method_type_3','#{expense_entry}_expense_entry_final_expense_amount','#{expense_entry}_expense_entry_billing_percent')"%>
+                  </td>
+                  <td><label><%= t(:text_override) %></label></td>
+                  <td>($)</td>
+                  <td align="right">
+                    <%#= text_field_tag "#{expense_entry}[expense_entry][final_expense_amount]", '',:size => 8 ,:maxlength=>11, :disabled=> true, :onblur =>"check_add_expense_entry_override(this, #{expense_entry});",:style=>"text-align: right;"%>
+                  </td>
+                </tr>
+              </table>-->
+             <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td width="82%" align="left" style="margin:0;padding:0"></td>
+                  <td width="18%" align="right" style="margin:0;padding:0;"><span id="billed_amount_<%=expense_entry%>" style="padding-right:8px;">0.00</span></td>
+                </tr>
+                <tr id="<%=expense_entry%>_adjustment_table" style="display:none;">
+                  <td width="82%" align="left" style="margin:0;padding:0">
+                    <%=dynamic_select("#{expense_entry}[expense_entry]","billing_method_type",'expense_entries',{},{:class=>"w90 expense_entry",:disabled=>true})%>
+                    </td>
+                   <td width="18%" align="left" style="margin:0;padding:0;">
+                    <%= text_field_tag "show_full_amount", '',:size => 8 ,:maxlength=>5,:id=>"#{expense_entry}_show_amount", :onblur =>"calculate_discount_rate_for_expense_entry('#{expense_entry}_expense_entry_expense_amount','#{expense_entry}_expense_entry_billing_percent',#{expense_entry})",:style=>"text-align: right;",:disabled=>true%>
+                   </td>
+                </tr>
+              </tbody>
+            </table>
+            </td>
+            <td width="12%" align="right" class="txtR"><%=t(:label_doller)%><strong><span id="<%=expense_entry%>_final_billed_amount">0.00</span></strong></td>
+            <td width="1%" align="center">
+              <div class="icon_action  mt3"><a href="#"></a></div>
+              <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                <!--Icon table strt here -->
+                <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                  <%=raw action_pad_top_blue_links({:edit_path=>"NO",
+                      :deactivate_path=> "NO",
+                      :deactivate_text => "NO",
+                      :comment_path=> "NO",
+                      :comment_title => "NO",
+                      :document_path=>"NO",
+                      :history_path=>"NO",
+                      :history_title => "NO"}) %>
+                  <% if document_available? %>
+                  <tr>
+                    <td class="ap_middle_left"><div class="ap_pixel15"></div></td>
+                    
+                    <td style="background: #fff;">
+                      <div class="w100">
+                        <div class="fl"  style="width:165px;">
+                          <table width="100%" border="0" cellpadding="2" cellspacing="2">
+                            <tr>
+                              <td width="7%"><div class="ap_child_action"></div></td>
+                              <td nowrap class="ml5"> <div id=<%="#{file_data}" %> ><span><a href="#"><%=t(:label_upload)%>&nbsp;<%=t(:label_document)%></a></span></div></td>
+                            </tr>
+                          </table>
+                        </div>
+                        <br class="clear"/>
+                      </div>
+                    </td>
+                    
+                    <td class="ap_middle_right"><div class="ap_pixel13"></div></td>
+                  </tr>
+                  <% end %>
+                  <tr>
+                    <td valign="top" class="ap_bottom_curve_left"></td>
+                    <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                    <td valign="top" class="ap_bottom_curve_right"></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <script>
+    <% input_name ="#{expense_entry}[expense_entry][file]" %>
+    jQuery.noConflict();
+    jQuery("#<%= file_data %> a").click(function (e) {
+      jQuery("#<%= file_data %> a").remove();
+      jQuery("#<%= file_data %>").append("<input type='file' size='10' name='<%= input_name %>' style='z-index:99999;width:auto;border:1px solid #aed0eb;' onclick='event.stopPropagation();'/>");
+      e.stopPropagation();
+    });
+    setMatterORContactSearchInputFields('<%=expense_entry.to_s + "_contact_ctl"%>','<%=expense_entry.to_s + "_matter_ctl"%>',"<%=get_employee_user_id%>","<%=get_company_id%>",'<%=expense_entry.to_s + "_expense_contact_id"%>','<%=expense_entry.to_s + "_expense_matter_id"%>','<%=expense_entry.to_s%>','addexpense_entry');
+     jQuery('#1_expense_entry_description').focus();
+    </script>
+        <%end%>
+      </table>
+    </div>
+    <div class="buttonSub_div">
+      <%=time_expense_entry.submit t(:text_save_n_exit), :class => 'time_and_expense'%>
+      <input name="Cancel" type="button" class = "time_and_expense" id="Cancel" value="Cancel" onclick= "disableAllSubmitButtons('time_and_expense');setButtonPressed(this);window.location.href='<%= session[:referer] %>';"/>
+    </div>
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  <%end%>
+    <!--Form container div #ends here -->
+<!--main container div #ends here -->
+
+<%#*<div align="right" class="pagiText"> Page 74</div>%>
+  <% if from_matters %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>

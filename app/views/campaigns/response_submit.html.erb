@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><%=t(:text_livia_legal)%></title>
+    <%= stylesheet_link_tag "reset.css","login.css"%>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/login.css" />
+    <%= raw(javascript_include_tag "livia_common.js") %>
+  </head>
+  <body>
+    <!-- Begin doc div -->
+    <!-- table necessary for property stretching of layout-->
+    <table  align="center" width="100%">
+      <tbody>
+        <tr>
+          <td align="left" valign="top"><!--Header div @start here -->
+            <div id="login-div" style="margin-top:5%;" >
+              <div style="width:99%; text-align:center; margin:0 auto;">
+                <h1 style="padding:5px 0 5px 0; margin:0;"><%#=home_logo_link%></h1>
+                <div id="middleBody-div"  style=" margin:0 auto 0 auto; ">
+                  <h2 class="title_main">Response</h2>
+
+                  <div style="width:75%; margin:0 auto; text-align:center;">
+                    <form>
+                      <div class="form_table" style="margin-top:30px;" align="center"><strong><%=t(:text_thank_you_for_your_response)%><br />
+                        </strong></div>
+                      <div class="mandatory"></div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <br class="clear" />
+            </div>
+            <!--Header div #ends here --></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

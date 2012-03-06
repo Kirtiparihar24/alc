@@ -1,0 +1,115 @@
+<div>
+  <div class="box_gray_new">
+    <div class="fl">
+      <strong><%= t(:text_law_firm_team) %> <%= matter_info %></strong>
+    </div>
+    <div class="fr mt5 mr5">
+      <% m_peoples = matter_peoples.blank?
+      if @all_employees_included_in_law_team && people_type.eql?("client") %>
+        <%= t(:text_all_employees_have_been_included_in_matter_s_law_team) %>
+      <% else %>
+        <%= link_to("<span class='icon_add fl'></span>", new_matter_matter_people_path(@matter, :people_type => people_type, :height => "200", :width => "500"), :class => "thickbox fr link_blue vtip", :title => "#{t(:text_law_firm_team)} #{matter_info}", :name => "#{t(:text_law_firm_team)} #{matter_info}")%>
+      <% end %>
+    </div>
+    <br class="clear" />
+  </div>
+  <div class="tabular_listing">
+    <table width="100%" cellpadding="1" cellspacing="1">
+      <tr>
+        <th width="22%" align="left"><a onClick="sort_table('',<%= @matter.id %>,' asc','client','sort_rows','name','sort_law_firm_team','<%= m_peoples %>','1')"><%= t(:text_contact) %></a></th>
+        <th width="23%" align="left"><%= t(:text_email) %></th>
+        <th width="12%" align="left"><%= t(:text_phone) %></th>
+        <th width="15%" align="left"><a onClick="sort_table('',<%= @matter.id %>,' asc','client','sort_rows','role','sort_law_firm_team','<%= m_peoples %>','1')"><%= t(:text_role) %></a></th>
+        <th width="14%" align="center"><%= t(:text_member_from_to) %></th>
+        <!--<th width="9%" align="center"><a onClick="sort_table('matter_peoples.created_at',<%= @matter.id %>,' asc','client','order_rows','created','sort_law_firm_team','<%#= m_peoples %>','1')"><%#= t(:text_created) %></a></th>-->
+        <th width="1%" align="center"><%= t(:text_actions) %></th>
+      </tr>
+      <% unless matter_peoples.nil? or matter_peoples.blank? %>
+        <% matter_peoples.each do |mem| %>
+          <tr class="<%= cycle('bg2', 'bg1') %>">
+            <td><%= mem.get_name %></td>
+            <td><%= mem.get_email %></td>
+            <td><%= mem.get_phone %></td>
+            <td>
+              <!-- use company lookups for matter people role, lookup model is replace with new company based lookup for all lookups. -->
+              <%role = current_company.client_roles.find(mem.role)%>
+              <%= mem.role == 0 ? "Lead Lawyer" :  role ? role.lvalue : ""%>
+            </td>
+            <td align="center">
+              <span id="period_span_<%= mem.id %>">
+                <%= livia_date(mem.start_date) %> - <%= livia_date(mem.end_date) %>
+              </span>
+            </td>
+            <!--<td align="center"><%#= livia_date(mem.created_at) %></td>-->
+            <td align="center">
+              <% if get_employee_user_id == @matter.employee_user_id %>
+                <div class="icon_action mt3"><a href="#"></a></div>
+                <div id="liquid-roundAP" class="tooltip" style="display:none;">
+                  <!--Icon table strt here -->
+                  <table width="100%" border="1" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td><div class="ap_top_curve_left"></div></td>
+                        <td width="500" class="ap_top_middle">
+                        <table width="250" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td colspan="6"><div class="ap_pixel15"></div></td>
+                          </tr>
+                          <tr>
+                            <td width="19" valign="bottom"><img src="../../../../../images/icon_edit.png" alt="" width="14" height="16" /></td>
+                            <td width="79" valign="bottom"><%= link_to '<span>Edit</span>', "#{edit_matter_matter_people_path(@matter, mem, :people_type => people_type, :height => "380", :width => "500")}", :class => "thickbox"%></td>
+                            <% unless mem.employee_user_id == get_employee_user_id %>
+                              <td width="19" valign="bottom"><img src="../../../../../images/icon_child_action.png" alt="" width="16" height="16" /></td>
+                              <td width="82" valign="bottom">
+                                <span id="access_check_<%= mem.id %>">
+                                  <%=hidden_field_tag "access_given_to_mem_#{mem.id}", mem.end_date.nil? || mem.end_date > Time.zone.now.to_date%>
+                                  <% url = access_update_matter_matter_people_path(@matter, mem, :people_type => people_type, :format => "js") %>
+                                  <% if mem.end_date.nil? || mem.end_date > Time.zone.now.to_date %>
+                                    <% text = "Remove Access" %>
+                                  <% else  %>
+                                    <% text = "Provide Access" %>
+                                  <% end  %>
+                                  <%= link_to "<span id='access_link_span_#{mem.id}'>#{text}</span>", '#', :onclick => "return matterPeopleAccessCheckbox('#{url}', #{mem.id}, 'Remove Access', 'Provide Access')"%>
+                                </span>
+                              </td>
+                            <% else %>
+                              <td width="19" valign="bottom"> </td>
+                              <td width="82" valign="bottom">  </td>
+                            <% end %>
+
+                            <td width="19" valign="bottom">&nbsp;</td>
+                            <td width="56" valign="bottom">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td colspan="6"><div class="ap_pixel10"></div></td>
+                          </tr>
+                          <tr>
+                            <td valign="bottom"></td>
+                            <td valign="bottom"></td>
+                            <td valign="bottom"></td>
+                            <td valign="bottom"></td>
+                            <td valign="bottom"></td>
+                            <td valign="bottom"></td>
+                          </tr>
+                        </table>
+                      </td>
+                      <td><div class="ap_top_curver_right"></div></td>
+                    </tr>
+                    <tr>
+                      <td valign="top" class="ap_bottom_curve_left"></td>
+                      <td class="ap_bottom_middle"><div class="ap_pixel13"></div></td>
+                      <td valign="top" class="ap_bottom_curve_right"></td>
+                    </tr>
+                  </table>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr id="loader1" style="display:none;"><td></td><td></td><td><img src='/images/loading.gif' /></td><td></td></tr>
+          <% else %>
+        <tr><td colspan="7"><div class="warningCont m5"><%= message %>&nbsp;<%= matter_info %></div></td></tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<br class="clear" />

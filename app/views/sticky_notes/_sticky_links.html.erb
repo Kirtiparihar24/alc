@@ -1,0 +1,3 @@
+<% if task_available? %><%=link_to "<img src='/images/icon_sticky_2.png' width='14' height='14' title='New Matter Activity' alt='New Matter Task' class='vtip'/>","#",:onclick=>"close_otherThickbox('New Activity','/physical/clientservices/new_matter_task?height=121&width=300&id=#{note_id}');"%><%end%>
+<%=link_to "<img src='/images/icon_sticky_1.png' width='14' height='14' title='Add Time Entry' alt='Add Time Entry' class='vtip'/>","#",:onclick=>"close_otherThickbox('New Time Entry','/physical/timeandexpenses/time_and_expenses/new_time_entry_home?height=325&width=1020&id=#{note_id}');"%>
+<%=link_to "<img src='/images/icon_sticky_3.png' width='14' height='14' border=0 alt='Delete' title='Delete' class='vtip'/>","#",:onclick=>"deleteStickyNote('#{note_id}')"%>

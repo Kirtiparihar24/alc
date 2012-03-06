@@ -1,0 +1,93 @@
+<!--Tabular container div @start here -->
+<div class="tabular_listing">
+  <table width="100%" cellpadding="1" cellspacing="1" class="border_gray">
+    <thead>
+      <tr>
+        <%
+        index = @table_headers.index("Rating")
+        created = @table_headers.index("Created") || @table_headers.index("1st mail date")
+        closure = @table_headers.index("Closure") || @table_headers.index("Closure date")
+        matterdate = @table_headers.index(t(:label_matter_date)) || @table_headers.index("Due date")
+        ddate = @table_headers.index(t(:text_date)) || @table_headers.index("Start date")
+        amount = @table_headers.index(t(:text_amount)) || @table_headers.index(t(:text_amt))
+        est_hours = @table_headers.index(t(:label_estimated_hours))|| @table_headers.index("Est Hours")
+        bill_hours = @table_headers.index("#{t(:label_billable)} hours")|| @table_headers.index("Hours Accounted")
+        proj_hours = @table_headers.index("#{t(:text_projected)} hours")|| @table_headers.index("Hours Billed")
+        probability = @table_headers.index(t(:label_probability))
+        hrsbilled= @table_headers.index("% Hours Billed")
+        contacts= @table_headers.index(t(:text_contacts))
+        rating= @table_headers.index(t(:label_rating))
+        opportunities=@table_headers.index(t(:text_opportunities))
+        client_task=@table_headers.index("#{t(:text_client)} Task")
+        age=@table_headers.index("Age")|| @table_headers.index("Ageing (days)")
+        value=@table_headers.index("Value($)")
+        opportunities_perc= @table_headers.index("#{t(:text_opportunity)} %")
+        response=@table_headers.index("#{t(:text_response)} received")
+        responded=@table_headers.index("Responded")
+        response_perc=@table_headers.index("#{t(:text_response)} %")
+        contacts= @table_headers.index(t(:text_contacts))
+        no_of_campaigns= @table_headers.index("#{t(:text_no_of)} #{t(:text_menu_campaign)}")
+        opportunity=@table_headers.index(t(:text_opportunity))
+        no_of_bills=@table_headers.index("#{t(:text_no_of)} Bills")
+        total_bill_value=@table_headers.index("Total Bill value ($)")
+        amt_received=@table_headers.index("Amount Received ($)")
+        settlement_discount=@table_headers.index("Settlement Discount ($)")
+        amt_outstanding=@table_headers.index("Amount Outstanding ($)")
+        no_of_matters=@table_headers.index("#{t(:text_no_of)} Matters")
+        
+        header_array = ['Amount', 'Est Hours', 'Billable hours', 'Projected hours', t(:label_estimated_hours), 'Amount ($)', 'Hours Accounted', 'Hours Billed', t(:text_date), 'Value($)', "Responded", "#{t(:text_opportunity)} %", t(:text_opportunity), 'Start date', '1st mail date', "#{t(:text_response)} %", "#{t(:text_no_of)} campaigns", 'Closure date', 'Age', 'Created', 'Closure', 'Probability', t(:text_contacts), t(:text_opportunities), 'Ageing (days)', '% Hours Billed', 'Due date', "#{t(:text_client)} Task", t(:label_matter_date), "#{t(:text_no_of)} Bills", "Settlement Discount", "Amount Received", "Total Bill value", "Amount Outstanding"]
+        loop_center_align = [created, closure, opportunity, no_of_campaigns, opportunities_perc, response, responded, response_perc, matterdate, ddate, probability, contacts, rating, opportunities, client_task, age, hrsbilled, no_of_bills, no_of_matters]
+        loop_right_align = [amount, est_hours, bill_hours, proj_hours, value, settlement_discount, amt_outstanding, amt_received, total_bill_value]
+        @table_headers.each do |header|
+          if header_array.include?(header)
+            align ='center'
+          else
+            align='left'
+          end %>
+          <th align="<%= align %>" width="<%= @widths_hash[header] if @widths_hash %>"><%= header %>
+          </th>
+        <% end %>
+      </tr>
+    </thead>
+    <% col.each do |obj| %>
+      <tr class="<%= cycle('bg1', 'bg2') %>">
+        <% obj.each_with_index do |e, i|
+          if loop_center_align.include?(i)
+            align ='center'
+          elsif loop_right_align.include?(i)
+            align='right'
+          else
+            align='left'
+          end
+          if i == index %>
+            <td>
+              <% if e && @format == 'pdf' %>
+                <%= e.to_s %>
+              <% else
+                e.times do %>
+                  <span class="icon_star_full fl mt4 mr5"></span>
+                <% end
+                (3-e).times do %>
+                  <span class="icon_star_empty fl mt4 mr5"></span>
+                <% end
+              end %>
+            </td>
+          <% else %>
+            <td align="<%=align%>">
+              <%=if i == amount || i==value || i==amt_received || i==settlement_discount || i==total_bill_value || i ==amt_outstanding
+                livia_amount(e)
+              else
+                if e && @format == 'pdf'
+                  e.to_s
+                elsif e
+                  truncate_hover(e.to_s,15)
+                end
+              end %>
+            </td>
+          <% end
+        end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<!--Tabular container div #ends here -->

@@ -1,0 +1,107 @@
+<%= raw javascript_include_tag 'latest/calendars.js'%>
+<div class="mt20">
+  <div id="container-1">
+    <%= render :partial => "matters/matter_tabs" %>
+    <!--Task Starts-->
+    <div id="fragment-3" class="tabs-container-tabs xtabs-hide tabular_listing tabs-container p5">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+          <tr>
+            <td width="76%">
+              <%=render :partial => "matters/matter_contact_account"%>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="seperator_dotted_hori"></div>
+      <div>
+        <div class="fl">
+          <table cellpadding="0" cellspacing="0">
+            <tr>
+              <%= raw radios_for_my_all_matter_tasks(@matter.id,params[:cat],params[:letter],params[:per_page]) %>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>
+                <div class="fl ml ml15" id="matterTaskStatus">
+                  <ul class="listing_stage_filter">
+                    <li><strong>Status Filter(s)</strong>&nbsp;&nbsp;:</li>
+                    <li><%=link_to(t(:text_all), matter_matter_tasks_path(@matter, :mode_type => @mode_type, :task_status => "all",:letter => params[:letter]), :style => "font-weight: #{@task_status.eql?('all') ? 'bold' : 'normal'};")%> </li>
+                    <li>|</li>
+                    <li><%=link_to(t(:text_open), matter_matter_tasks_path(@matter, :mode_type => @mode_type, :task_status => "open",:letter => params[:letter]), :style => "font-weight: #{@task_status.eql?('open') ? 'bold' : 'normal'};")%></li>
+                    <li>|</li>
+                    <li><%=link_to(t(:text_overdue), matter_matter_tasks_path(@matter, :mode_type => @mode_type, :task_status => "overdue",:letter => params[:letter]), :style => "font-weight: #{@task_status.eql?('overdue') ? 'bold' : 'normal'};")%></li>
+                    <li>|</li>
+                    <li><%=link_to(t(:text_complete), matter_matter_tasks_path(@matter, :mode_type => @mode_type, :task_status => "complete",:letter => params[:letter]), :style => "font-weight: #{@task_status.eql?('complete') ? 'bold' : 'normal'};")%></li>
+                  </ul>
+                </div>
+              </td>
+              <td id="appointment_date_range" style="display: none; line-height: 0px;">
+                <table>
+                  <tr>
+                    <td align="right"><%=t(:text_start_date)%></td>
+                    <td align="left"><input type="text" id="date_start" name="date_start"  readonly="true" class="date_picker" size="10" value="<%=params[:date_start]%>" matter_date="start_date"/></td>
+                    <td align="right"><%=t(:text_end_date)%></td>
+                    <td align="left"><input type="text" id="date_end" name="date_end"  readonly="true" class="date_picker" size="10" value="<%=params[:date_end]%>"matter_date="end_date"/></td>
+                    <td align="left"><%= link_to("Apply", matter_matter_tasks_path(@matter), :id =>"search_date_range", :class=>'linknormal', :style=>"padding:2px 8px 2px 8px ; border: 1px #B8B8B8 solid; background-color:#DBDBDB; ", :onclick =>"set_date_range_values(); jQuery('#date_range_loader').show();") %></td>
+                    <td align="left">
+                      <div  id="date_range_loader" style="display:none;" align="center">
+                        <img src='/images/loading.gif' />
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="fr w40 mtbrl5 link_blue">
+          <a href="<%= new_matter_matter_task_path(@matter) %>" class="fr  vtip" title="Create Activity">
+            <span class="icon_add_task fl mr5"></span>
+            <span class="fl mr10 icon_name">Create Activity</span>
+          </a>
+
+          <a href="<%= calendars_path(:matters => [@matter.id]) %>" class="fr  vtip" title="Calendar View">
+            <span class="icon_calender_matter fl mr5"></span>
+            <span class="fl mr10 icon_name">Calendar View</span>
+          </a>
+          <br class="clear" />
+        </div>
+      </div>
+      <br class="clear" />
+      <ul class="tabs-nav">
+        <li <%if params[:cat]=="todo"%>class="tabs-selected"<%end%>>
+          <a href="<%= matter_matter_tasks_path(@matter, :mode_type => @mode_type, :task_status => params[:task_status], :cat=> 'todo') %>">
+            <span>Tasks</span>
+          </a>
+        </li>
+        <li <%if params[:cat]=="appointment"%>class="tabs-selected"<%end%>>
+          <a href="<%= matter_matter_tasks_path(@matter, :mode_type => @mode_type, :cat => 'appointment') %>">
+            <span>Appointments</span>
+          </a>
+        </li>
+      </ul>
+      <div class=" tabs-container p5">
+        <%= render :partial => "matter_tasks" %>
+      </div>
+    </div>
+  </div>
+</div>
+<br class="clear" />
+<script type="text/javascript">
+  livia_matter_inception_datepicker_new("#date_start");
+  livia_matter_inception_datepicker_new("#date_end");
+<% if params[:cat]=="todo" %>
+    jQuery('#matterTaskStatus').show();
+    jQuery('#appointment_date_range').hide();
+<% else %>
+    jQuery('#appointment_date_range').show();
+    jQuery('#matterTaskStatus').hide();
+<% end %>
+  function set_date_range_values(){
+    var date_start = jQuery('#date_start').val()
+    var date_end = jQuery('#date_end').val()
+    var search_url = jQuery('#search_date_range').attr('href');
+    search_url = search_url+'?cat=appointment&mode_type='+'<%=@mode_type%>'+'&date_start='+date_start+'&date_end='+date_end+'<%unless params[:page].blank?%>&page=<%=params[:page]%><% end %>&per_page=<%=params[:per_page]%>';
+    jQuery('#search_date_range').attr('href', search_url);
+  }
+</script>

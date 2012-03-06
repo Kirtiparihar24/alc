@@ -1,0 +1,3 @@
+jQuery('#charts_div').html("<%=escape_javascript(render:partial => 'dashboard_new', :locals => {:data => @data})%>")
+jQuery('#dashboard_fav').html("<%=escape_javascript(render(:partial => 'dashboard_partials/favourites',:locals => {:col => @fav_dashboard}))%>")
+closeFaceBox();

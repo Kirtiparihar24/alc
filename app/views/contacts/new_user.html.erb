@@ -1,0 +1,50 @@
+<div>
+  <div class="gridDiv">
+    <div class="titleHead"><%=t(:text_new_user)%></div>
+    <div class="gryBox">
+      <!--TABULAR DATA STARTS-->
+      <div class="adminForm">
+        <%form_for(@user, :url => {:action => "create_user", :company_id => @company.id}) do |f| %>
+          <%if(@user.errors.length > 0)%>
+            <div class='errorCont'><%=f.error_messages %><div class="clear"></div></div>
+          <%end%>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+            <tr>
+              <td align="right" valign="top"><%=t(:text_contact)%>&nbsp;<span class='text_red'>*</span></td>
+              <td><%=collection_select :contact, :id, @contacts, :id, :full_info, {:include_blank=>"---Select Contact---"},{:class => "txtbox"}%></td>
+            </tr>
+            <tr>
+              <td align="right" valign="top"><%=f.label :username, "#{t(:text_user_name)}&nbsp;<span class='text_red'>*</span>"%></td>
+              <td><%=f.text_field :username%><span id="username_alert"></span></td>
+            </tr>
+            <tr>
+              <td align="right" valign="top"><%=f.label :email, "#{t(:text_email)}&nbsp;<span class='text_red'>*</span>"%></td>
+              <td><%=f.text_field :email%></td>
+            </tr>
+
+            <tr>
+              <td align="right" valign="top"><%=f.label :password, "#{t(:text_password)}&nbsp;<span class='text_red'>*</span>"%></td>
+              <td><%=f.password_field :password%></td>
+            </tr>
+            <tr>
+              <td align="right" valign="top"><%=f.label :password_confirmation, "#{t(:text_confirm_password)}&nbsp;<span class='text_red'>*</span>"%></td>
+              <td><%=f.password_field :password_confirmation%></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="1" align="left">
+                <%=f.submit t(:text_create), :class=>"button"%>
+                <%=link_to t(:label_back), edit_company_path(@company)%>
+              </td>
+            </tr>
+          </table>
+        <%end%>
+        <div style="float:right;font-family:Arial, Helvetica, sans-serif;font-size:11px;padding:4px;">
+          <div><span class="text_red">*</span><%=t(:text_required_field)%></div>
+        </div>
+        <br class="clear" />
+      </div>
+      <!--TABULAR DATA ENDS-->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div style="position:absolute; z-index:99999; border:1px solid #EEEEBB; background:#FFFFCC; padding:5px;"> 
+  <table width="100%">
+    <tr>
+      <% actual_duration = @dur_setng_is_one100th ?  one_hundredth_timediffernce(old_duration.to_f) : one_tenth_timediffernce(old_duration.to_f) %>
+      <td><%= text_field_tag "old_duration#{entry_id}", actual_duration, :size => 5 %></td>
+      <td><%= link_to (image_tag "livia_portal/icon_tick.gif", :alt=>"Split"), "#this", :onClick=>"split_entries(this, #{entry_id})" %></td>
+      <td><%= link_to (image_tag "livia_portal/icon_cancel.gif", :alt=>"Cancel"), "#this", :onClick=>"cancel_split_entry(this, #{entry_id})" %></td>
+    </tr>
+  </table>
+</div>

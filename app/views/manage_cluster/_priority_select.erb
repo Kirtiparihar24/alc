@@ -1,0 +1,1 @@
+<%= select_tag 'priority_types[]',options_for_select(@priority_types.collect{|priority_type| [priority_type.alvalue, params[:livian_id] + "-" + params[:lawyer_id]+"-"+priority_type.lvalue.to_s]}.reverse,@priority_type),{:onchange =>"update_priority(this,'#{params[:cluster_id]}','#{params[:livian_id]}','#{params[:lawyer_id]}')",:class=>"field size4"} %>

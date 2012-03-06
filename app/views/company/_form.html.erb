@@ -1,0 +1,29 @@
+<% check_access = ['company_activity_types','lead_status_types','prospect_status_types','campaign_status_types','opportunity_stage_types','rating_types','client_roles','matter_statuses','campaign_member_status_types','document_categories','matter_privileges','campaign_Member_status_types','rating_type','tne_invoice_statuses'].include?(modelclass) %>
+<div class="form">
+  <table cellspacing="0" border="0" align="center" width="100%">
+    <%if check_access%>
+      <%=hidden_field_tag :original_lvalue,@client_role.lvalue if modelclass == 'client_roles'%>
+      <tr>
+        <td width="45%"><label>Select <%= select_modal_text %></label></td>
+        <td width="55%"><%= f.select :lvalue, all_modal_values, {:include_blank => 'Please Select'}, :class=>"field size3" %></td>
+      </tr>
+      <tr><td colspan="2">&nbsp;</td></tr>
+    <%end%>
+    <tr>
+      <td><label><%= modal_text %> <span>*</span></label></td>
+      <td><%= f.text_field :alvalue, :class=>"field size4" %></td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <%if (modelclass =='opportunity_stage_types')%>
+      <tr>
+        <td><label>Percentage</label></td>
+        <td><%= f.text_field :percentage,:maxlength => 4, :class=>"field size4" %></td>
+      </tr>
+    <%end%>
+  </table>  
+</div>
+<div class="buttons">
+  <%=submit_tag t(:label_save), :class=>"button"%>
+  <input type="button" value="<%=t(:label_cancel)%>" class="button" onclick="tb_remove();" />
+</div>
+<div id="loading_gif" style="display: none"><%= image_tag"/images/loading.gif" %></div>

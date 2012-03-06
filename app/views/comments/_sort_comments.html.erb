@@ -1,0 +1,41 @@
+<table  width="100%" border="0" cellpadding="2" cellspacing="0" class="tableBg" align="center" style="font-size:100%;">
+  <tr class ="f1 oppProspects" >
+    <th width="15%" ><a onClick="sort_comments('<%=commentable_type%>','<%=commentable_id%>','<%=params[:dir]%>','order_rows','title','comments.title')"> Stage</a>
+      <% if params[:sort_by] == 'title'%>
+        <img title="Sort" alt="Sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+    <th width="15%"><a onClick="sort_comments('<%=commentable_type%>','<%=commentable_id%>','<%=params[:dir]%>','sort_rows','user')">User</a>
+      <%  if params[:sort_by] == 'user'%>
+        <img title="Sort" alt="Sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+    <th width="50%"><a onClick="sort_comments('<%=commentable_type%>','<%=commentable_id%>','<%=params[:dir]%>','order_rows','comment','comments.comment')">Comment/Details</a>
+      <% if params[:sort_by] == 'comment'%>
+        <img title="Sort" alt="Sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+    <th width="20%"><a onClick="sort_comments('<%=commentable_type%>',<%=commentable_id%>,'<%=params[:dir]%>','order_rows','created','comments.created_at')">Created At</a>
+      <%  if params[:sort_by] == 'created'%>
+        <img title="Sort" alt="Sort" src="/images/<%=@icon%>"/>
+      <%end%>
+    </th>
+  </tr>
+  <tr><td colspan="5" style="font-family:Arial;">
+      <table width="100%" class="formTable" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+          <%comments.each do |obj|%>
+            <tr class="<%=cycle("bg1", "bg2")%>">
+              <td width="15%"><%=obj[0]%></td>
+              <td width="15%"><%=obj[1]%></td>
+              <td width="50%">
+                <span class="comment"><%=raw(truncate_hover_comments(obj[2],60))%></span></td>
+              <td width="20%"><%=obj[3]%></td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </td></tr>
+  <tr  id="loader" > <td></td><td></td><td ><img src='/images/loading.gif' /></td><td></td></tr>
+</table>
+<div align="right" class="pagiText">Page</div>

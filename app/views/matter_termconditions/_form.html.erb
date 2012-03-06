@@ -1,0 +1,153 @@
+<div>
+  <div id="container-1" style="width:100%;">
+    <%= render :partial => "matters/matter_tabs" %>
+    <div style="min-width: 0px;" id="fragment-1" class="tabs-container-tabs tabular_listing tabs-container p5">
+      <table width="100%" cellpadding="2" cellspacing="2" border="0">
+        <tbody>
+          <tr><td width="76%" style="padding:0"><%=render :partial => "matters/matter_contact_account" %></td></tr>
+        </tbody>
+      </table>
+      <div class="seperator_dotted_hori"></div>
+      <% if document_available? %>
+        <table width="100%" cellpadding="0" cellspacing="2" border="0">
+          <tbody>
+            <tr>
+              <th align="left"><div class="fl"><%=t(:text_toe_documents)%></div>
+                <div class="fr mt3 mr5">
+                  <%= link_to("<span class='icon_add fl' id='toe'></span>","#", {:class=> "vtip", :id => "upload_multi", :title=> "File(s) Upload", :name=> "Mass Upload File", :current_user_id=>current_user.id,:employeeuserid=>get_employee_user_id,:company_id=>get_company_id,:matter_id=>@matter.id,:authenticity_token=> protect_against_forgery? ? form_authenticity_token : "",:path=>"#{toe_multi_upload_path(@matter)}?stop=",:return_path=>"matter_termconditions"})%>
+                </div>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      <div id="mass_upload" style="display:none">
+          <%= render :partial => "repositories/upload_multi",:locals => {:from => 'toe'}%>
+          <br class="clear" />
+          <div id="uploader" name="uploader" style="width: 100%;"></div>
+          <div class="mt5 pt5">
+            <div class="mandatory mt12 pl5">
+              Note :Total mass upload limit is 100 mb with a limit on individual file size of 50 mb.
+
+              Files will be scheduled for upload as per sequence specified.Incase a file size
+              exceeds the individual limit or increases the overall limit, the system will
+              pick the next file in the sequence selected.
+            </div>
+          </div>
+        </div>
+        <table width="50%"cellpadding="2" cellspacing="2" border="0">
+          <tbody>
+            <tr>
+              <td><strong><%=t(:text_document_name)%></strong></td>
+              <td><strong><%=t(:text_action)%></strong></td>
+            </tr>
+            <%if @matter.matter_termcondition%>
+              <%@matter.matter_termcondition.toe_docs.each do|e|%>
+                <tr>
+                  <td width="50%"><%=link_to(e.latest_doc.name, document_home_path(e.latest_doc.id))%></td>
+                  <td width="50%">
+                    <a href="<%=raw get_doc_history_matter_document_home_path(@matter,e.id  , :height => 300, :width => 800)%>" title="History" class="thickbox vtip" name="History"><div class="icon_small_history fl mr10"></div></a>
+                    <a href="<%=raw supercede_or_replace_document_document_home_path(e, :matter_id => @matter.id, :from => "matter_terconditions", :height => 235, :width => 600) %>" title=<%=t(:label_superseed)%> class="thickbox vtip" name=<%=t(:label_superseed)%>><div class="icon_supercede_document fl"></div></a>
+                  </td>
+                </tr>
+              <%end%>
+            <%end%>
+          </tbody>
+        </table>
+      <% end %>
+      <% form_for([@matter, @termcondition], :url => create_or_update_matter_matter_termconditions_path(@matter),:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+        <% if(@termcondition.errors.length > 0) %>
+          <div class="message_error_div"><%= f.error_messages %></div>
+        <% end %>
+        <%=f.hidden_field :company_id, :value => get_company_id%>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <tbody>
+            <tr><th width="50%" align="left"><div class="fl"><%=t(:label_Highlights)%></div></th></tr>
+            <tr><td style="padding:0"><%=f.text_area :highlights,:id=>'highlights', :cols => 75, :rows => 3, :class => "w98"%></td></tr>
+          </tbody>
+        </table>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <tbody>
+            <tr><th width="50%" align="left"><%=t(:label_Scope_of_Work)%></th></tr>
+            <tr><td style="padding:0"><%=f.text_area :scope_of_work, :cols => 75, :rows => 3, :class => "w98"%></td></tr>
+          </tbody>
+        </table>
+        <table cellpadding="2" cellspacing="2" border="0" width="100%">
+          <tbody>
+            <tr><th colspan="8" align="left"><%=t(:label_Agreed_Billing_Rates_and_details)%></th></tr>
+            <tr>
+              <td>Type</td>
+              <td width="12%"><%=f.select :billing_type, MatterPeople::BILLING_TYPES,{}, :onchange=>"billingTypeChanged(this.value)"%></td>
+              <td colspan="2">
+                <div id="fixed_rate_div" <%unless @termcondition.fixed_rate?%> style="display: none;" <%end%> >
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                      <tr>
+                        <td valign="top">
+                          <%=f.text_field :fixed_rate_amount, :size=>"10"%>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="bill_by_div" <%if @termcondition.fixed_rate?%> style="display: none;" <%end%>>
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                      <tr>
+                        <td valign="top"><%=f.select :billing_by, MatterPeople::BILLING_BY%></td>
+                        <td valign="top"><%=t(:label_Not_to_Exceed)%></td>
+                        <td valign="top"><%=f.text_field :not_to_exceed_amount, :size=>"10"%></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+              <td rowspan="3" width="12%"><%=t(:label_Additional_Details)%></td>
+              <td rowspan="3" width="30%"><%=f.text_area :additional_details, :cols => 40, :rows => 5 ,:style=>"height:80px;width:336px;"%></td>
+            </tr>
+            <tr><td colspan="4">&nbsp;</td></tr>
+            <tr>
+              <td width="10%" valign="top"><%=t(:label_Retainer_amt)%></td>
+              <td><%=f.text_field :retainer_amount, :size=>"10"%></td>
+              <td width="13%" valign="top"><%=t(:label_Minimum_Trigger_Amt)%></td>
+              <td width="25%" valign="top"><%=f.text_field :min_trigger_amount, :size=>"10"%></td>
+            </tr>
+          </tbody>
+        </table>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <tbody>
+            <tr><th width="34%" align="left"><%=t(:label_Client_Obligations_and_Non_Compliance_Impacts)%></th></tr>
+            <tr><td style="padding:0"><%=f.text_area :client_obligations_impacts, :cols => 45, :rows => 4, :class => "w98"%></td></tr>
+          </tbody>
+        </table>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <tbody>
+            <tr><th width="34%" align="left"><%=t(:label_Disclaimers_if_any)%></th></tr>
+            <tr><td style="padding:0"><%=f.text_area :disclaimers, :cols => 45, :rows => 4, :class => "w98"%></td></tr>
+          </tbody>
+        </table>
+        <table width="100%" cellpadding="2" cellspacing="2" border="0">
+          <tbody>
+            <tr><th width="34%" align="left"><%=t(:label_account)%>&nbsp;<%=t(:label_details)%></th></tr>
+            <tr><td style="padding:0"><%=f.text_area :account_details, :cols => 45, :rows => 4, :class => "w98"%></td></tr>
+          </tbody>
+        </table>
+        <div class="buttonSub_div">
+          <%=f.submit "Save",:class=>'matters' ,:disable_with => 'Please wait...'  %>
+        </div>
+      <%end%>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  // Need to removed to JS File
+  function billingTypeChanged(v) {
+    if (v == "Fixed Rate") {
+      jQuery("#fixed_rate_div").show();
+      jQuery("#bill_by_div").hide();      
+    } else {     
+      jQuery("#fixed_rate_div").hide();
+      jQuery("#bill_by_div").show();
+    }
+  }
+  jQuery('#highlights').focus();
+</script>

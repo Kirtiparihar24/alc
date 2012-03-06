@@ -1,0 +1,52 @@
+<% form_tag check_out_all_document_homes_path(:matter_id=> @matter.id) do%>
+  <table  width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-top:10px;">
+    <tr>
+      <td width="10%"><%=radio_button_tag(:check_in_action,1,true,:onclick => "jQuery('#message').text('Note: The WIP document will be saved as the latest version');jQuery('#documents_list').hide();") %></td>
+      <td width="90%">Check in all documents including WIP document</td>
+    </tr>
+    <tr>
+      <td width="10%" align="left"><%= radio_button_tag(:check_in_action,2,false,:onclick => "jQuery('#message').text('Note: Documents having a WIP document will not be checked in');jQuery('#documents_list').hide();") %></td>
+      <td width="90%">Check in all documents excluding WIP document</td>
+    </tr>
+    <tr>
+      <td  width="10%"><%=radio_button_tag(:check_in_action,3,false,:onclick => "jQuery('#message').text('Note: The selected WIP documents will be saved as the latest version');jQuery('#documents_list').show();") %></td>
+      <td width="24%">Check in selective documents</td>
+    </tr>
+  </table>
+  <br/>
+  <div id="message">Note: The WIP document will be saved as the latest version</div>
+  <br/>
+  <table  id="documents_list" width="100%" border="0" cellpadding="0" cellspacing="0" align="center"  class="tabular_listing border_gray" style="display:none" >
+    <tr>
+      <th width="10%" align="left" ><input id="check_all_cont" name="check_all_cont" type="checkbox" onclick="campaign_check_all_cont();" /></th>
+      <th width="36%" align="left"><b><%=t(:text_document_name)%></b></th>
+      <th width="27%" align="left"><b><%=t(:text_owner)%></b></th>
+      <th width="27%" align="left"><b><%=t(:text_checked_out_by)%></b></th>
+    </tr>
+    <tbody class="scrollY100">
+      <%if @document_homes.size > 0  %>
+        <% @logged_in_user = get_employee_user_id %>
+        <%@document_homes.each do |matter_document|%>
+          <%if matter_document.access_rights.present?  %>
+            <%if((matter_document.access_rights == 1 && matter_document.owner.id == @logged_in_user ) || (matter_document.access_rights != 1))%>
+              <%if  document_accesible?(matter_document,@emp_user_id, @company.id, @matter)%>
+                <tr>
+                  <td align="left"> <%= check_box_tag 'selected_records[]', matter_document.id, false, {:class=>"recordscampmem"}%></td>
+                  <td align="left"> <%=raw  truncate_hover(matter_document.latest_doc.name.try(:titleize) + ( matter_document.wip_document.present? ? ' [WIP Document]' : ''),25) %></td>
+                  <td><%=raw truncate_hover(matter_document.owner.try(:full_name), 18) rescue "-" %></td>
+                  <td align="left"> <%=raw  truncate_hover(matter_document.checked_in_by.try(:full_name).try(:titleize),18) %></td>
+                </tr>
+              <%end%>
+            <%end%>
+          <%end%>
+        <%end%>
+      <%else%>
+        <tr ><td></td> <td colspan="3"><div  class="warningCont m5">No &nbsp;<%=t(:text_document)%>&nbsp;<%=t(:text_checked_in)%></div></td></tr>
+      <%end%>
+    </tbody>
+  </table>
+  <br/>
+  <div align="center"><%= submit_tag t(:text_check_in), :class=>'searchbutton' %></div>
+<%end%>
+<script type="text/javascript">new_tool_tip();</script>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;150</div>

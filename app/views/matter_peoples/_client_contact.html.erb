@@ -1,0 +1,52 @@
+<div class="gridDiv" style="width:500px;">
+  <div class="titleHead"><%=t(:text_client_contacts)%> <%=matter_info%></div>
+  <div class="gryBox">
+    <div class="windowForm">
+      <% form_for([@matter,@matter_people_client_contact],:html => {:onsubmit => "return disableAllSubmitButtons('matters')"}) do |f| %>
+        <div id="nameerror" style="display:none">
+          <div class='errorCont'>
+          </div>
+        </div>
+        <%=f.hidden_field :people_type, :value => 'client_contact'%>
+        <%=hidden_field_tag :people_type, :value => 'client_contact'%>
+        <p>
+          <label><%=t(:label_name)%>&nbsp;<span class="text_red">*&nbsp;</span></label>
+          <%=f.text_field :name%>
+          <br class="clear" />
+        </p>
+        <p>
+          <label><%=t(:label_primary_contact)%></label>
+          <%=f.check_box :primary_contact, :style=>"width:15px;border:none;"%>
+          <br class="clear" />
+        </p>
+        <p>
+          <label><%=t(:label_email_id)%></label>
+          <%=f.text_field :email%>
+          <br class="clear" />
+        </p>
+        <p>
+          <label><%=t(:label_phone_no)%></label>
+          <%=f.text_field :phone,:class=>'phone',:maxlength=>"15"%>
+          <br class="clear" />
+        </p>
+        <p>
+          <label><%=t(:label_fax_no)%></label>
+          <%=f.text_field :fax%>
+          <br class="clear" />
+        </p>
+        <p>
+          <label><%=t(:label_address)%></label>
+          <%=f.text_area :address, :rows=>5, :cols=>40%>
+          <br class="clear" />
+        </p>
+        <div class="txtC">
+          <%= f.submit t(:text_save),:class=>'matters',:onclick=>"return validate_field('matter_people_name','Name can not be blank');" %>&nbsp;
+          <input type="button" class="matters" value="<%=t(:text_cancel)%>" class="matters" onclick="parent.tb_remove();disableAllSubmitButtons('matters');" />
+          <br class="clear"/>
+        </div>
+        <br class="clear"/>
+      <% end-%>
+    </div>
+  </div>
+  <br class="clear"/>
+</div>

@@ -1,0 +1,47 @@
+<div id="page">
+  <div class="inner">
+    <div class="section">
+      <div class="title_wrapper">
+        <ul class="section_menu fl">
+          <li><%=link_to "<span><span>Skills</span></span>", get_skills_path%></li>
+          <li><%=link_to "<span><span>Priorities</span></span>", wfm_manage_priorities_path, :class=>'active' %></li>
+        </ul>
+        <span class="title_wrapper_left"></span>
+        <span class="title_wrapper_right"></span>
+      </div>
+      <div class="section_content">
+        <div class="sct">
+          <div class="sct_left">
+            <div class="sct_right">
+              <br/>
+              <% unless current_user.clusters.blank? %>
+                <div class="sct_left">
+                  <div class="sct_right">
+                    <div align="center">
+                      <span>Select Cluster:</span><%=select_tag :cluster_id, options_from_collection_for_select(@clusters,"id","name",@cluster.id),:onchange =>"update_priorities(this.value)", :style=>"width:100px;border: 1px solid #CECECE;"%>
+                    </div>
+                    <div id="lawyers_livians_list">
+                      <%=render :partial=>"lawyers_livians_list", :locals => {:livians => @livians, :lawfirm_users => @lawfirm_users, :cluster => @cluster}%>
+                    </div>
+                  </div>
+                </div>
+              <% else %>
+                <div class="sct_left">
+                  <div class="sct_right">
+                    <div align="center">
+                      <span>You are not assigned to any clusters!</span>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+      </div>
+    </div>
+    <div class="legends_div">
+      <img src="/stylesheets/wfm/layout/site/icon/icon_temp_livian.png" alt="Temporary Livian" title="Temporary Livian"></img> = Temporary Livian,  &nbsp;&nbsp;&nbsp;&nbsp;<img src="/stylesheets/wfm/layout/site/icon/icon_manager.png" alt="Team Manager" title="Team Manager"></img> = Cluster Manager
+    </div>
+  </div>
+</div>

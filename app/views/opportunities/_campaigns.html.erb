@@ -1,0 +1,9 @@
+<% if @campaigns.present? %>
+  <%= collection_select :opportunity, :campaign_id,
+    @campaigns,
+    :id,
+    :name,
+    :include_blank => "External #{t(:text_campaign)}" %>
+<% else %>
+  <%= select "campaign", 1, "", {:include_blank => "No #{t(:text_campaigns)}"} %>
+<% end %>

@@ -1,0 +1,89 @@
+<% is_a_member=false
+ is_all_matters_access = is_access_matter?
+ contrl = controller_name
+if !is_a_member && @law_team_member_ids
+   is_a_member  = @law_team_member_ids.include?(get_employee_user_id)
+end%>
+
+<ul class="tabs-nav">
+  <% if toe_available? %>
+  <li<% if contrl.eql?("matter_termconditions") %> class="tabs-selected"<% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_matter_termconditions_path(@matter) %>">
+     <span><%= t(:text_terms_of_engagement) %></span>
+     
+    </a>
+  </li>
+  <%end%>
+  <% if people_legal_team_available? %>
+  <li<% if contrl.eql?("matter_peoples") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');"href="<%= matter_matter_peoples_path(@matter) %>">
+      <span><%= t(:text_people_amp_legal_team) %></span>
+    </a>
+  </li>
+  <%end%>
+  <%  if task_available?  %>
+    <li<% if contrl.eql?("matter_tasks")%> class="tabs-selected" <% end %>>
+      <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_matter_tasks_path(@matter) %>">
+        <span><%= t(:text_activities) %></span>
+      </a>
+    </li>
+  <% end %>
+  <% if issue_available? %>
+  <li<% if contrl.eql?("matter_issues") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_matter_issues_path(@matter) %>">
+      <span><%= t(:text_issues) %></span>
+    </a>
+  </li>
+  <% end %>
+  <% if fact_available? %>
+  <li<% if contrl.eql?("matter_facts") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_matter_facts_path(@matter)%>">
+      <%= t(:text_facts) %>
+    </a>
+  </li>
+  <% end %>
+  <% if risk_available? %>
+  <li<% if contrl.eql?("matter_risks") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_matter_risks_path(@matter)%>">
+      <%= t(:text_risks) %>
+    </a>
+  </li>
+  <% end %>
+
+  <% if research_available? %>
+  <li<% if contrl.eql?("matter_researches") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_matter_researches_path(@matter) %>">
+      <%= t(:text_research) %>
+    </a>
+  </li>
+  <% end %>
+
+  <% if document_available? %>
+  <li<% if contrl.eql?("document_homes") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= matter_document_homes_path(@matter) %>">
+      <%= t(:text_documents) %>
+    </a>
+  </li>
+  <%end%>
+  
+  <% if billing_and_retainer_available? %>
+  <li<% if contrl.eql?("matter_billing_retainers") %> class="tabs-selected" <% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%= bill_retainers_matter_matter_billing_retainers_path(@matter) %>">
+      <%= t(:text_billing_retainer) %>
+    </a>
+  </li>
+  <%end%>
+
+  <% if matter_time_expense_available? %>
+  <li<% if contrl.eql?("time_and_expenses") %> class="tabs-selected"<% end %>>
+    <a onclick ="return validate_user_role(this,'<%= get_employee_user_id%>','<%=is_a_member%>',true,'<%=is_all_matters_access%>');" href="<%=physical_timeandexpenses_matter_view_path(:matter_id => @matter.id, :from => "matters", :view => "matter",:status=>"Open")%>">
+      <span>T/E<%#=t(:text_menu_tne)%></span>
+    </a>
+  </li>
+  <% end %>
+  <li<% if contrl.eql?("matters") %> class="tabs-selected" <% end %>>
+    <a href="<%= edit_matter_path(@matter) %>">
+      <%=t(:label_edit)%> <%=t(:text_menu_edit_matter)%>
+    </a>
+  </li>
+</ul>

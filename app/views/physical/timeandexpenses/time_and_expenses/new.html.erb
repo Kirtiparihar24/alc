@@ -1,0 +1,36 @@
+<%=raw javascript_include_tag  'time_and_expense/form' %>
+<%=raw javascript_include_tag  'time_and_expense/new_time_entry' %>
+<%expense_types,activity_types = get_expense_type_and_activity_types(current_company)%>
+<span id="fetch_ajax_response"></span>
+<script type="text/javascript">
+  var expensetypes = <%=raw expense_types%>
+  var activitytypes = <%=raw activity_types%>
+  var status = <%= raw Hash["Open" => "Open", "Approved" => "Approved"].to_json %>
+  initeditexpense_type(expensetypes);
+  initedit_timentry_activity(activitytypes);
+  init_edit_time_entry_status(status);
+  init_edit_expense_entry_status(status);
+</script>
+<div id="error_notice" ><%=@error if @error %></div>
+<h2 class="title_main">
+  <%=t(:text_time_and_expense_entries_for)%>
+  <%= (@receiver ? @receiver.full_name : '' )%>
+</h2>
+<div class="p5">
+  <% unless current_user.role?("lawyer")%>
+  <%= link_to '<span class="icon_imports mr5 fl "></span><span class="fl mr10 icon_name">Import Time Entries</span>', "/excel_imports?module_type=time&time_entry&other_parameter=#{params[:time_entry_date]}"%>
+  <%= link_to '<span class="icon_imports mr5 fl "></span><span class="fl mr10 icon_name">Import Expense Entries</span>', "/excel_imports?module_type=expense&other_parameter=#{params[:time_entry_date]}"%>
+  <%end%>
+  <div class="linkOuter textR link_blue" style="padding-top:2px;">
+    <a href="/physical/timeandexpenses/calendar" class="mr5"><%=t(:text_month_view)%></a>
+  </div>
+  <div id="summary_header">
+    <%= render :partial => "summary_header" %>
+  </div>
+  <%= render :partial => "summary_grid_entries" , :locals =>{:saved_time_entries =>@saved_time_entries, :saved_expense_entries => @saved_expense_entries}%>
+  <div class="buttonSub_div">
+    <%= submit_tag t(:label_add_time_entry) ,:disable_with => "Please wait...",:class => "time_and_expense", :onClick=>"redirect_to_new_action('time', '#{params[:time_entry_date]}');"  %>
+    <%= submit_tag t(:label_add_expense_entry) ,:disable_with => "Please wait...",:class => "time_and_expense", :onClick=>"redirect_to_new_action('expense', '#{params[:time_entry_date]}');"  %>
+  </div>
+    <div class="mandatory mt12">T/E:- Time/Expense, Int:- Internal, M:- Matter , C:-Contact, Fm:- From, HH:- Hour, MM:-Minute, Dur:- Duration, Amt:- Amount,&nbsp;<div class="icon_time" style="display:inline;padding-right:14px"></div> :-Time,&nbsp;<div class="icon_exp" style="display:inline;padding-right:14px"></div> :- Expense</div>
+</div>

@@ -1,0 +1,107 @@
+<%=raw(javascript_include_tag 'matters_contacts_select_box.js')%>
+<!--CONTENT STARTS-->
+<div class="column_right tabular_listing" style="width: 100%;">
+  <h2 class="title_main"><%=@sp_session.assignment.nil? ? @sp_session.user.try(:full_name) : @sp_session.assignment.user.try(:full_name)%>,
+    <%=@sp_session.assignment.nil? ? @sp_session.user.company_full_name : @sp_session.assignment.user.company_full_name%></h2>
+  <br class="clear" />
+
+  <div style="width: 98%; margin: auto;" class="border_gray">
+    <h2 id="revenue_enhancement_toggle" class="title_favorites">
+      <div class="fl">Lawyer Preferences</div>
+      <div class="fr">
+        <a href="#">
+          <div id="rev_arrow_up" style="display: none;" class="revenue_enhancement arrow_up mt4" onclick="jQuery('.lawyer_preferences').slideUp();"></div>
+          <div id="rev_arrow_down" style="display: block;" class="revenue_enhancement arrow_down mt4" onclick="jQuery('.lawyer_preferences').slideDown();"></div>
+        </a>
+      </div>
+      <br class="clear" />
+    </h2>
+    <div class="p8 lawyer_preferences" id="topnotes" style="display:none;">
+      <%= render :partial => 'lawyer_preferences'  %>
+    </div>
+  </div>
+  <br class="clear"/>
+
+  <div style="width: 98%; margin: auto;" class="border_gray">
+    <h2 id="revenue_enhancement_toggle" class="title_favorites">
+      <div class="fl">Instructions</div>
+      <div class="fr">
+        <a href="#">
+          <div id="rev_arrow_up" style="display: block;" class="revenue_enhancement arrow_up mt4 rev_arrow_up_instructions" onclick="hide_communications_divs('instructions');"></div>
+          <div id="rev_arrow_down" style="display: none;" class="revenue_enhancement arrow_down mt4 rev_arrow_down_instructions" onclick="show_communications_divs('instructions');"></div>
+        </a>
+      </div>
+      <br class="clear" />
+    </h2>
+    <div class="instructions" id="topnotes">
+      <%=render :partial =>'fields'%>
+    </div>
+  </div>
+  <br class="clear"/>
+  <div style="width: 98%; margin: auto;" class="border_gray">
+    <h2 id="revenue_enhancement_toggle" class="title_favorites">
+      <div class="fl"><%=t(:text_search)%></div>
+      <div class="fr">
+        <a href="#">
+          <div id="rev_arrow_up" style="display: block;" class="revenue_enhancement arrow_up mt4 rev_arrow_up_search" onclick="hide_communications_divs('search');"></div>
+          <div id="rev_arrow_down" style="display: none;" class="revenue_enhancement arrow_down mt4 rev_arrow_down_search" onclick="show_communications_divs('search');"></div>
+        </a>
+      </div>
+      <br class="clear" />
+    </h2>
+    <div class="mt5 search">
+      <div class="gridDiv">
+        <!--SEARCH FORM STARTS-->
+        <div class="formMain" id="search_DIV">
+          <span id = "search_loader"></span>
+          <div class="gryBox">
+            <label class="textNormal p5"><%=t(:label_search)%></label>
+            <%=text_field_tag :search_string,'',:size=>80, :class=>"textBox"%>&nbsp;
+            <%=raw search_in_common_span%>
+          </div>
+          <div id="searched_common">
+          </div>
+        </div>
+        <!--SEARCH FORM ENDS-->
+      </div>
+    </div>
+    <br class="clear"/>
+  </div>
+  <br class="clear"/>
+  <div style="width: 98%; margin: auto;" class="border_gray">
+    <h2 id="revenue_enhancement_toggle" class="title_favorites">
+      <div class="fl">Lawyer's Instructions</div>
+      <div class="fr">
+        <a href="#">
+          <div id="rev_arrow_up" style="display: block;" class="revenue_enhancement arrow_up mt4 rev_arrow_up_revenue_enhancement_div" onclick="hide_communications_divs('revenue_enhancement_div');"></div>
+          <div id="rev_arrow_down" style="display: none;" class="revenue_enhancement arrow_down mt4 rev_arrow_down_revenue_enhancement_div" onclick="show_communications_divs('revenue_enhancement_div');"></div>
+        </a>
+      </div>
+      <br class="clear" />
+    </h2>
+    <div class="mt5 w100 revenue_enhancement_div">
+      <div class="gridDiv">
+        <div id="completed_action_details"><%= render :partial => '/physical/clientservices/home/completed_action_details' %></div>
+        <div id="outstanding_task_details"><%= render :partial => '/physical/clientservices/home/outstanding_task_details' %></div>
+        <div id="open_instructions"><%= render :partial => '/physical/clientservices/home/open_instructions_details' %></div>
+        <br class="clear"/>
+      </div>
+    </div>
+  </div>
+  <br class="clear"/>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function()
+  {
+  error = jQuery('.message_error_div').is(":visible");
+  if(error == true)
+  {
+  jQuery('.lawyer_preferences').show();
+  }
+  SearchAutocomplete();
+  jQuery("body").click(function() {
+  jQuery('.ac_results').hide();
+  });
+  });
+  livia_datepicker();
+</script>

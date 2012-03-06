@@ -1,0 +1,29 @@
+<table cellspacing="0" cellpadding="0" border="0" width="100%" class="grayTable bdrTop">
+  <tbody>
+     <%unless @contacts.nil? || @contacts.empty?%>
+    <tr>
+      <td>
+      <%=render :partial => "/contacts/contact"%>
+      </td>
+    </tr>
+     <%else%>
+        <tr>
+        <th align="center"><%=t(:text_type)%></th>
+        <th><%=t(:text_rating)%></th>
+        <%= column_sort_link(t(:text_name),'first_name',params[:col], 15, "left",:mode_type =>@mode_type)%>
+        <th><%=t(:text_account)%></th>
+        <%= column_sort_link(t(:text_assigned_to),'assigned_to',params[:col], 15, "left",:mode_type =>@mode_type)%>
+        <%= column_sort_link(t(:text_stage),'status',params[:col], 15, "left",:mode_type =>@mode_type)%>
+        <th><%=t(:text_phone)%></th>
+        <%= column_sort_link(t(:text_email),'email',params[:col], 15, "left",:mode_type =>@mode_type)%>
+        <%= column_sort_link(t(:text_created),'created_at',params[:col], 15, "left",:mode_type =>@mode_type)%>
+        <th align="center"><%=t(:text_actions)%></th>
+      </tr>
+      <tr  class="warningCont">
+        <td colspan = '10'>
+          <%=render :partial => "common/empty"%>
+        </td>
+      </tr>
+    <%end%>
+  </tbody>
+</table> 

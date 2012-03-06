@@ -1,0 +1,12 @@
+<div class="gridDiv" id="favourite_id">
+  <div class="titleHead">
+    <div class="fl"><%=t(:text_edit)%> <%= t(:text_campaign)%>Mailer EmailID</div>
+    <div class="fr ptr5"><a href="#"><img src="/images/livia_portal/icon_close.gif" alt="close" title="close" onclick="closeFaceBox();" /></a></div>
+    <br class="clear"/>
+  </div>
+  <div id="nameerror"  class="errorCont" style="display:none"></div>
+  <%  remote_form_for(:campaign_mailer_email, @campaign_mailer_email, :url => campaign_mailer_email_path(@campaign_mailer_email),:loading=>"showLoadingGif();",:complete=>"hidewLoadingGif();",:html => { :method => :put}) do |f|%>
+    <%= render :partial=>"form", :locals => {:f => f} %>
+  <%end%>
+  <br class="clear"/>
+</div>

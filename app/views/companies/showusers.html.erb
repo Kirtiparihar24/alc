@@ -1,0 +1,18 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer">
+      <div class="title fl" id="cmp_name"><%= @company.name unless session[:company_id].blank? %></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%=collection_select :employee,:company_id,@companies,:id,:name_type,{:include_blank => 'Please select',:selected => (params[:id].present? ? @company.id : "")},{:onchange=>"show_data_for_record(this.value, 'userdiv', 'GET', '/companies/showusers')" ,:class=>"field size3", :padding_right=>"1px"}%>
+      </div>
+    </div>
+  <%end%>
+  <%if current_user.role?:lawfirm_admin%>
+    <div id="topheadContainer"><div class="title fl"><%= current_user.company_full_name  %></div></div>
+  <% end %>
+<% end %>
+<div id="userdiv">
+  <%if params[:id].present?%>
+    <%=render :partial => 'list_of_users'%>
+  <%end%>
+</div>

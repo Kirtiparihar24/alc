@@ -1,0 +1,27 @@
+<div class="w100">
+  <%unless @total_data.blank?%><div class="title_blue fl"><%= pluralize_record(@conditions[:col_length] , 'Record', 1) %>&nbsp;<%=t(:text_total_amount)+" ($)"%> = <%=livia_amount(@conditions[:amount])%>   &nbsp;&nbsp;<%=t(:text_average_ageing)%> <%=@conditions[:total_avg_age]%> Days</div><%end%>
+  <div class="fr  textR pt5">
+    <%=raw(generate_send_email_rpt_link("opportunity_open_rpt")) unless params[:load_popup]%>
+    <%=raw(generate_rpt_fav_link("Opportunity")) unless params[:load_popup]%>
+    <%=raw(generate_reports_links("opportunity_open_rpt"))%>
+  </div>
+  <br class="clear" />
+</div>
+<%unless @total_data.blank?%>
+  <% @total_data.each do |label,col| %>
+    <div class="mt5">
+      <div class="w100">
+        <div class="title_blue fl" ><%=(label == "" or !label) ? "None" : label%> <span >(<%= pluralize_record(col.length , 'Record', 0)%>) &nbsp;&nbsp;<%=t(:text_amount)%> = <%=livia_amount(@conditions[label][0])%> &nbsp;&nbsp;<%=t(:text_hours)%> <%=@conditions[label][2]%>  &nbsp;&nbsp;<%=t(:text_average_ageing)%> <%=@conditions[label][1]%> Days</span></div>
+        <div class="fr textR"><%# links %></div>
+        <br class="clear" />
+      </div>
+      <%= render :partial => "rpt_partials/list_col_array_with_index", :locals => {:col => col} %>
+    </div>
+    <%reset_cycle%>
+  <%end%>
+  <br class="clear" />
+  <div class="title_blue fl"><%= pluralize_record(@conditions[:col_length] , 'Record', 1) %>&nbsp;<%=t(:text_total_amount)+" ($)"%> = <%=livia_amount(@conditions[:amount])%>   &nbsp;&nbsp;<%=t(:text_average_ageing)%> <%=@conditions[:total_avg_age]%> Days </div>
+<%else%>
+  <div class="title_blue fl"><%= pluralize_record((@conditions[:col_length] rescue 0), 'Record', 1) %></div>
+<%end%>
+<br class="clear" />

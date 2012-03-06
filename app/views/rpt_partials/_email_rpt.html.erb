@@ -1,0 +1,39 @@
+<div style="margin-top:20px;" id="favourite_id">
+  <% form_remote_tag :url => {:action => "#{params[:action_name]}",:format=>'email'},:condition => "validate_email_doc_form('button')"  do  -%>
+    <div class="sp-loader" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+    <div style="display:none" id="error_explanation"></div>
+
+    <table width="100%">
+      <%=  hidden_field_tag "get_records",params[:get_records]  unless params[:get_records].blank?   %>
+      <%=  hidden_field_tag "date_selected",params[:date_selected]  unless params[:date_selected].blank?   %>
+      <%=  hidden_field_tag "date_start",params[:date_start]  unless params[:date_start].blank?   %>
+      <%=  hidden_field_tag "date_end",params[:date_end]  unless params[:date_end].blank?   %>
+      <% unless params[:report] ==nil %>
+      <%=  hidden_field_tag "report[summarize_by]",params[:report][:summarize_by]  unless params[:report][:summarize_by].blank?   %>
+      <%=  hidden_field_tag "report[task_status]",params[:report][:task_status]  unless params[:report][:task_status].blank?   %>
+      <%=  hidden_field_tag "report[task_type]",params[:report][:task_type]  unless params[:report][:task_type].blank?   %>
+      <%=  hidden_field_tag "report[duration]",params[:report][:duration]  unless params[:report][:duration].blank?   %>
+      <%=  hidden_field_tag "report[status]",params[:report][:status]  unless params[:report][:status].blank?   %>
+      <%=  hidden_field_tag "report[probability]",params[:report][:probability]  unless params[:report][:probability].blank?   %>
+      <%=  hidden_field_tag "report[matter_id]",params[:report][:matter_id]  unless params[:report][:matter_id].blank?   %>
+      <%=  hidden_field_tag "report[contact_id]",params[:report][:contact_id]  unless params[:report][:contact_id].blank?   %>
+      <%=  hidden_field_tag "report[selected]",params[:report][:selected]  unless params[:report][:selected].blank?   %>
+      <%end%>
+      <%= send_attachment_as_email(params[:report_name])%>
+      <tr>
+        <td width="35%" height="6%" align="left">Report Type <span class='alert_message'>*</span> </td>
+        <td width="65%" height="6%" align="left"><%= select_tag "report[report_type]",options_for_select(['Pdf','Xls']) %></td>
+      </tr>
+      <tr>
+        <td colspan="2"><div class="buttonSub_div">
+            <%=submit_tag t(:label_submit), :class=>"button" %>
+            <input name="Cancel" type="submit" id="Cancel" value="<%=t(:label_cancel)%>" onclick="parent.tb_remove(); return false;" />
+          </div></td>
+      </tr>
+    </table>
+  <% end %>
+  <div class="mandatory" style="text-align:left;"><span class="alert_message">*</span><%= t(:text_required_field) %>, <span><%=t(:label_can_enter_multiple_emails)%></span></div>
+</div>
+
+
+

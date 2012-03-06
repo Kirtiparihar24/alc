@@ -1,0 +1,75 @@
+<div class="">
+  <div style="height: 25px;" class="box_gray_new">
+    <div class="fl"> <strong>Completed Tasks</strong> </div>
+    <div style="padding-right: 10px;" class="fr mt5"><span onclick="jQuery('#completed_task_filter').toggle();"><img src="/images/filter-new.png"/></span></div>
+  </div>
+  <div id="completed_loader"></div>
+  <div id="completed_task_filter" style="background: none repeat scroll 0% 0% rgb(255, 255, 255); margin: 8px 0pt;display: none;">
+   <% form_remote_tag :url => view_within_date_range_path, :loading => "append_loader('#completed_loader');" do %>
+    <table width="70%" cellspacing="0" cellpadding="1">
+      <tbody>
+        <tr>
+          <%= hidden_field_tag "option", "completed_action_details" %>
+          <td width="7%" align="left">From</td>
+          <td width="15%" align="left"><%= text_field_tag "from_date", "", :id=>"completed_from_date", :class=>"date_picker"%></td>
+          <td width="6%" align="left">To</td>
+          <td width="15%" align="left"><%= text_field_tag "to_date", "", :id=>"completed_to_date", :class=>"date_picker"%></td>
+          <td width="15%" align="left"><%= submit_tag "Go", :id=>"go", :onclick=>"return validate_filters_dates('completed');" %></td>
+          <td width="15%" align="left"><input type="button" value="Reset" id="reset" onclick="reset_partial('completed');"/></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+  </div>
+</div>
+<div >
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <th width="20%" align="left"><%= "Task Name" %></th>
+      <th width="20%" align="left"><%= "Completed By" %></th>
+      <th width="20%" align="left"><%= "Created On" %></th>
+      <th width="20%" align="left"><%= "Completed On" %></th>
+      <%unless current_user.employee%><th width="10%" align="left"><%= "Share With Client" %></th><%end%>
+      <th width="7%" align="center"><%= "Actions" %></th>
+    </tr>
+  </table>
+  <div class="scrollY100">
+    <table width="100%" cellpadding="1" cellspacing="1">
+    <% unless @task_completed.blank? %>
+      <% @task_completed.each do |task_completed| %>
+        <tr class="<%= cycle('bg1', 'bg2') %>">
+          <td width="20%">
+            <%=raw(truncate_withscroll(task_completed.name,50))%>
+            <span class="livia_dashboardroller" style="display:none;"><%= task_completed.name %></span>
+          </td>
+          <td width="20%">
+            <%= task_completed.completed_by.full_name rescue '-' %>
+          </td>
+          <td width="20%"><%= task_completed.created_at.nil? ? '' : task_completed.created_at.to_time.strftime('%m/%d/%y %I:%M:%S %p') %></td>
+          <td width="20%"><%= task_completed.completed_at.nil? ? '' : task_completed.completed_at.to_time.strftime('%m/%d/%y %I:%M:%S %p') %></td>
+          <%unless current_user.employee%><td width="10%"><%= get_share_with_client(task_completed) %></td><%end%>
+          <td width="6%" align="center"><div class="icon_action mt3"><%= raw open_task_action_links(task_completed)%></div></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr><td colspan="3"><div class="warningCont m5"><%= t(:text_no_data) %></div></td></tr>
+    <% end %>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function()
+  {
+    <% if params[:action].eql?('view_within_date_range') %>
+        jQuery('#completed_from_date').val('<%= params[:from_date] %>');
+        jQuery('#completed_to_date').val('<%= params[:to_date] %>');
+        <% if params[:from_date] && params[:to_date] %>
+          jQuery('#completed_task_filter').show();
+        <% else %>
+          jQuery('#completed_task_filter').hide();
+        <% end %>
+    <% end %>
+    livia_datepicker();
+  });
+
+</script>

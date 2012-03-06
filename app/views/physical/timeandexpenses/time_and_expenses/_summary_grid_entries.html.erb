@@ -1,0 +1,30 @@
+<!--Tabular container div @start here -->
+<div class="tabular_listing mt5">
+  <table width="100%" cellspacing="1" cellpadding="1" class="border_gray">
+    <tbody>
+      <tr>
+        <th align="center" width="1%"><%=t(:text_t_e)%></th>
+        <th align="center" width="1%"><%=t(:text_int)%></th>
+        <th align="left" width="15%"><%# if matter_time_expense_available? %><%=t(:text_matter)%> -<%#end%> <%=t(:text_contact)%></th>
+        <th align="center" width="8%"><%=t(:label_time)%> <br />(<%=t(:label_h_m)%>)</th>
+        <th align="right" width="5%"><%=t(:label_dur)%><br />(<%=t(:label_hrs)%>)</th>
+        <th align="right" width="6%"><%=t(:text_rate)%><br />($)</th>
+        <th align="left" width="8%"><%=t(:label_activity)%></th>
+        <th width="19%" align="left"><%=t(:text_description)%></th>
+        <th width="2%"><%=t(:text_billable)%></th>
+        <th width="16%" align="left"><%=t(:text_billing_adjustments)%></th>
+        <th width="10%" align="right"><%=t(:label_final_bill)%><br /><%=t(:label_amt)%></th>
+        <th width="8%" align="left"><%=t(:text_status)%></th>
+        <th width="1%" align="center"><%=t(:label_Action)%></th>
+      </tr>
+      <%  if @saved_time_entries.present?  || @saved_expense_entries.present? %>
+        <%= render :partial=>"summary_grid_time_entries", :saved_time_entries => @saved_time_entries %>
+        <%= render :partial=>"summary_grid_expense_entries", :saved_expense_entries => @saved_expense_entries %>
+      <% else %>
+        <tr><td colspan="17" align="center" ><strong><%=t(:text_no_record_s_found)%></strong></td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<!--Tabular container div #ends here -->
+

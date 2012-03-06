@@ -1,0 +1,4 @@
+<div id="home_matter_tasks">
+    <%= render :partial => "task_data", :locals => {:task_todo => @task_todo,:task_appt => @task_appt, :title => @title, :type => @type, :dir => 'ASC',:task_type => @typ ,:user_setting => @user_setting.nil? ? '' : @user_setting}%>
+</div>
+<div align="right" class="pagiText"><%=t(:label_page)%>&nbsp;15</div>

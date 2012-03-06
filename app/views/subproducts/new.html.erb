@@ -1,0 +1,22 @@
+<div class="box-head"><h2><%=t(:text_new_module)%> </h2></div>
+<% form_for @subproduct,:url => {:action => 'create'} do |f| %>
+  <%if(@subproduct.errors.length > 0)%>
+    <div class='errorCont'>
+      <%= f.error_messages %>
+      <div class="clear"></div>
+    </div>
+  <%end%>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="25%" align="left" valign="top"><label><%=t(:label_module_name)%><span>*</span></label></td>
+        <td width="75%"><%=f.text_field :name,:class=>"field size4",:size =>'25', :id => 'mname'%></td>
+      </tr>
+      <tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <div class="buttons"><%= submit_tag t(:label_create), :class => 'button' %>  <%= link_to t(:label_back), {:action => 'index'} , :class => 'button'%></div>
+<% end %>

@@ -1,0 +1,65 @@
+<% content_for :company_selection do %>
+  <%if current_user.role?:livia_admin%>
+    <div id="topheadContainer">
+      <div class="title fl"><%= @company.name unless session[:company_id].blank?%></div>
+      <div id="searchContainer" class="fr"> <%=t(:label_select_company)%>
+        <%=collection_select :employee,:company_id,@companies,:id,:name_type,{:include_blank => 'Please select', :selected=> session[:company_id].blank? ? nil : session[:company_id].to_i},{:onChange => "fetch_records_for_company(this.value, '#{params[:controller]}')", :class=>"field size3"}%>
+      </div>
+    </div>
+  <%end%>
+  <%if current_user.role?:lawfirm_admin%>
+    <div id="topheadContainer"><div class="title fl"><%= current_user.company_full_name  %></div></div>
+  <%end%>
+<% end %>
+<% if @company.present? %>
+  <div class="box-head"><h2 class="left"><%=t(:label_Access)%></h2></div>
+  <div class="actionLinks"><%= link_to "Company Settings", "#" %> | <%= link_to "Access", upload_logos_path %></div>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <%if(@company.errors.length > 0 )%>
+        <div class='errorCont'>
+          <%= error_messages_for("company") %>
+          <div class="clear"></div>
+        </div>
+      <%end%>
+      <tr>
+        <% unless @company.logo_file_name.blank? %><%= image_tag @company.logo.url %><br/><br/>
+        <%= link_to 'Delete', {:action =>'delete',:id =>@company.id},:confirm => 'Are you sure you want to delete the logo?' %>
+        <% end %><br/><br/><br/>
+       <% form_tag('/upload_logos/update', :multipart => true) do |f| %>
+        <%= hidden_field_tag :company_id,@company.id %>
+          <table>
+            <tr>
+             <td><%= file_field_tag :logo %></td>
+            </tr>
+            <tr> <td>&nbsp;</td></tr>
+            <tr>
+              <td> <label style="padding-right: 13px;"> Logo for invoice </label>
+                <%=check_box_tag :logo_for_invoice,true,@company.logo_for_invoice%>
+              </td>
+            </tr>
+            <tr> <td>&nbsp;</td></tr>
+            <tr>
+             <td align="center"><%= submit_tag "Upload Logo", :onclick => "return check_logo_field();" %></td>
+            </tr>
+          </table>
+       <% end %>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr>
+         <td>
+           <div class="mandatory mt12">
+              <pre>Note : Image format which supports are .jpeg, .png, .gif and image size should be 154px * 51px.</pre>
+            </div>
+         </td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+    </table>
+  <% end %>
+</div>

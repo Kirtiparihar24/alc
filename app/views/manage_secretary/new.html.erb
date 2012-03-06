@@ -1,0 +1,44 @@
+<div class="gridDiv">
+  <div class="gryBox">
+      <div class="mt5">
+        <div class="gridDiv">
+          <div id="dashboard_toggle" class="titleHead">
+            <div class="fl"><%=t(:text_new_manager)%></div>
+          </div>
+          <br class="clear" />
+          <div class="adminForm">
+          <% form_for :user ,@user ,:url=>{:controller=>"manage_secretary",:action=>"create"} do |u| %>
+          
+              <%if(@user.errors.length > 0)%>
+                <div class='errorCont'>
+                    <%= u.error_messages %>
+                    <div class="clear"></div>
+                </div>
+              <%end%>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="adminForm">
+              <%=render :partial =>'emp_fields', :locals=>{:u=>u}%>             
+              <tr>
+                <td align="right"><%=t(:text_user_name)%><span class="text_red">*</span></td>
+                <td><%=u.text_field :username %></td>
+              </tr>
+              <tr>
+                <td align="right"><%=t(:text_password)%><span class="text_red">*</span></td>
+                <td><%=u.password_field :password, :value=>'' %></td>
+              </tr>
+              <tr>
+                <td align="right"><%=t(:text_confirm_password)%><span class="text_red">*</span></td>
+                <td><%=u.password_field :password_confirmation, :value=>'' %></td>
+              </tr>              
+              <tr>
+                <td colspan="2" align="center">
+                    <%= u.submit t(:text_create), :class=>"button"%>
+                    <%= link_to t(:label_cancel), '/manage_secretary/manager_list'%>
+                </td>
+              </tr>
+            </table>      
+          <%end%>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

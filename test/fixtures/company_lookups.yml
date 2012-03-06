@@ -1,0 +1,2934 @@
+--- 
+company_lookups_231: 
+  lvalue: google_apps
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.021455
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.021455
+  id: 231
+  category_id: 
+  type: Physical::Clientservices::MailAuthType
+  company_id: "1"
+  alvalue: google_apps
+company_lookups_150: 
+  lvalue: Trustee
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.801522
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.801522
+  id: 150
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Trustee
+company_lookups_205: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.365133
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.365133
+  id: 205
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Other
+company_lookups_32: 
+  lvalue: Private Equity
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.268949
+  id: 32
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Private Equity
+company_lookups_124: 
+  lvalue: Matter Client
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.481881
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.481881
+  id: 124
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Matter Client
+company_lookups_232: 
+  lvalue: exchange_2000
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.039894
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.039894
+  id: 232
+  category_id: 
+  type: Physical::Clientservices::MailAuthType
+  company_id: "1"
+  alvalue: exchange_2000
+company_lookups_206: 
+  lvalue: Time Sheet Review
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.381306
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.381306
+  id: 206
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Time Sheet Review
+company_lookups_33: 
+  lvalue: Corporate Due Diligence
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.085437
+  id: 33
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Corporate Due Diligence
+company_lookups_125: 
+  lvalue: Senior Partner
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.486239
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.486239
+  id: 125
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Senior Partner
+company_lookups_151: 
+  lvalue: Administrator
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.80563
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.80563
+  id: 151
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Administrator
+company_lookups_233: 
+  lvalue: exchange_2003
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.056799
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.056799
+  id: 233
+  category_id: 
+  type: Physical::Clientservices::MailAuthType
+  company_id: "1"
+  alvalue: exchange_2003
+company_lookups_207: 
+  lvalue: Undisputed
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.404155
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.404155
+  id: 207
+  category_id: 
+  type: FactMatter
+  company_id: "1"
+  alvalue: Undisputed
+company_lookups_34: 
+  lvalue: Project Finance
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.102102
+  id: 34
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Project Finance
+company_lookups_60: 
+  lvalue: Response
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.529752
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.292057
+  id: 60
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Response
+company_lookups_126: 
+  lvalue: Junior Partner
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.490403
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.490403
+  id: 126
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Junior Partner
+company_lookups_152: 
+  lvalue: Legal Clerk
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.809565
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.809565
+  id: 152
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Legal Clerk
+company_lookups_260: 
+  lvalue: Responded
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.942165
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.942165
+  id: 260
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Responded
+company_lookups_234: 
+  lvalue: exchange_2007
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.0756
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.0756
+  id: 234
+  category_id: 
+  type: Physical::Clientservices::MailAuthType
+  company_id: "1"
+  alvalue: exchange_2007
+company_lookups_208: 
+  lvalue: Not Sure
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.423507
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.423507
+  id: 208
+  category_id: 
+  type: FactMatter
+  company_id: "1"
+  alvalue: Not Sure
+company_lookups_35: 
+  lvalue: Derivatives & Structured Finance
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.152411
+  id: 35
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Derivatives & Structured Finance
+company_lookups_61: 
+  lvalue: Mandatory Disclosure
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.533928
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.452636
+  id: 61
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Mandatory Disclosure
+company_lookups_127: 
+  lvalue: Associate Partner
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.494676
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.494676
+  id: 127
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Associate Partner
+company_lookups_153: 
+  lvalue: Judges Assistant
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.813131
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.813131
+  id: 153
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Judges Assistant
+company_lookups_261: 
+  lvalue: Opportunity
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.950293
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.950293
+  id: 261
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Opportunity
+company_lookups_235: 
+  lvalue: gmail
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.08809
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.08809
+  id: 235
+  category_id: 
+  type: Physical::Clientservices::MailAuthType
+  company_id: "1"
+  alvalue: gmail
+company_lookups_36: 
+  lvalue: Commercial Contracts
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.168907
+  id: 36
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Commercial Contracts
+company_lookups_62: 
+  lvalue: Scheduling Order
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.538168
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.467368
+  id: 62
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Scheduling Order
+company_lookups_128: 
+  lvalue: Senior Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.498998
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.498998
+  id: 128
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Senior Counsel
+company_lookups_154: 
+  lvalue: Witness
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.816867
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.816867
+  id: 154
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Witness
+company_lookups_180: 
+  lvalue: Inactive
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.712963
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.712963
+  id: 180
+  category_id: 
+  type: ProspectStatusType
+  company_id: "1"
+  alvalue: Inactive
+company_lookups_209: 
+  lvalue: Prospective
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.43957
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.43957
+  id: 209
+  category_id: 
+  type: FactMatter
+  company_id: "1"
+  alvalue: Prospective
+company_lookups_262: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.95879
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.95879
+  id: 262
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Rejected
+company_lookups_236: 
+  lvalue: Cheque
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.103968
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.103968
+  id: 236
+  category_id: 
+  type: PaymentModeType
+  company_id: "1"
+  alvalue: Cheque
+company_lookups_37: 
+  lvalue: Taxation
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.185498
+  id: 37
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Taxation
+company_lookups_63: 
+  lvalue: Arbitration Mediation Reconciliation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.54183
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:25.810687
+  id: 63
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Arbitration Mediation Reconciliation
+company_lookups_129: 
+  lvalue: Junior Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.503285
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.503285
+  id: 129
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Junior Counsel
+company_lookups_90: 
+  lvalue: Consultation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.73806
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.66844
+  id: 90
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Consultation
+company_lookups_155: 
+  lvalue: Expert Witness
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.8207
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.8207
+  id: 155
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Expert Witness
+company_lookups_181: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.722906
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.722906
+  id: 181
+  category_id: 
+  type: ProspectStatusType
+  company_id: "1"
+  alvalue: Rejected
+company_lookups_263: 
+  lvalue: Suspended
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.966944
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.966944
+  id: 263
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Suspended
+company_lookups_237: 
+  lvalue: Paypal
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.123145
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.123145
+  id: 237
+  category_id: 
+  type: PaymentModeType
+  company_id: "1"
+  alvalue: Paypal
+company_lookups_38: 
+  lvalue: Employment
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.20215
+  id: 38
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Employment
+company_lookups_64: 
+  lvalue: Pre Trial Discovery
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.545366
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.542029
+  id: 64
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Pre Trial Discovery
+company_lookups_156: 
+  lvalue: Eye-Witness
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.824631
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.824631
+  id: 156
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Eye-Witness
+company_lookups_182: 
+  lvalue: Contacted
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.925684
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.925684
+  id: 182
+  category_id: 
+  type: LeadStatusType
+  company_id: "1"
+  alvalue: Contacted
+company_lookups_264: 
+  lvalue: Invalid Email
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.975266
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.975266
+  id: 264
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Invalid Email
+company_lookups_238: 
+  lvalue: NA
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.140991
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.140991
+  id: 238
+  category_id: 
+  type: PaymentModeType
+  company_id: "1"
+  alvalue: NA
+company_lookups_39: 
+  lvalue: Compliance and Corporate Governance
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:25.477058
+  id: 39
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Compliance and Corporate Governance
+company_lookups_65: 
+  lvalue: Motion Practice
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.54856
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.558632
+  id: 65
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Motion Practice
+company_lookups_91: 
+  lvalue: Seminars/Conferences
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.741697
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:26.402161
+  id: 91
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Seminars/Conferences
+company_lookups_157: 
+  lvalue: Corporate Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.833178
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.833178
+  id: 157
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A Corporate Counsel
+company_lookups_183: 
+  lvalue: New
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.938815
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.938815
+  id: 183
+  category_id: 
+  type: LeadStatusType
+  company_id: "1"
+  alvalue: New
+company_lookups_265: 
+  lvalue: New
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.983553
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.983553
+  id: 265
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: New
+company_lookups_239: 
+  lvalue: Lawyer
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:49.162098
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:49.162098
+  id: 239
+  category_id: 
+  type: CompanyDefaultRoles
+  company_id: "1"
+  alvalue: Lawyer
+company_lookups_66: 
+  lvalue: Negotiation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.551704
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.575312
+  id: 66
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Negotiation
+company_lookups_92: 
+  lvalue: Internal Work Hours
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.745458
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.701905
+  id: 92
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Internal Work Hours
+company_lookups_158: 
+  lvalue: General Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.839307
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.839307
+  id: 158
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A General Counsel
+company_lookups_184: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.95639
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.95639
+  id: 184
+  category_id: 
+  type: LeadStatusType
+  company_id: "1"
+  alvalue: Rejected
+company_lookups_67: 
+  lvalue: Summary Judgement Motion
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.555672
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.59197
+  id: 67
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Summary Judgement Motion
+company_lookups_93: 
+  lvalue: Others
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.749374
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.718613
+  id: 93
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Others
+company_lookups_159: 
+  lvalue: In-house Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.84248
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.84248
+  id: 159
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A In-house Counsel
+company_lookups_185: 
+  lvalue: Aborted
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.979392
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.979392
+  id: 185
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Aborted
+company_lookups_68: 
+  lvalue: Email
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:10:16.83534
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:32.251728
+  id: 68
+  category_id: 
+  type: DocSource
+  company_id: "1"
+  alvalue: A Email
+company_lookups_94: 
+  lvalue: Faxing
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.347599
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:37.985825
+  id: 94
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Faxing
+company_lookups_186: 
+  lvalue: Planned
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.999056
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.999056
+  id: 186
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Planned
+company_lookups_69: 
+  lvalue: Letter
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:10:16.843072
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:32.268351
+  id: 69
+  category_id: 
+  type: DocSource
+  company_id: "1"
+  alvalue: A Letter
+company_lookups_95: 
+  lvalue: Scanning
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.355857
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.002398
+  id: 95
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Scanning
+company_lookups_187: 
+  lvalue: Inprogress
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.014763
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.014763
+  id: 187
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Inprogress
+company_lookups_96: 
+  lvalue: Shipping and postal fees
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.360596
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.019271
+  id: 96
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Shipping and postal fees
+company_lookups_188: 
+  lvalue: Completed
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.031712
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.031712
+  id: 188
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Completed
+company_lookups_97: 
+  lvalue: Consulting/expert witness expense
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.365469
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.036063
+  id: 97
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Consulting/expert witness expense
+company_lookups_189: 
+  lvalue: Campaign
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.055693
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.055693
+  id: 189
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Campaign
+company_lookups_98: 
+  lvalue: Witness expenses
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.369584
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.052471
+  id: 98
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Witness expenses
+company_lookups_99: 
+  lvalue: Parking
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.373663
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.069182
+  id: 99
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Parking
+company_lookups_110: 
+  lvalue: Background Authority
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.903736
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.144543
+  id: 110
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Background Authority
+company_lookups_111: 
+  lvalue: Case Law
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.907716
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.161639
+  id: 111
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Case Law
+company_lookups_20: 
+  lvalue: Living Wills
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.885519
+  id: 20
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Living Wills
+company_lookups_112: 
+  lvalue: Other Authority
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.911873
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:26.910533
+  id: 112
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Other Authority
+company_lookups_21: 
+  lvalue: Name Change
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.902129
+  id: 21
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Name Change
+company_lookups_113: 
+  lvalue: Regulation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.916045
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.221903
+  id: 113
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Regulation
+company_lookups_220: 
+  lvalue: Suspended
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.823191
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.823191
+  id: 220
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Suspended
+company_lookups_22: 
+  lvalue: 501 (c) 3 Applications
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.918884
+  id: 22
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A 501 (c) 3 Applications
+company_lookups_114: 
+  lvalue: Rule
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.920078
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.253465
+  id: 114
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Rule
+company_lookups_140: 
+  lvalue: Paralegal
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.746552
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.746552
+  id: 140
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Paralegal
+company_lookups_221: 
+  lvalue: Invalid Email
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.840825
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.840825
+  id: 221
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Invalid Email
+company_lookups_23: 
+  lvalue: Patent Search
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.935826
+  id: 23
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Patent Search
+company_lookups_115: 
+  lvalue: Statute
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.924001
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.26965
+  id: 115
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Statute
+company_lookups_141: 
+  lvalue: Character Witness
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.755787
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.755787
+  id: 141
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Character Witness
+company_lookups_222: 
+  lvalue: New
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.856561
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.856561
+  id: 222
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: New
+company_lookups_223: 
+  lvalue: Contact
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.879648
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.879648
+  id: 223
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Contact
+company_lookups_24: 
+  lvalue: Power of Attorney
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.952226
+  id: 24
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Power of Attorney
+company_lookups_50: 
+  lvalue: Web
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.016713
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.094164
+  id: 50
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Web
+company_lookups_116: 
+  lvalue: "*"
+  permanent_deleted_at: 
+  created_at: 2010-05-03 14:05:09.428246
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:42.99989
+  id: 116
+  category_id: 
+  type: RatingType
+  company_id: "1"
+  alvalue: A *
+company_lookups_142: 
+  lvalue: External Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.762993
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.762993
+  id: 142
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A External Counsel
+company_lookups_250: 
+  lvalue: Opportunity
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.662247
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.662247
+  id: 250
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Opportunity
+company_lookups_224: 
+  lvalue: Account
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.897481
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.897481
+  id: 224
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Account
+company_lookups_25: 
+  lvalue: Prenuptials
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.968884
+  id: 25
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Prenuptials
+company_lookups_51: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.019887
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.110855
+  id: 51
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Other
+company_lookups_117: 
+  lvalue: Article
+  permanent_deleted_at: 
+  created_at: 2010-05-31 08:44:09.093312
+  deleted_at: 
+  updated_at: 2010-05-31 08:44:09.093312
+  id: 117
+  category_id: 
+  type: DocumentCategory
+  company_id: "1"
+  alvalue: A Article
+company_lookups_143: 
+  lvalue: Consultant & Advisor
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.767652
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.767652
+  id: 143
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Consultant & Advisor
+company_lookups_251: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.679204
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.679204
+  id: 251
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Rejected
+company_lookups_225: 
+  lvalue: Lead
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.914786
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.914786
+  id: 225
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Lead
+company_lookups_26: 
+  lvalue: Provisional Patents
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.985435
+  id: 26
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Provisional Patents
+company_lookups_52: 
+  lvalue: Word Of Mouth
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.023073
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.127949
+  id: 52
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Word Of Mouth
+company_lookups_118: 
+  lvalue: Template
+  permanent_deleted_at: 
+  created_at: 2010-05-31 08:44:09.111085
+  deleted_at: 
+  updated_at: 2010-05-31 08:44:09.111085
+  id: 118
+  category_id: 
+  type: DocumentCategory
+  company_id: "1"
+  alvalue: A Template
+company_lookups_144: 
+  lvalue: Beneficiary
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.771816
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.771816
+  id: 144
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Beneficiary
+company_lookups_170: 
+  lvalue: Formats
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.836905
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.836905
+  id: 170
+  category_id: "1914"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A Formats
+company_lookups_252: 
+  lvalue: Suspended
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.695537
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.695537
+  id: 252
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Suspended
+company_lookups_226: 
+  lvalue: Opportunity
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.932015
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.932015
+  id: 226
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Opportunity
+company_lookups_27: 
+  lvalue: Real Estate Leases
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.002168
+  id: 27
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Real Estate Leases
+company_lookups_53: 
+  lvalue: Pre Trial Report
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.497056
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.141921
+  id: 53
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Pre Trial Report
+company_lookups_119: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-05-31 08:44:09.115055
+  deleted_at: 
+  updated_at: 2010-05-31 08:44:09.115055
+  id: 119
+  category_id: 
+  type: DocumentCategory
+  company_id: "1"
+  alvalue: A Other
+company_lookups_145: 
+  lvalue: Deponent
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.775701
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.775701
+  id: 145
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Deponent
+company_lookups_171: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.840648
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.840648
+  id: 171
+  category_id: "1914"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A Other
+company_lookups_253: 
+  lvalue: Invalid Email
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.741651
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.741651
+  id: 253
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Invalid Email
+company_lookups_227: 
+  lvalue: Matter
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.948015
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.948015
+  id: 227
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Matter
+company_lookups_28: 
+  lvalue: Small Claims
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.019145
+  id: 28
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Small Claims
+company_lookups_54: 
+  lvalue: Trial
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.504609
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.15834
+  id: 54
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Trial
+company_lookups_80: 
+  lvalue: Court Appearance
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.702727
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.468919
+  id: 80
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Court Appearance
+company_lookups_146: 
+  lvalue: Cross-defendant
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.779442
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.779442
+  id: 146
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Cross-defendant
+company_lookups_172: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.844506
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.844506
+  id: 172
+  category_id: "1915"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A Other
+company_lookups_254: 
+  lvalue: New
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.772269
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.772269
+  id: 254
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: New
+company_lookups_228: 
+  lvalue: Project
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.965209
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.965209
+  id: 228
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Project
+company_lookups_29: 
+  lvalue: SEC Filings
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.035835
+  id: 29
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A SEC Filings
+company_lookups_55: 
+  lvalue: Order Judgement
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.508313
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.17493
+  id: 55
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Order Judgement
+company_lookups_81: 
+  lvalue: Drafting Memo
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.705766
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.49084
+  id: 81
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Drafting Memo
+company_lookups_147: 
+  lvalue: Debtor
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.790112
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.790112
+  id: 147
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Debtor
+company_lookups_173: 
+  lvalue: Closed/Lost
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 173
+  category_id: 
+  type: OpportunityStageType
+  company_id: "1"
+  alvalue: A Closed/Lost
+company_lookups_255: 
+  lvalue: Aborted
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:54:57.067522
+  deleted_at: 
+  updated_at: 2010-09-28 10:54:57.067522
+  id: 255
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Aborted
+company_lookups_229: 
+  lvalue: Generic
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.981541
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.981541
+  id: 229
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Generic
+company_lookups_56: 
+  lvalue: Execution
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.511794
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.21265
+  id: 56
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Execution
+company_lookups_82: 
+  lvalue: Review Documents
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.708841
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.500757
+  id: 82
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Review Documents
+company_lookups_148: 
+  lvalue: Creditor
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.794044
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.794044
+  id: 148
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Creditor
+company_lookups_174: 
+  lvalue: Closed/Won
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 
+  id: 174
+  category_id: 
+  type: OpportunityStageType
+  company_id: "1"
+  alvalue: A Closed/Won
+company_lookups_256: 
+  lvalue: Planned
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:54:57.094192
+  deleted_at: 
+  updated_at: 2010-09-28 10:54:57.094192
+  id: 256
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Planned
+company_lookups_57: 
+  lvalue: Appeal
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.516535
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.241792
+  id: 57
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Appeal
+company_lookups_83: 
+  lvalue: Client Interview
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.711877
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.517905
+  id: 83
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Client Interview
+company_lookups_149: 
+  lvalue: Liquidator
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.797768
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.797768
+  id: 149
+  category_id: 
+  type: OtherRole
+  company_id: "1"
+  alvalue: A Liquidator
+company_lookups_175: 
+  lvalue: Prospecting
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.611554
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.611554
+  id: 175
+  category_id: 
+  type: OpportunityStageType
+  company_id: "1"
+  alvalue: Prospecting
+company_lookups_257: 
+  lvalue: Inprogress
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:54:57.102377
+  deleted_at: 
+  updated_at: 2010-09-28 10:54:57.102377
+  id: 257
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Inprogress
+company_lookups_58: 
+  lvalue: Initiation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.520865
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.258583
+  id: 58
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Initiation
+company_lookups_84: 
+  lvalue: Witness Interview
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.715475
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.53557
+  id: 84
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Witness Interview
+company_lookups_176: 
+  lvalue: Negotiation
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.639839
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.639839
+  id: 176
+  category_id: 
+  type: OpportunityStageType
+  company_id: "1"
+  alvalue: Negotiation
+company_lookups_258: 
+  lvalue: Completed
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:54:57.110708
+  deleted_at: 
+  updated_at: 2010-09-28 10:54:57.110708
+  id: 258
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Completed
+company_lookups_85: 
+  lvalue: Providing Legal Advice
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.719391
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.576092
+  id: 85
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Providing Legal Advice
+company_lookups_177: 
+  lvalue: Proposal
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.656321
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.656321
+  id: 177
+  category_id: 
+  type: OpportunityStageType
+  company_id: "1"
+  alvalue: Proposal
+company_lookups_59: 
+  lvalue: Complaint
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:58.525234
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:21.275023
+  id: 59
+  category_id: 
+  type: Phase
+  company_id: "1"
+  alvalue: A Complaint
+company_lookups_259: 
+  lvalue: Contacted
+  permanent_deleted_at: 
+  created_at: 2010-09-28 10:55:41.913695
+  deleted_at: 
+  updated_at: 2010-09-28 10:55:41.913695
+  id: 259
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Contacted
+company_lookups_86: 
+  lvalue: Negotiations
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.723194
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.601751
+  id: 86
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Negotiations
+company_lookups_178: 
+  lvalue: Final Review
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.672931
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.672931
+  id: 178
+  category_id: 
+  type: OpportunityStageType
+  company_id: "1"
+  alvalue: Final Review
+company_lookups_179: 
+  lvalue: Active
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:47.69919
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:47.69919
+  id: 179
+  category_id: 
+  type: ProspectStatusType
+  company_id: "1"
+  alvalue: Active
+company_lookups_87: 
+  lvalue: Mediation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.726936
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.618642
+  id: 87
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Mediation
+company_lookups_88: 
+  lvalue: Arbitration
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.730572
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.635138
+  id: 88
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Arbitration
+company_lookups_89: 
+  lvalue: Presales/ Sales
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.7343
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.651679
+  id: 89
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Presales/ Sales
+company_lookups_100: 
+  lvalue: Telephone expenses
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.377532
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.08577
+  id: 100
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Telephone expenses
+company_lookups_101: 
+  lvalue: Toll road fees
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.381336
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.102543
+  id: 101
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Toll road fees
+company_lookups_10: 
+  lvalue: Living Trusts
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.702182
+  id: 10
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Living Trusts
+company_lookups_102: 
+  lvalue: Misc
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.385165
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.119276
+  id: 102
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Misc
+company_lookups_11: 
+  lvalue: DBAs & FNAs
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.71888
+  id: 11
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A DBAs & FNAs
+company_lookups_103: 
+  lvalue: Hotel
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.38892
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.136271
+  id: 103
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Hotel
+company_lookups_210: 
+  lvalue: Disputed By us
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.45639
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.45639
+  id: 210
+  category_id: 
+  type: FactMatter
+  company_id: "1"
+  alvalue: Disputed By us
+company_lookups_12: 
+  lvalue: Patents
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.735918
+  id: 12
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Patents
+company_lookups_104: 
+  lvalue: Car rental/hire
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.392726
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.152603
+  id: 104
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Car rental/hire
+company_lookups_130: 
+  lvalue: Associate
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.507684
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.507684
+  id: 130
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Associate
+company_lookups_211: 
+  lvalue: Disputed By Opposition
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.475474
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.475474
+  id: 211
+  category_id: 
+  type: FactMatter
+  company_id: "1"
+  alvalue: Disputed By Opposition
+company_lookups_13: 
+  lvalue: Bankruptcy
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.752192
+  id: 13
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Bankruptcy
+company_lookups_105: 
+  lvalue: Mileage on vehicle
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.396558
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.169984
+  id: 105
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Mileage on vehicle
+company_lookups_131: 
+  lvalue: Senior Associate
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.511858
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.511858
+  id: 131
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Senior Associate
+company_lookups_212: 
+  lvalue: Atty Work product
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.495663
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.495663
+  id: 212
+  category_id: 
+  type: MatterPrivileges
+  company_id: "1"
+  alvalue: Atty Work product
+company_lookups_14: 
+  lvalue: Non-profits
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.768899
+  id: 14
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Non-profits
+company_lookups_40: 
+  lvalue: Lead
+  permanent_deleted_at: 
+  created_at: 2010-04-13 13:35:01.781414
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.910811
+  id: 40
+  category_id: 
+  type: ContactStage
+  company_id: "1"
+  alvalue: A Lead
+company_lookups_106: 
+  lvalue: Food
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.40046
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.186005
+  id: 106
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Food
+company_lookups_132: 
+  lvalue: Executive Assistant
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.516214
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.516214
+  id: 132
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Executive Assistant
+company_lookups_213: 
+  lvalue: Atty-client
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.513126
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.513126
+  id: 213
+  category_id: 
+  type: MatterPrivileges
+  company_id: "1"
+  alvalue: Atty-client
+company_lookups_240: 
+  lvalue: Active
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:24:18.690168
+  deleted_at: 
+  updated_at: 2010-09-18 10:24:18.690168
+  id: 240
+  category_id: 
+  type: ClientStatusType
+  company_id: "1"
+  alvalue: Active
+company_lookups_15: 
+  lvalue: Copyrights
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.785479
+  id: 15
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Copyrights
+company_lookups_41: 
+  lvalue: Prospect
+  permanent_deleted_at: 
+  created_at: 2010-04-13 13:35:01.79555
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.927554
+  id: 41
+  category_id: 
+  type: ContactStage
+  company_id: "1"
+  alvalue: A Prospect
+company_lookups_107: 
+  lvalue: Copying
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:22.404137
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:38.202523
+  id: 107
+  category_id: 
+  type: Physical::Timeandexpenses::ExpenseType
+  company_id: "1"
+  alvalue: A Copying
+company_lookups_133: 
+  lvalue: Paralegal
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.520458
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.520458
+  id: 133
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Paralegal
+company_lookups_214: 
+  lvalue: Atty-client and Attywork product
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.523048
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.523048
+  id: 214
+  category_id: 
+  type: MatterPrivileges
+  company_id: "1"
+  alvalue: Atty-client and Attywork product
+company_lookups_241: 
+  lvalue: Inactive
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:24:18.707655
+  deleted_at: 
+  updated_at: 2010-09-18 10:24:18.707655
+  id: 241
+  category_id: 
+  type: ClientStatusType
+  company_id: "1"
+  alvalue: Inactive
+company_lookups_16: 
+  lvalue: Design Patents
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.803143
+  id: 16
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Design Patents
+company_lookups_42: 
+  lvalue: Client
+  permanent_deleted_at: 
+  created_at: 2010-04-13 13:35:01.798651
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.944244
+  id: 42
+  category_id: 
+  type: ContactStage
+  company_id: "1"
+  alvalue: A Client
+company_lookups_108: 
+  lvalue: Admin Ruling
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.891111
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.111179
+  id: 108
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Admin Ruling
+company_lookups_134: 
+  lvalue: Lead Lawyer
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.716456
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.716456
+  id: 134
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Lead Lawyer
+company_lookups_160: 
+  lvalue: General Manager - Legal
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.845896
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.845896
+  id: 160
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A General Manager - Legal
+company_lookups_215: 
+  lvalue: Not privileged
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.732008
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.732008
+  id: 215
+  category_id: 
+  type: MatterPrivileges
+  company_id: "1"
+  alvalue: Not privileged
+company_lookups_242: 
+  lvalue: Active
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:24:18.726479
+  deleted_at: 
+  updated_at: 2010-09-18 10:24:18.726479
+  id: 242
+  category_id: 
+  type: OtherStatusType
+  company_id: "1"
+  alvalue: Active
+company_lookups_17: 
+  lvalue: Divorce
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.852818
+  id: 17
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Divorce
+company_lookups_43: 
+  lvalue: Others
+  permanent_deleted_at: 
+  created_at: 2010-04-13 13:35:01.801488
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.960683
+  id: 43
+  category_id: 
+  type: ContactStage
+  company_id: "1"
+  alvalue: A Others
+company_lookups_109: 
+  lvalue: Article
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:38.899428
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:41.127746
+  id: 109
+  category_id: 
+  type: ResearchType
+  company_id: "1"
+  alvalue: A Article
+company_lookups_135: 
+  lvalue: Matter Client
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.724271
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.724271
+  id: 135
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Matter Client
+company_lookups_161: 
+  lvalue: Legal Executive
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.84931
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.84931
+  id: 161
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A Legal Executive
+company_lookups_216: 
+  lvalue: Contacted
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.752168
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.752168
+  id: 216
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Contacted
+company_lookups_243: 
+  lvalue: Inactive
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:24:18.747393
+  deleted_at: 
+  updated_at: 2010-09-18 10:24:18.747393
+  id: 243
+  category_id: 
+  type: OtherStatusType
+  company_id: "1"
+  alvalue: Inactive
+company_lookups_18: 
+  lvalue: Limited Partnerships
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.252251
+  id: 18
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Limited Partnerships
+company_lookups_44: 
+  lvalue: Campaign
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:39.987857
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:29.994252
+  id: 44
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Campaign
+company_lookups_70: 
+  lvalue: Fax
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:10:16.847165
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:32.284837
+  id: 70
+  category_id: 
+  type: DocSource
+  company_id: "1"
+  alvalue: A Fax
+company_lookups_136: 
+  lvalue: Senior Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.729093
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.729093
+  id: 136
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Senior Counsel
+company_lookups_162: 
+  lvalue: Business Head /Manager
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.852842
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.852842
+  id: 162
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A Business Head /Manager
+company_lookups_217: 
+  lvalue: Responded
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.778169
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.778169
+  id: 217
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Responded
+company_lookups_244: 
+  lvalue: Aborted
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:28:35.635268
+  deleted_at: 
+  updated_at: 2010-09-24 17:28:35.635268
+  id: 244
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Aborted
+company_lookups_19: 
+  lvalue: Limited Liability Partnerships
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.868939
+  id: 19
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Limited Liability Partnerships
+company_lookups_45: 
+  lvalue: Conference
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:39.997699
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.011184
+  id: 45
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Conference
+company_lookups_71: 
+  lvalue: Client
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:10:16.850642
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:32.301506
+  id: 71
+  category_id: 
+  type: DocSource
+  company_id: "1"
+  alvalue: A Client
+company_lookups_137: 
+  lvalue: Junior Counsel
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.733199
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.733199
+  id: 137
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Junior Counsel
+company_lookups_163: 
+  lvalue: Technical Executive
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.856181
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.856181
+  id: 163
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A Technical Executive
+company_lookups_218: 
+  lvalue: Opportunity
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.790133
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.790133
+  id: 218
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Opportunity
+company_lookups_245: 
+  lvalue: Planned
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:28:35.806936
+  deleted_at: 
+  updated_at: 2010-09-24 17:28:35.806936
+  id: 245
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Planned
+company_lookups_46: 
+  lvalue: Cold Call
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.002734
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.027781
+  id: 46
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Cold Call
+company_lookups_72: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:10:16.854192
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:32.318527
+  id: 72
+  category_id: 
+  type: DocSource
+  company_id: "1"
+  alvalue: A Other
+company_lookups_138: 
+  lvalue: Associate
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.737476
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.737476
+  id: 138
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Associate
+company_lookups_164: 
+  lvalue: Technical Assistant
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.859711
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.859711
+  id: 164
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A Technical Assistant
+company_lookups_190: 
+  lvalue: Conference
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.073081
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.073081
+  id: 190
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Conference
+company_lookups_219: 
+  lvalue: Rejected
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.809354
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.809354
+  id: 219
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Rejected
+company_lookups_246: 
+  lvalue: Inprogress
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:28:35.821285
+  deleted_at: 
+  updated_at: 2010-09-24 17:28:35.821285
+  id: 246
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Inprogress
+company_lookups_47: 
+  lvalue: Online
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.006843
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.044293
+  id: 47
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Online
+company_lookups_73: 
+  lvalue: Travel
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.676436
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:26.385602
+  id: 73
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Travel
+company_lookups_139: 
+  lvalue: Senior Associate
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.741947
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.741947
+  id: 139
+  category_id: 
+  type: ClientRole
+  company_id: "1"
+  alvalue: A Senior Associate
+company_lookups_165: 
+  lvalue: Paralegal
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.863356
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.863356
+  id: 165
+  category_id: 
+  type: ClientRepRole
+  company_id: "1"
+  alvalue: A Paralegal
+company_lookups_191: 
+  lvalue: Cold Call
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.089943
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.089943
+  id: 191
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Cold Call
+company_lookups_1: 
+  lvalue: Appeals
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.222779
+  id: 1
+  category_id: 
+  type: TypesLiti
+  company_id: "1"
+  alvalue: A Appeals
+company_lookups_247: 
+  lvalue: Completed
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:28:35.829925
+  deleted_at: 
+  updated_at: 2010-09-24 17:28:35.829925
+  id: 247
+  category_id: 
+  type: CampaignStatusType
+  company_id: "1"
+  alvalue: Completed
+company_lookups_48: 
+  lvalue: Self Generated
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.010233
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.060827
+  id: 48
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Self Generated
+company_lookups_74: 
+  lvalue: Mail
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.683098
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.368529
+  id: 74
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Mail
+company_lookups_166: 
+  lvalue: Legal
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.807106
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.807106
+  id: 166
+  category_id: "1913"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A Legal
+company_lookups_192: 
+  lvalue: Online
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.106797
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.106797
+  id: 192
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Online
+company_lookups_2: 
+  lvalue: Civil
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:25.077861
+  id: 2
+  category_id: 
+  type: TypesLiti
+  company_id: "1"
+  alvalue: A Civil
+company_lookups_248: 
+  lvalue: Contacted
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.453384
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.453384
+  id: 248
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Contacted
+company_lookups_49: 
+  lvalue: Referral
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:08:40.013452
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:30.077456
+  id: 49
+  category_id: 
+  type: CompanySource
+  company_id: "1"
+  alvalue: A Referral
+company_lookups_75: 
+  lvalue: Research
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.687012
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.384976
+  id: 75
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Research
+company_lookups_167: 
+  lvalue: General
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.82466
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.82466
+  id: 167
+  category_id: "1913"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A General
+company_lookups_193: 
+  lvalue: Self Generated
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.153139
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.153139
+  id: 193
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Self Generated
+company_lookups_3: 
+  lvalue: Criminal
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:25.463412
+  id: 3
+  category_id: 
+  type: TypesLiti
+  company_id: "1"
+  alvalue: A Criminal
+company_lookups_249: 
+  lvalue: Responded
+  permanent_deleted_at: 
+  created_at: 2010-09-24 17:29:03.646428
+  deleted_at: 
+  updated_at: 2010-09-24 17:29:03.646428
+  id: 249
+  category_id: 
+  type: CampaignMemberStatusType
+  company_id: "1"
+  alvalue: Responded
+company_lookups_76: 
+  lvalue: Phone conversation
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.690165
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.401646
+  id: 76
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Phone conversation
+company_lookups_168: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.829011
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.829011
+  id: 168
+  category_id: "1913"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A Other
+company_lookups_194: 
+  lvalue: Referral
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.173011
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.173011
+  id: 194
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Referral
+company_lookups_4: 
+  lvalue: Limited Liability Company
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.635937
+  id: 4
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Limited Liability Company
+company_lookups_77: 
+  lvalue: E Mail
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.693424
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.4192
+  id: 77
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A E Mail
+company_lookups_169: 
+  lvalue: Forms
+  permanent_deleted_at: 
+  created_at: 2010-08-20 16:09:57.832952
+  deleted_at: 
+  updated_at: 2010-08-20 16:09:57.832952
+  id: 169
+  category_id: "1914"
+  type: DocumentSubCategory
+  company_id: "1"
+  alvalue: A Forms
+company_lookups_195: 
+  lvalue: Web
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.189603
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.189603
+  id: 195
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Web
+company_lookups_5: 
+  lvalue: Incorporations
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.652252
+  id: 5
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Incorporations
+company_lookups_78: 
+  lvalue: Time with Opposing Counsel
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.696645
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.435057
+  id: 78
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Time with Opposing Counsel
+company_lookups_196: 
+  lvalue: Other
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.207338
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.207338
+  id: 196
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Other
+company_lookups_6: 
+  lvalue: Trademarks
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.668889
+  id: 6
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Trademarks
+company_lookups_79: 
+  lvalue: Meetings with Judge
+  permanent_deleted_at: 
+  created_at: 2010-04-26 14:11:00.699695
+  deleted_at: 
+  updated_at: 2010-09-18 10:03:33.453088
+  id: 79
+  category_id: 
+  type: Physical::Timeandexpenses::ActivityType
+  company_id: "1"
+  alvalue: A Meetings with Judge
+company_lookups_197: 
+  lvalue: Word Of Mouth
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.222963
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.222963
+  id: 197
+  category_id: 
+  type: LeadSource
+  company_id: "1"
+  alvalue: Word Of Mouth
+company_lookups_7: 
+  lvalue: Trademarks Monitoring
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.236297
+  id: 7
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Trademarks Monitoring
+company_lookups_198: 
+  lvalue: Matter Review
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.246094
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.246094
+  id: 198
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Matter Review
+company_lookups_8: 
+  lvalue: Trademark Search
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:27.685497
+  id: 8
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Trademark Search
+company_lookups_199: 
+  lvalue: Schedule Meeting
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.265336
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.265336
+  id: 199
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Schedule Meeting
+company_lookups_9: 
+  lvalue: Wills
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:25.174326
+  id: 9
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Wills
+company_lookups_200: 
+  lvalue: Update Calender
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.281305
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.281305
+  id: 200
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Update Calender
+company_lookups_120: 
+  lvalue: Open
+  permanent_deleted_at: 
+  created_at: 2010-06-16 09:26:12.635816
+  deleted_at: 
+  updated_at: 2010-06-16 09:26:12.635816
+  id: 120
+  category_id: 
+  type: MatterStatus
+  company_id: "1"
+  alvalue: A Open
+company_lookups_201: 
+  lvalue: Summary Report
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.298245
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.298245
+  id: 201
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Summary Report
+company_lookups_121: 
+  lvalue: Completed
+  permanent_deleted_at: 
+  created_at: 2010-06-16 09:26:12.674083
+  deleted_at: 
+  updated_at: 2010-06-16 09:26:12.674083
+  id: 121
+  category_id: 
+  type: MatterStatus
+  company_id: "1"
+  alvalue: A Completed
+company_lookups_202: 
+  lvalue: Note processing
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.314504
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.314504
+  id: 202
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Note processing
+company_lookups_122: 
+  lvalue: Managing Partner
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.42581
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.42581
+  id: 122
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Managing Partner
+company_lookups_203: 
+  lvalue: Document Review
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.332225
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.332225
+  id: 203
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Document Review
+company_lookups_30: 
+  lvalue: Capital Market
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.052155
+  id: 30
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A Capital Market
+company_lookups_230: 
+  lvalue: Internal
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.998703
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.998703
+  id: 230
+  category_id: 
+  type: Physical::Timeandexpenses::AccountedForType
+  company_id: "1"
+  alvalue: Internal
+company_lookups_204: 
+  lvalue: Weekly Report
+  permanent_deleted_at: 
+  created_at: 2010-09-18 10:23:48.348112
+  deleted_at: 
+  updated_at: 2010-09-18 10:23:48.348112
+  id: 204
+  category_id: 
+  type: Physical::Liviaservices::SkillType
+  company_id: "1"
+  alvalue: Weekly Report
+company_lookups_31: 
+  lvalue: M&As
+  permanent_deleted_at: 
+  created_at: 
+  deleted_at: 
+  updated_at: 2010-09-18 10:05:28.068879
+  id: 31
+  category_id: 
+  type: TypesNonLiti
+  company_id: "1"
+  alvalue: A M&As
+company_lookups_123: 
+  lvalue: Lead Lawyer
+  permanent_deleted_at: 
+  created_at: 2010-06-17 08:37:27.477553
+  deleted_at: 
+  updated_at: 2010-06-17 08:37:27.477553
+  id: 123
+  category_id: 
+  type: TeamRole
+  company_id: "1"
+  alvalue: A Lead Lawyer
+
+# == Schema Information
+#
+# Table name: company_lookups
+#
+#  id                   :integer         not null, primary key
+#  type                 :string(255)
+#  lvalue               :string(255)
+#  company_id           :integer         default(1)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  deleted_at           :datetime
+#  permanent_deleted_at :datetime
+#  alvalue              :string(255)
+#  category_id          :integer
+#  sequence             :integer         default(0)
+#
+

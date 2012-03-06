@@ -1,0 +1,2 @@
+module ProductLicenceDetailsHelper
+end

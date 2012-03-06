@@ -1,0 +1,126 @@
+<% if(@financial_transaction.errors.length > 0) %>
+  <div class="message_error_div" style="background-image:none;"><%= f.error_messages %></div>
+<% end %>
+<%= render :partial => '/financial_accounts/additional_header' %>
+<% if (@controller.action_name != 'inter_transfer' && @controller.action_name != 'update_inter_transfer') %>
+  <div class="fl w100 pl5 pt5">
+  <strong><label><%= @financial_account.name.camelize%>, <%=@financial_account.bank_name.camelize %></label>&nbsp;<label><%= @financial_account.address.camelize %></label></strong>
+  <div style="clear:both;height:10px;"></div>
+  <label><%= t(:text_financial_account_ac) %></label>&nbsp;<strong><label><%= @financial_account.account_no %></label></strong>
+  </div>
+<% end %>
+<div class="w48 fl p5 bg_white">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+    <% if (@controller.action_name == 'inter_transfer' || @controller.action_name == 'update_inter_transfer') %>
+      <tr>
+        <td width="25%"><%= t(:text_financial_account_ac_to) %></td>
+        <% selected_credited_id, selected_debited_id = inter_transfer_selected_list_box_ids %>
+        <td width="75%"><%= select_tag('financial_account_credited_no', options_for_select(current_company.financial_accounts.collect {|x|[x.name, x.id]}, selected_credited_id), {:class => "dropbox w100p", :style => "width:120px;"}) %></td>
+      </tr>
+      <tr>
+        <td><%= t(:text_financial_account_ac_from) %></td>
+        <td>
+          <select style="width:120px;" name="financial_account_debited_no" id="financial_account_debited_no" class="dropbox w100p">
+            <% current_company.financial_accounts.each do |financial_account| %>
+              <% selected = financial_account.id == selected_debited_id ? "selected='selected'" : '' %>
+              <option value="<%=financial_account.id%>" available_amount="<%=financial_account.amount%>" <%= selected %>><%= financial_account.name %></option>
+            <% end %>
+          </select>
+  <%#= select_tag('financial_account_debited_no',options_for_select(current_company.financial_accounts.collect {|x|[x.name,x.id]},:selected=>selected_debited_id),{:class => "dropbox w100p",:style=>"width:120px;"}) %>&nbsp;&nbsp;&nbsp;
+          <span><%= t(:text_financial_account_available_amount) %>&nbsp;&nbsp;&nbsp;<strong id="remaining_amount"><%= current_company.financial_accounts.map{|x| x.amount if x.id == selected_debited_id} %></strong></span>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td width="25%"><%= t(:text_financial_account_amount_paid) %><span class="alert_message">*</span></td>
+      <% style_display = @financial_transaction.invoice_no ? '' : 'display:none;' %>
+      <td width="75%"><%= f.text_field(:amount, :size => 30,:class => 'trust_number') %>&nbsp;&nbsp;<span id="amount_to_paid_span" style="<%=style_display%>">Amount to be Paid&nbsp;&nbsp;<strong id="amount_to_paid"><%= @amount_to_paid %></strong></span></td>
+    </tr>
+    <tr>
+      <td><%= t(:text_financial_account_date_or_settled) %><span class="alert_message">*</span></td>
+      <% tr_date = @financial_transaction.transaction_date ? @financial_transaction.transaction_date.to_date : Date.today %>
+      <td><%= f.text_field(:transaction_date, :size => 30, :class => 'date_picker', :value => tr_date) %></td>
+    </tr>
+    <tr>
+      <td valign="top"><%= t(:text_financial_account_description) %><span class="alert_message">*</span></td>
+      <td><%= f.text_area(:details, :cols => 30,:rows => 2) %></td>
+    </tr>
+    <% unless (@controller.action_name == 'inter_transfer' || @controller.action_name == 'update_inter_transfer') %>
+      <tr>
+        <td><%= t(:text_financial_account_payee) %><span class="alert_message">*</span></td>
+        <td><%= f.text_field(:payer, :size => 30) %></td>
+      </tr>
+      <tr>
+        <td><%= t(:text_financial_account_checke_or_receipt) %></td>
+        <td><%= f.text_field(:transaction_no, :size => 30) %></td>
+      </tr>
+    <%end%>
+   
+  </table>
+</div>
+<div class="w48 fl p5 bg_white">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="form_table">
+     <tr>
+       <td width="25%"><%= t(:text_financial_account_reference_no) %></td>
+       <td width="75%"><%= f.text_field(:reference, :size => 30) %></td>
+    </tr>
+    <% matter_id = @financial_transaction.matter_id ? @financial_transaction.matter_id : @financial_account.matter_id %>
+    <% account_id = @financial_transaction.account_id ? @financial_transaction.account_id : @financial_account.account_id %>
+    <%= f.hidden_field(:matter_id,:value=> matter_id) %>
+    <%= f.hidden_field(:account_id, :value => account_id) %>
+    <% matter_name = (@financial_transaction.matter_id) ? @financial_transaction.matter.name : (@financial_account.matter_id ) ? @financial_account.matter.name : "" %>
+    <tr>
+      <td><%= t(:text_financial_account_matter) %></td>
+      <td><%= text_field_tag 'financial_account_matter_sphinx_search', '', :size =>'30', :title => '', :value => matter_name, :class => "financial_transaction search" %>
+        <div id="matter_search_div"></div></td>
+    </tr>
+    <tr>
+      <td><%= t(:text_financial_account_contact_or_client) %></td>
+      <td>
+        <% account_name = (@financial_transaction.account_id) ? @financial_transaction.account.name : (@financial_account.account_id ) ? @financial_account.account.name : "" %>
+        <%= text_field_tag 'financial_account_account_sphinx_search','', :size => '30',:value => account_name, :title => '', :class => "financial_transaction search" %>
+      </td>
+    </tr>
+    <% unless (@controller.action_name == 'inter_transfer' || @controller.action_name == 'update_inter_transfer') %>
+      <tr>
+        <td><%= t(:text_financial_account_approved_status) %></td>
+        <% approval_status_sel_id = @financial_transaction.approval_status_id ? @financial_transaction.approval_status_id : current_company.approval_statuses[current_company.approval_statuses.index {|x|  x.lvalue == 'Not Needed'}].id %>
+        <td><%= f.select(:approval_status_id, current_company.approval_statuses.map {|x| [x.alvalue, x.id]}, {:selected => approval_status_sel_id}, :class => 'select_invoice') %></td>
+      </tr>
+      <% style_display = @financial_transaction.approved_by ? '' : "display:none;" %>
+      <tr id="approved_by" style="<%= style_display %>">
+        <td><%= t(:text_financial_account_approved_by) %></td>
+        <td id="approved_by_list"><%= f.select(:approved_by, @approvel_clients.map {|x| [x.name, x.id]}) if @financial_transaction.approved_by %></td>
+      </tr>
+      <tr>
+        <td><%= t(:text_financial_account_select_invoice) %></td>
+        <% checked, style_diplay = @financial_transaction.invoice_no ? [true, ''] : [false, 'display:none;'] %>
+        <td><%= check_box_tag :invoice, 1, checked, :class => 'select_invoice' %></td>
+      </tr>
+      <tr class="invoice_no box_bg_bdr_1 bdr_bot_1 border_gray" style="<%=style_diplay%>">
+        <td><%= t(:text_invoice_no) %></td>
+        <td ><span id="invoice_no_list_box">
+            <% if @financial_transaction.invoice_no && @matter_billings %>
+              <select id='financial_account_invoice_no' name='financial_transaction[invoice_no]'>
+                <% @matter_billings.each do |invoice_no| %>
+                  <option value="<%=invoice_no.bill_no%>" billed_amt="<%=invoice_no.billed_amt%>" paid_amt="<%=invoice_no.paid_amt%>" balance="<%=invoice_no.balance_amt%>" <%= 'selected="selected"' if invoice_no.bill_no.to_s == @selected_invoice_no.to_s %> > <%= invoice_no.bill_no %></option>
+                <% end %>
+              </select>
+            <% end %>
+          </span>
+          &nbsp;&nbsp;<%= t(:text_financial_account_inv_billed_amt) %>&nbsp;&nbsp;<strong><span id="invoice_billed_amount"><%= @billed_amt if @billed_amt %></span></strong>
+          &nbsp;&nbsp;<%= t(:text_financial_account_inv_paid_amt) %>&nbsp;&nbsp;<strong><span id="invoice_paid_amount"><%= @paid_amt if @paid_amt %></span></strong>
+        </td>
+      </tr>
+      <tr class="invoice_no box_bg_bdr_1 bdr_bot_1 border_gray" style="<%= style_diplay %>">
+        <td align="left"><%= t(:text_status) %><span class="alert_message">*</span></td>
+        <td align="left"><%= select_tag('matter_billing_status_id', options_for_select(current_company.tne_invoice_statuses.collect {|x|[x.alvalue, x.id]}, :selected => params[:matter_billing_status_id]), {:class => "dropbox w100p", :style => "width:120px;"}) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+  <div style="clear:both;height:20px;"></div>
+<div class="buttonSub_div">
+  <%= f.submit t(:text_save), :name => "save", :class => 'financial_accounts' %>
+  <%= link_to((f.submit t(:text_cancel), :type => 'button', :class => 'financial_accounts', :name => "cancel"), financial_account_path(@financial_account)) %>
+</div>

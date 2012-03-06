@@ -1,0 +1,201 @@
+<%=raw javascript_include_tag  "time_and_expense/new_time_entry" %>
+<%=raw javascript_include_tag  "time_and_expense/expense_entry_for_time_entry" %>
+<%if request.xhr?%>
+  <%=raw(javascript_include_tag "jquery/jquery.timeentry.pack.js")%>
+  <%=raw(javascript_include_tag "livia_common.js")%>
+  <%=raw(javascript_include_tag "application.js")%>
+<%end%>
+<div id="error_notice" class="message_error_div" style="display:none;"></div>
+<div id="from_matters_error_notice" ></div>
+<div class="" align="center" id="loader" style="display:none;"><img src='/images/loading.gif' /></div>
+<%# This hidden tag is used for to check the matter list box values show according to the date selected from the calander%>
+<%= hidden_field_tag "matter_list_box_hidden", "" %>
+<%= hidden_field_tag "previous_entry_date", (@entry_date || @tne_invoice_time_entry.time_entry_date) %>
+
+<% from_matters = (params[:from].eql?("matters") and !@matter.blank?) %>
+<% if params[:height] %>
+  <script type="text/javascript">
+    add_missing_header_to_thickbox("<%=t(:text_new_time_entry)%>");
+  </script>
+<% else %>
+  <h2 class="title_main"><%=t(:text_new_time_associated_expenses)%></h2>
+<% end %>
+<div class="p5">
+  <!--Form container div @start here -->
+  <% remote_form_for :tne_invoice_time_entry,@tne_invoice_time_entry ,:url =>{:action => 'create_time_entry'} do |time_entry| %>
+    <%= hidden_field_tag 'button_pressed'%>
+    <%= hidden_field_tag "tne_invoice_time_entry[tne_invoice_id]", @tne_invoice_time_entry.tne_invoice_id %>
+    <%= hidden_field_tag "called_from_home", :true if params[:height] %>
+    <%= hidden_field_tag "consolidated_by",params[:consolidated_by] %>
+    <%= hidden_field_tag "regenerate", params[:regenerate] %>
+      <div class="form_table">
+      <div class=" fl" style="width:50%;">
+        <table width="100%" class="form_table" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_date)%><%=hidden_field_tag 'note_id',params[:id] if params[:id]%></label><span class="alert_message">*</span></td>
+            <td width="85%" valign="top"><%= time_entry.text_field 'time_entry_date', {:id=> (from_matters ? 'datepicker_time_entry_from_matters' : 'datepicker_time_entry'), :class=>"expense_date_picker", :readonly=> (from_matters ? false : true), :value=> (@entry_date || @tne_invoice_time_entry.time_entry_date), :size => "15" } %>
+            </td>
+          </tr>
+          <%if params[:from].eql?("matters")%>
+            <tr>
+              <td width="15%" valign="top"><label>For Non-User </label></td>
+              <td width="85%" valign="top" ><%= check_box_tag 'nonuser','nonuser' ,false,{:onclick => "toggle_employee(this.id);"}%></td>
+            </tr>
+
+            <tr id="lawyer_employee">
+              <td width="15%" valign="top"><label>Employee</label></td>
+              <td width="35%" valign="top"><%=time_entry.select 'employee_user_id', @lawyers.collect{|lawyer|[ lawyer.get_name,lawyer.employee_user_id ]}%></td>
+            </tr>
+          <%end%>
+          <tr>
+            <td width="15%" valign="top" ><label><%=t(:label_matter_name)%> </label></td>
+            <td width="8%" valign="top">
+              <span id="matters_div" class="search_div"></span>
+              <span id="001_matterSearch" class="search_div" style="width:164px;">
+                <% if from_matters %>
+                  <%= raw new_time_entry_matter_search_box('tne_invoice_time_entry[matter_id]','physical_timeandexpenses_time_entry_matter_id',"_matter_ctl",'001',@matter.name,@matter.id,'disabled="disabled"') %>
+                  <%= hidden_field_tag 'matter_id',@matter.id %>
+                  <%= hidden_field_tag 'from',"matters" %>
+                <% else %>
+                  <% matter_id = !@tne_invoice_time_entry.matter_id.nil? ? @tne_invoice_time_entry.matter_id : nil %>
+                  <%matter_name = @matter_contact_hash ? @matter_contact_hash[:matter_name] : ""%>
+                  <input type="text"  value="No Matter" size="15" title="Search" id="_matter_ctl" autocomplete="off" disabled></input>
+                <% end %>
+              </span>
+            </td>
+          </tr>
+          <tr id="matter_peoples">
+            <td width="15%" valign="top"><label>Matter People</label></td>
+            <td width="35%" valign="top"><%=select_tag 'tne_invoice_time_entry[matter_people_id]', options_for_select(@matter_people_others.collect{|mp|[ mp.rep_full_name,mp.id ]})%></td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top" ><label><%=t(:label_contact)%></label></td>
+            <td width="85%" valign="top">
+              <span id="contact_span" class="search_div"></span>
+              <span id="001_contactSearch" class="search_div" style="width:164px;">
+                <% contact_id = !@tne_invoice_time_entry.contact_id.nil? ? @tne_invoice_time_entry.contact_id : nil %>
+                <%if @tne_invoice_time_entry.matter_id.present?%>
+                  <% contact_name = @matter_contact_hash ? @matter_contact_hash[:contact_name] : "" %>
+                <%else%>
+                  <% contact_name =@contact_name %>
+                <%end%>
+                <% if from_matters %>
+                  <% contact_id = !@matter.contact_id.nil? ? @matter.contact_id : nil %>
+                  <% cont_name = !@matter.contact_id.nil? ? @matter.contact.name : nil %>
+                  <%= raw new_time_entry_contact_search_box('tne_invoice_time_entry[contact_id]','physical_timeandexpenses_time_entry_contact_id','_contact_ctl','001',cont_name,contact_id,'disabled="disabled"') %>
+                <% else %>
+                  <input class="" type="text" id="_contact_ctl" title='Search' size="15" value="<%=contact_name%>"  autocomplete="off" class="search check_onblur blursearchbox ac_input" disabled></input>
+                  <input type="hidden" name="tne_invoice_time_entry[contact_id]" id="physical_timeandexpenses_time_entry_contact_id" value="<%=contact_id%>"></input>
+                 <% end %>
+              </span>
+              <div  id="contact_overlay" class="back_ground_overlay">
+                <ul>
+                  <%@contacts.each do |contact|%>
+                    <li>
+                      <span id="contact_<%=contact.id%>" style="cursor:pointer;" onClick="setContactORMatter(this,'_contact_ctl','physical_timeandexpenses_time_entry_contact_id','new_time_entry_get_all_matters');"><%=contact.full_name%></span>
+                    </li>
+                  <%end%>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_internal)%> </label></td>
+            <td width="85%" valign="top" ><%= time_entry.check_box 'is_internal' ,{:class=>"radio",:checked => (@tne_invoice_time_entry.is_internal and !from_matters), :onclick =>"alert_for_matter_and_contact('physical_timeandexpenses_time_entry_is_internal');is_internal();", :disabled=>from_matters}%></td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_activity_type)%></label></td>
+            <td width="35%" valign="top"><%=time_entry.select 'activity_type', current_company.company_activity_types.collect{|activity|[ activity.alvalue,activity.id ]},{},{:onchange=>"get_activity_rate();" }%></td>
+          </tr>
+          <tr>
+            <td width="15%" valign="top"><label><%=t(:label_description)%></label><span class="alert_message">*</span></td>
+            <td width="85%" valign="top">
+              <%=time_entry.text_area 'description',:id=>'description',:value=>(@note_name.description if @note_name) ,:rows =>5,:cols=> 50 %>            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="fr" style="width:50%;"> <table width="100%" class="form_table" cellpadding="0" cellspacing="0" border="1">
+          <tr>
+            <td width="14%" align="left" valign="top" style="padding-right:4px;"><label><%=t(:label_start_time)%> </label></td>
+            <!-- :class => "hasTimeEntry" is removed from start/end time textfeild to make both fields non editable.Bug #10663 - Kirti -->
+            <td width="20%" align="left" valign="top"><%= time_entry.text_field 'start_time' ,:value =>!@t_start_time.nil? ? @t_start_time : '00:00 PM',:onchange=>"timeDifference();",:style=>"color:#333333;float:left;font-size:100%;width:65px;" %></td>
+            <td width="12%" align="left" valign="top" nowrap="nowrap"><label><%=t(:label_end_time)%></label>&nbsp;</td>
+            <td width="20%" align="left" valign="top"><%=time_entry.text_field :end_time, :value =>!@t_end_time.nil? ? @t_end_time : '00:00 PM',:onchange=>"timeDifference(#{@dur_setng_is_one100th});",:style=>"color:#333333;float:left;font-size:100%;width:65px;" %></td>
+            <td width="16%" align="left" valign="top" nowrap="nowrap"><%=t(:label_duration_hrs)%> <span class="alert_message">*</span>&nbsp;</td>
+            <td width="19%" align="left" valign="top"><%= time_entry.text_field 'actual_duration',:size =>"8",:maxlength=>6, :onchange=>"resetDuration(this,#{@dur_setng_is_one100th});", :class=> "textR amount"%> <%= hidden_field_tag "hidden_duration", "" %></td>
+          </tr>
+          <tr>
+            <td width="12%" align="left" valign="top" style="padding-right:4px;" nowrap="nowrap"><label><%=t(:label_rate_hr)%></label><span class="alert_message">*</span></td>
+            <td colspan="5" width="83%"  align="left" valign="top"><%=time_entry.text_field 'actual_activity_rate', :size=>15, :maxlength=>11, :class => 'txtbox amount textR',:onchange => "check_rate(this);", :style=>"text-align: right;margin:0;"  %>
+              <%= hidden_field_tag("tne_invoice_time_entry[activity_rate]", @tne_invoice_time_entry.activity_rate.to_f.fixed_precision(2) ) %>
+            </td>
+          </tr>
+          <tr>
+            <td width="12%" align="left" valign="top" style="padding-right:4px;"><label><%=t(:label_billable)%></label></td>
+            <td colspan="5" align="left" valign="top"><div class="highlight_bg_1 border_gray p5" style="width:53%">
+                <% if from_matters %>
+                  <%= time_entry.check_box 'is_billable' ,{:onclick =>"enable_disable_tne_invoice_time_entry_billing(this);"}%><br />
+                <% else %>
+                  <%= time_entry.check_box 'is_billable' ,{:disabled=> @tne_invoice_time_entry.is_internal, :checked=> @tne_invoice_time_entry.is_billable , :onclick =>"enable_disable_tne_invoice_time_entry_billing(this);"}%><br />
+                <% end %>
+                <table id="adjustment_table"width="100%" border="0" align="left">
+                  <tbody>
+                    <tr>
+                      <td width="82%" align="left" ><%=t(:label_Final_Amount)%>&nbsp;:</td>
+                      <td width="18%" align="right" style="padding-right:7px;"><span  id="bill_amount"><%= @tne_invoice_time_entry.calculate_billed_amount %></span></td>
+                    </tr>
+                    <tr>
+                      <td width="82%" align="left" >
+                        <%disabled = !@tne_invoice_time_entry.is_billable ? true : false%>
+                        <%=dynamic_select("tne_invoice_time_entry","billing_method_type",'time_entries',{:selected=>@tne_invoice_time_entry.billing_method_type},{:style=>'width:110px;',:class=>"w95 IE_8_tne_time_entries",:disabled=>disabled})%>
+                      </td>
+                      <td width="18%" align="right">
+                        <%name,adjustment,final_amount= time_entry_adjustments(@tne_invoice_time_entry) %>
+                        <%disabled =  @tne_invoice_time_entry.billing_method_type ==1 ? true : false%>
+                        <% adjustment =  "" if @tne_invoice_time_entry.billing_method_type ==1%>
+                        <%= text_field_tag "show_full_amount", '',:size => 8 ,:class=>'amount',:value=>adjustment,:maxlength=>11,:id=>"show_amount",:name=>name, :onblur =>"newEntryBillAmount(this,'tne_invoice_time_entry_')",:style=>"text-align: right;",:disabled=>disabled%>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="82%" align="left"><b><%=t(:label_Final_Amount)%>(<%=t(:label_doller)%>):</b></td>
+                      <td width="18%" align="right" style="padding-right:7px;"><span id="final_billed_amount"><%= number_with_lformat(final_amount)%></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br class="clear" /></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <br class="clear" /></div>
+    <div class="buttonSub_div">
+      <%= time_entry.submit t(:text_save_n_add_associated_expense) , :name => "save_and_add_expense", :class => 'time_and_expense', :onclick => "return setButtonPressed(this); "  unless params[:height] %>
+      <%= time_entry.submit t(:text_save_n_exit) ,:id=>'time_and_expense_id',:class => 'time_and_expense', :onclick => " return checkloader(); return setButtonPressed(this);" %>
+      <input name="Cancel" type="button" id="Cancel"  class = "time_and_expense" value="<%= t(:text_cancel) %>" onClick="setButtonPressed(this); disableAllSubmitButtons('time_and_expense'); <% if params[:height] %>parent.tb_remove(); return false;<% else %>window.location='<%= url_for(:controller => '/physical/timeandexpenses/time_and_expenses', :action => 'new', :params => {'time_entry_date' => (@entry_date || @tne_invoice_time_entry.time_entry_date).to_s})%>'; return false;<% end %>" />
+    </div>
+  <%end%>
+  <!--Form container div #ends here -->
+  <div class="mandatory"><span class="alert_message">*</span><%=t(:label_Required_fields)%></div>
+  <div class="mandatory mt12">Note: "The above entry will not impact original Time and Expense records" </div>
+</div>
+<div id ="associated_expense" class="w100"></div>
+<%if params[:height]%>
+  <div class="pagiText"><%=t(:label_page)%>&nbsp;68</div>
+<%else%>
+  <div class="pagiText" style="visibility: hidden"><%=t(:label_page)%>&nbsp;68</div>
+<%end%>
+<script language="javascript" type="text/javascript">
+  jQuery(document).ready(function() {
+    startEndTimeFormat("tne_invoice_time_entry_start_time");
+    startEndTimeFormat("tne_invoice_time_entry_end_time");
+  });
+  jQuery('#description').focus();
+  jQuery('#show_amount').attr('disabled',true);
+  jQuery(function(){
+    expenseDatePicker('<%= Time.zone.now.to_date %>');
+    jQuery('.expense_date_picker').bind('blur',function(){
+      expenseDatePicker('<%= Time.zone.now.to_date %>');
+    });
+  });
+  jQuery("#matter_peoples").hide();
+</script>

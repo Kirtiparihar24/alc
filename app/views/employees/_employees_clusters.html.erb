@@ -1,0 +1,40 @@
+<% if @employees.blank? %>
+  <%="NO EMPOYEES" %>
+<%else%>  
+  <div class="box-head"><h2 class="left">Employee Cluster Mapping</h2></div>
+  <div class="form">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+        <td align="left"><!-- Form Buttons -->
+          <!-- End Form Buttons --></td>
+        <td align="left"><!-- Form Buttons -->
+          <!-- End Form Buttons --></td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left"><label>Lawyers</label></td>
+        <td align="left" >
+          <%= select_tag 'lawyers',options_for_select(@employees.map{|x| [x.full_name,x.user_id] },@user.id),{:onchange =>"showemployees_clusters(this.value, '#{params[:company_id]}')" ,:class=>"field size3",:style=>"width:150px; vertical-align: top;"}%>
+        </td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+      <tr id="cluster_list">
+        <%=render :partial => 'clusters_list'%>
+      </tr>
+      <tr>
+        <td align="left">&nbsp;</td>
+        <td align="left">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <div class="pagging"></div>
+<% end %>

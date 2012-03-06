@@ -1,0 +1,6 @@
+<% expense_entries = (saved_entry.expense_entries.size > 0) ? array_or_string_for_javascript(saved_entry.expense_entries.collect{|i| i.id}) : "0"  %>
+<%if @matters.length > 0  %>
+<%=select_tag "#{saved_entry.id}[matter_id]","<option value=''/>" + options_for_select(@matters.collect{|matter|[matter.clipped_name,matter.id ]}, matter_id ),{:class => "dropbox w100p",:style=>"width:120px;",:onchange=>"get_matters_contact(this.id,#{saved_entry.id}, #{expense_entries},this.value);",:id=>"#{saved_entry.id}_matter_id"}%>
+<%else%>
+  <%= raw time_entry_matter_search_box("#{saved_entry.id}[matter_id]","#{saved_entry.id}_matter_id","#{saved_entry.id}_matter_ctl","#{saved_entry.id}",nil,nil) %>
+<%end%>

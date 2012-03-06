@@ -1,0 +1,29 @@
+<%=@header_opts[:r_name]%>
+
+<%-if params[:report][:summarize_by] == "account" -%>
+<%-@total_data.each do |label,data|-%>
+<%=(label == "" or !label) ? "None" : label + " (#{data.length} Records)"%>
+<%=@table_headers.join(",")%>
+<%-data.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+
+<%-end-%>
+<%-else-%>
+<%-@total_data.each do |label,a_hash|-%>
+<%=(label == "" or !label) ? "None" : label%>
+<%-a_hash.each do |a_label,records|-%>
+<%="#{t(:label_Account)} : " + a_label%>
+<%=@table_headers.join(",")%>
+<%-records.each do |contact|-%>
+<%=contact.join(",")%>
+<%-end-%>
+
+<%-end-%>
+
+
+<%-end-%>
+<%-end-%>
+
+<%="Total Records = #{@conditions[:t_contacts]}"%>
