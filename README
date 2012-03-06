@@ -1,0 +1,16 @@
+# Run following script useful for setting up username for devise
+# Added by Rahul - 26-DEC-2010
+
+obj = User.all
+obj.each { |user_obj|
+  email = user_obj.email
+  user_obj.username = email.split("@").first + "@" + email.split("@")[1].split(".").first + "." + email.split("@")[1].split(".").last
+  
+  if user_obj.save
+    puts "saved"
+  else
+    puts user_obj.errors.full_messages
+    puts user_obj.inspect
+  end
+}
+
